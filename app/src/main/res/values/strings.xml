@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">buddyAndroidClient</string>
+    <string name="app_name">BUDDY</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="what_text">What da fuck</string>
+    <string name="my_button">MyButton</string>
+    <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ <b>BUDDY!</b></string>
+    <string name="city_choice_text">ПРОСТО\n ВЫБЕРИ <b>СВОЙ</b>\n <b>ГОРОД</b> И МЫ\n НАЙДЕМ <b>ТЕБЕ</b>\n <b>ПИТОМЦА</b></string>
 </resources>
