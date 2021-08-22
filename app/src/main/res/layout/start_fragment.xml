@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="Cat180120.json"
+        app:lottie_fileName="cat.json"
         app:lottie_loop="true" />
 
     <com.airbnb.lottie.LottieAnimationView
@@ -69,6 +69,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="180130_dog.json"
+        app:lottie_fileName="dog.json"
         app:lottie_loop="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>
