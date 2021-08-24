@@ -1,10 +1,13 @@
 package mr.shtein.buddyandroidclient
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
@@ -30,22 +33,21 @@ class WelcomeDescriptionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        object : CountDownTimer(3000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                3 / 2
-            }
+        val welcomeText = view.findViewById<TextView>(R.id.welcome_text)
 
-            override fun onFinish() {
-                findNavController().navigate(R.id.cityChoiceFragment, null,
-                    navOptions { // Use the Kotlin DSL for building NavOptions
-                        anim {
-                            enter = android.R.anim.fade_in
-                            exit = android.R.anim.fade_out
-                        }
-                    })
-            }
+        val textScaleX = ObjectAnimator.ofFloat(welcomeText, "scaleX", 1f).apply {
+            duration = 500
         }
-            .start()
+        val textScaleY = ObjectAnimator.ofFloat(welcomeText, "scaleY", 1f).apply {
+            duration = 500
+        }
+
+        AnimatorSet().apply {
+            play(textScaleX).with(textScaleY)
+            start()
+        }
+
+
     }
 
     override fun onStart() {
