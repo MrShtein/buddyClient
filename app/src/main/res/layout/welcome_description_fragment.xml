@@ -7,7 +7,7 @@
     android:background="@drawable/main_background">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_up"
+        android:id="@+id/cloud_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="340dp"
@@ -21,7 +21,7 @@
         app:lottie_loop="true" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_down"
+        android:id="@+id/cloud_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="340dp"
