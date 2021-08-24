@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.airbnb.lottie.LottieAnimationView
 import java.util.*
 
@@ -36,7 +37,13 @@ class StartFragment : Fragment() {
                 3 / 2
             }
             override fun onFinish() {
-                findNavController().navigate(R.id.welcomeDescriptionFragment)
+                findNavController().navigate(R.id.welcomeDescriptionFragment, null,
+                    navOptions { // Use the Kotlin DSL for building NavOptions
+                        anim {
+                            enter = android.R.anim.fade_in
+                            exit = android.R.anim.fade_out
+                        }
+                    })
             }
         }
             .start()

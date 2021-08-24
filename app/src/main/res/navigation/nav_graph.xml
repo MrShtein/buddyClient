@@ -10,7 +10,8 @@
         android:label="StartFragment" >
         <action
             android:id="@+id/action_startFragment_to_welcomeDescriptionFragment"
-            app:destination="@id/welcomeDescriptionFragment" />
+            app:destination="@id/welcomeDescriptionFragment"
+             />
     </fragment>
     <fragment
         android:id="@+id/welcomeDescriptionFragment"
