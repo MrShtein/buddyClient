@@ -35,9 +35,11 @@
         app:lottie_loop="true" />
 
     <TextView
-        android:id="@+id/welcome_text"
+        android:id="@+id/cityChoiceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleY="0"
+        android:scaleX="0"
         android:text="@string/city_choice_text"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -46,6 +48,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleY="0"
+        android:scaleX="0"
+        android:id="@+id/nextButton"
+        android:text="@string/next"
+        app:layout_constraintTop_toBottomOf="@id/cityChoiceText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
