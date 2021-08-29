@@ -1,27 +1,15 @@
 package mr.shtein.buddyandroidclient
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.airbnb.lottie.LottieAnimationView
-import java.util.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import mr.shtein.buddyandroidclient.model.City
 
-class CityChoiceFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
+class CityChoiceFragment: Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,24 +21,11 @@ class CityChoiceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textForCityChoice = view.findViewById<TextView>(R.id.cityChoiceText)
-        val nextButton = view.findViewById<Button>(R.id.nextButton)
 
-        val scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f)
-        val scaleY = PropertyValuesHolder.ofFloat("scaleY", 1f)
-
-        val textScale = ObjectAnimator.ofPropertyValuesHolder(textForCityChoice, scaleX, scaleY)
-        val buttonScale = ObjectAnimator.ofPropertyValuesHolder(nextButton, scaleX, scaleY)
-
-        AnimatorSet().apply {
-            duration = 500
-            play(textScale).with(buttonScale)
-
-            start()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
+        val list = view.findViewById<RecyclerView>(R.id.city_list)
+        val cityList = mutableListOf<City>(City("Москва"), City("Ростов-на-Дону"), City("Санкт-Петербург"))
+        val adapter = this.context?.let { CitiesAdapter(it, cityList) }
+        list.adapter = adapter
+        list.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
     }
 }

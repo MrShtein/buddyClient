@@ -19,10 +19,19 @@
         android:label="WelcomeDescriptionFragment" >
         <action
             android:id="@+id/action_welcomeDescriptionFragment_to_cityChoiceFragment"
-            app:destination="@id/cityChoiceFragment" />
+            app:destination="@id/pre_city_choice_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/cityChoiceFragment"
+        android:id="@+id/pre_city_choice_fragment"
+        android:name="mr.shtein.buddyandroidclient.PreCityChoiceFragment"
+        android:label="PreCityChoiceFragment"
+        >
+        <action
+            android:id="@+id/action_pre_city_choice_fragment_to_city_choice_fragment2"
+            app:destination="@id/city_choice_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.CityChoiceFragment"
         android:label="CityChoiceFragment" />
 </navigation>

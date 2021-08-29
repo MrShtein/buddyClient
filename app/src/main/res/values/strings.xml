@@ -7,4 +7,6 @@
     <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ <b>BUDDY!</b></string>
     <string name="city_choice_text">ПРОСТО\n ВЫБЕРИ <b>СВОЙ</b>\n <b>ГОРОД</b> И МЫ\n НАЙДЕМ <b>ТЕБЕ</b>\n <b>ПИТОМЦА</b></string>
     <string name="next">next</string>
+    <string name="button_description">It\'s a button man</string>
+    <string name="city_text">Город:</string>
 </resources>

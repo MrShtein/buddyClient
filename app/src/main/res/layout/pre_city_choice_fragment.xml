@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="340dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
@@ -33,49 +35,32 @@
         app:lottie_loop="true" />
 
     <TextView
-        android:id="@+id/cityText"
+        android:id="@+id/cityChoiceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/city_text"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:text="@string/city_choice_text"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="@id/city_choice_edit_text" />
-
-    <EditText
-        android:id="@+id/city_choice_edit_text"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="140dp"
-        android:autofillHints="Введите название Вашего города"
-        android:inputType="text"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/city_list"
-        android:layout_width="280dp"
-        android:layout_height="215dp"
-        app:layout_constraintTop_toBottomOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textAlignment="center"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
 
     <ImageButton
         android:id="@+id/nextButton"
         android:layout_width="200dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="50dp"
+        android:scaleX="0"
+        android:scaleY="0"
         android:background="@drawable/my_button"
-        android:contentDescription="@string/button_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cityChoiceText"
+        android:contentDescription="@string/button_description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,7 +64,7 @@ class WelcomeDescriptionFragment : Fragment() {
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     super.onAnimationEnd(animation)
-                    findNavController().navigate(R.id.cityChoiceFragment)
+                    findNavController().navigate(R.id.pre_city_choice_fragment)
                 }
             })
             play(textScaleX)
