@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,12 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.model.City
 import mr.shtein.buddyandroidclient.utils.CityCallback
 
 class CityChoiceFragment : Fragment() {
 
-    private var cities = getCities()
+    private lateinit var  cities: List<City>
     private var lettersCount = 0
 
     override fun onCreateView(
@@ -30,7 +32,10 @@ class CityChoiceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        cities = getCitiesFromFile("cities.txt", this.requireContext())
+
         val adapter = this.context?.let { CitiesAdapter(it, cities) }
+
         val list = view.findViewById<RecyclerView>(R.id.city_list)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
@@ -45,13 +50,13 @@ class CityChoiceFragment : Fragment() {
                 letters.length < lettersCount -> {
                     lettersCount--
                     newCityList = cities.filter {
-                        it.cityName.startsWith(letters)
+                        it.cityName.lowercase().startsWith(letters.lowercase())
                     }
                 }
                 else -> {
                     lettersCount++
                     newCityList = adapter!!.cities.filter {
-                        it.cityName.startsWith(letters)
+                        it.cityName.lowercase().startsWith(letters.lowercase())
                     }
                 }
             }
@@ -61,8 +66,6 @@ class CityChoiceFragment : Fragment() {
             diff.dispatchUpdatesTo(adapter)
             adapter.cities = newCityList
         }
-
-
 
         val cityInput = view.findViewById<EditText>(R.id.city_choice_edit_text)
 
@@ -112,5 +115,14 @@ class CityChoiceFragment : Fragment() {
             City("Иркутск"),
 
             )
+    }
+
+    private fun getCitiesFromFile(address: String, context: Context): List<City> {
+        val cityList = mutableListOf<City>()
+        val str =  context.assets.open(address).readBytes().toString(Charsets.UTF_8).split("\n").toList()
+        str.forEach {
+            cityList.add(City(it))
+        }
+        return cityList
     }
 }

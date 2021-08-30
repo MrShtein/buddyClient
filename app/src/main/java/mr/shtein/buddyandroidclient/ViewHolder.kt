@@ -12,4 +12,5 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(city: City) {
         this.city.text = city.cityName
     }
+
 }
