@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
+import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.model.City
 import mr.shtein.buddyandroidclient.utils.CityCallback
 
-class CityChoiceFragment : Fragment() {
+const val MAG = "City"
+
+class CityChoiceFragment : Fragment(), OnCityListener {
 
     private lateinit var  cities: List<City>
     private var lettersCount = 0
@@ -34,7 +38,7 @@ class CityChoiceFragment : Fragment() {
 
         cities = getCitiesFromFile("cities.txt", this.requireContext())
 
-        val adapter = this.context?.let { CitiesAdapter(it, cities) }
+        val adapter = this.context?.let { CitiesAdapter(it, cities, this) }
 
         val list = view.findViewById<RecyclerView>(R.id.city_list)
         list.adapter = adapter
@@ -82,11 +86,11 @@ class CityChoiceFragment : Fragment() {
                 return
             }
         })
-
-
-
     }
 
+    override fun onCityClick(position: Int, adapter: CitiesAdapter) {
+        Log.d(MAG, "onCityClick: ${adapter.cities[position]}")
+    }
 
 
     private fun getCities(): List<City> {

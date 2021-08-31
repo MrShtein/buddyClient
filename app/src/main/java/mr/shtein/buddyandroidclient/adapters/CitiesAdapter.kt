@@ -10,19 +10,18 @@ import mr.shtein.buddyandroidclient.model.City
 
 class CitiesAdapter(
     context: Context,
-    var cities: List<City>
+    var cities: List<City>,
+    var onCityListener: OnCityListener
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var city: City
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.city_row, parent, false))
+        return ViewHolder(inflater.inflate(R.layout.city_row, parent, false), onCityListener, this)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val view = getItem(position)
-
         holder.bind(getItem(position))
     }
 
