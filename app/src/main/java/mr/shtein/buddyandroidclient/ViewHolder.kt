@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
-import mr.shtein.buddyandroidclient.model.City
+import mr.shtein.buddyandroidclient.model.CityChoiceItem
 
 class ViewHolder(var view: View, var onCityListener: OnCityListener, val adapter: CitiesAdapter) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -14,8 +14,8 @@ class ViewHolder(var view: View, var onCityListener: OnCityListener, val adapter
         itemView.setOnClickListener(this)
     }
 
-    fun bind(city: City) {
-        this.city.text = city.cityName
+    fun bind(cityChoiceItem: CityChoiceItem) {
+        this.city.text = cityChoiceItem.cityName
     }
 
     override fun onClick(v: View) {

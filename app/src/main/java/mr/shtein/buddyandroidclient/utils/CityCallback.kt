@@ -1,11 +1,11 @@
 package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import mr.shtein.buddyandroidclient.model.City
+import mr.shtein.buddyandroidclient.model.CityChoiceItem
 
 class CityCallback(
-    private val oldList: List<City>,
-    private val newList: List<City>
+    private val oldList: List<CityChoiceItem>,
+    private val newList: List<CityChoiceItem>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size

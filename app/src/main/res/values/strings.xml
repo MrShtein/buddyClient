@@ -10,4 +10,7 @@
     <string name="button_description">It\'s a button man</string>
     <string name="city_text">Город:</string>
     <string name="cat_photo_description">It\'s a photo of nice cat</string>
+    <string name="animal_choice_text_in_current_city"><b>КОГО ИЩЕМ</b>\n в\n</string>
+    <string name="city_name_text">%1$s</string>
+
 </resources>

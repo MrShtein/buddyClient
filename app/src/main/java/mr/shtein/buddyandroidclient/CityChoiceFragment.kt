@@ -17,14 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
-import mr.shtein.buddyandroidclient.model.City
+import mr.shtein.buddyandroidclient.model.CityChoiceItem
 import mr.shtein.buddyandroidclient.utils.CityCallback
 
 const val MAG = "City"
 
 class CityChoiceFragment : Fragment(), OnCityListener {
 
-    private lateinit var cities: List<City>
+    private lateinit var cityChoiceItems: List<CityChoiceItem>
     private var lettersCount = 0
     private var isCitiesVisible = false
 
@@ -39,39 +39,39 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cities = getCitiesFromFile("cities.txt", this.requireContext())
+        cityChoiceItems = getCitiesFromFile("cities.txt", this.requireContext())
 
-        val adapter = this.context?.let { CitiesAdapter(it, cities, this) }
+        val adapter = this.context?.let { CitiesAdapter(it, cityChoiceItems, this) }
 
         val list = view.findViewById<RecyclerView>(R.id.city_list)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
 
         fun onCitiesChanged(letters: String) {
-            var newCityList: List<City>? = null
+            var newCityChoiceItemList: List<CityChoiceItem>? = null
             when {
                 letters.isEmpty() -> {
-                    newCityList = cities
+                    newCityChoiceItemList = cityChoiceItems
                     lettersCount = 0
                 }
                 letters.length < lettersCount -> {
                     lettersCount--
-                    newCityList = cities.filter {
+                    newCityChoiceItemList = cityChoiceItems.filter {
                         it.cityName.lowercase().startsWith(letters.lowercase())
                     }
                 }
                 else -> {
                     lettersCount++
-                    newCityList = adapter!!.cities.filter {
+                    newCityChoiceItemList = adapter!!.cityChoiceItems.filter {
                         it.cityName.lowercase().startsWith(letters.lowercase())
                     }
                 }
             }
 
-            val callback = CityCallback(adapter!!.cities, newCityList)
+            val callback = CityCallback(adapter!!.cityChoiceItems, newCityChoiceItemList)
             val diff = DiffUtil.calculateDiff(callback)
             diff.dispatchUpdatesTo(adapter)
-            adapter.cities = newCityList
+            adapter.cityChoiceItems = newCityChoiceItemList
         }
 
         val cityInput = view.findViewById<EditText>(R.id.city_choice_edit_text)
@@ -98,9 +98,9 @@ class CityChoiceFragment : Fragment(), OnCityListener {
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
         val bundle = Bundle()
-        bundle.putString("city", adapter.cities[position].cityName)
+        bundle.putString("city", adapter.cityChoiceItems[position].cityName)
         findNavController().navigate(R.id.animal_choice_fragment, bundle)
-        Log.d(MAG, "onCityClick: ${adapter.cities[position].cityName}")
+        Log.d(MAG, "onCityClick: ${adapter.cityChoiceItems[position].cityName}")
     }
 
     private fun animateCitiesAlpha(list: RecyclerView) {
@@ -112,36 +112,36 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     }
 
 
-    private fun getCities(): List<City> {
+    private fun getCities(): List<CityChoiceItem> {
         return listOf(
-            City("Москва"),
-            City("Санкт-Петербург"),
-            City("Новосибирск"),
-            City("Екатеринбург"),
-            City("Казань"),
-            City("Нижний Новгород"),
-            City("Челябинск"),
-            City("Самара"),
-            City("Омск"),
-            City("Ростов-на-Дону"),
-            City("Уфа"),
-            City("Красноярск"),
-            City("Воронеж"),
-            City("Волгоград"),
-            City("Краснодар"),
-            City("Саратов"),
-            City("Тюмень"),
-            City("Тольятти"),
-            City("Ижевск"),
-            City("Барнаул"),
-            City("Ульяновск"),
-            City("Иркутск"),
+            CityChoiceItem("Москва"),
+            CityChoiceItem("Санкт-Петербург"),
+            CityChoiceItem("Новосибирск"),
+            CityChoiceItem("Екатеринбург"),
+            CityChoiceItem("Казань"),
+            CityChoiceItem("Нижний Новгород"),
+            CityChoiceItem("Челябинск"),
+            CityChoiceItem("Самара"),
+            CityChoiceItem("Омск"),
+            CityChoiceItem("Ростов-на-Дону"),
+            CityChoiceItem("Уфа"),
+            CityChoiceItem("Красноярск"),
+            CityChoiceItem("Воронеж"),
+            CityChoiceItem("Волгоград"),
+            CityChoiceItem("Краснодар"),
+            CityChoiceItem("Саратов"),
+            CityChoiceItem("Тюмень"),
+            CityChoiceItem("Тольятти"),
+            CityChoiceItem("Ижевск"),
+            CityChoiceItem("Барнаул"),
+            CityChoiceItem("Ульяновск"),
+            CityChoiceItem("Иркутск"),
 
             )
     }
 
-    private fun getCitiesFromFile(address: String, context: Context): List<City> {
-        val cityList = mutableListOf<City>()
+    private fun getCitiesFromFile(address: String, context: Context): List<CityChoiceItem> {
+        val cityList = mutableListOf<CityChoiceItem>()
         context.assets
             .open(address)
             .readBytes()
@@ -149,7 +149,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
             .split("\n")
             .toList()
             .forEach {
-                cityList.add(City(it))
+                cityList.add(CityChoiceItem(it))
             }
         return cityList
     }
