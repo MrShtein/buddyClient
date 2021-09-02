@@ -9,4 +9,5 @@
     <string name="next">next</string>
     <string name="button_description">It\'s a button man</string>
     <string name="city_text">Город:</string>
+    <string name="cat_photo_description">It\'s a photo of nice cat</string>
 </resources>

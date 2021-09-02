@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +24,9 @@ const val MAG = "City"
 
 class CityChoiceFragment : Fragment(), OnCityListener {
 
-    private lateinit var  cities: List<City>
+    private lateinit var cities: List<City>
     private var lettersCount = 0
+    private var isCitiesVisible = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,13 +76,18 @@ class CityChoiceFragment : Fragment(), OnCityListener {
 
         val cityInput = view.findViewById<EditText>(R.id.city_choice_edit_text)
 
+
         cityInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 return
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    onCitiesChanged(s.toString())
+                if (!isCitiesVisible) {
+                    animateCitiesAlpha(list)
+                    isCitiesVisible = true
+                }
+                onCitiesChanged(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -89,7 +97,18 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     }
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
-        Log.d(MAG, "onCityClick: ${adapter.cities[position]}")
+        val bundle = Bundle()
+        bundle.putString("city", adapter.cities[position].cityName)
+        findNavController().navigate(R.id.animal_choice_fragment, bundle)
+        Log.d(MAG, "onCityClick: ${adapter.cities[position].cityName}")
+    }
+
+    private fun animateCitiesAlpha(list: RecyclerView) {
+        ObjectAnimator
+            .ofFloat(list, "alpha", 1f).apply {
+                duration = 500
+            }
+            .start()
     }
 
 
@@ -123,10 +142,15 @@ class CityChoiceFragment : Fragment(), OnCityListener {
 
     private fun getCitiesFromFile(address: String, context: Context): List<City> {
         val cityList = mutableListOf<City>()
-        val str =  context.assets.open(address).readBytes().toString(Charsets.UTF_8).split("\n").toList()
-        str.forEach {
-            cityList.add(City(it))
-        }
+        context.assets
+            .open(address)
+            .readBytes()
+            .toString(Charsets.UTF_8)
+            .split("\n")
+            .toList()
+            .forEach {
+                cityList.add(City(it))
+            }
         return cityList
     }
 }

@@ -33,5 +33,18 @@
     <fragment
         android:id="@+id/city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.CityChoiceFragment"
-        android:label="CityChoiceFragment" />
+        android:label="CityChoiceFragment" >
+        <action
+            android:id="@+id/action_city_choice_fragment_to_animalChoiceFragment"
+            app:destination="@id/animal_choice_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animal_choice_fragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalChoiceFragment"
+        android:label="AnimalChoiceFragment" >
+        <argument
+            android:name="city"
+            app:argType="string"
+            android:defaultValue="empty" />
+    </fragment>
 </navigation>

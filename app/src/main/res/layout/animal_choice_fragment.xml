@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_background">
 
+    <ImageView
+        android:layout_width="216dp"
+        android:layout_height="93dp"
+        android:id="@+id/cat"
+        android:src="@drawable/cat"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/cat_photo_description" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/cloud_top"
         android:layout_width="match_parent"
@@ -33,39 +43,42 @@
         app:lottie_loop="true" />
 
     <TextView
-        android:id="@+id/cityText"
+        android:id="@+id/animal_choice_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/city_text"
+        app:layout_constraintTop_toBottomOf="@id/cat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="56dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="@id/city_choice_edit_text" />
-
-    <EditText
-        android:id="@+id/city_choice_edit_text"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="140dp"
-        android:autofillHints="Введите название Вашего города"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/city_list"
+        android:id="@+id/animal_list"
         android:layout_width="280dp"
-        android:layout_height="215dp"
-        android:alpha="0"
-        app:layout_constraintTop_toBottomOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="180dp"
+        android:layoutAnimation="@anim/layout_animation"
         android:textAlignment="center"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layoutAnimation="@anim/layout_animation"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="23dp"
+        app:layout_constraintTop_toTopOf="@id/animal_choice_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:background="@drawable/my_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
