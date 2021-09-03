@@ -12,5 +12,6 @@
     <string name="cat_photo_description">It\'s a photo of nice cat</string>
     <string name="animal_choice_text_in_current_city"><b>КОГО ИЩЕМ</b>\n в\n</string>
     <string name="city_name_text">%1$s</string>
+    <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
 
 </resources>

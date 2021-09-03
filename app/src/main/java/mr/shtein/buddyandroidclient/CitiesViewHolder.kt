@@ -7,7 +7,7 @@ import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.model.CityChoiceItem
 
-class ViewHolder(var view: View, var onCityListener: OnCityListener, val adapter: CitiesAdapter) : RecyclerView.ViewHolder(view), View.OnClickListener {
+class CitiesViewHolder(var view: View, var onCityListener: OnCityListener, val adapter: CitiesAdapter) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
     private val city: TextView = itemView.findViewById(R.id.city_name)
     init {

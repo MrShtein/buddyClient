@@ -5,31 +5,30 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.ViewHolder
+import mr.shtein.buddyandroidclient.CitiesViewHolder
 import mr.shtein.buddyandroidclient.model.CityChoiceItem
 
 class CitiesAdapter(
     context: Context,
     var cityChoiceItems: List<CityChoiceItem>,
     var onCityListener: OnCityListener
-) : RecyclerView.Adapter<ViewHolder>() {
+) : RecyclerView.Adapter<CitiesViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private lateinit var cityChoiceItem: CityChoiceItem
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.city_row, parent, false), onCityListener, this)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitiesViewHolder {
+        return CitiesViewHolder(inflater.inflate(R.layout.city_row, parent, false), onCityListener, this)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holderCities: CitiesViewHolder, position: Int) {
+        holderCities.bind(getItem(position))
     }
 
     override fun getItemCount(): Int {
         return cityChoiceItems.size
     }
 
-    fun getItem(position: Int): CityChoiceItem = cityChoiceItems[position]
+    private fun getItem(position: Int): CityChoiceItem = cityChoiceItems[position]
 
 
 }
