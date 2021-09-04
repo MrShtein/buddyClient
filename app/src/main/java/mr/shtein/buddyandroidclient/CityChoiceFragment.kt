@@ -74,7 +74,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
             adapter.cityChoiceItems = newCityChoiceItemList
         }
 
-        val cityInput = view.findViewById<EditText>(R.id.city_choice_edit_text)
+        val cityInput = view.findViewById<EditText>(R.id.city_search)
 
 
         cityInput.addTextChangedListener(object : TextWatcher {

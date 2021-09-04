@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="340dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,36 +35,70 @@
         android:id="@+id/cityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:text="@string/city_text"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="@id/city_choice_edit_text" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/container_for_city_search"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp" />
 
-    <EditText
-        android:id="@+id/city_choice_edit_text"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="140dp"
-        android:autofillHints="Введите название Вашего города"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_for_city_search"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/city_search_panel_background"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cityText">
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_magnifyingglass"
+            android:layout_marginStart="10dp"
+            android:elevation="1dp"
+            android:padding="5dp"/>
+
+
+        <EditText
+            android:id="@+id/city_search"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_icon"
+            app:layout_constraintTop_toTopOf="parent"  />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/city_list"
-        android:layout_width="280dp"
-        android:layout_height="215dp"
+        android:layout_width="0dp"
+        android:layout_height="415dp"
+        android:background="#80FFFFFF"
         android:alpha="0"
-        app:layout_constraintTop_toBottomOf="@id/city_choice_edit_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        tools:alpha="1"
+        android:layout_marginTop="-10dp"
+        android:paddingTop="10dp"
+        android:layoutAnimation="@anim/layout_animation"
         android:textAlignment="center"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layoutAnimation="@anim/layout_animation"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/container_for_city_search"
+        app:layout_constraintEnd_toEndOf="@id/container_for_city_search"
+        app:layout_constraintStart_toStartOf="@id/container_for_city_search"
+         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

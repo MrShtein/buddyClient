@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Ростов-на-Дону"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:textColor="@color/black"/>
 
 </LinearLayout>
