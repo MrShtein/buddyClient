@@ -25,27 +25,41 @@ const val MAG = "City"
 class CityChoiceFragment : Fragment(), OnCityListener {
 
     private lateinit var cityChoiceItems: List<CityChoiceItem>
+    private lateinit var adapter: CitiesAdapter
+    private lateinit var list: RecyclerView
     private var lettersCount = 0
     private var isCitiesVisible = false
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(MAG, "City Fragment destroyed")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(MAG, "City Fragment view create")
         return inflater.inflate(R.layout.city_choice_fragment, container, false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(MAG, "City Fragment view PAUSED")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(MAG, "City Fragment view STOPPED")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(MAG, "City Fragment view created")
+        adapter = context?.let { CitiesAdapter(it, getCities(), this) }!!
 
         cityChoiceItems = getCitiesFromFile("cities.txt", this.requireContext())
-
-        val adapter = this.context?.let { CitiesAdapter(it, cityChoiceItems, this) }
-
-        val list = view.findViewById<RecyclerView>(R.id.city_list)
-        list.adapter = adapter
-        list.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
 
         fun onCitiesChanged(letters: String) {
             var newCityChoiceItemList: List<CityChoiceItem>? = null
@@ -61,22 +75,43 @@ class CityChoiceFragment : Fragment(), OnCityListener {
                     }
                 }
                 else -> {
-                    lettersCount++
-                    newCityChoiceItemList = adapter!!.cityChoiceItems.filter {
-                        it.cityName.lowercase().startsWith(letters.lowercase())
+                    newCityChoiceItemList = if (lettersCount == 0) {
+                        cityChoiceItems.filter {
+                            it.cityName.lowercase().startsWith(letters.lowercase())
+                        }
+                    } else {
+                        adapter.cityChoiceItems.filter {
+                            it.cityName.lowercase().startsWith(letters.lowercase())
+                        }
                     }
+                    lettersCount++
                 }
             }
 
-            val callback = CityCallback(adapter!!.cityChoiceItems, newCityChoiceItemList)
+            val callback = CityCallback(adapter.cityChoiceItems, newCityChoiceItemList)
             val diff = DiffUtil.calculateDiff(callback)
             diff.dispatchUpdatesTo(adapter)
+            if (lettersCount == 1) {
+                animateCitiesAlpha(list)
+            }
             adapter.cityChoiceItems = newCityChoiceItemList
         }
 
         val cityInput = view.findViewById<EditText>(R.id.city_search)
 
+        cityInput.onFocusChangeListener = object : View.OnFocusChangeListener {
 
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                val context: Context? = v?.context
+                if (hasFocus) {
+                    list = view.findViewById(R.id.city_list)
+                    list.setPadding(0, 10, 0,0)
+                    list.adapter = adapter
+                    list.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                }
+            }
+
+        }
         cityInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 return
@@ -84,7 +119,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!isCitiesVisible) {
-                    animateCitiesAlpha(list)
+                  //  animateCitiesAlpha(list)
                     isCitiesVisible = true
                 }
                 onCitiesChanged(s.toString())
@@ -106,7 +141,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     private fun animateCitiesAlpha(list: RecyclerView) {
         ObjectAnimator
             .ofFloat(list, "alpha", 1f).apply {
-                duration = 500
+                duration = 250
             }
             .start()
     }
@@ -147,7 +182,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
             .readBytes()
             .toString(Charsets.UTF_8)
             .split("\n")
-            .toList()
+            .toSet()
             .forEach {
                 cityList.add(CityChoiceItem(it))
             }

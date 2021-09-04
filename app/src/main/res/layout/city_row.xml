@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         tools:text="Ростов-на-Дону"
         android:padding="10dp"
+        android:textSize="14sp"
         android:textColor="@color/black"/>
 
 </LinearLayout>
