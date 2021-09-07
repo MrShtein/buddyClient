@@ -49,6 +49,11 @@ class CityChoiceFragment : Fragment(), OnCityListener {
         Log.d(MAG, "City Fragment view PAUSED")
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(MAG, "City Fragment Attache")
+    }
+
     override fun onStop() {
         super.onStop()
         Log.d(MAG, "City Fragment view STOPPED")

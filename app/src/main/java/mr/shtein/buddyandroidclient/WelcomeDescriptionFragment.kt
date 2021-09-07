@@ -4,9 +4,14 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,14 +35,22 @@ class WelcomeDescriptionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.welcome_description_fragment, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val welcomeText = view.findViewById<TextView>(R.id.welcome_text)
+        val welcomeText = view.findViewById<TextView>(R.id.welcome_text).apply {
+            val str: String = getString(R.string.welcome_text)
+            val span = SpannableStringBuilder(str)
+            span.setSpan(
+                StyleSpan(Typeface.BOLD),
+                str.indexOf("BUDDY!"),
+                str.indexOf("!"),
+                SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            text = span
+        }
         val cloudTop = view.findViewById<LottieAnimationView>(R.id.cloud_top)
         val cloudBottom = view.findViewById<LottieAnimationView>(R.id.cloud_bottom)
 

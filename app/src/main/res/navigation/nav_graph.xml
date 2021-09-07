@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/animal_choice_fragment"
-        android:name="mr.shtein.buddyandroidclient.AnimalChoiceFragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
         android:label="AnimalChoiceFragment" >
         <argument
             android:name="city"

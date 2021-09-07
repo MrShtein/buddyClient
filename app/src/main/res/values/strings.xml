@@ -4,14 +4,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="what_text">What da fuck</string>
     <string name="my_button">MyButton</string>
-    <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ <b>BUDDY!</b></string>
+    <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ BUDDY!</string>
     <string name="city_choice_text">ПРОСТО\n ВЫБЕРИ <b>СВОЙ</b>\n <b>ГОРОД</b> И МЫ\n НАЙДЕМ <b>ТЕБЕ</b>\n <b>ПИТОМЦА</b></string>
     <string name="next">next</string>
     <string name="button_description">It\'s a button man</string>
     <string name="city_text">Город:</string>
     <string name="cat_photo_description">It\'s a photo of nice cat</string>
-    <string name="animal_choice_text_in_current_city"><b>КОГО ИЩЕМ</b>\n в\n</string>
-    <string name="city_name_text">%1$s</string>
+    <string name="animal_choice_text_in_current_city">КОГО ИЩЕМ в</string>
     <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
+    <string name="logo_discription">Logo</string>
 
 </resources>
