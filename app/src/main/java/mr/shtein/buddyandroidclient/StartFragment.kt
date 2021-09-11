@@ -11,6 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 
@@ -29,6 +32,7 @@ class StartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "OnCreateView")
 
         return inflater.inflate(R.layout.start_fragment, container, false)
 
@@ -36,14 +40,13 @@ class StartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         object : CountDownTimer(3000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 3 / 2
             }
 
-            override fun onFinish() {
 
+            override fun onFinish() {
                 val dog = view.findViewById<LottieAnimationView>(R.id.dog)
                 val cat = view.findViewById<LottieAnimationView>(R.id.cat)
                 val cloudTop = view.findViewById<LottieAnimationView>(R.id.cloud_top)
@@ -98,4 +101,6 @@ class StartFragment : Fragment() {
     override fun onStart() {
         super.onStart()
     }
+
+
 }
