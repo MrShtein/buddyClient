@@ -14,5 +14,7 @@
     <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
     <string name="logo_discription">Logo</string>
     <string name="read_more">Читать еще ...</string>
+    <string name="menu_button_description">It\'s menu button</string>
+    <string name="animal_filter_button">It\'s a filter button</string>
 
 </resources>
