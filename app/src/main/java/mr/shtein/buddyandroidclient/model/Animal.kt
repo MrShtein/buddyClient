@@ -1,8 +1,8 @@
 package mr.shtein.buddyandroidclient.model
 
-data class Animal(
+data class Animal  (
     val id: Long,
-    val imgUrl: String,
+    val imgUrl: List<AnimalPhoto>,
     val spices: String,
     val name: String,
     val kennelName: String,

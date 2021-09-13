@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import mr.shtein.buddyandroidclient.model.Animal
 
-class AnimalsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class AnimalsViewHolder(itemView: View) : ProtoAnimalsViewHolder(itemView) {
 
     private val animalImage: ImageView = itemView.findViewById(R.id.animal_image)
     private val animalName: TextView = itemView.findViewById(R.id.who_is)

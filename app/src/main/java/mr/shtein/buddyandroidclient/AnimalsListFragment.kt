@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,11 +39,12 @@ class AnimalsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mService = Common.retrofitService
         animalRecyclerView = view.findViewById(R.id.animal_list)
+        animalRecyclerView.setHasFixedSize(true);
         animalRecyclerView.layoutManager = LinearLayoutManager(context)
-        getAllAnimalsList()
+        getAllAnimalsList(view)
     }
 
-    private fun getAllAnimalsList() {
+    private fun getAllAnimalsList(view: View) {
         mService.getAnimals().enqueue(object : Callback<MutableList<Animal>> {
             override fun onFailure(call: Call<MutableList<Animal>>, t: Throwable) {
                 t.message?.let { Log.d("Animal", it) }
@@ -51,6 +54,8 @@ class AnimalsListFragment : Fragment() {
                 Log.d("Animal", "onResponse is ready")
                 adapter = AnimalsAdapter(requireContext(), response.body() as MutableList<Animal>)
                 adapter.notifyDataSetChanged()
+                view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility = View.INVISIBLE
+                view.findViewById<ImageView>(R.id.logo_in_animal_list).visibility = View.INVISIBLE
                 animalRecyclerView.adapter = adapter
             }
         })

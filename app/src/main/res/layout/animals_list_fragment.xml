@@ -32,6 +32,7 @@
         app:lottie_loop="true" />
 
     <ProgressBar
+        android:id="@+id/animal_search_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="#9EFFFFFF"
@@ -40,12 +41,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/search_filter_menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/animal_list_header_guideline"
-        android:background="@color/white"/>
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animals_choice_chips">
+
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/animals_choice_chips"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/search_filter_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/animal_list_header_guideline"
+        android:background="@color/white">
+
+    </com.google.android.material.chip.ChipGroup>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/animal_list_header_guideline"
@@ -54,30 +81,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="127dp" />
 
-    <TextView
-        android:id="@+id/animal_find_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animal_list_header_guideline"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="14sp"
-        tools:text="123 598 объявлений" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/animal_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layoutAnimation="@anim/layout_animation"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animal_find_count"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animal_list_header_guideline" />
 
     <ImageView
         android:id="@+id/logo_in_animal_list"
