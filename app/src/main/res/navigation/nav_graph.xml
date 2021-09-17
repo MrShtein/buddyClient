@@ -47,4 +47,8 @@
             app:argType="string"
             android:defaultValue="empty" />
     </fragment>
+    <fragment
+        android:id="@+id/animalsCardFragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
+        android:label="AnimalsCardFragment" />
 </navigation>

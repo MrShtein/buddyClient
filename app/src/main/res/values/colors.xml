@@ -10,5 +10,6 @@
     <color name="end_of_main_gradient">#17C7FF</color>
     <color name="start_of_main_gradient">#8AF8FF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="choice_color">#FF5858</color>
 
 </resources>

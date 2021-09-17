@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/cloud_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="340dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="cloud reverse.json"
+        app:lottie_loop="true" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/cloud_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="340dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="cloud.json"
+        app:lottie_loop="true" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/animal_big_cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:id="@+id/big_card_kennel_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#007AE9"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Приют: Папа Кот" />
+
+            <TextView
+                android:id="@+id/big_card_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/big_card_kennel_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="550м от вас" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/big_card_photo_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="225dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/big_card_destination" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/big_card_wrapper_for_animal_information"
+                android:background="@drawable/animal_information_background"
+                app:layout_constraintTop_toBottomOf="@id/big_card_photo_gallery"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/big_card_wrapper_for_animal_information"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                tools:text="Собака Клавдия"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_gender"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_name"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                tools:text="Пол: мальчик"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_age"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_gender"
+                android:layout_marginStart="16dp"
+                tools:text="Возраст: 12 лет"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_breed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_age"
+                android:layout_marginStart="16dp"
+                tools:text="Порода: Московская Сторожевая"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_breed"
+                android:layout_marginStart="16dp"
+                tools:text="Цвет: Серый"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_fur_length"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_color"
+                android:layout_marginStart="16dp"
+                tools:text="Длина шерсти: средняя"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/big_card_animal_fur_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/big_card_animal_fur_length"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                tools:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  Lorem ipsum Lorem ipsum "/>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
