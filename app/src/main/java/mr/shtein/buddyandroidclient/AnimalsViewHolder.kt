@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,11 +20,22 @@ class AnimalsViewHolder(itemView: View) : ProtoAnimalsViewHolder(itemView) {
 
 
     fun bind(animal: Animal) {
-        this.animalName.text = animal.name
-        this.kennelName.text = animal.kennelName
-        this.gender.text = animal.gender
-        this.age.text = animal.age.toString()
-        this.breed.text = animal.breed
-        this.animalColor.text = animal.characteristics["color"]
+        val currentContext: Context = animalName.context
+        this.animalName.text =  animal.name
+        this.kennelName.text = currentContext.getString(R.string.kennel_name, animal.kennelName)
+        this.gender.text = currentContext.getString(R.string.animal_gender, animal.gender)
+        this.age.text = currentContext.getString(R.string.animal_age, makeAgeString(animal.age))
+        this.breed.text = currentContext.getString(R.string.animal_breed, animal.breed)
+        this.animalColor.text =  currentContext.getString(R.string.animal_color, animal.characteristics["color"])
+    }
+
+    private fun makeAgeString(age: Int): String {
+        return if (age == 1 || age == 21 || age == 31 || age == 41) {
+            "$age год"
+        } else if (age in 2..4 || age in 22..24 || age in 32..34 || age in 42..44) {
+            "$age года"
+        } else {
+            "$age лет"
+        }
     }
 }

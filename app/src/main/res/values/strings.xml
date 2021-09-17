@@ -16,5 +16,10 @@
     <string name="read_more">Читать еще ...</string>
     <string name="menu_button_description">It\'s menu button</string>
     <string name="animal_filter_button">It\'s a filter button</string>
+    <string name="kennel_name">Приют \"%1$s\"</string>
+    <string name="animal_gender">Пол: %1$s</string>
+    <string name="animal_age">Возраст: %1$s</string>
+    <string name="animal_breed">Порода: %1$s</string>
+    <string name="animal_color">Цвет: %1$s</string>
 
 </resources>
