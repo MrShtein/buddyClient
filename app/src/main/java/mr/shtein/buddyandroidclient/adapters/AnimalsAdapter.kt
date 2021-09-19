@@ -20,14 +20,15 @@ private const val STATEMENT_TYPE = 0
 
 class AnimalsAdapter(
     context: Context,
-    private var animals: List<Animal>
+    private var animals: List<Animal>,
+    var onAnimalCardClickListener: OnAnimalCardClickListener
 ) : RecyclerView.Adapter<ProtoAnimalsViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProtoAnimalsViewHolder {
         return when (viewType) {
-            ANIMAL_TYPE -> AnimalsViewHolder(inflater.inflate(R.layout.animal_row, parent, false))
+            ANIMAL_TYPE -> AnimalsViewHolder(inflater.inflate(R.layout.animal_row, parent, false), onAnimalCardClickListener)
             else -> StatementViewHolder(inflater.inflate(R.layout.found_animals_row, parent, false))
         }
 

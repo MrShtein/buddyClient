@@ -23,12 +23,11 @@ import retrofit2.Response
 import android.util.TypedValue
 
 import android.content.res.Resources
+import androidx.navigation.fragment.findNavController
+import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 
 
-
-
-
-class AnimalsListFragment : Fragment() {
+class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
@@ -63,13 +62,13 @@ class AnimalsListFragment : Fragment() {
                     val typeList: MutableList<AnimalType> = response.body() as MutableList<AnimalType>
                     val typeChipGroup: ChipGroup = view.findViewById(R.id.animal_choice_chips)
                     for (type in typeList) {
-                        val topAndDownMargin = dpToPx(16, view)
-                        val startAndStopMargin = dpToPx(32, view)
+                        val topAndDownPadding = dpToPx(16, view)
+                        val startAndStopPadding = dpToPx(32, view)
 
                         val curChip: Chip = Chip(view.context)
                         curChip.text = type.pluralAnimalType
                         curChip.chipBackgroundColor = context?.getColorStateList(R.color.choice_color)
-                        curChip.setPadding(startAndStopMargin, topAndDownMargin, startAndStopMargin, topAndDownMargin)
+                       curChip.setPadding(startAndStopPadding, topAndDownPadding, startAndStopPadding, topAndDownPadding)
                         typeChipGroup.addView(curChip)
                     }
                 }
@@ -78,6 +77,12 @@ class AnimalsListFragment : Fragment() {
                     t.message?.let {Log.d("Animal", it)}
                 }
             })
+    }
+
+    override fun onAnimalCardClick(animalId: Long) {
+        val bundle = Bundle()
+        bundle.putLong("animalId", animalId)
+        findNavController().navigate(R.id.animalsCardFragment, bundle)
     }
 
     private fun dpToPx(dp: Int, view: View): Int {
@@ -97,7 +102,7 @@ class AnimalsListFragment : Fragment() {
 
             override fun onResponse(call: Call<MutableList<Animal>>, response: Response<MutableList<Animal>>) {
                 Log.d("Animal", "onResponse is ready")
-                adapter = AnimalsAdapter(requireContext(), response.body() as MutableList<Animal>)
+                adapter = AnimalsAdapter(requireContext(), response.body() as MutableList<Animal>, this@AnimalsListFragment)
                 adapter.notifyDataSetChanged()
                 view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility = View.INVISIBLE
                 view.findViewById<ImageView>(R.id.logo_in_animal_list).visibility = View.INVISIBLE

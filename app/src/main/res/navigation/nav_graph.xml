@@ -46,6 +46,9 @@
             android:name="city"
             app:argType="string"
             android:defaultValue="empty" />
+        <action
+            android:id="@+id/action_animal_choice_fragment_to_animalsCardFragment"
+            app:destination="@id/animalsCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/animalsCardFragment"
