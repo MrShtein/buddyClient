@@ -1,5 +1,10 @@
 package mr.shtein.buddyandroidclient
 
+import android.Manifest
+import android.content.Intent
+import android.content.Intent.*
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +20,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
@@ -29,6 +37,13 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     lateinit var adapter: AnimalPhotoAdapter
     lateinit var animalRecyclerView: RecyclerView
     lateinit var currentView: View
+    lateinit var intentForCall: Intent
+    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +54,17 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { x ->
+                if (x) {
+                    Log.d("tup", "permission is allowed")
+                    context?.startActivity(intentForCall)
+                } else {
+                    Log.d("tup", "permission is denied")
+                }
+            }
+
         super.onViewCreated(view, savedInstanceState)
         httpClient = Common.retrofitService
         val animalId = arguments?.getLong("animalId") ?: 0
@@ -54,12 +80,9 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         val elementsCount = animalRecyclerView.adapter?.itemCount
         val counter = currentView.findViewById<TextView>(R.id.big_animal_image_count)
 
-        counter.text = getString(R.string.big_card_animal_photo_counter, position + 1, elementsCount)
-        Log.v("image", "123" + counter.text.toString() )
+        counter.text =
+            getString(R.string.big_card_animal_photo_counter, position + 1, elementsCount)
     }
-
-
-
 
 
     private fun getAnimalDetails(httpClient: RetrofitServices, view: View, animalId: Long) {
@@ -74,26 +97,49 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                     val animalDetails: AnimalDetails = response.body()!!
 
                     animalRecyclerView.setHasFixedSize(true)
-                    animalRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    animalRecyclerView.layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     val snapHelper = PagerSnapHelper()
-                    val snapOnScrollListener = SnapOnScrollListener(snapHelper, this@AnimalsCardFragment)
+                    val snapOnScrollListener =
+                        SnapOnScrollListener(snapHelper, this@AnimalsCardFragment)
                     animalRecyclerView.addOnScrollListener(snapOnScrollListener)
                     snapHelper.attachToRecyclerView(animalRecyclerView)
                     adapter = AnimalPhotoAdapter(view.context, animalDetails.imgUrl)
                     adapter.notifyDataSetChanged()
                     animalRecyclerView.adapter = adapter
 
+
+                    view.findViewById<ImageButton>(R.id.phone_icon).apply {
+                        this.setOnClickListener {
+                            intentForCall = Intent(Intent.ACTION_CALL)
+                            intentForCall.data = Uri.parse("tel:${animalDetails.kennelPhoneNumber}")
+
+                            if (ContextCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.CALL_PHONE
+                                ) == PackageManager.PERMISSION_GRANTED
+                            ) {
+                                context.startActivity(intentForCall)
+                            } else {
+                                requestPermissionLauncher.launch("android.permission.CALL_PHONE")
+                                Log.d("tup", "dialog was open")
+                            }
+
+                        }
+                    }
+
+
                     view
                         .findViewById<TextView>(R.id.big_animal_image_count)
-                        .text = getString(R.string.big_card_animal_photo_counter, 1, adapter.itemCount)
-                    Log.v("image", view.findViewById<TextView>(R.id.big_animal_image_count).text.toString())
+                        .text =
+                        getString(R.string.big_card_animal_photo_counter, 1, adapter.itemCount)
 
                     view
                         .findViewById<TextView>(R.id.big_card_kennel_name)
                         .text = getString(R.string.kennel_name, animalDetails.kennelName)
                     view
                         .findViewById<TextView>(R.id.big_card_animal_name)
-                        .text =  animalDetails.name
+                        .text = animalDetails.name
                     view
                         .findViewById<TextView>(R.id.big_card_animal_gender)
                         .text = getString(R.string.animal_gender, animalDetails.gender)
@@ -105,20 +151,28 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                         .text = getString(R.string.animal_breed, animalDetails.breed)
                     view
                         .findViewById<TextView>(R.id.big_card_animal_color)
-                        .text = getString(R.string.animal_color, animalDetails.characteristics["color"])
+                        .text =
+                        getString(R.string.animal_color, animalDetails.characteristics["color"])
                     view
                         .findViewById<TextView>(R.id.big_card_animal_fur_length)
-                        .text = getString(R.string.animal_fur_length, animalDetails.characteristics["fur_length"])
+                        .text = getString(
+                        R.string.animal_fur_length,
+                        animalDetails.characteristics["fur_length"]
+                    )
                     view
                         .findViewById<TextView>(R.id.big_card_animal_description)
-                        .text  = animalDetails.description
-                    view
-                        .findViewById<ImageButton>(R.id.phone_icon)
-                        .contentDescription = getString(R.string.button_for_call, animalDetails.kennelPhoneNumber)
-                    view
-                        .findViewById<ImageButton>(R.id.email_icon)
-                        .contentDescription = getString(R.string.button_for_email, animalDetails.kennelEmail)
+                        .text = animalDetails.description
 
+                    with(view) {
+                        val emailButton = findViewById<ImageButton>(R.id.email_icon)
+                        emailButton.setOnClickListener {
+                            val emailIntent = Intent(ACTION_SENDTO).apply {
+                                data = Uri.parse("mailto:")
+                                putExtra(EXTRA_EMAIL, arrayOf(animalDetails.kennelEmail))
+                            }
+                            startActivity(emailIntent)
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<AnimalDetails>, t: Throwable) {
