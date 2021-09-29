@@ -1,10 +1,8 @@
 package mr.shtein.buddyandroidclient
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -23,6 +21,9 @@ import retrofit2.Response
 import android.util.TypedValue
 
 import android.content.res.Resources
+import android.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 
@@ -38,6 +39,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        changeStatusBar(requireActivity(), R.color.white)
         return inflater.inflate(R.layout.animals_list_fragment, container, false)
     }
 
@@ -49,6 +51,18 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         animalRecyclerView.setHasFixedSize(true);
         animalRecyclerView.layoutManager = LinearLayoutManager(context)
         getAllAnimalsList(view)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        changeStatusBar(requireActivity(), R.color.end_of_main_gradient)
+    }
+
+    private fun changeStatusBar(activity: Activity, color: Int) {
+        activity.window.statusBarColor = requireContext().getColor(color)
+        val windowInsetController: WindowInsetsControllerCompat? = ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+        val changeTo = windowInsetController?.isAppearanceLightStatusBars
+        windowInsetController?.isAppearanceLightStatusBars = !changeTo!!
     }
 
     private fun getAnimalTypesAndDoChips(view: View) {
