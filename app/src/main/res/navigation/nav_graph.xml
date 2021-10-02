@@ -60,7 +60,7 @@
         android:label="AnimalsCardFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="mr.shtein.buddyandroidclient.profileFragment"
+        android:name="mr.shtein.buddyandroidclient.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

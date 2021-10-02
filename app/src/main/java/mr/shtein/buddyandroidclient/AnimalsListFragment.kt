@@ -53,11 +53,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val navController = findNavController()
-//        return item.onNavDestinationSelected(navController)
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mService = Common.retrofitService
