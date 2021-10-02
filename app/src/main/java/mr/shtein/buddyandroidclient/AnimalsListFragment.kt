@@ -25,6 +25,9 @@ import android.view.*
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 
 
@@ -39,9 +42,21 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        changeStatusBar(requireActivity(), R.color.white)
-        return inflater.inflate(R.layout.animals_list_fragment, container, false)
+        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
+        val navController = findNavController()
+        val bottomBar = view.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+        bottomBar.setOnItemSelectedListener {
+            navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
+            return@setOnItemSelectedListener true
+        }
+        return view
+
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val navController = findNavController()
+//        return item.onNavDestinationSelected(navController)
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,8 +68,13 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         getAllAnimalsList(view)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStart() {
+        super.onStart()
+        changeStatusBar(requireActivity(), R.color.white)
+    }
+
+    override fun onStop() {
+        super.onStop()
         changeStatusBar(requireActivity(), R.color.end_of_main_gradient)
     }
 
