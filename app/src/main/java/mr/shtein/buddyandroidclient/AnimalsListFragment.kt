@@ -53,8 +53,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         getAllAnimalsList(view)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         changeStatusBar(requireActivity(), R.color.end_of_main_gradient)
     }
 
