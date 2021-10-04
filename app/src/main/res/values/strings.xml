@@ -28,5 +28,8 @@
     <string name="big_card_animal_photo_counter">%1$d/%2$d</string>
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
+    <string name="enter">ВХОД</string>
+    <string name="e_mail">e-mail:</string>
+    <string name="password">password:</string>
 
 </resources>
