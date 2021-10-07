@@ -6,7 +6,7 @@
     <string name="my_button">MyButton</string>
     <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ BUDDY!</string>
     <string name="city_choice_text">ПРОСТО\n ВЫБЕРИ <b>СВОЙ</b>\n <b>ГОРОД</b> И МЫ\n НАЙДЕМ <b>ТЕБЕ</b>\n <b>ПИТОМЦА</b></string>
-    <string name="next">next</string>
+    <string name="next">ДАЛЕЕ</string>
     <string name="button_description">It\'s a button man</string>
     <string name="city_text">Город:</string>
     <string name="cat_photo_description">It\'s a photo of nice cat</string>
@@ -31,5 +31,20 @@
     <string name="enter">ВХОД</string>
     <string name="e_mail">e-mail:</string>
     <string name="password">password:</string>
+    <string name="registration">РЕГИСТРАЦИЯ</string>
+    <string name="registration_kennel_name">Название приюта:</string>
+    <string name="registration_main_text">РЕГИСТРАЦИЯ</string>
+    <string name="registration_kennel_name_text">Название приюта:</string>
+    <string name="registration_address_text">Адрес:</string>
+    <string name="phone_number_text">Контактный телефон:</string>
+    <string name="kennel_name_hint">Папа Кот</string>
+    <string name="city_name_hint">Город</string>
+    <string name="street_name_hint">Улица</string>
+    <string name="house_number_hint">Дом</string>
+    <string name="phone_number_hint">+7-928-128-28-28</string>
+    <string name="repeat_password">repeat password:</string>
+    <string name="avatar">Avatar</string>
+    <string name="name_surname_text">Ф.И.О.</string>
+    <string name="kennel_identify_num">ИНН предприятия:</string>
 
 </resources>
