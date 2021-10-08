@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 
 class RegistrationSecretDataInfoFragment : Fragment() {
+
+    private val regInfoModel: RegistrationInfoModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

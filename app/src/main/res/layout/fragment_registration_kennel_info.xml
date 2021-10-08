@@ -88,7 +88,7 @@
         android:hint="@string/city_name_hint"/>
 
     <EditText
-        android:id="@+id/registration_street_name"
+        android:id="@+id/registration_street_name_input"
         android:layout_width="0dp"
         android:layout_height="45dp"
         app:layout_constraintWidth_percent="0.55"
@@ -101,7 +101,7 @@
         android:paddingEnd="10dp"/>
 
     <EditText
-        android:id="@+id/registration_house_name"
+        android:id="@+id/registration_house_number_input"
         android:layout_width="0dp"
         android:layout_height="45dp"
         app:layout_constraintWidth_percent="0.2"
@@ -120,7 +120,7 @@
         android:text="@string/phone_number_text"
         android:textSize="16sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/registration_house_name"
+        app:layout_constraintTop_toBottomOf="@id/registration_house_number_input"
         app:layout_constraintStart_toStartOf="@id/registration_address_text"
         android:layout_marginTop="20dp"/>
 
