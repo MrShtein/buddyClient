@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/registration_start_constraint_line"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/registration_end_constraint_line"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9"/>
+
+    <TextView
+        android:id="@+id/registration_main_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration_main_text"
+        android:textSize="36sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:theme="@style/MyLayout"
+        android:id="@+id/kennel_name_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/registration_main_text"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        android:layout_marginTop="20dp"
+
+        android:hint="@string/kennel_name_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/kennel_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:theme="@style/MyLayout"
+        android:id="@+id/registration_email_input_container"
+        android:layout_width="0dp"
+        android:enabled="true"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/kennel_name_input_container"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        android:layout_marginTop="20dp"
+        android:hint="@string/e_mail"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:theme="@style/MyLayout"
+        android:id="@+id/registration_password_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/registration_email_input_container"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        android:layout_marginTop="20dp"
+        app:endIconMode="password_toggle"
+        android:hint="@string/password"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:theme="@style/MyLayout"
+        android:id="@+id/registration_repeat_password_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        app:layout_constraintTop_toBottomOf="@id/registration_password_input_container"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        android:layout_marginTop="20dp"
+        android:hint="@string/repeat_password"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_repeat_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/registration_kennel_name_fragment_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        app:layout_constraintVertical_bias="0.1"
+        android:backgroundTint="#FFC700"
+        app:layout_constraintTop_toBottomOf="@id/registration_repeat_password_input_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

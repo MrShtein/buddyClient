@@ -7,6 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="input_unfocused">#8CFFFFFF</color>
+    <color name="input_unfocused_underline_and_hint">#808080</color>
+    <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="end_of_main_gradient">#17C7FF</color>
     <color name="start_of_main_gradient">#8AF8FF</color>
     <color name="transparent">#00FFFFFF</color>

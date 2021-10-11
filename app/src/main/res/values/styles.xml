@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyLayout" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
+        <item name="backgroundTint">@color/input_background</item>
+        <item name="colorPrimary">@color/input_focused_underline_and_hint</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+</resources>

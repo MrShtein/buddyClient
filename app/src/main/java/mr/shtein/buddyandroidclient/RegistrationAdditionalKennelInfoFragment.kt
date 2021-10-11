@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 
-class RegistrationSecretDataInfoFragment : Fragment() {
+class RegistrationAdditionalKennelInfoFragment : Fragment() {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
 
@@ -23,7 +22,7 @@ class RegistrationSecretDataInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_registration_secret_data_info, container, false)
+        return inflater.inflate(R.layout.registration_additional_kennel_info_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

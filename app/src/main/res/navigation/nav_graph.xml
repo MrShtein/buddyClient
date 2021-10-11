@@ -76,7 +76,7 @@
         android:label="LoginFragment" />
     <fragment
         android:id="@+id/registrationKennelInfoFragment"
-        android:name="mr.shtein.buddyandroidclient.RegistrationKennelInfoFragment"
+        android:name="mr.shtein.buddyandroidclient.RegistrationMainInfoFragment"
         android:label="RegistrationKennelInfoFragment" >
         <action
             android:id="@+id/action_registrationKennelInfoFragment_to_registrationSecretDataInfoFragment"
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationSecretDataInfoFragment"
-        android:name="mr.shtein.buddyandroidclient.RegistrationSecretDataInfoFragment"
+        android:name="mr.shtein.buddyandroidclient.RegistrationAdditionalKennelInfoFragment"
         android:label="RegistrationSecretDataInfoFragment" >
         <action
             android:id="@+id/action_registrationSecretDataInfoFragment_to_registrationAdditionalInfoFragment2"
