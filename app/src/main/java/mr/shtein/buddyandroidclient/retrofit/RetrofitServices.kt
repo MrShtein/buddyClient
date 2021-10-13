@@ -16,5 +16,9 @@ interface RetrofitServices {
     fun getAnimalTypes(): Call<MutableList<AnimalType>>
 
     @GET("api/v1/animal/{id}")
-    fun getAnimalById(@Path("id") id: Long ) : Call<AnimalDetails>
+    fun getAnimalById(@Path("id") id: Long): Call<AnimalDetails>
+
+    @GET("/api/v1/email/exists/{email}")
+    fun isEmailExists(@Path("email") email: String): Call<Boolean>
+
 }

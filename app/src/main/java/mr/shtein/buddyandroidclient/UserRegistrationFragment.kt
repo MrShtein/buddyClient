@@ -11,11 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.IllegalEmailException
-import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
-import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
+import mr.shtein.buddyandroidclient.exceptions.validate.*
+import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserRegistrationFragment : Fragment() {
 
@@ -32,6 +33,12 @@ class UserRegistrationFragment : Fragment() {
         return inflater.inflate(R.layout.user_registration_layout, container, false)
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        val emailInput: TextInputEditText = this.findViewById(R.id.registration_email_input)
+//        emailInput.requestFocus()
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,17 +48,21 @@ class UserRegistrationFragment : Fragment() {
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
-        emailInput.requestFocus()
 
         emailInput.setOnFocusChangeListener { input, hasFocus ->
             val value: TextInputEditText = input as TextInputEditText
             val inputContainer: TextInputLayout = value.parent.parent as TextInputLayout
             if (!hasFocus) {
                 try {
-                    assertIsValidKennelName(value.text.toString())
+                    val value = value.text.toString()
+                    assertIsNotEmptyField(value)
+                    assertIsValidEmail(value)
+                    isEmailExists(value, emailInput)
                 } catch (error: EmptyFieldException) {
                     inputContainer.error = error.message
-                } catch (error: TooShortLengthException) {
+                } catch (error: IllegalEmailException) {
+                    inputContainer.error = error.message
+                } catch (error: ExistedEmailException) {
                     inputContainer.error = error.message
                 }
             } else if (hasFocus && inputContainer.isErrorEnabled) {
@@ -82,12 +93,35 @@ class UserRegistrationFragment : Fragment() {
 
     }
 
+    private fun isEmailExists(email: String, emailInput: TextInputEditText) {
+        val emailService = Common.retrofitService
+        emailService.isEmailExists(email)
+            .enqueue(object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                    val value: Boolean? = response.body()
+                    try {
+                        assertIsEmailAlreadyExists(value ?: false)
+                        regInfoModel.email = email
+                    } catch (error: ExistedEmailException) {
+                        val containerLayout = emailInput.parent.parent as TextInputLayout
+                        containerLayout.error = error.message
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                    Toast.makeText(emailInput.context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
+                }
+
+            })
+    }
+
     companion object RegistrationFormValidator {
 
         private const val EMPTY_FIELD_MSG: String = "Необходимо заполнить поле"
         private const val TOO_SHORT_LENGTH_MSG: String = "Название слишком короткое"
-        private const val INVALID_EMAIL_MSG: String = "Вы ввели несуществующий email"
+        private const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
         private const val PASSWORD_IS_DIFFERENT_MSG: String = "Пароли не совпадают"
+        private const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
 
 //        fun validate(inputText: TextInputEditText) {
 //            val value = inputText.text.toString()
@@ -108,19 +142,26 @@ class UserRegistrationFragment : Fragment() {
 //            }
 //        }
 
-        private fun assertIsValidKennelName(value: String) {
+        private fun assertIsNotEmptyField(value: String): Boolean {
             if (value.isEmpty()) {
                 throw EmptyFieldException(EMPTY_FIELD_MSG)
             }
             if (value.length <= 1) {
                 throw TooShortLengthException(TOO_SHORT_LENGTH_MSG)
             }
+            return true
         }
 
-        private fun assertIsValidEmail(value: String) {
+        private fun assertIsValidEmail(value: String): Boolean {
             val regexForEmail: Regex =
                 Regex("(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
             if (!regexForEmail.matches(value)) throw IllegalEmailException(INVALID_EMAIL_MSG)
+            return true
+        }
+
+        private fun assertIsEmailAlreadyExists(value: Boolean): Boolean {
+            if (value) throw ExistedEmailException(EXISTED_EMAIL_MSG)
+            return false
         }
 
         private fun assertIsValidPassword(value: String) {
@@ -138,6 +179,10 @@ class UserRegistrationFragment : Fragment() {
 
             if (password != value) throw PasswordsIsDifferentException(PASSWORD_IS_DIFFERENT_MSG)
         }
+
+
+
+        private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
     }
 
 //    private fun setOnFocusedListenerForInputs(inputSet: Array<TextInputEditText>) {
