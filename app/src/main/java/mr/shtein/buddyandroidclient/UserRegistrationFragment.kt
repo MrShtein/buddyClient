@@ -1,6 +1,5 @@
 package mr.shtein.buddyandroidclient
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -17,9 +16,8 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IllegalEmailException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
 import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
-import java.lang.Exception
 
-class RegistrationMainInfoFragment : Fragment() {
+class UserRegistrationFragment : Fragment() {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
 
@@ -31,22 +29,21 @@ class RegistrationMainInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.registration_main_info_layout, container, false)
+        return inflater.inflate(R.layout.user_registration_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val kennelNameInput: TextInputEditText = view.findViewById(R.id.kennel_name_input)
         val emailInput: TextInputEditText = view.findViewById(R.id.registration_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.registration_password_input)
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
-        kennelNameInput.requestFocus()
+        emailInput.requestFocus()
 
-        kennelNameInput.setOnFocusChangeListener { input, hasFocus ->
+        emailInput.setOnFocusChangeListener { input, hasFocus ->
             val value: TextInputEditText = input as TextInputEditText
             val inputContainer: TextInputLayout = value.parent.parent as TextInputLayout
             if (!hasFocus) {
