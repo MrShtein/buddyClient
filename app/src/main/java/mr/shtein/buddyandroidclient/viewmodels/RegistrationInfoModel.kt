@@ -5,14 +5,7 @@ import androidx.lifecycle.ViewModel
 class RegistrationInfoModel(
     var email: String = "",
     var password: String = "",
-): ViewModel() {
-
-    fun checkKennelInfo(): Boolean {
-        if (email.isEmpty() || password.isEmpty()) return false
-        return true
-    }
-
-
-
-
-}
+    var isCheckedEmail: Boolean = false,
+    var isCheckedPassword: Boolean = false,
+    var isCheckedRepeatPassword: Boolean = false
+) : ViewModel()

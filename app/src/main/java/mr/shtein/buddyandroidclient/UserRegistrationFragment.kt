@@ -33,64 +33,144 @@ class UserRegistrationFragment : Fragment() {
         return inflater.inflate(R.layout.user_registration_layout, container, false)
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        val emailInput: TextInputEditText = this.findViewById(R.id.registration_email_input)
-//        emailInput.requestFocus()
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
+        val emailInputContainer: TextInputLayout =
+            view.findViewById(R.id.registration_email_input_container)
+        val passwordInputContainer: TextInputLayout =
+            view.findViewById(R.id.registration_password_input_container)
+        val repeatPasswordInputContainer: TextInputLayout =
+            view.findViewById(R.id.registration_repeat_password_input_container)
+        val containers: List<TextInputLayout> =
+            listOf(emailInputContainer, passwordInputContainer, repeatPasswordInputContainer)
         val emailInput: TextInputEditText = view.findViewById(R.id.registration_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.registration_password_input)
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
 
-        emailInput.setOnFocusChangeListener { input, hasFocus ->
-            val value: TextInputEditText = input as TextInputEditText
-            val inputContainer: TextInputLayout = value.parent.parent as TextInputLayout
+        emailInput.setOnFocusChangeListener { item, hasFocus ->
             if (!hasFocus) {
-                try {
-                    val value = value.text.toString()
-                    assertIsNotEmptyField(value)
-                    assertIsValidEmail(value)
-                    isEmailExists(value, emailInput)
-                } catch (error: EmptyFieldException) {
-                    inputContainer.error = error.message
-                } catch (error: IllegalEmailException) {
-                    inputContainer.error = error.message
-                } catch (error: ExistedEmailException) {
-                    inputContainer.error = error.message
-                }
-            } else if (hasFocus && inputContainer.isErrorEnabled) {
-                inputContainer.isErrorEnabled = false
+                emailChecker(emailInput, emailInputContainer)
+                regInfoModel.isCheckedEmail = true
+            } else if (hasFocus && emailInputContainer.isErrorEnabled) {
+                emailInputContainer.isErrorEnabled = false
             }
 
         }
 
+        passwordInput.setOnFocusChangeListener { item, hasFocus ->
+            if (!hasFocus) {
+                passwordChecker(passwordInput, passwordInputContainer)
+                regInfoModel.isCheckedPassword = true
+            } else if (hasFocus && passwordInputContainer.isErrorEnabled) {
+                passwordInputContainer.isErrorEnabled = false
+            }
+        }
+
+        repeatPasswordInput.setOnFocusChangeListener { item, hasFocus ->
+            if (!hasFocus) {
+                repeatPasswordChecker(repeatPasswordInput, repeatPasswordInputContainer, passwordInput)
+            } else if (hasFocus && repeatPasswordInputContainer.isErrorEnabled) {
+                repeatPasswordInputContainer.isErrorEnabled = false
+            }
+        }
 
         view.findViewById<Button>(R.id.registration_kennel_name_fragment_button)
             .setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     view.windowInsetsController?.hide(WindowInsetsCompat.Type.ime())
-
-                    if (regInfoModel.checkKennelInfo()) {
+                    val container: TextInputLayout? = finalErrorsCheck(containers, view)
+                    if (container == null) {
                         findNavController().navigate(R.id.action_registrationKennelInfoFragment_to_registrationSecretDataInfoFragment)
                     } else {
-                        Toast.makeText(
+                        val invalidFieldMsg = Toast.makeText(
                             context,
-                            "Для продолжения необходимо заполнить все поля",
+                            container.error,
                             Toast.LENGTH_LONG
                         )
-                            .show()
-                    }
+                        invalidFieldMsg.setGravity(Gravity.BOTTOM, 0, 0)
+                        invalidFieldMsg.show()
 
+                         container.clearFocus()
+                    }
                 }
             }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        regInfoModel.isCheckedEmail = false
+        regInfoModel.isCheckedPassword = false
+        regInfoModel.isCheckedRepeatPassword = false
+    }
+
+    private fun finalErrorsCheck(inputContainersList: List<TextInputLayout>, view :View): TextInputLayout? {
+
+        val emailInput = view.findViewById<TextInputEditText>(R.id.registration_email_input)
+        val emailInputContainer = view.findViewById<TextInputLayout>(R.id.registration_email_input_container)
+        val passwordInput = view.findViewById<TextInputEditText>(R.id.registration_password_input)
+        val passwordInputContainer = view.findViewById<TextInputLayout>(R.id.registration_password_input_container)
+        val repeatPasswordInput = view.findViewById<TextInputEditText>(R.id.registration_repeat_password_input)
+        val repeatPasswordContainer = view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
+
+        if (!regInfoModel.isCheckedEmail) {
+            emailChecker(emailInput, emailInputContainer)
+        }
+        if (!regInfoModel.isCheckedPassword) {
+            passwordChecker(passwordInput, passwordInputContainer)
+        }
+        if (!regInfoModel.isCheckedRepeatPassword) {
+            repeatPasswordChecker(repeatPasswordInput, repeatPasswordContainer, passwordInput)
+        }
+        for (container: TextInputLayout in inputContainersList) {
+            if (container.isErrorEnabled) return container
+        }
+        return null
+    }
+
+    private fun emailChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
+        try {
+            val value = input.text.toString()
+            assertIsNotEmptyField(value)
+            assertIsValidEmail(value)
+            isEmailExists(value, input)
+        } catch (error: EmptyFieldException) {
+            inputContainer.error = error.message
+        } catch (error: IllegalEmailException) {
+            inputContainer.error = error.message
+        } catch (error: ExistedEmailException) {
+            inputContainer.error = error.message
+        } catch (error: TooShortLengthException) {
+            inputContainer.error = error.message
+        }
+    }
+
+    private fun passwordChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
+        try {
+            val value = input.text.toString()
+            assertIsValidPassword(value)
+        } catch (error: EmptyFieldException) {
+            inputContainer.error = error.message
+        } catch (error: TooShortLengthException) {
+            inputContainer.error = error.message
+        }
+    }
+
+    private fun repeatPasswordChecker(input: TextInputEditText, inputContainer: TextInputLayout,
+    pswInput: TextInputEditText) {
+        try {
+            val value = input.text.toString()
+            assertIsValidRepeatPassword(value, pswInput)
+            regInfoModel.isCheckedRepeatPassword = true
+        } catch (error: EmptyFieldException) {
+            inputContainer.error = error.message
+        } catch (error: PasswordsIsDifferentException) {
+            inputContainer.error = error.message
+        }
     }
 
     private fun isEmailExists(email: String, emailInput: TextInputEditText) {
@@ -107,47 +187,27 @@ class UserRegistrationFragment : Fragment() {
                         containerLayout.error = error.message
                     }
                 }
-
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
                     Toast.makeText(emailInput.context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
                 }
-
             })
     }
 
     companion object RegistrationFormValidator {
 
         private const val EMPTY_FIELD_MSG: String = "Необходимо заполнить поле"
-        private const val TOO_SHORT_LENGTH_MSG: String = "Название слишком короткое"
+        private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
         private const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
         private const val PASSWORD_IS_DIFFERENT_MSG: String = "Пароли не совпадают"
         private const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
-
-//        fun validate(inputText: TextInputEditText) {
-//            val value = inputText.text.toString()
-//            when (inputText.id) {
-//
-//                R.id.kennel_name_input -> {
-//                    assertIsValidKennelName(value)
-//                }
-//                R.id.registration_email_input -> {
-//                    assertIsValidEmail(value)
-//                }
-//                R.id.registration_password_input -> {
-//                    assertIsValidPassword(value)
-//                }
-//                R.id.registration_repeat_password_input -> {
-//                    assertIsValidRepeatPassword(value, inputText)
-//                }
-//            }
-//        }
+        private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
 
         private fun assertIsNotEmptyField(value: String): Boolean {
             if (value.isEmpty()) {
                 throw EmptyFieldException(EMPTY_FIELD_MSG)
             }
             if (value.length <= 1) {
-                throw TooShortLengthException(TOO_SHORT_LENGTH_MSG)
+                throw TooShortLengthException(TOO_SHORT_PASSWORD_MSG)
             }
             return true
         }
@@ -166,40 +226,14 @@ class UserRegistrationFragment : Fragment() {
 
         private fun assertIsValidPassword(value: String) {
             if (value.isEmpty()) throw EmptyFieldException(EMPTY_FIELD_MSG)
-            if (value.length <= 5) throw TooShortLengthException(TOO_SHORT_LENGTH_MSG)
+            if (value.length <= 5) throw TooShortLengthException(TOO_SHORT_PASSWORD_MSG)
         }
 
-        private fun assertIsValidRepeatPassword(value: String, input: TextInputEditText) {
+        private fun assertIsValidRepeatPassword(value: String, passwordInput: TextInputEditText) {
             if (value.isEmpty()) throw EmptyFieldException(EMPTY_FIELD_MSG)
-
-            val inputContainer: TextInputLayout = input.parent as TextInputLayout
-            val passwordInput =
-                inputContainer.findViewById<TextInputEditText>(R.id.registration_password_input)
             val password: String = passwordInput.text.toString()
-
             if (password != value) throw PasswordsIsDifferentException(PASSWORD_IS_DIFFERENT_MSG)
         }
-
-
-
-        private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
     }
-
-//    private fun setOnFocusedListenerForInputs(inputSet: Array<TextInputEditText>) {
-//        inputSet.forEach { input ->
-//            input.setOnFocusChangeListener { v, hasFocus ->
-//                if (hasFocus) {
-//                    Log.d("COLOR", "It's focused")
-//                    v.backgroundTintList = ColorStateList(R.color.black)
-//                } else {
-//                    Log.d("COLOR", "It's not focused")
-//                    v.setBackgroundColor(v.context.getColor(R.color.black))
-//                }
-//
-//            }
-//        }
-//
-//    }
-
 }
 
