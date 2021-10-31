@@ -29,6 +29,9 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     private lateinit var list: RecyclerView
     private var lettersCount = 0
     private var isCitiesVisible = false
+    private val MAIN_CITY_NAME_PREF = "main_city"
+    private val PERSISTANT_STORAGE_NAME: String = "buddy_storage"
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -138,9 +141,11 @@ class CityChoiceFragment : Fragment(), OnCityListener {
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
         val bundle = Bundle()
-        bundle.putString("city", adapter.cityChoiceItems[position].cityName)
+        val cityName = adapter.cityChoiceItems[position].cityName
+        bundle.putString("city", cityName)
+        writeToSharedPref(PERSISTANT_STORAGE_NAME ,MAIN_CITY_NAME_PREF, cityName)
         findNavController().navigate(R.id.animal_choice_fragment, bundle)
-        Log.d(MAG, "onCityClick: ${adapter.cityChoiceItems[position].cityName}")
+
     }
 
     private fun animateCitiesAlpha(list: RecyclerView) {
@@ -149,6 +154,14 @@ class CityChoiceFragment : Fragment(), OnCityListener {
                 duration = 250
             }
             .start()
+    }
+
+    private fun writeToSharedPref(storageName: String, prefName: String, pref: String) {
+        val sharedPref = context?.getSharedPreferences(storageName, Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString(prefName, pref)
+            apply()
+        }
     }
 
 

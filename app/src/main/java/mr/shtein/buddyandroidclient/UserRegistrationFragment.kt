@@ -17,6 +17,7 @@ import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class UserRegistrationFragment : Fragment() {
 
@@ -137,7 +138,20 @@ class UserRegistrationFragment : Fragment() {
             val value = input.text.toString()
             assertIsNotEmptyField(value)
             assertIsValidEmail(value)
-            isEmailExists(value, input)
+            isEmailExists(value, object : MailCallback {
+                override fun onSuccess() {
+                    regInfoModel.email = value
+                }
+
+                override fun onFail(error: Exception) {
+                    val containerLayout = input.parent.parent as TextInputLayout
+                    containerLayout.error = error.message
+                }
+
+                override fun onFailure() {
+                    Toast.makeText(context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
+                }
+            })
         } catch (error: EmptyFieldException) {
             inputContainer.error = error.message
         } catch (error: IllegalEmailException) {
@@ -173,7 +187,15 @@ class UserRegistrationFragment : Fragment() {
         }
     }
 
-    private fun isEmailExists(email: String, emailInput: TextInputEditText) {
+    interface MailCallback {
+        fun onSuccess()
+        fun onFail(error: Exception)
+        fun onFailure()
+    }
+
+
+
+    private fun isEmailExists(email: String, callback: MailCallback) {
         val emailService = Common.retrofitService
         emailService.isEmailExists(email)
             .enqueue(object : Callback<Boolean> {
@@ -181,14 +203,13 @@ class UserRegistrationFragment : Fragment() {
                     val value: Boolean? = response.body()
                     try {
                         assertIsEmailAlreadyExists(value ?: false)
-                        regInfoModel.email = email
+                        callback.onSuccess()
                     } catch (error: ExistedEmailException) {
-                        val containerLayout = emailInput.parent.parent as TextInputLayout
-                        containerLayout.error = error.message
+                        callback.onFail(error)
                     }
                 }
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    Toast.makeText(emailInput.context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
+                    callback.onFailure()
                 }
             })
     }
@@ -203,11 +224,8 @@ class UserRegistrationFragment : Fragment() {
         private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
 
         private fun assertIsNotEmptyField(value: String): Boolean {
-            if (value.isEmpty()) {
+            if (value.isBlank()) {
                 throw EmptyFieldException(EMPTY_FIELD_MSG)
-            }
-            if (value.length <= 1) {
-                throw TooShortLengthException(TOO_SHORT_PASSWORD_MSG)
             }
             return true
         }

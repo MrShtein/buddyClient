@@ -1,6 +1,8 @@
 package mr.shtein.buddyandroidclient
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -22,6 +24,7 @@ import android.util.TypedValue
 
 import android.content.res.Resources
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
@@ -36,6 +39,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
+    private val ROLE_KEY: String = "role"
+    private val PERSISTANT_STORAGE_NAME: String = "buddy_storage"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +51,16 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         val navController = findNavController()
         val bottomBar = view.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomBar.setOnItemSelectedListener {
-            navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
+            val store: SharedPreferences? = context?.getSharedPreferences(PERSISTANT_STORAGE_NAME, Context.MODE_PRIVATE)
+            var role: String? = ""
+            if (store != null) {
+                role = store.getString(ROLE_KEY, null)
+            }
+            if (role == null) {
+                navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
+            } else {
+                Toast.makeText(context, "Store is not empty", Toast.LENGTH_LONG).show()
+            }
             return@setOnItemSelectedListener true
         }
         return view
@@ -75,7 +89,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     private fun changeStatusBar(activity: Activity, color: Int) {
         activity.window.statusBarColor = requireContext().getColor(color)
-        val windowInsetController: WindowInsetsControllerCompat? = ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+        val windowInsetController: WindowInsetsControllerCompat? =
+            ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
         val changeTo = windowInsetController?.isAppearanceLightStatusBars
         windowInsetController?.isAppearanceLightStatusBars = !changeTo!!
     }
@@ -88,7 +103,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                     call: Call<MutableList<AnimalType>>,
                     response: Response<MutableList<AnimalType>>
                 ) {
-                    val typeList: MutableList<AnimalType> = response.body() as MutableList<AnimalType>
+                    val typeList: MutableList<AnimalType> =
+                        response.body() as MutableList<AnimalType>
                     val typeChipGroup: ChipGroup = view.findViewById(R.id.animal_choice_chips)
                     for (type in typeList) {
                         val topAndDownPadding = dpToPx(16, view)
@@ -96,14 +112,20 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
                         val curChip: Chip = Chip(view.context)
                         curChip.text = type.pluralAnimalType
-                        curChip.chipBackgroundColor = context?.getColorStateList(R.color.choice_color)
-                       curChip.setPadding(startAndStopPadding, topAndDownPadding, startAndStopPadding, topAndDownPadding)
+                        curChip.chipBackgroundColor =
+                            context?.getColorStateList(R.color.choice_color)
+                        curChip.setPadding(
+                            startAndStopPadding,
+                            topAndDownPadding,
+                            startAndStopPadding,
+                            topAndDownPadding
+                        )
                         typeChipGroup.addView(curChip)
                     }
                 }
 
                 override fun onFailure(call: Call<MutableList<AnimalType>>, t: Throwable) {
-                    t.message?.let {Log.d("Animal", it)}
+                    t.message?.let { Log.d("Animal", it) }
                 }
             })
     }
@@ -129,15 +151,29 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                 t.message?.let { Log.d("Animal", it) }
             }
 
-            override fun onResponse(call: Call<MutableList<Animal>>, response: Response<MutableList<Animal>>) {
+            override fun onResponse(
+                call: Call<MutableList<Animal>>,
+                response: Response<MutableList<Animal>>
+            ) {
                 Log.d("Animal", "onResponse is ready")
-                adapter = AnimalsAdapter(requireContext(), response.body() as MutableList<Animal>, this@AnimalsListFragment)
+                adapter = AnimalsAdapter(
+                    requireContext(),
+                    response.body() as MutableList<Animal>,
+                    this@AnimalsListFragment
+                )
                 adapter.notifyDataSetChanged()
-                view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility = View.INVISIBLE
+                view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility =
+                    View.INVISIBLE
                 view.findViewById<ImageView>(R.id.logo_in_animal_list).visibility = View.INVISIBLE
                 animalRecyclerView.adapter = adapter
             }
         })
+    }
+
+    private fun checkRole(): String {
+        val preferences =
+            context?.getSharedPreferences(PERSISTANT_STORAGE_NAME, Context.MODE_PRIVATE)
+        return preferences?.getString(ROLE_KEY, "") ?: ""
     }
 
 }
