@@ -9,7 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetrofitServices {
-    @GET("/api/v1/getAnimals")
+    @GET("/api/v1/animals")
     fun getAnimals(): Call<MutableList<Animal>>
 
     @GET("/api/v1/animal/types")

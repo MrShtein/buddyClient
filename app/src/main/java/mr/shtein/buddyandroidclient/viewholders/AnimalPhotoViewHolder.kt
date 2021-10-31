@@ -16,7 +16,8 @@ class AnimalPhotoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val animalImage: ImageView = itemView.findViewById(R.id.big_animal_image)
 
     fun bind(url: String) {
-        val path: String = "http://10.0.2.2:8881/animalsPhoto/$url"
+        val host = itemView.context.resources.getString(R.string.host)
+        val path: String = "$host/animal/photo/$url"
 
         Picasso
             .get()

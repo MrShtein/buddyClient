@@ -39,7 +39,7 @@ class AnimalsAdapter(
             is AnimalsViewHolder -> {
                 val primaryUrl: List<AnimalPhoto> = getItem(position).imgUrl.filter { it.primary }
                 val url: String = primaryUrl[0].url
-                val path: String = "http://10.0.2.2:8881/animalsPhoto/$url"
+                val path: String = "http://10.0.2.2:8881/api/v1/animal/photo/$url"
                 Log.d("mag", path)
                 Picasso.get()
                     .load(path)
