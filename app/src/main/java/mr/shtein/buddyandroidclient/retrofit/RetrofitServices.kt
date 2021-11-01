@@ -1,12 +1,8 @@
 package mr.shtein.buddyandroidclient.retrofit
 
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.AnimalDetails
-import mr.shtein.buddyandroidclient.model.AnimalType
+import mr.shtein.buddyandroidclient.model.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface RetrofitServices {
     @GET("/api/v1/animals")
@@ -20,5 +16,8 @@ interface RetrofitServices {
 
     @GET("/api/v1/email/exists/{email}")
     fun isEmailExists(@Path("email") email: String): Call<Boolean>
+
+    @POST("/api/v1/auth/registration")
+    fun registerUser(@Body user: User): Call<Boolean>
 
 }

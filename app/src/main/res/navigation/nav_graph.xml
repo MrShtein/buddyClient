@@ -67,32 +67,19 @@
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_registrationKennelInfoFragment"
-            app:destination="@id/registrationKennelInfoFragment" />
+            android:id="@+id/action_profileFragment_to_userRegistrationFragment"
+            app:destination="@id/userRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="mr.shtein.buddyandroidclient.LoginFragment"
         android:label="LoginFragment" />
     <fragment
-        android:id="@+id/registrationKennelInfoFragment"
+        android:id="@+id/userRegistrationFragment"
         android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
-        android:label="RegistrationKennelInfoFragment" >
+        android:label="UserRegistrationFragment" >
         <action
-            android:id="@+id/action_registrationKennelInfoFragment_to_registrationSecretDataInfoFragment"
-            app:destination="@id/registrationSecretDataInfoFragment" />
+            android:id="@+id/action_userRegistrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/registrationSecretDataInfoFragment"
-        android:name="mr.shtein.buddyandroidclient.RegistrationAdditionalKennelInfoFragment"
-        android:label="RegistrationSecretDataInfoFragment" >
-        <action
-            android:id="@+id/action_registrationSecretDataInfoFragment_to_registrationAdditionalInfoFragment2"
-            app:destination="@id/registrationAdditionalInfoFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/registrationAdditionalInfoFragment"
-        android:name="mr.shtein.buddyandroidclient.RegistrationAdditionalInfoFragment"
-        android:label="fragment_registration_additional_info"
-        tools:layout="@layout/fragment_registration_additional_info" />
 </navigation>

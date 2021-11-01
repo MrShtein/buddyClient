@@ -52,11 +52,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         val bottomBar = view.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomBar.setOnItemSelectedListener {
             val store: SharedPreferences? = context?.getSharedPreferences(PERSISTANT_STORAGE_NAME, Context.MODE_PRIVATE)
-            var role: String? = ""
-            if (store != null) {
-                role = store.getString(ROLE_KEY, null)
-            }
-            if (role == null) {
+            val role = store?.getString(ROLE_KEY, "")
+            if (role == "") {
                 navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
             } else {
                 Toast.makeText(context, "Store is not empty", Toast.LENGTH_LONG).show()

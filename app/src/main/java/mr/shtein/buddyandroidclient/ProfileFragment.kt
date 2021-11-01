@@ -29,7 +29,7 @@ class ProfileFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.registration_fragment_start_button).setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_registrationKennelInfoFragment)
+            findNavController().navigate(R.id.action_profileFragment_to_userRegistrationFragment)
         }
     }
 }

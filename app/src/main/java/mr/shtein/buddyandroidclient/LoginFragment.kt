@@ -11,8 +11,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ToggleButton
+import com.google.android.material.snackbar.Snackbar
 
 class LoginFragment : Fragment() {
+
+    private val IS_FROM_REGISTRATION_KEY = "is_from_registration"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,14 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bundle: Bundle? = arguments
+        val isFromRegistration = bundle?.getBoolean(IS_FROM_REGISTRATION_KEY)?: false
+        if (isFromRegistration) {
+            Snackbar.make(view, R.string.snackbar_registration_text, Snackbar.LENGTH_LONG)
+                .setDuration(3000)
+                .show();
+        }
+
         val passwordVisibilityBtn = view.findViewById<ToggleButton>(R.id.password_visibility)
         val passwordField = view.findViewById<EditText>(R.id.login_password_input_id)
         passwordVisibilityBtn.setOnCheckedChangeListener { _, isChecked ->

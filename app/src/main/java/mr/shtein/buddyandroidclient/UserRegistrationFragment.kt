@@ -1,17 +1,26 @@
 package mr.shtein.buddyandroidclient
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.*
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.*
+import mr.shtein.buddyandroidclient.model.User
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
@@ -22,6 +31,7 @@ import java.lang.Exception
 class UserRegistrationFragment : Fragment() {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
+    private var isRegistered: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +83,11 @@ class UserRegistrationFragment : Fragment() {
 
         repeatPasswordInput.setOnFocusChangeListener { item, hasFocus ->
             if (!hasFocus) {
-                repeatPasswordChecker(repeatPasswordInput, repeatPasswordInputContainer, passwordInput)
+                repeatPasswordChecker(
+                    repeatPasswordInput,
+                    repeatPasswordInputContainer,
+                    passwordInput
+                )
             } else if (hasFocus && repeatPasswordInputContainer.isErrorEnabled) {
                 repeatPasswordInputContainer.isErrorEnabled = false
             }
@@ -85,7 +99,64 @@ class UserRegistrationFragment : Fragment() {
                     view.windowInsetsController?.hide(WindowInsetsCompat.Type.ime())
                     val container: TextInputLayout? = finalErrorsCheck(containers, view)
                     if (container == null) {
-                        findNavController().navigate(R.id.action_registrationKennelInfoFragment_to_registrationSecretDataInfoFragment)
+                        val frame: FrameLayout = view.findViewById(R.id.registration_frame)
+                        val startAnimValue: Int =
+                            activity?.getColor(R.color.black_with_transparency_0) ?: 0
+                        val endAnimValue: Int =
+                            activity?.getColor(R.color.black_with_transparency_50) ?: 0
+                        animateFrame(startAnimValue, endAnimValue, frame)
+                        val newUser =
+                            User(emailInput.text.toString(), passwordInput.text.toString())
+                        val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
+                        progressBar.visibility = View.VISIBLE
+                        object : CountDownTimer(10000, 1000) {
+                            val startAnimReverseValue =
+                                activity?.getColor(R.color.black_with_transparency_50) ?: 0
+                            val endAnimReverseValue =
+                                activity?.getColor(R.color.black_with_transparency_0) ?: 0
+
+                            override fun onTick(millisUntilFinished: Long) {
+
+                                if (isRegistered) {
+                                    val bundle: Bundle = Bundle()
+                                    bundle.putBoolean("is_from_registration", true)
+                                    findNavController().navigate(R.id.action_userRegistrationFragment_to_loginFragment, bundle)
+                                    cancel()
+                                }
+                            }
+
+                            override fun onFinish() {
+                                progressBar.visibility = View.INVISIBLE
+                                animateFrame(startAnimReverseValue, endAnimReverseValue, frame)
+                                MaterialAlertDialogBuilder(requireContext())
+                                    .setMessage("Что-то пошло не так, попробуйте позже")
+                                    .setPositiveButton("Ok") {
+                                            dialog, _ -> dialog?.cancel()
+                                    }
+                                    .show()
+                            }
+                        }.start()
+
+                        val retrofitService = Common.retrofitService
+                        retrofitService.registerUser(newUser)
+                            .enqueue(object : Callback<Boolean> {
+                                override fun onResponse(
+                                    call: Call<Boolean>,
+                                    response: Response<Boolean>
+                                ) {
+                                    if (response.body() == true) {
+                                        isRegistered = true
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<Boolean>,
+                                    t: Throwable
+                                ) {
+                                }
+                            })
+
+
                     } else {
                         val invalidFieldMsg = Toast.makeText(
                             context,
@@ -95,7 +166,7 @@ class UserRegistrationFragment : Fragment() {
                         invalidFieldMsg.setGravity(Gravity.BOTTOM, 0, 0)
                         invalidFieldMsg.show()
 
-                         container.clearFocus()
+                        container.clearFocus()
                     }
                 }
             }
@@ -109,14 +180,30 @@ class UserRegistrationFragment : Fragment() {
         regInfoModel.isCheckedRepeatPassword = false
     }
 
-    private fun finalErrorsCheck(inputContainersList: List<TextInputLayout>, view :View): TextInputLayout? {
+    private fun animateFrame(startValue: Int, endValue: Int, animatedElement: View) {
+        val animator: ValueAnimator = ObjectAnimator.ofObject(ArgbEvaluator(), startValue, endValue)
+        animator.duration = 250
+        animator.addUpdateListener {
+            animatedElement.setBackgroundColor(animator.animatedValue as Int)
+        }
+        animator.start()
+    }
+
+    private fun finalErrorsCheck(
+        inputContainersList: List<TextInputLayout>,
+        view: View
+    ): TextInputLayout? {
 
         val emailInput = view.findViewById<TextInputEditText>(R.id.registration_email_input)
-        val emailInputContainer = view.findViewById<TextInputLayout>(R.id.registration_email_input_container)
+        val emailInputContainer =
+            view.findViewById<TextInputLayout>(R.id.registration_email_input_container)
         val passwordInput = view.findViewById<TextInputEditText>(R.id.registration_password_input)
-        val passwordInputContainer = view.findViewById<TextInputLayout>(R.id.registration_password_input_container)
-        val repeatPasswordInput = view.findViewById<TextInputEditText>(R.id.registration_repeat_password_input)
-        val repeatPasswordContainer = view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
+        val passwordInputContainer =
+            view.findViewById<TextInputLayout>(R.id.registration_password_input_container)
+        val repeatPasswordInput =
+            view.findViewById<TextInputEditText>(R.id.registration_repeat_password_input)
+        val repeatPasswordContainer =
+            view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
 
         if (!regInfoModel.isCheckedEmail) {
             emailChecker(emailInput, emailInputContainer)
@@ -174,8 +261,10 @@ class UserRegistrationFragment : Fragment() {
         }
     }
 
-    private fun repeatPasswordChecker(input: TextInputEditText, inputContainer: TextInputLayout,
-    pswInput: TextInputEditText) {
+    private fun repeatPasswordChecker(
+        input: TextInputEditText, inputContainer: TextInputLayout,
+        pswInput: TextInputEditText
+    ) {
         try {
             val value = input.text.toString()
             assertIsValidRepeatPassword(value, pswInput)
@@ -194,7 +283,6 @@ class UserRegistrationFragment : Fragment() {
     }
 
 
-
     private fun isEmailExists(email: String, callback: MailCallback) {
         val emailService = Common.retrofitService
         emailService.isEmailExists(email)
@@ -208,6 +296,7 @@ class UserRegistrationFragment : Fragment() {
                         callback.onFail(error)
                     }
                 }
+
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
                     callback.onFailure()
                 }

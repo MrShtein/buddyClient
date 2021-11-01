@@ -47,5 +47,6 @@
     <string name="name_surname_text">Ф.И.О.</string>
     <string name="kennel_identify_num">ИНН предприятия:</string>
     <string name="host">http://10.0.2.2:8881/api/v1</string>
+    <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
 
 </resources>
