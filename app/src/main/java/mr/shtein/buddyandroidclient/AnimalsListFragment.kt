@@ -1,8 +1,6 @@
 package mr.shtein.buddyandroidclient
 
 import android.app.Activity
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -28,19 +26,19 @@ import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
+import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
+private const val ROLE_KEY: String = "user_role"
+private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
-    private val ROLE_KEY: String = "role"
-    private val PERSISTANT_STORAGE_NAME: String = "buddy_storage"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +49,14 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         val navController = findNavController()
         val bottomBar = view.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomBar.setOnItemSelectedListener {
-            val store: SharedPreferences? = context?.getSharedPreferences(PERSISTANT_STORAGE_NAME, Context.MODE_PRIVATE)
-            val role = store?.getString(ROLE_KEY, "")
-            if (role == "") {
-                navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
+            val store = SharedPreferencesIO(requireContext(),
+                PERSISTENT_STORAGE_NAME
+            )
+            val role: String = store.readString(ROLE_KEY, "")
+            if (role == "ROLE_USER") {
+                navController.navigate(R.id.action_animal_choice_fragment_to_userProfileFragment)
             } else {
-                Toast.makeText(context, "Store is not empty", Toast.LENGTH_LONG).show()
+                navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
             }
             return@setOnItemSelectedListener true
         }
@@ -166,11 +166,4 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
             }
         })
     }
-
-    private fun checkRole(): String {
-        val preferences =
-            context?.getSharedPreferences(PERSISTANT_STORAGE_NAME, Context.MODE_PRIVATE)
-        return preferences?.getString(ROLE_KEY, "") ?: ""
-    }
-
 }

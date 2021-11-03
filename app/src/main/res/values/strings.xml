@@ -28,12 +28,11 @@
     <string name="big_card_animal_photo_counter">%1$d/%2$d</string>
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
-    <string name="enter">ВХОД</string>
+    <string name="login_main_text">Вход</string>
     <string name="e_mail">E-mail</string>
     <string name="password">Придумайте пароль:</string>
-    <string name="registration">Регистрация</string>
     <string name="registration_kennel_name">Название приюта:</string>
-    <string name="registration_main_text">РЕГИСТРАЦИЯ</string>
+    <string name="registration_main_text">Регистрация</string>
     <string name="registration_kennel_name_text">Название приюта:</string>
     <string name="registration_address_text">Адрес:</string>
     <string name="phone_number_text">Контактный телефон:</string>

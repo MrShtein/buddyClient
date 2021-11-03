@@ -19,9 +19,11 @@ import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.model.CityChoiceItem
 import mr.shtein.buddyandroidclient.utils.CityCallback
-import mr.shtein.buddyandroidclient.utils.SharedPropertyWriter
+import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
-const val MAG = "City"
+private const val MAG = "City"
+private const val MAIN_CITY_NAME_PREF = "main_city"
+private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
 
 class CityChoiceFragment : Fragment(), OnCityListener {
 
@@ -30,8 +32,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     private lateinit var list: RecyclerView
     private var lettersCount = 0
     private var isCitiesVisible = false
-    private val MAIN_CITY_NAME_PREF = "main_city"
-    private val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
+
 
 
     override fun onDestroy() {
@@ -141,11 +142,11 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     }
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
-        val sharedPropertyWriter = SharedPropertyWriter()
+        val sharedPropertyWriter = SharedPreferencesIO(requireContext(), PERSISTENT_STORAGE_NAME)
         val bundle = Bundle()
         val cityName = adapter.cityChoiceItems[position].cityName
         bundle.putString("city", cityName)
-        sharedPropertyWriter.write(PERSISTENT_STORAGE_NAME ,MAIN_CITY_NAME_PREF, cityName, requireContext())
+        sharedPropertyWriter.writeString(MAIN_CITY_NAME_PREF, cityName)
         findNavController().navigate(R.id.animal_choice_fragment, bundle)
 
     }

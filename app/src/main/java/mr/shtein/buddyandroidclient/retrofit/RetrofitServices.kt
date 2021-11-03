@@ -20,4 +20,7 @@ interface RetrofitServices {
     @POST("/api/v1/auth/registration")
     fun registerUser(@Body user: User): Call<Boolean>
 
+    @POST("/api/v1/auth/login")
+    fun loginUser(@Body user: User): Call<LoginResponse>
+
 }

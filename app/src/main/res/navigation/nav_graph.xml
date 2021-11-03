@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_animal_choice_fragment_to_profileFragment2"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_animal_choice_fragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/animalsCardFragment"
@@ -73,7 +76,11 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="mr.shtein.buddyandroidclient.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_animal_choice_fragment"
+            app:destination="@id/animal_choice_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"
         android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
@@ -81,5 +88,10 @@
         <action
             android:id="@+id/action_userRegistrationFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="mr.shtein.buddyandroidclient.UserProfileFragment"
+        android:label="UserProfileFragment">
     </fragment>
 </navigation>

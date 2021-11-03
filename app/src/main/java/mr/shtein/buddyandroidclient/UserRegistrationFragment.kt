@@ -3,7 +3,6 @@ package mr.shtein.buddyandroidclient
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -22,6 +21,8 @@ import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.User
 import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.utils.EmailValidator
+import mr.shtein.buddyandroidclient.utils.PasswordValidator
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +42,7 @@ class UserRegistrationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.user_registration_layout, container, false)
+        return inflater.inflate(R.layout.user_registration_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,10 +62,13 @@ class UserRegistrationFragment : Fragment() {
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
+        val emailValidator = EmailValidator(requireContext(), regInfoModel)
+        val passwordValidator = PasswordValidator()
 
-        emailInput.setOnFocusChangeListener { item, hasFocus ->
+
+        emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                emailChecker(emailInput, emailInputContainer)
+                emailValidator.emailChecker(emailInput, emailInputContainer)
                 regInfoModel.isCheckedEmail = true
             } else if (hasFocus && emailInputContainer.isErrorEnabled) {
                 emailInputContainer.isErrorEnabled = false
@@ -72,9 +76,9 @@ class UserRegistrationFragment : Fragment() {
 
         }
 
-        passwordInput.setOnFocusChangeListener { item, hasFocus ->
+        passwordInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                passwordChecker(passwordInput, passwordInputContainer)
+                passwordChecker(passwordInput, passwordInputContainer, passwordValidator)
                 regInfoModel.isCheckedPassword = true
             } else if (hasFocus && passwordInputContainer.isErrorEnabled) {
                 passwordInputContainer.isErrorEnabled = false
@@ -86,7 +90,9 @@ class UserRegistrationFragment : Fragment() {
                 repeatPasswordChecker(
                     repeatPasswordInput,
                     repeatPasswordInputContainer,
-                    passwordInput
+                    passwordInput,
+                    passwordValidator,
+                    regInfoModel
                 )
             } else if (hasFocus && repeatPasswordInputContainer.isErrorEnabled) {
                 repeatPasswordInputContainer.isErrorEnabled = false
@@ -97,7 +103,8 @@ class UserRegistrationFragment : Fragment() {
             .setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     view.windowInsetsController?.hide(WindowInsetsCompat.Type.ime())
-                    val container: TextInputLayout? = finalErrorsCheck(containers, view)
+                    val container: TextInputLayout? =
+                        finalErrorsCheck(containers, view, emailValidator, passwordValidator)
                     if (container == null) {
                         val frame: FrameLayout = view.findViewById(R.id.registration_frame)
                         val startAnimValue: Int =
@@ -120,7 +127,10 @@ class UserRegistrationFragment : Fragment() {
                                 if (isRegistered) {
                                     val bundle: Bundle = Bundle()
                                     bundle.putBoolean("is_from_registration", true)
-                                    findNavController().navigate(R.id.action_userRegistrationFragment_to_loginFragment, bundle)
+                                    findNavController().navigate(
+                                        R.id.action_userRegistrationFragment_to_loginFragment,
+                                        bundle
+                                    )
                                     cancel()
                                 }
                             }
@@ -130,8 +140,8 @@ class UserRegistrationFragment : Fragment() {
                                 animateFrame(startAnimReverseValue, endAnimReverseValue, frame)
                                 MaterialAlertDialogBuilder(requireContext())
                                     .setMessage("Что-то пошло не так, попробуйте позже")
-                                    .setPositiveButton("Ok") {
-                                            dialog, _ -> dialog?.cancel()
+                                    .setPositiveButton("Ok") { dialog, _ ->
+                                        dialog?.cancel()
                                     }
                                     .show()
                             }
@@ -153,6 +163,7 @@ class UserRegistrationFragment : Fragment() {
                                     call: Call<Boolean>,
                                     t: Throwable
                                 ) {
+                                    println()
                                 }
                             })
 
@@ -191,7 +202,9 @@ class UserRegistrationFragment : Fragment() {
 
     private fun finalErrorsCheck(
         inputContainersList: List<TextInputLayout>,
-        view: View
+        view: View,
+        emailValidator: EmailValidator,
+        passwordValidator: PasswordValidator
     ): TextInputLayout? {
 
         val emailInput = view.findViewById<TextInputEditText>(R.id.registration_email_input)
@@ -206,13 +219,14 @@ class UserRegistrationFragment : Fragment() {
             view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
 
         if (!regInfoModel.isCheckedEmail) {
-            emailChecker(emailInput, emailInputContainer)
+            emailValidator.emailChecker(emailInput, emailInputContainer)
         }
         if (!regInfoModel.isCheckedPassword) {
-            passwordChecker(passwordInput, passwordInputContainer)
+            passwordChecker(passwordInput, passwordInputContainer, passwordValidator)
         }
         if (!regInfoModel.isCheckedRepeatPassword) {
-            repeatPasswordChecker(repeatPasswordInput, repeatPasswordContainer, passwordInput)
+            repeatPasswordChecker(repeatPasswordInput, repeatPasswordContainer,
+                passwordInput, passwordValidator, regInfoModel)
         }
         for (container: TextInputLayout in inputContainersList) {
             if (container.isErrorEnabled) return container
@@ -220,127 +234,46 @@ class UserRegistrationFragment : Fragment() {
         return null
     }
 
-    private fun emailChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
-        try {
-            val value = input.text.toString()
-            assertIsNotEmptyField(value)
-            assertIsValidEmail(value)
-            isEmailExists(value, object : MailCallback {
-                override fun onSuccess() {
-                    regInfoModel.email = value
-                }
 
-                override fun onFail(error: Exception) {
-                    val containerLayout = input.parent.parent as TextInputLayout
-                    containerLayout.error = error.message
-                }
+}
 
-                override fun onFailure() {
-                    Toast.makeText(context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
-                }
-            })
-        } catch (error: EmptyFieldException) {
-            inputContainer.error = error.message
-        } catch (error: IllegalEmailException) {
-            inputContainer.error = error.message
-        } catch (error: ExistedEmailException) {
-            inputContainer.error = error.message
-        } catch (error: TooShortLengthException) {
-            inputContainer.error = error.message
-        }
-    }
-
-    private fun passwordChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
-        try {
-            val value = input.text.toString()
-            assertIsValidPassword(value)
-        } catch (error: EmptyFieldException) {
-            inputContainer.error = error.message
-        } catch (error: TooShortLengthException) {
-            inputContainer.error = error.message
-        }
-    }
-
-    private fun repeatPasswordChecker(
-        input: TextInputEditText, inputContainer: TextInputLayout,
-        pswInput: TextInputEditText
-    ) {
-        try {
-            val value = input.text.toString()
-            assertIsValidRepeatPassword(value, pswInput)
-            regInfoModel.isCheckedRepeatPassword = true
-        } catch (error: EmptyFieldException) {
-            inputContainer.error = error.message
-        } catch (error: PasswordsIsDifferentException) {
-            inputContainer.error = error.message
-        }
-    }
-
-    interface MailCallback {
-        fun onSuccess()
-        fun onFail(error: Exception)
-        fun onFailure()
-    }
-
-
-    private fun isEmailExists(email: String, callback: MailCallback) {
-        val emailService = Common.retrofitService
-        emailService.isEmailExists(email)
-            .enqueue(object : Callback<Boolean> {
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                    val value: Boolean? = response.body()
-                    try {
-                        assertIsEmailAlreadyExists(value ?: false)
-                        callback.onSuccess()
-                    } catch (error: ExistedEmailException) {
-                        callback.onFail(error)
-                    }
-                }
-
-                override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    callback.onFailure()
-                }
-            })
-    }
-
-    companion object RegistrationFormValidator {
-
-        private const val EMPTY_FIELD_MSG: String = "Необходимо заполнить поле"
-        private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
-        private const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
-        private const val PASSWORD_IS_DIFFERENT_MSG: String = "Пароли не совпадают"
-        private const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
-        private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
-
-        private fun assertIsNotEmptyField(value: String): Boolean {
-            if (value.isBlank()) {
-                throw EmptyFieldException(EMPTY_FIELD_MSG)
-            }
-            return true
-        }
-
-        private fun assertIsValidEmail(value: String): Boolean {
-            val regexForEmail: Regex =
-                Regex("(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
-            if (!regexForEmail.matches(value)) throw IllegalEmailException(INVALID_EMAIL_MSG)
-            return true
-        }
-
-        private fun assertIsEmailAlreadyExists(value: Boolean): Boolean {
-            if (value) throw ExistedEmailException(EXISTED_EMAIL_MSG)
-            return false
-        }
-
-        private fun assertIsValidPassword(value: String) {
-            if (value.isEmpty()) throw EmptyFieldException(EMPTY_FIELD_MSG)
-            if (value.length <= 5) throw TooShortLengthException(TOO_SHORT_PASSWORD_MSG)
-        }
-
-        private fun assertIsValidRepeatPassword(value: String, passwordInput: TextInputEditText) {
-            if (value.isEmpty()) throw EmptyFieldException(EMPTY_FIELD_MSG)
-            val password: String = passwordInput.text.toString()
-            if (password != value) throw PasswordsIsDifferentException(PASSWORD_IS_DIFFERENT_MSG)
-        }
+private fun passwordChecker(
+    input: TextInputEditText,
+    inputContainer: TextInputLayout,
+    passwordValidator: PasswordValidator
+) {
+    try {
+        val value = input.text.toString()
+        passwordValidator.assertIsValidPassword(value)
+    } catch (error: EmptyFieldException) {
+        inputContainer.error = error.message
+    } catch (error: TooShortLengthException) {
+        inputContainer.error = error.message
     }
 }
+
+private fun repeatPasswordChecker(
+    input: TextInputEditText, inputContainer: TextInputLayout,
+    pswInput: TextInputEditText,
+    passwordValidator: PasswordValidator,
+    regInfoModel: RegistrationInfoModel
+) {
+    try {
+        val value = input.text.toString()
+        passwordValidator.assertIsValidRepeatPassword(value, pswInput)
+        regInfoModel.isCheckedRepeatPassword = true
+    } catch (error: EmptyFieldException) {
+        inputContainer.error = error.message
+    } catch (error: PasswordsIsDifferentException) {
+        inputContainer.error = error.message
+    }
+}
+
+interface MailCallback {
+    fun onSuccess()
+    fun onFail(error: Exception)
+    fun onFailure()
+}
+
+
 

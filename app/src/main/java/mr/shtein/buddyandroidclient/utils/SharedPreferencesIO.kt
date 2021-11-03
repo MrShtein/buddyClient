@@ -16,7 +16,8 @@ class SharedPreferencesIO(val context: Context, private val storageName: String)
     }
 
     fun readString(prefName: String, pref: String): String {
-        return sharedPref.getString(prefName, pref) ?: ""
+        val data = sharedPref.getString(prefName, pref) ?: ""
+        return data
     }
 
     fun writeInt(prefName: String, pref: Int) {
