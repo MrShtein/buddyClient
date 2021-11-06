@@ -2,9 +2,27 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/profile_fragment"
-        android:icon="@drawable/phone_button"
-        android:title="Профиль"
+        android:id="@+id/userProfileFragment"
+        android:icon="@drawable/profile_btn"
+        android:title="@string/profile_btn_name"
+        />
+
+    <item
+        android:id="@+id/animal_choice_fragment"
+        android:icon="@drawable/animal_list_btn"
+        android:title="@string/animal_list_btn_name"
+        />
+
+    <item
+        android:id="@+id/favorite_fragment_btn"
+        android:icon="@drawable/favorite_btn"
+        android:title="@string/favorite_btn_name"
+        />
+
+    <item
+        android:id="@+id/kennels_list_fragment_btn"
+        android:icon="@drawable/kennels_btn"
+        android:title="@string/kennels_btn_name"
         />
 
 </menu>

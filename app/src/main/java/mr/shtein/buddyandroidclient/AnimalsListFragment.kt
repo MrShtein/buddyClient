@@ -22,10 +22,10 @@ import android.util.TypedValue
 
 import android.content.res.Resources
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
@@ -45,23 +45,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
-        val navController = findNavController()
-        val bottomBar = view.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-        bottomBar.setOnItemSelectedListener {
-            val store = SharedPreferencesIO(requireContext(),
-                PERSISTENT_STORAGE_NAME
-            )
-            val role: String = store.readString(ROLE_KEY, "")
-            if (role == "ROLE_USER") {
-                navController.navigate(R.id.action_animal_choice_fragment_to_userProfileFragment)
-            } else {
-                navController.navigate(R.id.action_animal_choice_fragment_to_profileFragment2)
-            }
-            return@setOnItemSelectedListener true
-        }
-        return view
-
+        return inflater.inflate(R.layout.animals_list_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,16 +56,21 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         animalRecyclerView.setHasFixedSize(true);
         animalRecyclerView.layoutManager = LinearLayoutManager(context)
         getAllAnimalsList(view)
+
+
     }
 
     override fun onStart() {
         super.onStart()
         changeStatusBar(requireActivity(), R.color.white)
+        Log.d("LIFECYCLE", "onStart worked")
     }
 
     override fun onStop() {
         super.onStop()
         changeStatusBar(requireActivity(), R.color.end_of_main_gradient)
+        Log.d("LIFECYCLE", "onStop worked")
+
     }
 
     private fun changeStatusBar(activity: Activity, color: Int) {
