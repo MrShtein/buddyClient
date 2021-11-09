@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/city_choice_fragment">
+    app:startDestination="@id/city_choice_fragment"
+    >
 
     <fragment
         android:id="@+id/startFragment"
         android:name="mr.shtein.buddyandroidclient.StartFragment"
         android:label="StartFragment" >
-        <argument
-            android:name="ShowBottomBar"
-            android:defaultValue="false"/>
+
         <action
             android:id="@+id/action_startFragment_to_welcomeDescriptionFragment"
             app:destination="@id/welcomeDescriptionFragment"
@@ -32,9 +31,7 @@
         android:id="@+id/pre_city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.PreCityChoiceFragment"
         android:label="PreCityChoiceFragment">
-        <argument
-            android:name="ShowBottomBar"
-            android:defaultValue="false"/>
+
         <action
             android:id="@+id/action_pre_city_choice_fragment_to_city_choice_fragment2"
             app:destination="@id/city_choice_fragment" />
@@ -43,32 +40,27 @@
         android:id="@+id/city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.CityChoiceFragment"
         android:label="CityChoiceFragment" >
-        <argument
-            android:name="ShowBottomBar"
-            android:defaultValue="false"/>
+
         <action
             android:id="@+id/action_city_choice_fragment_to_animalChoiceFragment"
-            app:destination="@id/animal_choice_fragment" />
+            app:destination="@id/animal_list_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/animal_choice_fragment"
+        android:id="@+id/animal_list_fragment"
         android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
         android:label="AnimalChoiceFragment" >
         <argument
             android:name="city"
             app:argType="string"
             android:defaultValue="empty" />
-        <argument
-            android:name="ShowBottomBar"
-            android:defaultValue="true"/>
         <action
-            android:id="@+id/action_animal_choice_fragment_to_animalsCardFragment"
+            android:id="@+id/action_animal_list_fragment_to_animalsCardFragment"
             app:destination="@id/animalsCardFragment" />
         <action
-            android:id="@+id/action_animal_choice_fragment_to_authFragment"
+            android:id="@+id/action_animal_list_fragment_to_authFragment"
             app:destination="@id/authFragment" />
         <action
-            android:id="@+id/action_animal_choice_fragment_to_userProfileFragment"
+            android:id="@+id/action_animal_list_fragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
@@ -101,8 +93,8 @@
             android:name="ShowBottomBar"
             android:defaultValue="false"/>
         <action
-            android:id="@+id/action_loginFragment_to_animal_choice_fragment"
-            app:destination="@id/animal_choice_fragment" />
+            android:id="@+id/action_loginFragment_to_animal_list_fragment"
+            app:destination="@id/animal_list_fragment" />
     </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"

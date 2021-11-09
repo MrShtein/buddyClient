@@ -38,6 +38,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
+    val text = "ok"
 
 
     override fun onCreateView(
@@ -45,11 +46,16 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.animals_list_fragment, container, false)
+        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
+
+        return view
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mService = Common.retrofitService
         getAnimalTypesAndDoChips(view)
         animalRecyclerView = view.findViewById(R.id.animal_list)

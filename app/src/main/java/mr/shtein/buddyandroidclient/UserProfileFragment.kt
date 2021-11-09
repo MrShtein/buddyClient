@@ -46,8 +46,15 @@ class UserProfileFragment : Fragment() {
         return inflater.inflate(R.layout.user_profile_fragment, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+
+
+    private fun getBottomNavBar(view: View): BottomNavigationView {
+        return view.findViewById(R.id.bottom_nav_view)
     }
 
 

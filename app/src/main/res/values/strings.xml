@@ -47,5 +47,13 @@
     <string name="kennel_identify_num">ИНН предприятия:</string>
     <string name="host">http://10.0.2.2:8881/api/v1</string>
     <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
+    <string name="profile_btn_name">Профиль</string>
+    <string name="animal_list_btn_name">Лента</string>
+    <string name="favorite_btn_name">Избранное</string>
+    <string name="kennels_btn_name">Приюты</string>
+    <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
+    <string name="profile_name_title">Имя:</string>
+    <string name="profile_status_title">Статус:</string>
+    <string name="profile_volonteer_btn_text">Стать волонтером</string>
 
 </resources>

@@ -147,7 +147,7 @@ class CityChoiceFragment : Fragment(), OnCityListener {
         val cityName = adapter.cityChoiceItems[position].cityName
         bundle.putString("city", cityName)
         sharedPropertyWriter.writeString(MAIN_CITY_NAME_PREF, cityName)
-        findNavController().navigate(R.id.animal_choice_fragment, bundle)
+        findNavController().navigate(R.id.animal_list_fragment, bundle)
 
     }
 

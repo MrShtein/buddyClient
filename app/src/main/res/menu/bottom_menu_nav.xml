@@ -5,10 +5,11 @@
         android:id="@+id/userProfileFragment"
         android:icon="@drawable/profile_btn"
         android:title="@string/profile_btn_name"
+
         />
 
     <item
-        android:id="@+id/animal_choice_fragment"
+        android:id="@+id/animal_list_fragment"
         android:icon="@drawable/animal_list_btn"
         android:title="@string/animal_list_btn_name"
         />

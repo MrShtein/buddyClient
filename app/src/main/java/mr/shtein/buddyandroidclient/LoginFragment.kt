@@ -24,9 +24,12 @@ private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
 private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
 private const val TOKEN_KEY = "token_key"
 private const val USER_ID_KEY = "id"
-private const val USER_NAME_KEY = "user_name"
+private const val USER_LOGIN_KEY = "user_login"
 private const val USER_ROLE_KEY = "user_role"
 private const val IS_LOCKED_KEY = "is_locked"
+private const val USER_NAME_KEY = "user_name"
+private const val USER_SURNAME_KEY = "user_surname"
+private const val USER_PHONE_NUMBER_KEY = "user_phone_nubmer"
 
 
 class LoginFragment : Fragment() {
@@ -72,7 +75,8 @@ class LoginFragment : Fragment() {
             user.password = passwordInput.text.toString()
 
             val retrofitService = Common.retrofitService
-            val sharedPropertyWriter = SharedPreferencesIO(requireContext(), PERSISTENT_STORAGE_NAME)
+            val sharedPropertyStore =
+                SharedPreferencesIO(requireContext(), PERSISTENT_STORAGE_NAME)
 
             retrofitService.loginUser(user)
                 .enqueue(object : Callback<LoginResponse> {
@@ -83,12 +87,17 @@ class LoginFragment : Fragment() {
                         val loginResponse = response.body()
                         if (loginResponse?.error == "") {
                             val userInfo: UserInfo = loginResponse.userInfo
-                            sharedPropertyWriter.writeString(TOKEN_KEY, userInfo.token)
-                            sharedPropertyWriter.writeLong(USER_ID_KEY, userInfo.id)
-                            sharedPropertyWriter.writeString(USER_NAME_KEY, userInfo.userName)
-                            sharedPropertyWriter.writeString(USER_ROLE_KEY, userInfo.role)
-                            sharedPropertyWriter.writeBoolean(IS_LOCKED_KEY, userInfo.isLocked)
-                            findNavController().navigate(R.id.action_loginFragment_to_animal_choice_fragment)
+
+                            sharedPropertyStore.writeString(TOKEN_KEY, userInfo.token)
+                            sharedPropertyStore.writeLong(USER_ID_KEY, userInfo.id)
+                            sharedPropertyStore.writeString(USER_LOGIN_KEY, userInfo.login)
+                            sharedPropertyStore.writeString(USER_ROLE_KEY, userInfo.role)
+                            sharedPropertyStore.writeBoolean(IS_LOCKED_KEY, userInfo.isLocked)
+                            sharedPropertyStore.writeString(USER_NAME_KEY, userInfo.name)
+                            sharedPropertyStore.writeString(USER_SURNAME_KEY, userInfo.surname)
+                            sharedPropertyStore.writeString(USER_PHONE_NUMBER_KEY, userInfo.phone)
+
+                            findNavController().navigate(R.id.action_loginFragment_to_animal_list_fragment)
                         } else {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setMessage("Вы ввели неправильный логин или пароль")
