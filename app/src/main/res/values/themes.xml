@@ -12,9 +12,17 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/end_of_main_gradient</item>
         <item name="windowNoTitle">true</item>
-        <!-- Customize your theme here. -->
+<!--         Customize your theme here. -->
+        <item name="shapeAppearanceLargeComponent">@style/mySt</item>
 
 
+
+    </style>
+
+    <style name="mySt">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSize">15dp</item>
     </style>
 
 

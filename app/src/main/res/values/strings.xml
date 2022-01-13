@@ -55,5 +55,9 @@
     <string name="profile_name_title">Имя:</string>
     <string name="profile_status_title">Статус:</string>
     <string name="profile_volonteer_btn_text">Стать волонтером</string>
+    <string name="registration_or_entrance_str">Регистрация/Вход</string>
+    <string name="registr_or_entrance_text">Вам необходимо\n выполнить вход или зарегистрироваться</string>
+    <string name="entrance_btn_text">Вход</string>
+    <string name="registration_btn_text">Регистрация</string>
 
 </resources>

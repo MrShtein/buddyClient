@@ -9,7 +9,8 @@
     <fragment
         android:id="@+id/startFragment"
         android:name="mr.shtein.buddyandroidclient.StartFragment"
-        android:label="StartFragment" >
+        android:label="StartFragment"
+        tools:layout="@layout/start_fragment">
 
         <action
             android:id="@+id/action_startFragment_to_welcomeDescriptionFragment"
@@ -19,7 +20,8 @@
     <fragment
         android:id="@+id/welcomeDescriptionFragment"
         android:name="mr.shtein.buddyandroidclient.WelcomeDescriptionFragment"
-        android:label="WelcomeDescriptionFragment" >
+        android:label="WelcomeDescriptionFragment"
+        tools:layout="@layout/welcome_description_fragment">
         <argument
             android:name="ShowBottomBar"
             android:defaultValue="false"/>
@@ -30,7 +32,8 @@
     <fragment
         android:id="@+id/pre_city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.PreCityChoiceFragment"
-        android:label="PreCityChoiceFragment">
+        android:label="PreCityChoiceFragment"
+        tools:layout="@layout/pre_city_choice_fragment">
 
         <action
             android:id="@+id/action_pre_city_choice_fragment_to_city_choice_fragment2"
@@ -39,7 +42,8 @@
     <fragment
         android:id="@+id/city_choice_fragment"
         android:name="mr.shtein.buddyandroidclient.CityChoiceFragment"
-        android:label="CityChoiceFragment" >
+        android:label="CityChoiceFragment"
+        tools:layout="@layout/city_choice_fragment">
 
         <action
             android:id="@+id/action_city_choice_fragment_to_animalChoiceFragment"
@@ -48,7 +52,8 @@
     <fragment
         android:id="@+id/animal_list_fragment"
         android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
-        android:label="AnimalChoiceFragment" >
+        android:label="AnimalChoiceFragment"
+        tools:layout="@layout/animals_list_fragment">
         <argument
             android:name="city"
             app:argType="string"
@@ -66,7 +71,8 @@
     <fragment
         android:id="@+id/animalsCardFragment"
         android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
-        android:label="AnimalsCardFragment" />
+        android:label="AnimalsCardFragment"
+        tools:layout="@layout/animal_card_fragment"/>
     <argument
         android:name="ShowBottomBar"
         android:defaultValue="false"/>
@@ -88,7 +94,8 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="mr.shtein.buddyandroidclient.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
         <argument
             android:name="ShowBottomBar"
             android:defaultValue="false"/>
@@ -99,7 +106,8 @@
     <fragment
         android:id="@+id/userRegistrationFragment"
         android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
-        android:label="UserRegistrationFragment" >
+        android:label="UserRegistrationFragment"
+        tools:layout="@layout/user_registration_fragment">
         <argument
             android:name="ShowBottomBar"
             android:defaultValue="false"/>
@@ -110,7 +118,8 @@
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="mr.shtein.buddyandroidclient.UserProfileFragment"
-        android:label="UserProfileFragment">
+        android:label="UserProfileFragment"
+        tools:layout="@layout/user_profile_fragment">
         <argument
             android:name="ShowBottomBar"
             android:defaultValue="true"/>

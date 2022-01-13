@@ -6,4 +6,13 @@
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="boxStrokeWidth">1dp</item>
     </style>
+    <style name="myst" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
+
+    </style>
+
+    <style name="ShoppingList.BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">@color/white</item>
+
+    </style>
 </resources>
