@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
@@ -97,7 +98,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
             adapter.cityChoiceItems = newCityChoiceItemList
         }
 
-        val cityInput = view.findViewById<EditText>(R.id.city_search)
+        val cityInput = view.findViewById<TextInputEditText>(R.id.input_text_for_city_choice)
 
         cityInput.onFocusChangeListener = object : View.OnFocusChangeListener {
 

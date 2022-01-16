@@ -4,100 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background"
+    android:background="@color/grey2"
     tools:context="mr.shtein.buddyandroidclient.screens.CityChoiceFragment">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_top"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_text_for_city_choice_container"
+        style="@style/overlaySearchInputStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="340dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="cloud reverse.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="340dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="cloud.json"
-        app:lottie_loop="true" />
-
-    <TextView
-        android:id="@+id/cityText"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/city_text"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@id/container_for_city_search"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_for_city_search"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/city_search_panel_background"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:hint="@string/input_hint_for_city_choice"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cityText">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/search_icon"
+        app:startIconTint="@color/cian5">
 
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_text_for_city_choice"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_magnifyingglass"
-            android:layout_marginStart="10dp"
-            android:elevation="1dp"
-            android:padding="5dp"/>
+            />
 
-
-        <EditText
-            android:id="@+id/city_search"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/search_icon"
-            app:layout_constraintTop_toTopOf="parent"  />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/city_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="0dp"
+
         android:background="#80FFFFFF"
-        android:layout_marginTop="-10dp"
         android:layoutAnimation="@anim/layout_animation"
+        android:minHeight="0dp"
         android:textAlignment="center"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@id/container_for_city_search"
-        app:layout_constraintEnd_toEndOf="@id/container_for_city_search"
-        app:layout_constraintStart_toStartOf="@id/container_for_city_search"
-         />
-
+        app:layout_constraintEnd_toEndOf="@id/input_text_for_city_choice_container"
+        app:layout_constraintStart_toStartOf="@id/input_text_for_city_choice_container"
+        app:layout_constraintTop_toBottomOf="@id/input_text_for_city_choice_container" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
