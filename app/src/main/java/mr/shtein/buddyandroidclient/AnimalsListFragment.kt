@@ -67,27 +67,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        changeStatusBar(requireActivity(), R.color.white)
-        Log.d("LIFECYCLE", "onStart worked")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        changeStatusBar(requireActivity(), R.color.end_of_main_gradient)
-        Log.d("LIFECYCLE", "onStop worked")
-
-    }
-
-    private fun changeStatusBar(activity: Activity, color: Int) {
-        activity.window.statusBarColor = requireContext().getColor(color)
-        val windowInsetController: WindowInsetsControllerCompat? =
-            ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
-        val changeTo = windowInsetController?.isAppearanceLightStatusBars
-        windowInsetController?.isAppearanceLightStatusBars = !changeTo!!
-    }
-
     private fun getAnimalTypesAndDoChips(view: View) {
         mService
             .getAnimalTypes()
@@ -126,7 +105,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     override fun onAnimalCardClick(animalId: Long) {
         val bundle = Bundle()
         bundle.putLong("animalId", animalId)
-        findNavController().navigate(R.id.animalsCardFragment, bundle)
+       // findNavController().navigate(R.id.animalsCardFragment, bundle)
     }
 
     private fun dpToPx(dp: Int, view: View): Int {

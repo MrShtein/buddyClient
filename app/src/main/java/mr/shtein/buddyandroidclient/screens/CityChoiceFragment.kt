@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient
+package mr.shtein.buddyandroidclient.screens
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -6,15 +6,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.model.CityChoiceItem
@@ -25,7 +24,7 @@ private const val MAG = "City"
 private const val MAIN_CITY_NAME_PREF = "main_city"
 private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
 
-class CityChoiceFragment : Fragment(), OnCityListener {
+class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListener {
 
     private lateinit var cityChoiceItems: List<CityChoiceItem>
     private lateinit var adapter: CitiesAdapter
@@ -38,15 +37,6 @@ class CityChoiceFragment : Fragment(), OnCityListener {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(MAG, "City Fragment destroyed")
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d(MAG, "City Fragment view create")
-        return inflater.inflate(R.layout.city_choice_fragment, container, false)
     }
 
     override fun onPause() {

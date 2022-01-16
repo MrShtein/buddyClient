@@ -127,10 +127,10 @@ class UserRegistrationFragment : Fragment() {
                                 if (isRegistered) {
                                     val bundle: Bundle = Bundle()
                                     bundle.putBoolean("is_from_registration", true)
-                                    findNavController().navigate(
-                                        R.id.action_userRegistrationFragment_to_loginFragment,
-                                        bundle
-                                    )
+//                                    findNavController().navigate(
+//                                        R.id.action_userRegistrationFragment_to_loginFragment,
+//                                        bundle
+//                                    )
                                     cancel()
                                 }
                             }

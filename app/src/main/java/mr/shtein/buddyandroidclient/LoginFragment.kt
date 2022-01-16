@@ -97,7 +97,7 @@ class LoginFragment : Fragment() {
                             sharedPropertyStore.writeString(USER_SURNAME_KEY, userInfo.surname)
                             sharedPropertyStore.writeString(USER_PHONE_NUMBER_KEY, userInfo.phone)
 
-                            findNavController().navigate(R.id.action_loginFragment_to_animal_list_fragment)
+                          //  findNavController().navigate(R.id.action_loginFragment_to_animal_list_fragment)
                         } else {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setMessage("Вы ввели неправильный логин или пароль")

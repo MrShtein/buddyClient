@@ -53,9 +53,9 @@ class UserProfileFragment : Fragment() {
 
 
 
-    private fun getBottomNavBar(view: View): BottomNavigationView {
-        return view.findViewById(R.id.bottom_nav_view)
-    }
+//    private fun getBottomNavBar(view: View): BottomNavigationView {
+//        return view.findViewById(R.id.bottom_nav_view)
+//    }
 
 
 }

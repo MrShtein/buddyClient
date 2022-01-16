@@ -4,72 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background">
+    android:background="@color/cian5"
+    tools:context="mr.shtein.buddyandroidclient.screens.SplashScreenFragment">
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cat"
-        android:layout_width="180dp"
-        android:layout_height="120dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/buddy_logo_dog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dog_img"
+        android:layout_gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="cat.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/sun_pulse"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/project_logo_dog_sun_and_grass"
+        />
+
+    <ImageView
+        android:id="@+id/buddy_logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="sun_pulse.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="340dp"
-
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="cloud reverse.json"
-        app:lottie_loop="true" />
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/project_logo_text"
+        />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/cloud_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="340dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="cloud.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/dog"
-        android:layout_width="180dp"
-        android:layout_height="130dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="dog.json"
-        app:lottie_loop="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

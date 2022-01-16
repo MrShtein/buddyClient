@@ -1,21 +1,13 @@
 package mr.shtein.buddyandroidclient
 
-import android.content.Context
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,27 +16,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val regModel: RegistrationInfoModel by viewModels()
 
         val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
+            .findFragmentById(R.id.main_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav_view)
+       // val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
-        bottomNav.setupWithNavController(navController)
+     //   bottomNav.setupWithNavController(navController)
 
 
-        bottomNav.menu.findItem(R.id.userProfileFragment).setOnMenuItemClickListener {
-            var n = 3
-
-            if (n == 3) {
-            showBottomSheetDialog(bottomNav)
-            //Toast.makeText(this.baseContext, ";lkasjdf", Toast.LENGTH_LONG).show()
-            } else {
-                NavigationUI.onNavDestinationSelected(it, navController)
-            }
-            true
-        }
+//        bottomNav.menu.findItem(R.id.userProfileFragment).setOnMenuItemClickListener {
+//            var n = 3
+//
+//            if (n == 3) {
+//            showBottomSheetDialog(bottomNav)
+//            //Toast.makeText(this.baseContext, ";lkasjdf", Toast.LENGTH_LONG).show()
+//            } else {
+//                NavigationUI.onNavDestinationSelected(it, navController)
+//            }
+//            true
+//        }
 
         }
 

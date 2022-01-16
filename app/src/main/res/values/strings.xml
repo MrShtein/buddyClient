@@ -59,5 +59,7 @@
     <string name="registr_or_entrance_text">Вам необходимо\n выполнить вход или зарегистрироваться</string>
     <string name="entrance_btn_text">Вход</string>
     <string name="registration_btn_text">Регистрация</string>
+    <string name="project_logo_dog_sun_and_grass">Логотип приложения - собака, солнце и трава</string>
+    <string name="project_logo_text">Текстовый логотип проекта Бадди</string>
 
 </resources>
