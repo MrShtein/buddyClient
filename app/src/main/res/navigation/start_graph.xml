@@ -17,6 +17,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_startFragment_to_bottomNavFragment2"
+            app:destination="@id/bottomNavFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <argument
         android:name="ShowBottomBar"
@@ -25,5 +32,16 @@
         android:id="@+id/cityChoiceFragment"
         android:name="mr.shtein.buddyandroidclient.screens.CityChoiceFragment"
         android:label="city_choice_fragment"
-        tools:layout="@layout/city_choice_fragment" />
+        tools:layout="@layout/city_choice_fragment" >
+        <action
+            android:id="@+id/action_cityChoiceFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/bottomNavFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.BottomNavFragment"
+        android:label="bottom_nav_fragment"
+        tools:layout="@layout/bottom_nav_fragment" />
 </navigation>
