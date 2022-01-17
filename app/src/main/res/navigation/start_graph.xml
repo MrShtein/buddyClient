@@ -45,7 +45,7 @@
         android:label="bottom_nav_fragment"
         tools:layout="@layout/bottom_nav_fragment" >
         <action
-            android:id="@+id/ "
+            android:id="@+id/action_bottomNavFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_bottomNavFragment_to_userRegistrationFragment"

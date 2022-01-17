@@ -22,6 +22,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.User
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
+import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordValidator
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
@@ -29,7 +30,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class UserRegistrationFragment : Fragment() {
+class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
     private var isRegistered: Boolean = false
@@ -38,17 +39,11 @@ class UserRegistrationFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.user_registration_fragment, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        val nameInputContainer: TextInputLayout =
+            view.findViewById(R.id.registration_name_input_container)
         val emailInputContainer: TextInputLayout =
             view.findViewById(R.id.registration_email_input_container)
         val passwordInputContainer: TextInputLayout =
@@ -56,7 +51,11 @@ class UserRegistrationFragment : Fragment() {
         val repeatPasswordInputContainer: TextInputLayout =
             view.findViewById(R.id.registration_repeat_password_input_container)
         val containers: List<TextInputLayout> =
-            listOf(emailInputContainer, passwordInputContainer, repeatPasswordInputContainer)
+            listOf(
+                emailInputContainer, passwordInputContainer,
+                repeatPasswordInputContainer, nameInputContainer
+            )
+        val nameInput: TextInputEditText = view.findViewById(R.id.registration_name_input)
         val emailInput: TextInputEditText = view.findViewById(R.id.registration_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.registration_password_input)
         val repeatPasswordInput: TextInputEditText =
@@ -64,7 +63,17 @@ class UserRegistrationFragment : Fragment() {
 
         val emailValidator = EmailValidator(requireContext(), regInfoModel)
         val passwordValidator = PasswordValidator()
+        val nameValidator = NameValidator()
 
+        nameInput.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                nameValidator.nameChecker(nameInput, nameInputContainer)
+                regInfoModel.isCheckedName = true
+            } else if (hasFocus && nameInputContainer.isErrorEnabled) {
+                nameInputContainer.isErrorEnabled = false
+            }
+
+        }
 
         emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
@@ -104,7 +113,13 @@ class UserRegistrationFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     view.windowInsetsController?.hide(WindowInsetsCompat.Type.ime())
                     val container: TextInputLayout? =
-                        finalErrorsCheck(containers, view, emailValidator, passwordValidator)
+                        finalErrorsCheck(
+                            containers,
+                            view,
+                            emailValidator,
+                            passwordValidator,
+                            nameValidator
+                        )
                     if (container == null) {
                         val frame: FrameLayout = view.findViewById(R.id.registration_frame)
                         val startAnimValue: Int =
@@ -113,7 +128,11 @@ class UserRegistrationFragment : Fragment() {
                             activity?.getColor(R.color.black_with_transparency_50) ?: 0
                         animateFrame(startAnimValue, endAnimValue, frame)
                         val newUser =
-                            User(emailInput.text.toString(), passwordInput.text.toString())
+                            User(
+                                emailInput.text.toString(),
+                                passwordInput.text.toString(),
+                                nameInput.text.toString()
+                            )
                         val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
                         progressBar.visibility = View.VISIBLE
                         object : CountDownTimer(10000, 1000) {
@@ -204,8 +223,13 @@ class UserRegistrationFragment : Fragment() {
         inputContainersList: List<TextInputLayout>,
         view: View,
         emailValidator: EmailValidator,
-        passwordValidator: PasswordValidator
+        passwordValidator: PasswordValidator,
+        nameValidator: NameValidator
     ): TextInputLayout? {
+
+        val nameInput = view.findViewById<TextInputEditText>(R.id.registration_name_input)
+        val nameInputContainer =
+            view.findViewById<TextInputLayout>(R.id.registration_name_input_container)
 
         val emailInput = view.findViewById<TextInputEditText>(R.id.registration_email_input)
         val emailInputContainer =
@@ -218,6 +242,10 @@ class UserRegistrationFragment : Fragment() {
         val repeatPasswordContainer =
             view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
 
+        if (!regInfoModel.isCheckedName) {
+            nameValidator.nameChecker(nameInput, nameInputContainer)
+        }
+
         if (!regInfoModel.isCheckedEmail) {
             emailValidator.emailChecker(emailInput, emailInputContainer)
         }
@@ -225,8 +253,10 @@ class UserRegistrationFragment : Fragment() {
             passwordChecker(passwordInput, passwordInputContainer, passwordValidator)
         }
         if (!regInfoModel.isCheckedRepeatPassword) {
-            repeatPasswordChecker(repeatPasswordInput, repeatPasswordContainer,
-                passwordInput, passwordValidator, regInfoModel)
+            repeatPasswordChecker(
+                repeatPasswordInput, repeatPasswordContainer,
+                passwordInput, passwordValidator, regInfoModel
+            )
         }
         for (container: TextInputLayout in inputContainersList) {
             if (container.isErrorEnabled) return container

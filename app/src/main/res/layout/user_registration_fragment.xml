@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background">
+    android:background="@color/grey2">
 
     <FrameLayout
         android:id="@+id/registration_frame"
@@ -27,31 +27,39 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/registration_progress"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:indeterminate="true"
-        android:elevation="3dp"/>
-
     <TextView
         android:id="@+id/registration_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registration_main_text"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/cian5"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registration_name_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:enabled="true"
+        android:hint="@string/profile_name_hint"
+        android:theme="@style/MyLayout"
+        app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
+        app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
+        app:layout_constraintTop_toBottomOf="@id/registration_main_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/registration_email_input_container"
@@ -63,7 +71,7 @@
         android:theme="@style/MyLayout"
         app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
         app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
-        app:layout_constraintTop_toBottomOf="@id/registration_main_text">
+        app:layout_constraintTop_toBottomOf="@id/registration_name_input_container">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/registration_email_input"
@@ -90,7 +98,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -115,16 +122,34 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/registration_kennel_name_fragment_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFC700"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/cian5"
+        android:elevation="4dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/entrance_btn_text"
+        android:textColor="@color/white"
+        app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="@id/registration_end_constraint_line"
         app:layout_constraintStart_toStartOf="@id/registration_start_constraint_line"
         app:layout_constraintTop_toBottomOf="@id/registration_repeat_password_input_container"
         app:layout_constraintVertical_bias="0.1" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/registration_progress"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        android:elevation="3dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

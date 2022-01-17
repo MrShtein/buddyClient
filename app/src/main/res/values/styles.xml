@@ -2,9 +2,10 @@
 <resources>
     <style name="MyLayout" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="backgroundTint">@color/input_background</item>
-        <item name="colorPrimary">@color/input_focused_underline_and_hint</item>
+        <item name="colorPrimary">@color/cian5</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="boxStrokeWidth">1dp</item>
+        <item name="shapeAppearanceLargeComponent">@style/mySt</item>
     </style>
     
     <style name="myst" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
@@ -30,9 +31,7 @@
     <style name="shapeAppearanceForSearchTextInputStyle" parent="mySt">
         <item name="cornerFamilyBottomRight">rounded</item>
         <item name="cornerFamilyBottomLeft">rounded</item>
-        <item name="cornerFamilyTopLeft">rounded</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSize">5dp</item>
+        <item name="cornerSize">10dp</item>
     </style>
 
 

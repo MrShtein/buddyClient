@@ -16,53 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.main_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-       // val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav_view)
-
-     //   bottomNav.setupWithNavController(navController)
-
-
-//        bottomNav.menu.findItem(R.id.userProfileFragment).setOnMenuItemClickListener {
-//            var n = 3
-//
-//            if (n == 3) {
-//            showBottomSheetDialog(bottomNav)
-//            //Toast.makeText(this.baseContext, ";lkasjdf", Toast.LENGTH_LONG).show()
-//            } else {
-//                NavigationUI.onNavDestinationSelected(it, navController)
-//            }
-//            true
-//        }
-
         }
-
-
-
-//        navController.addOnDestinationChangedListener { _, _, arguments ->
-//            bottomNav.isVisible = arguments?.getBoolean("ShowAppBar", false) ?: true
-//        }
-
-
-
-//        navController.addOnDestinationChangedListener { controller, destination, _ ->
-//            if (destination.id == R.id.userProfileFragment) {
-//                if (test == "ok") {
-//                    Log.d("TEST", "It's work")
-//                    //navController.navigate(R.id.authFragment)
-//                    bottomNav.visibility = View.GONE
-//                } else {
-//                    bottomNav.visibility = View.VISIBLE
-//                }
-//
-//            } else if ( destination.id == R.id.animal_list_fragment) {
-//                bottomNav.visibility = View.VISIBLE
-//            } else {
-//                bottomNav.visibility = View.GONE
-//            }
-//        }
-//    }
 }
 

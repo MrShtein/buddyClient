@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -67,7 +66,7 @@ class LoginFragment : Fragment() {
         val emailInput: TextInputEditText = view.findViewById(R.id.login_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.login_password_input)
         val button: Button = view.findViewById(R.id.login_button)
-        val user = User("", "")
+        val user = User("", "", "")
 
         button.setOnClickListener {
 

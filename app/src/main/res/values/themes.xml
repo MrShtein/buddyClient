@@ -22,7 +22,7 @@
     <style name="mySt">
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSize">15dp</item>
+        <item name="cornerSize">5dp</item>
 
     </style>
 
