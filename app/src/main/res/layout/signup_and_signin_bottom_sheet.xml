@@ -42,6 +42,7 @@
             android:textSize="14sp" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_login_fragment_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -56,6 +57,7 @@
             app:cornerRadius="5dp" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_registration_fragment_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

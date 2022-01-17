@@ -39,25 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    private fun showBottomSheetDialog(view: View) {
-        var bottomSheetDialog: BottomSheetDialog? = BottomSheetDialog(view.context, R.style.myst)
-        bottomSheetDialog!!.setContentView(R.layout.signup_and_signin_bottom_sheet)
-//        val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
-//        bottomSheet?.setBackgroundResource(R.color.transparent)
 
-        bottomSheetDialog.show()
-    }
-
-
-
-//        bottomNav.menu.findItem(R.id.userProfileFragment).setOnMenuItemClickListener {
-//            if (navController.currentDestination?.id == R.id. animal_list_fragment && test == "ok") {
-//                navController.navigate(R.id.authFragment)
-//            } else {
-//                navController.navigate(R.id.userProfileFragment)
-//            }
-//            true
-//        }
 
 //        navController.addOnDestinationChangedListener { _, _, arguments ->
 //            bottomNav.isVisible = arguments?.getBoolean("ShowAppBar", false) ?: true

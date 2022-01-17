@@ -43,5 +43,30 @@
         android:id="@+id/bottomNavFragment"
         android:name="mr.shtein.buddyandroidclient.screens.BottomNavFragment"
         android:label="bottom_nav_fragment"
-        tools:layout="@layout/bottom_nav_fragment" />
+        tools:layout="@layout/bottom_nav_fragment" >
+        <action
+            android:id="@+id/ "
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_bottomNavFragment_to_userRegistrationFragment"
+            app:destination="@id/userRegistrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="mr.shtein.buddyandroidclient.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegistrationFragment"
+        android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
+        android:label="UserRegistrationFragment"
+        tools:layout="@layout/user_registration_fragment">
+        <action
+            android:id="@+id/action_userRegistrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>
