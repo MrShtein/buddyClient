@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import mr.shtein.buddyandroidclient.AnimalsViewHolder
+import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 import mr.shtein.buddyandroidclient.ProtoAnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.StatementViewHolder

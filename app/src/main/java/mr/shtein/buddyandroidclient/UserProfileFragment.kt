@@ -36,16 +36,7 @@ import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
 
-class UserProfileFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.user_profile_fragment, container, false)
-    }
-
+class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,9 +44,6 @@ class UserProfileFragment : Fragment() {
 
 
 
-//    private fun getBottomNavBar(view: View): BottomNavigationView {
-//        return view.findViewById(R.id.bottom_nav_view)
-//    }
 
 
 }

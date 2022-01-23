@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login_main_text"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/cian5"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,17 +94,22 @@
         />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/login_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFC700"
-        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/cian5"
+        android:layout_marginBottom="60dp"
+        android:textColor="@color/grey2"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/login_end_constraint_line"
         app:layout_constraintStart_toStartOf="@id/login_start_constraint_line"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.1"
+        android:elevation="4dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:cornerRadius="5dp"/>
 
 
 
