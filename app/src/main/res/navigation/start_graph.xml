@@ -58,7 +58,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_bottomNavFragment"
-            app:destination="@id/bottomNavFragment" />
+            app:destination="@id/bottomNavFragment"
+            app:popUpTo="@id/userRegistrationFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"
