@@ -10,7 +10,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import mr.shtein.buddyandroidclient.MainActivity
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
 class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
@@ -25,10 +27,12 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
         bottomNav.setupWithNavController(navController)
 
-        bottomNav.menu.findItem(R.id.userProfileFragment).setOnMenuItemClickListener {
-            val n = 3
-            if (n == 3) {
-            createAndShowBottomSheetDialog(bottomNav)
+        bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
+            val sharedPreferenceStore =
+                SharedPreferencesIO(requireContext(), MainActivity.PERSISTENT_STORAGE_NAME)
+            val token: String = sharedPreferenceStore.readString(MainActivity.TOKEN_KEY, "")
+            if (token == "") {
+                createAndShowBottomSheetDialog(bottomNav)
             } else {
                 NavigationUI.onNavDestinationSelected(it, navController)
             }
