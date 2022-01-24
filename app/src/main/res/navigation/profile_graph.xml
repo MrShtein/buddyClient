@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/userProfileFragment2"
-        android:name="mr.shtein.buddyandroidclient.UserProfileFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.profile.UserProfileFragment"
         android:label="UserProfileFragment"
-        tools:layout="@layout/user_profile_fragment"/>
+        tools:layout="@layout/user_profile_fragment">
+        <action
+            android:id="@+id/userProfileFragment_to_userSettingsFragment"
+            app:destination="@id/userSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment"
+        android:label="UserSettingsFragment"
+        tools:layout="@layout/user_settings_fragment"/>
 </navigation>

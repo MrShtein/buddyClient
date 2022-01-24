@@ -40,6 +40,10 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
         }
 
 
+
+
+
+
     }
 
     private fun findRootNavController(): NavController {
