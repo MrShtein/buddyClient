@@ -20,7 +20,7 @@ class AuthFragment : Fragment() {
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Log.d("BACK", "It's work")
-                findNavController().popBackStack(R.id.animal_list_fragment, false)
+               // findNavController().popBackStack(R.id.animal_list_fragment, false)
             }
 
         })

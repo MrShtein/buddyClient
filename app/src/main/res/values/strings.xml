@@ -67,7 +67,7 @@
     <string name="add_photo_to_profile_description">Кнопка для добавления фотографии в профиль</string>
     <string name="name_label_text">Имя</string>
     <string name="user_settings_surname_label">Фамилия</string>
-    <string name="user_settings_sex_label">Пол</string>
+    <string name="user_settings_gender_label">Пол</string>
     <string name="user_settings_men_btn">Мужской</string>
     <string name="user_settings_women_btn">Женский</string>
     <string name="user_settings_city_label">Город</string>
