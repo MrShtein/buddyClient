@@ -39,7 +39,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle: Bundle? = arguments
-        val isFromRegistration = bundle?.getBoolean(MainActivity.IS_FROM_REGISTRATION_KEY) ?: false
+        val isFromRegistration = bundle?.getBoolean(SharedPreferencesIO.IS_FROM_REGISTRATION_KEY) ?: false
         if (isFromRegistration) {
             Snackbar.make(view, R.string.snackbar_registration_text, Snackbar.LENGTH_LONG)
                 .setDuration(3000)
@@ -58,7 +58,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             val retrofitService = Common.retrofitService
             val sharedPropertyStore =
-                SharedPreferencesIO(requireContext(), MainActivity.PERSISTENT_STORAGE_NAME)
+                SharedPreferencesIO(requireContext(), SharedPreferencesIO.PERSISTENT_STORAGE_NAME)
 
             retrofitService.loginUser(user)
                 .enqueue(object : Callback<LoginResponse> {
@@ -70,14 +70,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         if (loginResponse?.error == "") {
                             val userInfo: UserInfo = loginResponse.userInfo
 
-                            sharedPropertyStore.writeString(MainActivity.TOKEN_KEY, userInfo.token)
-                            sharedPropertyStore.writeLong(MainActivity.USER_ID_KEY, userInfo.id)
-                            sharedPropertyStore.writeString(MainActivity.USER_LOGIN_KEY, userInfo.login)
-                            sharedPropertyStore.writeString(MainActivity.USER_ROLE_KEY, userInfo.role)
-                            sharedPropertyStore.writeBoolean(MainActivity.IS_LOCKED_KEY, userInfo.isLocked)
-                            sharedPropertyStore.writeString(MainActivity.USER_NAME_KEY, userInfo.name)
-                            sharedPropertyStore.writeString(MainActivity.USER_SURNAME_KEY, userInfo.surname)
-                            sharedPropertyStore.writeString(MainActivity.USER_PHONE_NUMBER_KEY, userInfo.phone)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.TOKEN_KEY, userInfo.token)
+                            sharedPropertyStore.writeLong(SharedPreferencesIO.USER_ID_KEY, userInfo.id)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.USER_LOGIN_KEY, userInfo.login)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.USER_ROLE_KEY, userInfo.role)
+                            sharedPropertyStore.writeBoolean(SharedPreferencesIO.IS_LOCKED_KEY, userInfo.isLocked)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.USER_NAME_KEY, userInfo.name)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.USER_SURNAME_KEY, userInfo.surname)
+                            sharedPropertyStore.writeString(SharedPreferencesIO.USER_PHONE_NUMBER_KEY, userInfo.phone)
 
                         findNavController().navigate(R.id.action_loginFragment_to_bottomNavFragment)
                         } else {

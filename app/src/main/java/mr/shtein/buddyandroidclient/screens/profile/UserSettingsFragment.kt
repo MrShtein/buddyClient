@@ -1,17 +1,11 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
-import android.widget.ScrollView
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
-import mr.shtein.buddyandroidclient.MainActivity
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
@@ -50,17 +44,17 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun setUserCurrentUserSettings() {
-        val storage = SharedPreferencesIO(requireContext(), MainActivity.PERSISTENT_STORAGE_NAME)
-        userName?.setText(storage.readString(MainActivity.USER_NAME_KEY, ""))
-        userSurname?.setText(storage.readString(MainActivity.USER_SURNAME_KEY, ""))
+        val storage = SharedPreferencesIO(requireContext(), SharedPreferencesIO.PERSISTENT_STORAGE_NAME)
+        userName?.setText(storage.readString(SharedPreferencesIO.USER_NAME_KEY, ""))
+        userSurname?.setText(storage.readString(SharedPreferencesIO.USER_SURNAME_KEY, ""))
         setGender(storage)
-        city?.setText(storage.readString(MainActivity.USER_CITY_KEY, ""))
-        phoneNumber?.setText(storage.readString(MainActivity.PHONE_NUMBER_KEY, ""))
-        email?.setText(storage.readString(MainActivity.USER_LOGIN_KEY, ""))
+        city?.setText(storage.readString(SharedPreferencesIO.USER_CITY_KEY, ""))
+        phoneNumber?.setText(storage.readString(SharedPreferencesIO.PHONE_NUMBER_KEY, ""))
+        email?.setText(storage.readString(SharedPreferencesIO.USER_LOGIN_KEY, ""))
     }
 
     private fun setGender(sharedPrefIO: SharedPreferencesIO) {
-        val gender = sharedPrefIO.readString(MainActivity.USER_GENDER_KEY, "")
+        val gender = sharedPrefIO.readString(SharedPreferencesIO.USER_GENDER_KEY, "")
         when(gender) {
             "male" -> maleRadioBtn?.isChecked = true
             "female" -> femaleRadioBtn?.isChecked = true

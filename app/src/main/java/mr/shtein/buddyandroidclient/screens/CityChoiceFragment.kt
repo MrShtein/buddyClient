@@ -23,7 +23,6 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
 private const val MAG = "City"
 private const val MAIN_CITY_NAME_PREF = "main_city"
-private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListener {
 
@@ -133,7 +132,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     }
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
-        val sharedPropertyWriter = SharedPreferencesIO(requireContext(), PERSISTENT_STORAGE_NAME)
+        val sharedPropertyWriter = SharedPreferencesIO(requireContext(), SharedPreferencesIO.PERSISTENT_STORAGE_NAME)
         val bundle = Bundle()
         val cityName = adapter.cityChoiceItems[position].cityName
         bundle.putString("city", cityName)
