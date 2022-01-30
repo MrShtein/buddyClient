@@ -18,9 +18,16 @@ interface RetrofitServices {
     fun isEmailExists(@Path("email") email: String): Call<Boolean>
 
     @POST("/api/v1/auth/registration")
-    fun registerUser(@Body user: User): Call<Boolean>
+    fun registerUser(@Body person: Person): Call<Boolean>
 
     @POST("/api/v1/auth/login")
-    fun loginUser(@Body user: User): Call<LoginResponse>
+    fun loginUser(@Body person: Person): Call<LoginResponse>
+
+    @POST("/api/v1/user")
+    fun upgradePersonInfo(@HeaderMap headers: Map<String, String>, @Body person: PersonRequest): Call<PersonResponse>
+
+    @POST("/api/v1/auth/password/check")
+    fun checkOldPassword(@HeaderMap headerMap: Map<String, String>,
+                         @Body passwordCheckRequest: PasswordCheckRequest): Call<Boolean>
 
 }
