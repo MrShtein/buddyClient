@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -19,7 +18,7 @@ import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.model.CityChoiceItem
 import mr.shtein.buddyandroidclient.utils.CityCallback
-import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 private const val MAG = "City"
 private const val MAIN_CITY_NAME_PREF = "main_city"
@@ -119,7 +118,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!isCitiesVisible) {
-                  //  animateCitiesAlpha(list)
+                    //animateCitiesAlpha(list)
                     isCitiesVisible = true
                 }
                 onCitiesChanged(s.toString())
@@ -132,7 +131,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     }
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
-        val sharedPropertyWriter = SharedPreferencesIO(requireContext(), SharedPreferencesIO.PERSISTENT_STORAGE_NAME)
+        val sharedPropertyWriter = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         val bundle = Bundle()
         val cityName = adapter.cityChoiceItems[position].cityName
         bundle.putString("city", cityName)

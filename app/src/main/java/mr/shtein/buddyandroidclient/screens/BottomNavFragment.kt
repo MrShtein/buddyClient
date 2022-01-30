@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
@@ -28,8 +28,8 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
         bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
             val sharedPreferenceStore =
-                SharedPreferencesIO(requireContext(), SharedPreferencesIO.PERSISTENT_STORAGE_NAME)
-            val token: String = sharedPreferenceStore.readString(SharedPreferencesIO.TOKEN_KEY, "")
+                SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
             if (token == "") {
                 createAndShowBottomSheetDialog(bottomNav)
             } else {

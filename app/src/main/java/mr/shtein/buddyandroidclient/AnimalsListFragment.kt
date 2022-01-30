@@ -1,6 +1,5 @@
 package mr.shtein.buddyandroidclient
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -22,14 +21,7 @@ import android.util.TypedValue
 
 import android.content.res.Resources
 import android.view.*
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
-import mr.shtein.buddyandroidclient.utils.SharedPreferencesIO
 
 private const val ROLE_KEY: String = "user_role"
 private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"

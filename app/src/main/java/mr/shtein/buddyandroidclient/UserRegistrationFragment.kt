@@ -19,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.*
-import mr.shtein.buddyandroidclient.model.User
+import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
@@ -128,7 +128,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                             activity?.getColor(R.color.black_with_transparency_50) ?: 0
                         animateFrame(startAnimValue, endAnimValue, frame)
                         val newUser =
-                            User(
+                            Person(
                                 emailInput.text.toString(),
                                 passwordInput.text.toString(),
                                 nameInput.text.toString()

@@ -30,7 +30,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         profileSettingsBtn = view.findViewById(R.id.profile_settings_btn)
     }
 
-    fun setListeners() {
+    private fun setListeners() {
         profileSettingsBtn?.setOnClickListener {
             findNavController().navigate(R.id.userProfileFragment_to_userSettingsFragment)
         }
