@@ -5,7 +5,7 @@ data class PersonRequest(
     val name: String,
     val surname: String,
     val gender: String,
-    val city_id: Int,
+    val city_id: Long,
     val phoneNumber: String,
     val email: String,
     val password: String
