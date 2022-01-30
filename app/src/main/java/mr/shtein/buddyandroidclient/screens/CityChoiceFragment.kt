@@ -138,12 +138,14 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
         val sharedPropertyWriter =
             SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val bundle = Bundle()
-        val cityName = adapter.cityChoiceItems[position].name
-        bundle.putString("city", cityName)
-        sharedPropertyWriter.writeString(MAIN_CITY_NAME_PREF, cityName)
-        findNavController().navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment, bundle)
+        val cityForStorage = makeStringForCityStorage(adapter.cityChoiceItems[position])
+        sharedPropertyWriter.writeString(SharedPreferences.USER_CITY_KEY, cityForStorage)
+        findNavController().navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
 
+    }
+
+    private fun makeStringForCityStorage(city: CityChoiceItem): String {
+        return "${city.city_id},${city.name},${city.region}"
     }
 
     private fun animateCitiesAlpha(list: RecyclerView) {
@@ -183,10 +185,17 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
 
     private suspend fun getCitiesFromServer() = withContext(Dispatchers.IO + Job()) {
         val retrofitService = Common.retrofitService
-        val cityResponse = retrofitService.getAllCities().execute().body()
-        if (cityResponse?.error == "") {
-            cityChoiceItems = cityResponse.citiesList
+        try {
+            val cityResponse = retrofitService.getAllCities().execute().body()
+            if (cityResponse?.error == "") {
+                cityChoiceItems = cityResponse.citiesList
+            } else {
+                cityChoiceItems = getCities()
+            }
+        } catch (e: Exception) {
+            Log.e("ERROR", "Что-то не так с сетью")
         }
+
 
     }
 
