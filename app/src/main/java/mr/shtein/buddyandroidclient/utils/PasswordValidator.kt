@@ -1,5 +1,7 @@
 package mr.shtein.buddyandroidclient.utils
 
+import android.util.Log
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
@@ -45,7 +47,7 @@ class PasswordValidator(): Validator() {
                 }
 
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    Log.e("INTERNET ERROR", "Нет сети")
                 }
             })
 

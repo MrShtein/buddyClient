@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.adapters.OnCityListener
-import mr.shtein.buddyandroidclient.model.CityChoiceItem
+import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
+import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.CityCallback
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
@@ -30,7 +32,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     private lateinit var list: RecyclerView
     private var lettersCount = 0
     private var isCitiesVisible = false
-
+    private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
 
     override fun onDestroy() {
@@ -58,7 +60,10 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
         Log.d(MAG, "City Fragment view created")
         adapter = context?.let { CitiesAdapter(it, getCities(), this) }!!
 
-        cityChoiceItems = getCitiesFromFile("cities.txt", this.requireContext())
+        coroutineScope.launch {
+            getCitiesFromServer()
+        }
+
 
         fun onCitiesChanged(letters: String) {
             var newCityChoiceItemList: List<CityChoiceItem>? = null
@@ -70,17 +75,17 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
                 letters.length < lettersCount -> {
                     lettersCount--
                     newCityChoiceItemList = cityChoiceItems.filter {
-                        it.cityName.lowercase().startsWith(letters.lowercase())
+                        it.name.lowercase().startsWith(letters.lowercase())
                     }
                 }
                 else -> {
                     newCityChoiceItemList = if (lettersCount == 0) {
                         cityChoiceItems.filter {
-                            it.cityName.lowercase().startsWith(letters.lowercase())
+                            it.name.lowercase().startsWith(letters.lowercase())
                         }
                     } else {
                         adapter.cityChoiceItems.filter {
-                            it.cityName.lowercase().startsWith(letters.lowercase())
+                            it.name.lowercase().startsWith(letters.lowercase())
                         }
                     }
                     lettersCount++
@@ -104,7 +109,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
                 val context: Context? = v?.context
                 if (hasFocus) {
                     list = view.findViewById(R.id.city_list)
-                    list.setPadding(0, 10, 0,0)
+                    list.setPadding(0, 10, 0, 0)
                     list.adapter = adapter
                     list.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 }
@@ -131,9 +136,10 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     }
 
     override fun onCityClick(position: Int, adapter: CitiesAdapter) {
-        val sharedPropertyWriter = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+        val sharedPropertyWriter =
+            SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         val bundle = Bundle()
-        val cityName = adapter.cityChoiceItems[position].cityName
+        val cityName = adapter.cityChoiceItems[position].name
         bundle.putString("city", cityName)
         sharedPropertyWriter.writeString(MAIN_CITY_NAME_PREF, cityName)
         findNavController().navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment, bundle)
@@ -150,43 +156,39 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
 
     private fun getCities(): List<CityChoiceItem> {
         return listOf(
-            CityChoiceItem("Москва"),
-            CityChoiceItem("Санкт-Петербург"),
-            CityChoiceItem("Новосибирск"),
-            CityChoiceItem("Екатеринбург"),
-            CityChoiceItem("Казань"),
-            CityChoiceItem("Нижний Новгород"),
-            CityChoiceItem("Челябинск"),
-            CityChoiceItem("Самара"),
-            CityChoiceItem("Омск"),
-            CityChoiceItem("Ростов-на-Дону"),
-            CityChoiceItem("Уфа"),
-            CityChoiceItem("Красноярск"),
-            CityChoiceItem("Воронеж"),
-            CityChoiceItem("Волгоград"),
-            CityChoiceItem("Краснодар"),
-            CityChoiceItem("Саратов"),
-            CityChoiceItem("Тюмень"),
-            CityChoiceItem("Тольятти"),
-            CityChoiceItem("Ижевск"),
-            CityChoiceItem("Барнаул"),
-            CityChoiceItem("Ульяновск"),
-            CityChoiceItem("Иркутск"),
-
-            )
+            CityChoiceItem(752, "Москва", "Московская область"),
+            CityChoiceItem(1028, "Санкт-Петербург", "Ленинградская область"),
+            CityChoiceItem(835, "Новосибирск", "Новосибирская область"),
+            CityChoiceItem(339, "Екатеринбург", "Свердловская область"),
+            CityChoiceItem(445, "Казань", "Республика Татарстан"),
+            CityChoiceItem(802, "Нижний Новгород", "Нижегородская область"),
+            CityChoiceItem(1291, "Челябинск", "Челябинская область"),
+            CityChoiceItem(1025, "Самара", "Самарская область"),
+            CityChoiceItem(879, "Омск", "Омская область"),
+            CityChoiceItem(1006, "Ростов-на-Дону", "Ростовская область"),
+            CityChoiceItem(1387, "Уфа", "Республика Башкортостан"),
+            CityChoiceItem(600, "Красноярск", "Красноярский край"),
+            CityChoiceItem(225, "Воронеж", "Воронежская область"),
+            CityChoiceItem(209, "Волгоград", "Волгоградская область"),
+            CityChoiceItem(586, "Краснодар", "Краснодарский край"),
+            CityChoiceItem(1032, "Саратов", "Саратовская область"),
+            CityChoiceItem(1215, "Тюмень", "Тюменская область"),
+            CityChoiceItem(1188, "Тольятти", "Самарская область"),
+            CityChoiceItem(413, "Ижевск", "Удмуртская республика"),
+            CityChoiceItem(96, "Барнаул", "Алтайский край"),
+            CityChoiceItem(1227, "Ульяновск", "Ульяновская область"),
+            CityChoiceItem(431, "Иркутск", "Иркутская область"),
+        )
     }
 
-    private fun getCitiesFromFile(address: String, context: Context): List<CityChoiceItem> {
-        val cityList = mutableListOf<CityChoiceItem>()
-        context.assets
-            .open(address)
-            .readBytes()
-            .toString(Charsets.UTF_8)
-            .split("\n")
-            .toSet()
-            .forEach {
-                cityList.add(CityChoiceItem(it))
-            }
-        return cityList
+    private suspend fun getCitiesFromServer() = withContext(Dispatchers.IO + Job()) {
+        val retrofitService = Common.retrofitService
+        val cityResponse = retrofitService.getAllCities().execute().body()
+        if (cityResponse?.error == "") {
+            cityChoiceItems = cityResponse.citiesList
+        }
+
     }
+
+
 }

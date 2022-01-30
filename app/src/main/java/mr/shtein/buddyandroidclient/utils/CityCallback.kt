@@ -1,7 +1,7 @@
 package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import mr.shtein.buddyandroidclient.model.CityChoiceItem
+import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 
 class CityCallback(
     private val oldList: List<CityChoiceItem>,
@@ -16,7 +16,7 @@ class CityCallback(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].cityName == newList[newItemPosition].cityName
+        return oldList[oldItemPosition].name == newList[newItemPosition].name
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

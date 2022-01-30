@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient.retrofit
 
 import mr.shtein.buddyandroidclient.model.*
+import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,5 +30,8 @@ interface RetrofitServices {
     @POST("/api/v1/auth/password/check")
     fun checkOldPassword(@HeaderMap headerMap: Map<String, String>,
                          @Body passwordCheckRequest: PasswordCheckRequest): Call<Boolean>
+
+    @GET("/api/v1/cities")
+    fun getAllCities(): Call<CitiesResponse>
 
 }
