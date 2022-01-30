@@ -66,9 +66,5 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         const val USER_PHONE_NUMBER_KEY = "user_phone_number"
         const val USER_GENDER_KEY = "user_gender"
         const val USER_CITY_KEY = "user_city"
-        const val USER_REGION_KEY = "user_region"
-        const val LATITUDE_KEY = "latitude"
-        const val ATTITUDE_KEY = "attitude"
-        const val PHONE_NUMBER_KEY = "user_phone_number"
     }
 }
