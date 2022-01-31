@@ -91,7 +91,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         userSurname.setText(storage.readString(SharedPreferences.USER_SURNAME_KEY, ""))
         setGender(storage)
         setCity(storage)
-        city.setText(storage.readString(SharedPreferences.USER_CITY_KEY, ""))
         phoneNumber.setText(storage.readString(SharedPreferences.USER_PHONE_NUMBER_KEY, ""))
         email.setText(storage.readString(SharedPreferences.USER_LOGIN_KEY, ""))
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
@@ -137,8 +136,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             emailContainer.isErrorEnabled = false
         }
 
-        city.setOnClickListener {
-            nestedScroll.smoothScrollTo(0, cityContainer.top)
+        city.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused) nestedScroll.smoothScrollTo(0, cityContainer.top)
+
         }
     }
 
