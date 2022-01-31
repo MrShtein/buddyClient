@@ -1,9 +1,13 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RadioButton
+import android.widget.ScrollView
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -24,7 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.properties.Delegates
 
-class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
+
+class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
 
@@ -33,6 +38,7 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
     private lateinit var maleRadioBtn: RadioButton
     private lateinit var femaleRadioBtn: RadioButton
     private lateinit var city: TextInputEditText
+    private lateinit var cityContainer: TextInputLayout
     private lateinit var phoneNumber: TextInputEditText
     private lateinit var email: TextInputEditText
     private lateinit var emailContainer: TextInputLayout
@@ -45,6 +51,7 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
     private lateinit var saveBtn: MaterialButton
     private lateinit var token: String
     private lateinit var storage: SharedPreferences
+    private lateinit var nestedScroll: NestedScrollView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +67,7 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
         maleRadioBtn = view.findViewById(R.id.user_settings_male_btn)
         femaleRadioBtn = view.findViewById(R.id.user_settings_female_btn)
         city = view.findViewById(R.id.user_settings_city_input)
+        cityContainer = view.findViewById(R.id.user_settings_city_input_container)
         phoneNumber = view.findViewById(R.id.user_settings_phone_input)
         email = view.findViewById(R.id.user_settings_email_input)
         emailContainer = view.findViewById(R.id.user_settings_email_input_container)
@@ -68,8 +76,10 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
         newPwd = view.findViewById(R.id.user_settings_new_pwd_input)
         newPwdContainer = view.findViewById(R.id.user_settings_new_pwd_input_container)
         repeatedNewPwd = view.findViewById(R.id.user_settings_repeat_new_pwd_input)
-        repeatedNewPwdContainer = view.findViewById(R.id.user_settings_repeat_new_pwd_input_container)
+        repeatedNewPwdContainer =
+            view.findViewById(R.id.user_settings_repeat_new_pwd_input_container)
         saveBtn = view.findViewById(R.id.user_settings_save_btn)
+        nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         token = storage.readString(SharedPreferences.TOKEN_KEY, "")
@@ -89,7 +99,7 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
 
     private fun setGender(sharedPref: SharedPreferences) {
         val gender = sharedPref.readString(SharedPreferences.USER_GENDER_KEY, "")
-        when(gender) {
+        when (gender) {
             "Мужской" -> maleRadioBtn.isChecked = true
             "Женский" -> femaleRadioBtn.isChecked = true
         }
@@ -115,16 +125,20 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
             oldPwdContainer.isErrorEnabled = false
         }
 
-        newPwd.setOnFocusChangeListener {_, _ ->
+        newPwd.setOnFocusChangeListener { _, _ ->
             newPwdContainer.isErrorEnabled = false
         }
 
-        repeatedNewPwd.setOnFocusChangeListener {_, _ ->
+        repeatedNewPwd.setOnFocusChangeListener { _, _ ->
             repeatedNewPwdContainer.isErrorEnabled = false
         }
 
         email.setOnFocusChangeListener { _, _ ->
             emailContainer.isErrorEnabled = false
+        }
+
+        city.setOnClickListener {
+            nestedScroll.smoothScrollTo(0, cityContainer.top)
         }
     }
 
@@ -148,9 +162,17 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
         if (isPasswordChange) {
             val passwordValidator = PasswordValidator()
             try {
-                passwordValidator.assertIsValidOldPassword(oldPwd.text.toString(), personId, token, oldPwdCallBack)
+                passwordValidator.assertIsValidOldPassword(
+                    oldPwd.text.toString(),
+                    personId,
+                    token,
+                    oldPwdCallBack
+                )
                 passwordValidator.assertIsValidPassword(newPwd.text.toString())
-                passwordValidator.assertIsValidRepeatPassword(repeatedNewPwd.text.toString(), newPwd)
+                passwordValidator.assertIsValidRepeatPassword(
+                    repeatedNewPwd.text.toString(),
+                    newPwd
+                )
                 return true
             } catch (e: OldPasswordsIsNotValidException) {
                 oldPwdContainer.error = e.message
@@ -191,7 +213,7 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
             phoneNumber.text.toString(),
             email.text.toString(),
             newPwd.text.toString()
-            )
+        )
 
         val retrofitService = Common.retrofitService
         val headerMap = hashMapOf<String, String>()
@@ -206,12 +228,17 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
                     if (personResponse?.isUpgrade == true) {
                         saveNewDataToStore()
                     } else {
-                        Toast.makeText(requireContext(), response.body()?.error?.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            response.body()?.error?.message,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<PersonResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Скорее всего нет сети", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Скорее всего нет сети", Toast.LENGTH_LONG)
+                        .show()
                 }
             })
     }
@@ -229,10 +256,8 @@ class UserSettingsFragment: Fragment(R.layout.user_settings_fragment) {
         else "Женский"
     }
 
-    private val oldPwdCallBack = fun (error: String) {
+    private val oldPwdCallBack = fun(error: String) {
         oldPwdContainer.isErrorEnabled = true
         oldPwdContainer.error = error
     }
-
-
 }
