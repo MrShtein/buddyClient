@@ -33,20 +33,17 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
             if (token == "") {
                 createAndShowBottomSheetDialog(bottomNav)
             } else {
-                NavigationUI.onNavDestinationSelected(it, navController)
+               NavigationUI.onNavDestinationSelected(it, navController)
             }
             true
         }
 
 
-
-
-
-
     }
 
     private fun findRootNavController(): NavController {
-        val navHost = activity?.supportFragmentManager?.findFragmentById(R.id.main_host_fragment) as NavHostFragment
+        val navHost =
+            activity?.supportFragmentManager?.findFragmentById(R.id.main_host_fragment) as NavHostFragment
         return navHost.navController
     }
 
@@ -55,7 +52,8 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
         bottomSheetDialog.setContentView(R.layout.signup_and_signin_bottom_sheet)
         val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
 
-        val toRegistrationButton: Button? = bottomSheet?.findViewById(R.id.to_registration_fragment_button)
+        val toRegistrationButton: Button? =
+            bottomSheet?.findViewById(R.id.to_registration_fragment_button)
         with(toRegistrationButton) {
             this?.setOnClickListener {
                 bottomSheetDialog.dismiss()
@@ -63,7 +61,8 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
             }
         }
 
-        val toLoginFragmentButton: Button? = bottomSheet?.findViewById(R.id.to_login_fragment_button)
+        val toLoginFragmentButton: Button? =
+            bottomSheet?.findViewById(R.id.to_login_fragment_button)
         with(toLoginFragmentButton) {
             this?.setOnClickListener {
                 bottomSheetDialog.dismiss()
@@ -75,8 +74,6 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
         bottomSheetDialog.show()
     }
-
-
 
 
 }
