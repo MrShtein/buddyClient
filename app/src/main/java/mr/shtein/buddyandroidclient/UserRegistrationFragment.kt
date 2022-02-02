@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Person
+import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
@@ -34,6 +35,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
     private var isRegistered: Boolean = false
+    private lateinit var callbackForEmail: MailCallback
+    private lateinit var emailValidator: EmailValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +64,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
-        val emailValidator = EmailValidator(requireContext(), regInfoModel)
+
         val passwordValidator = PasswordValidator()
         val nameValidator = NameValidator()
 
@@ -77,6 +80,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
         emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
+                val emailCheckRequest = EmailCheckRequest(emailInput.text.toString())
+                emailValidator = EmailValidator(emailCheckRequest, callbackForEmail)
                 emailValidator.emailChecker(emailInput, emailInputContainer)
                 regInfoModel.isCheckedEmail = true
             } else if (hasFocus && emailInputContainer.isErrorEnabled) {
@@ -200,6 +205,23 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                     }
                 }
             }
+        callbackForEmail = object : MailCallback {
+            override fun onSuccess() {
+                regInfoModel.email = emailInput.text.toString()
+            }
+
+            override fun onFail(error: Exception) {
+                emailInputContainer.error = error.message
+            }
+
+            override fun onFailure() {
+                Toast.makeText(requireContext(), EmailValidator.NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onNoAuthorize() {
+                Toast.makeText(requireContext(), EmailValidator.NO_AUTHORIZE_MSG, Toast.LENGTH_LONG).show()
+            }
+        }
 
     }
 
@@ -299,11 +321,9 @@ private fun repeatPasswordChecker(
     }
 }
 
-interface MailCallback {
-    fun onSuccess()
-    fun onFail(error: Exception)
-    fun onFailure()
-}
+
+
+
 
 
 

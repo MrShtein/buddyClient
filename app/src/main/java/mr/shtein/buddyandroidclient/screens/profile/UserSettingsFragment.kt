@@ -2,16 +2,21 @@ package mr.shtein.buddyandroidclient.screens.profile
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.RadioButton
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import mr.shtein.buddyandroidclient.MailCallback
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
@@ -19,6 +24,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentExce
 import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 import mr.shtein.buddyandroidclient.model.PersonRequest
 import mr.shtein.buddyandroidclient.model.PersonResponse
+import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.PasswordValidator
@@ -26,10 +32,18 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 import kotlin.properties.Delegates
 
 
 class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
+
+    companion object {
+        const val NO_AUTHORIZE_TEXT = "Ошибка авторизации"
+        const val MAIL_FAILURE_TEXT = "Нет интернета"
+        const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
+    }
+
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
 
@@ -52,6 +66,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var token: String
     private lateinit var storage: SharedPreferences
     private lateinit var nestedScroll: NestedScrollView
+    private lateinit var emailCallBack: MailCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,6 +98,28 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+
+        emailCallBack = object : MailCallback {
+            override fun onSuccess() {
+                upgradePerson()
+            }
+
+            override fun onFail(error: Exception) {
+                nestedScroll.smoothScrollTo(0, emailContainer.top)
+                emailContainer.error = IS_PERSON_WITH_EMAIL_EXIST
+                emailContainer.isErrorEnabled = true
+            }
+
+            override fun onFailure() {
+                Toast.makeText(requireContext(), MAIL_FAILURE_TEXT, Toast.LENGTH_LONG).show()
+
+            }
+
+            override fun onNoAuthorize() {
+                Toast.makeText(requireContext(), NO_AUTHORIZE_TEXT, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun setUserCurrentUserSettings() {
@@ -115,8 +152,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun setListeners() {
         saveBtn.setOnClickListener {
             saveBtn.isCheckable = false
-            if (passwordsCheck() && emailCheck()) {
-                upgradePerson()
+            if (passwordsCheck()) {
+                emailCheck()
             }
         }
 
@@ -136,21 +173,22 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             emailContainer.isErrorEnabled = false
         }
 
+        email.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == 67) emailContainer.isErrorEnabled = false
+            false
+        }
+
         city.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) nestedScroll.smoothScrollTo(0, cityContainer.top)
 
         }
     }
 
-    private fun emailCheck(): Boolean {
+    private fun emailCheck() {
         val emailForCheck = email.text.toString()
-        val emailValidator = EmailValidator.assertIsValidEmail(emailForCheck)
-        if (!emailValidator) {
-            emailContainer.error = EmailValidator.INVALID_EMAIL_MSG
-            emailContainer.isErrorEnabled = true
-            return false
-        }
-        return true
+        val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
+        val emailValidator = EmailValidator(emailCheckRequest, emailCallBack)
+        emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
     private fun passwordsCheck(): Boolean {
@@ -260,4 +298,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         oldPwdContainer.isErrorEnabled = true
         oldPwdContainer.error = error
     }
+
+
 }

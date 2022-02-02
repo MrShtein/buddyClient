@@ -5,10 +5,8 @@ import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.MailCallback
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.ExistedEmailException
-import mr.shtein.buddyandroidclient.exceptions.validate.IllegalEmailException
-import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
+import mr.shtein.buddyandroidclient.exceptions.validate.*
+import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
@@ -17,14 +15,16 @@ import retrofit2.Response
 import java.lang.Exception
 
 class EmailValidator(
-    val context: Context,
-    val regInfoModel: RegistrationInfoModel
+   val emailCheckRequest: EmailCheckRequest,
+   val emailCallback: MailCallback
     ): Validator() {
 
     companion object {
          const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
          const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
          const val NO_INTERNET_MSG = "К сожалению интернет не работает"
+         const val NO_AUTHORIZE_MSG = "Ошибка авторизации"
+
 
         fun assertIsValidEmail(value: String): Boolean {
             val regexForEmail: Regex =
@@ -40,20 +40,7 @@ class EmailValidator(
             val value = input.text.toString()
             assertIsNotEmptyField(value)
             assertIsValidEmail(value)
-            isEmailExists(value, object : MailCallback {
-                override fun onSuccess() {
-                    regInfoModel.email = value
-                }
-
-                override fun onFail(error: Exception) {
-                    val containerLayout = input.parent.parent as TextInputLayout
-                    containerLayout.error = error.message
-                }
-
-                override fun onFailure() {
-                    Toast.makeText(context, NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
-                }
-            })
+            isEmailExists(emailCheckRequest, emailCallback)
         } catch (error: EmptyFieldException) {
             inputContainer.error = error.message
         } catch (error: IllegalEmailException) {
@@ -72,22 +59,28 @@ class EmailValidator(
         return false
     }
 
-    private fun isEmailExists(email: String, callback: MailCallback) {
+    private fun isEmailExists(emailCheckRequest: EmailCheckRequest, callback: MailCallback) {
         val emailService = Common.retrofitService
-        emailService.isEmailExists(email)
+        emailService.isEmailExists(emailCheckRequest)
             .enqueue(object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     val value: Boolean? = response.body()
                     try {
+                        if  (response.raw().code() == 403) throw NoAuthorizationException("Вы не авторизованы") //TODO Решить вопрос с обработкой этой ошибки
                         assertIsEmailAlreadyExists(value ?: false)
                         callback.onSuccess()
                     } catch (error: ExistedEmailException) {
                         callback.onFail(error)
+                    } catch (error: NoAuthorizationException) {
+                        callback.onNoAuthorize()
                     }
+
                 }
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
                     callback.onFailure()
                 }
             })
     }
+
+
 }
