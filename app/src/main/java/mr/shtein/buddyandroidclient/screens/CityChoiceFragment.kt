@@ -38,6 +38,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     override fun onDestroy() {
         super.onDestroy()
         Log.d(MAG, "City Fragment destroyed")
+        coroutineScope.cancel()
     }
 
     override fun onPause() {
@@ -186,13 +187,14 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment), OnCityListen
     private suspend fun getCitiesFromServer() = withContext(Dispatchers.IO + Job()) {
         val retrofitService = Common.retrofitService
         try {
-            val cityResponse = retrofitService.getAllCities().execute().body()
-            if (cityResponse?.error == "") {
-                cityChoiceItems = cityResponse.citiesList
+            val cityResponse = retrofitService.getAllCities().execute()
+            if (cityResponse.isSuccessful && cityResponse.body() != null) {
+                cityChoiceItems = cityResponse.body()!!.citiesList
             } else {
                 cityChoiceItems = getCities()
             }
         } catch (e: Exception) {
+            cityChoiceItems = getCities()
             Log.e("ERROR", "Что-то не так с сетью")
         }
 
