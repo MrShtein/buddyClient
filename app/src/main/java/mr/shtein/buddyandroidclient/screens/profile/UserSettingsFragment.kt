@@ -7,17 +7,20 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
 import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 import mr.shtein.buddyandroidclient.model.PersonRequest
 import mr.shtein.buddyandroidclient.model.PersonResponse
+import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
@@ -41,6 +44,10 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val MAIL_FAILURE_TEXT = "Нет интернета"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
     }
+
+    private lateinit var cityChoiceItems: List<CityChoiceItem>
+    private lateinit var adapter: CitiesAdapter
+    private lateinit var list: RecyclerView
 
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
