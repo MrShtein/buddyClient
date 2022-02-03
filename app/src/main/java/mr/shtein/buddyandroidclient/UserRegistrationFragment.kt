@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator

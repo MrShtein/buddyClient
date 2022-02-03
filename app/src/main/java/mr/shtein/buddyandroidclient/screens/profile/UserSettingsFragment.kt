@@ -1,22 +1,16 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.RadioButton
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import mr.shtein.buddyandroidclient.MailCallback
+import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
@@ -25,6 +19,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 import mr.shtein.buddyandroidclient.model.PersonRequest
 import mr.shtein.buddyandroidclient.model.PersonResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.PasswordValidator
@@ -97,12 +92,11 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
 
         emailCallBack = object : MailCallback {
             override fun onSuccess() {
-                upgradePerson()
+                passwordsCheck()
             }
 
             override fun onFail(error: Exception) {
@@ -149,12 +143,15 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         city.setText(visibleCityInfo)
     }
 
+    private fun upgradePersonInfo() {
+        emailCheck()
+    }
+
     private fun setListeners() {
         saveBtn.setOnClickListener {
             saveBtn.isCheckable = false
-            if (passwordsCheck()) {
-                emailCheck()
-            }
+            upgradePersonInfo()
+            saveBtn.isCheckable = true
         }
 
         oldPwd.setOnFocusChangeListener { _, _ ->
@@ -191,7 +188,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
-    private fun passwordsCheck(): Boolean {
+    private fun passwordsCheck() {
         val isPasswordChange: Boolean =
             oldPwd.text.toString() != ""
                     || newPwd.text.toString() != ""
@@ -200,18 +197,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         if (isPasswordChange) {
             val passwordValidator = PasswordValidator()
             try {
+                passwordValidator.assertIsValidPassword(newPwd.text.toString())
+                passwordValidator.assertIsValidRepeatPassword(
+                    repeatedNewPwd.text.toString(),
+                    newPwd
+                )
+                token = storage.readString(SharedPreferences.TOKEN_KEY, "")
                 passwordValidator.assertIsValidOldPassword(
                     oldPwd.text.toString(),
                     personId,
                     token,
                     oldPwdCallBack
                 )
-                passwordValidator.assertIsValidPassword(newPwd.text.toString())
-                passwordValidator.assertIsValidRepeatPassword(
-                    repeatedNewPwd.text.toString(),
-                    newPwd
-                )
-                return true
+
             } catch (e: OldPasswordsIsNotValidException) {
                 oldPwdContainer.error = e.message
                 oldPwdContainer.isErrorEnabled = true
@@ -230,8 +228,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 saveBtn.isCheckable = true
             }
 
+        } else {
+            upgradePerson()
         }
-        return false
     }
 
     private fun upgradePerson() {
@@ -255,6 +254,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         val retrofitService = Common.retrofitService
         val headerMap = hashMapOf<String, String>()
+        token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         headerMap["Authorization"] = "Bearer $token"
         retrofitService.upgradePersonInfo(headerMap, personRequest)
             .enqueue(object : Callback<PersonResponse> {
@@ -264,7 +264,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 ) {
                     val personResponse: PersonResponse? = response.body()
                     if (personResponse?.isUpgrade == true) {
-                        saveNewDataToStore()
+                        saveNewDataToStore(personResponse.newToken)
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -281,12 +281,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             })
     }
 
-    private fun saveNewDataToStore() {
+    private fun saveNewDataToStore(token: String) {
         storage.writeString(SharedPreferences.USER_LOGIN_KEY, email.text.toString())
         storage.writeString(SharedPreferences.USER_NAME_KEY, userName.text.toString())
         storage.writeString(SharedPreferences.USER_SURNAME_KEY, userSurname.text.toString())
         storage.writeString(SharedPreferences.USER_PHONE_NUMBER_KEY, phoneNumber.text.toString())
-        storage.writeString(SharedPreferences.USER_GENDER_KEY, getGender())
+        val genderForSave = getGender()
+        storage.writeString(SharedPreferences.USER_GENDER_KEY, genderForSave)
+        if (token != "") {
+            storage.writeString(SharedPreferences.TOKEN_KEY, token)
+
+            Log.d("token", storage.readString(SharedPreferences.TOKEN_KEY, ""))
+            Log.d("token", token)
+        }
     }
 
     private fun getGender(): String {
@@ -294,10 +301,26 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         else "Женский"
     }
 
-    private val oldPwdCallBack = fun(error: String) {
-        oldPwdContainer.isErrorEnabled = true
-        oldPwdContainer.error = error
+    private val oldPwdCallBack = object : PasswordCallBack {
+        override fun onSuccess() {
+            upgradePerson()
+        }
+
+        override fun onFail(error: String) {
+            oldPwdContainer.isErrorEnabled = true
+            oldPwdContainer.error = error
+        }
+
+        override fun onFailure() {
+            Toast.makeText(requireContext(), "Ошибка в сети", Toast.LENGTH_LONG).show()
+        }
+
+        override fun onNoAuthorize() {
+            Toast.makeText(requireContext(), "Нет авторизации", Toast.LENGTH_LONG).show()
+        }
     }
+
+
 
 
 }

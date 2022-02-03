@@ -1,18 +1,14 @@
 package mr.shtein.buddyandroidclient.utils
 
-import android.content.Context
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import mr.shtein.buddyandroidclient.MailCallback
+import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class EmailValidator(
    val emailCheckRequest: EmailCheckRequest,

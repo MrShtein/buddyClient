@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient
+package mr.shtein.buddyandroidclient.network.callback
 
 import java.lang.Exception
 

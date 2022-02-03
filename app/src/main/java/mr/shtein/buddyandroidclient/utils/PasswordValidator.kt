@@ -3,11 +3,9 @@ package mr.shtein.buddyandroidclient.utils
 import android.util.Log
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
-import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
-import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
+import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.PasswordCheckRequest
+import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,7 +30,7 @@ class PasswordValidator(): Validator() {
     }
 
     fun assertIsValidOldPassword(password: String, personId: Long,
-                                 token: String, oldPwdCallBack: (error: String) -> Unit) {
+                                 token: String, oldPwdCallBack: PasswordCallBack) {
         val retrofitService = Common.retrofitService
         var headerMap = hashMapOf<String, String>()
         headerMap["Authorization"] = "Bearer $token"
@@ -41,13 +39,22 @@ class PasswordValidator(): Validator() {
         retrofitService.checkOldPassword(headerMap, passwordRequest)
             .enqueue(object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                    if (response.body() == false) {
-                        oldPwdCallBack(OLD_PASSWORD_IS_WRONG)
+                    try {
+                        if  (response.raw().code() == 403) throw NoAuthorizationException("Вы не авторизованы")
+                        val responseBody = response.body()
+                        if (responseBody == true) {
+                            oldPwdCallBack.onSuccess()
+                        } else if (responseBody == false) {
+                            oldPwdCallBack.onFail(OLD_PASSWORD_IS_WRONG)
+                        }
+                    } catch (error: NoAuthorizationException) {
+                        oldPwdCallBack.onNoAuthorize()
                     }
+
                 }
 
                 override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    Log.e("INTERNET ERROR", "Нет сети")
+                    oldPwdCallBack.onFailure()
                 }
             })
 
