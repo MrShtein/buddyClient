@@ -7,6 +7,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -27,6 +29,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
     private lateinit var adapter: CitiesAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var textHint: TextView
     private var citiesGetHelper = CitiesGetHelper(0)
     private var isCitiesVisible = false
 
@@ -54,6 +57,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(MAG, "City Fragment view created")
+        textHint = view.findViewById(R.id.city_choice_description_text)
         adapter = CitiesAdapter(citiesGetHelper.getCities(), object : OnCityListener {
             override fun onCityClick(cityItem: CityChoiceItem) {
                 val sharedPropertyWriter =
@@ -69,6 +73,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
         cityInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                textHint.isVisible = false
                 recyclerView = view.findViewById(R.id.city_list)
                 recyclerView.setPadding(0, 10, 0, 0)
                 recyclerView.adapter = adapter
