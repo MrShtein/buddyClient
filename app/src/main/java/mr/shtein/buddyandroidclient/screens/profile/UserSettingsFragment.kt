@@ -27,6 +27,9 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.tinkoff.decoro.MaskImpl
+import ru.tinkoff.decoro.slots.PredefinedSlots
+import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import java.lang.Exception
 import kotlin.properties.Delegates
 
@@ -69,6 +72,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         initViews(view)
         setUserCurrentUserSettings()
         setListeners()
+        initMaskForPhone(phoneNumber)
     }
 
     private fun initViews(view: View) {
@@ -318,6 +322,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         override fun onNoAuthorize() {
             Toast.makeText(requireContext(), "Нет авторизации", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun initMaskForPhone(phoneNumberInput: TextInputEditText) {
+        val maskImpl: MaskImpl = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
+        maskImpl.isHideHardcodedHead = true
+        val watcher = MaskFormatWatcher(maskImpl)
+        watcher.installOn(phoneNumberInput)
     }
 
 
