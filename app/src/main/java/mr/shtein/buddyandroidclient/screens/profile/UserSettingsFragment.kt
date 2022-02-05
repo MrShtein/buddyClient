@@ -1,12 +1,18 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -14,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
+import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
@@ -24,9 +31,7 @@ import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.utils.EmailValidator
-import mr.shtein.buddyandroidclient.utils.PasswordValidator
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.buddyandroidclient.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,11 +48,12 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val NO_AUTHORIZE_TEXT = "Ошибка авторизации"
         const val MAIL_FAILURE_TEXT = "Нет интернета"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
+        const val DESTINATION_KEY = "destination_key"
     }
 
-    private lateinit var cityChoiceItems: List<CityChoiceItem>
     private lateinit var adapter: CitiesAdapter
-    private lateinit var list: RecyclerView
+    private var citiesGetHelper: CitiesGetHelper = CitiesGetHelper(0)
+    private var isCitiesVisible = false
 
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
@@ -80,7 +86,15 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         setUserCurrentUserSettings()
         setListeners()
         initMaskForPhone(phoneNumber)
+
     }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        goToCityInput()
+    }
+
+
 
     private fun initViews(view: View) {
         userName = view.findViewById(R.id.user_settings_name_input)
@@ -125,6 +139,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 Toast.makeText(requireContext(), NO_AUTHORIZE_TEXT, Toast.LENGTH_LONG).show()
             }
         }
+
     }
 
     private fun setUserCurrentUserSettings() {
@@ -187,7 +202,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         }
 
         city.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) nestedScroll.smoothScrollTo(0, cityContainer.top)
+            if (isFocused) {
+                nestedScroll.smoothScrollTo(0, cityContainer.top)
+            }
 
         }
     }
@@ -336,6 +353,10 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         maskImpl.isHideHardcodedHead = true
         val watcher = MaskFormatWatcher(maskImpl)
         watcher.installOn(phoneNumberInput)
+    }
+
+    private fun makeStringForCityStorage(city: CityChoiceItem): String {
+        return "${city.city_id},${city.name},${city.region}"
     }
 
 
