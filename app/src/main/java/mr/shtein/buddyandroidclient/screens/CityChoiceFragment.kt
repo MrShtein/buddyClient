@@ -8,8 +8,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,8 @@ import mr.shtein.buddyandroidclient.utils.CityCallback
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 private const val MAG = "City"
+const val CITY_REQUEST_KEY = "new_city_request"
+const val CITY_BUNDLE_KEY = "new_city_bundle"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
@@ -58,13 +62,27 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(MAG, "City Fragment view created")
         textHint = view.findViewById(R.id.city_choice_description_text)
+
+        val navController = findNavController()
+        val navLabel = navController.previousBackStackEntry?.destination?.label
+
+        if (navLabel == "UserSettingsFragment") {
+            textHint.setText(R.string.city_choice_description_text_else_from_settings)
+        }
+
         adapter = CitiesAdapter(citiesGetHelper.getCities(), object : OnCityListener {
             override fun onCityClick(cityItem: CityChoiceItem) {
                 val sharedPropertyWriter =
                     SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
                 val cityForStorage = makeStringForCityStorage(cityItem)
                 sharedPropertyWriter.writeString(SharedPreferences.USER_CITY_KEY, cityForStorage)
-                findNavController().navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
+
+                if (navLabel == "UserSettingsFragment") {
+                    setFragmentResult(CITY_REQUEST_KEY, bundleOf(CITY_BUNDLE_KEY to cityForStorage))
+                    navController.popBackStack()
+                } else {
+                    navController.navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
+                }
             }
         })
 
@@ -77,7 +95,8 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                 recyclerView = view.findViewById(R.id.city_list)
                 recyclerView.setPadding(0, 10, 0, 0)
                 recyclerView.adapter = adapter
-                recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                recyclerView.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             }
         }
         cityInput.addTextChangedListener(object : TextWatcher {
@@ -100,6 +119,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
             }
         })
     }
+
 
     private fun getNewCitiesWithDiffUtil(newCityChoiceItemList: List<CityChoiceItem>) {
         val callback = CityCallback(adapter.cityChoiceItems, newCityChoiceItemList)

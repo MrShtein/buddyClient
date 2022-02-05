@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,11 +50,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val MAIL_FAILURE_TEXT = "Нет интернета"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
         const val DESTINATION_KEY = "destination_key"
+        const val CITY_REQUEST_KEY = "new_city_request"
+        const val CITY_BUNDLE_KEY = "new_city_bundle"
     }
-
-    private lateinit var adapter: CitiesAdapter
-    private var citiesGetHelper: CitiesGetHelper = CitiesGetHelper(0)
-    private var isCitiesVisible = false
 
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
@@ -79,6 +78,14 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var emailCallBack: MailCallback
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(CITY_REQUEST_KEY) { requestKey, bundle ->
+            val newCity = bundle.getString(CITY_BUNDLE_KEY)
+            if (newCity != null) setCity(newCity)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,13 +95,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         initMaskForPhone(phoneNumber)
 
     }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        goToCityInput()
-    }
-
-
 
     private fun initViews(view: View) {
         userName = view.findViewById(R.id.user_settings_name_input)
@@ -169,6 +169,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         city.setText(visibleCityInfo)
     }
 
+    private fun setCity(cityInfo: String) {
+        val (id, name, region) = cityInfo.split(",")
+        val visibleCityInfo = "$name, $region"
+        cityId = id.toLong()
+        city.setText(visibleCityInfo)
+    }
+
     private fun upgradePersonInfo() {
         emailCheck()
     }
@@ -204,6 +211,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         city.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) {
                 nestedScroll.smoothScrollTo(0, cityContainer.top)
+                findNavController().navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
             }
 
         }
@@ -265,16 +273,12 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         var gender = getGender()
 
-        val (city) = storage
-            .readString(SharedPreferences.USER_CITY_KEY, "")
-            .split(",")
-
         val personRequest = PersonRequest(
             personId,
             userName.text.toString(),
             userSurname.text.toString(),
             gender,
-            city.toLong(),
+            cityId,
             phoneNumber.text.toString(),
             email.text.toString(),
             newPwd.text.toString()

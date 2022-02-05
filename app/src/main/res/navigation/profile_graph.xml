@@ -19,5 +19,18 @@
         android:id="@+id/userSettingsFragment"
         android:name="mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment"
         android:label="UserSettingsFragment"
-        tools:layout="@layout/user_settings_fragment"/>
+        tools:layout="@layout/user_settings_fragment">
+        <action
+            android:id="@+id/action_userSettingsFragment_to_cityChoiceFragment"
+            app:destination="@id/cityChoiceFragmentForUserSettings" />
+    </fragment>
+     <fragment
+        android:id="@+id/cityChoiceFragmentForUserSettings"
+        android:name="mr.shtein.buddyandroidclient.screens.CityChoiceFragment"
+        android:label="city_choice_fragment"
+        tools:layout="@layout/city_choice_fragment" >
+        <action
+            android:id="@+id/action_cityChoiceFragment_to_userSettingsFragment"
+            app:destination="@id/userSettingsFragment" />
+    </fragment>
 </navigation>

@@ -21,11 +21,12 @@ class CitiesGetHelper(
 
 
 
-    fun onCitiesChanged(letters: String, cityChoiceItems: List<CityChoiceItem>): List<CityChoiceItem> {
+    fun onCitiesChanged(letters: String, cityChoiceItems: List<CityChoiceItem>)
+    : List<CityChoiceItem> {
         var newCityChoiceItemList: List<CityChoiceItem> = mutableListOf()
         when {
             letters.isEmpty() -> {
-                newCityChoiceItemList = cityChoiceItems
+                newCityChoiceItemList = getCities()
                 lettersCount = 0
             }
             letters.length < lettersCount -> {

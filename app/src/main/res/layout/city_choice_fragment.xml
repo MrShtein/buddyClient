@@ -50,7 +50,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/city_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
         android:background="#80FFFFFF"
         android:layoutAnimation="@anim/layout_animation"
@@ -60,7 +60,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="@id/input_text_for_city_choice_container"
         app:layout_constraintStart_toStartOf="@id/input_text_for_city_choice_container"
-        app:layout_constraintTop_toBottomOf="@id/input_text_for_city_choice_container" />
+        app:layout_constraintTop_toBottomOf="@id/input_text_for_city_choice_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="3dp"
+        android:layout_marginBottom="10dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
