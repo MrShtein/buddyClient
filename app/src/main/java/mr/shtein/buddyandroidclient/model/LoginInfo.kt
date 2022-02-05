@@ -8,5 +8,6 @@ data class LoginInfo(
   val token: String,
   val login: String,
   val role: String,
+  val gender: String,
   val isLocked: Boolean
 )

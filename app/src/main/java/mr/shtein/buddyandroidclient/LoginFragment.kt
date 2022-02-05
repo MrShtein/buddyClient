@@ -75,6 +75,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             sharedPropertyStore.writeString(SharedPreferences.USER_NAME_KEY, loginInfo.name)
                             sharedPropertyStore.writeString(SharedPreferences.USER_SURNAME_KEY, loginInfo.surname)
                             sharedPropertyStore.writeString(SharedPreferences.USER_PHONE_NUMBER_KEY, loginInfo.phone)
+                            sharedPropertyStore.writeString(SharedPreferences.USER_GENDER_KEY, loginInfo.gender)
 
                         findNavController().navigate(R.id.action_loginFragment_to_bottomNavFragment)
                         } else {
