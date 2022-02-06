@@ -28,6 +28,7 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 private const val MAG = "City"
 const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
+const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
@@ -78,7 +79,9 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                 sharedPropertyWriter.writeString(SharedPreferences.USER_CITY_KEY, cityForStorage)
 
                 if (navLabel == "UserSettingsFragment") {
-                    setFragmentResult(CITY_REQUEST_KEY, bundleOf(CITY_BUNDLE_KEY to cityForStorage))
+                    setFragmentResult(CITY_REQUEST_KEY, bundleOf(
+                        CITY_BUNDLE_KEY to cityForStorage,
+                        IS_FROM_CITY_BUNDLE_KEY to true))
                     navController.popBackStack()
                 } else {
                     navController.navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)

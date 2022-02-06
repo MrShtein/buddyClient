@@ -52,10 +52,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val DESTINATION_KEY = "destination_key"
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
+        const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
     }
 
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
+    private var isFromCityChoice: Boolean? = null
+
 
     private lateinit var userName: TextInputEditText
     private lateinit var userSurname: TextInputEditText
@@ -77,11 +80,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var storage: SharedPreferences
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var emailCallBack: MailCallback
+    private lateinit var card: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(CITY_REQUEST_KEY) { requestKey, bundle ->
             val newCity = bundle.getString(CITY_BUNDLE_KEY)
+            isFromCityChoice = bundle.getBoolean(IS_FROM_CITY_BUNDLE_KEY)
             if (newCity != null) setCity(newCity)
         }
     }
@@ -181,6 +186,15 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun setListeners() {
+
+        cityContainer.viewTreeObserver.addOnGlobalLayoutListener(object :ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                cityContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                if (isFromCityChoice != null && isFromCityChoice == true) nestedScroll.scrollTo(0, cityContainer.top)
+            }
+        })
+
+
         saveBtn.setOnClickListener {
             saveBtn.isCheckable = false
             upgradePersonInfo()
