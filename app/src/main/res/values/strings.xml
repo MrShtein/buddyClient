@@ -80,5 +80,10 @@
     <string name="user_settings_save_btn">Сохранить изменения</string>
     <string name="city_choice_description_text">Введите ваш город и мы покажем животных рядом с вами</string>
     <string name="city_choice_description_text_else_from_settings">Введите Ваш новый город</string>
+    <string name="user_settings_icon_description">Иконка на карточке настроек пользователя</string>
+    <string name="user_settings_notification_text">Уведомление</string>
+    <string name="user_settings_dialog_clarification_text">Вы точно хотите \n изменить настройки?</string>
+    <string name="yes_btn">ДА!</string>
+    <string name="no_btn">Нет</string>
 
 </resources>

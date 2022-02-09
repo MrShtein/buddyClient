@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MyLayout" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="backgroundTint">@color/input_background</item>
         <item name="colorPrimary">@color/cian5</item>
@@ -7,11 +8,12 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
     </style>
-    
+
     <style name="myst" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
 
     </style>
+
     <style name="ShoppingList.BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet">
         <item name="backgroundTint">@color/white</item>
 
@@ -59,6 +61,10 @@
     <style name="changeEditTextPadding" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="MyDialog" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
 </resources>

@@ -1,27 +1,24 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
-import android.animation.ObjectAnimator
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.adapters.CitiesAdapter
-import mr.shtein.buddyandroidclient.adapters.OnCityListener
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
@@ -30,6 +27,7 @@ import mr.shtein.buddyandroidclient.model.PersonRequest
 import mr.shtein.buddyandroidclient.model.PersonResponse
 import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.*
@@ -39,7 +37,6 @@ import retrofit2.Response
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
-import java.lang.Exception
 import kotlin.properties.Delegates
 
 
@@ -121,6 +118,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         saveBtn = view.findViewById(R.id.user_settings_save_btn)
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
+
+        card = view.findViewById(R.id.card)
+
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
 
@@ -197,7 +197,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         saveBtn.setOnClickListener {
             saveBtn.isCheckable = false
-            upgradePersonInfo()
+            createAndShowDialog()
             saveBtn.isCheckable = true
         }
 
@@ -224,7 +224,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         city.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) {
-                nestedScroll.smoothScrollTo(0, cityContainer.top)
                 findNavController().navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
             }
 
@@ -284,6 +283,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun upgradePerson() {
+
+
 
         var gender = getGender()
 
@@ -375,6 +376,37 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun makeStringForCityStorage(city: CityChoiceItem): String {
         return "${city.city_id},${city.name},${city.region}"
+    }
+
+    private fun createAndShowDialog() {
+
+        val dialog =  MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
+//            .setTitle("Уведомление")
+//            .setMessage("Вы точно хотите изменить настройки?")
+//            .setNegativeButton("Нет") { dialog, which ->
+//                dialog.cancel()
+//            }
+//            .setPositiveButton("Да") { dialog, which ->
+//                upgradePersonInfo()
+//            }
+
+            .setView(R.layout.user_settings_dialog)
+            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            .show()
+
+
+        val positiveDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_positive_btn)
+        val negativeDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_negative_btn)
+
+        negativeDialogBtn?.setOnClickListener {
+            dialog.cancel()
+        }
+
+        positiveDialogBtn?.setOnClickListener {
+            Toast.makeText(requireContext(), "TEST_TEST_TEST_TEST", Toast.LENGTH_LONG).show()
+            upgradePersonInfo()
+        }
+
     }
 
 
