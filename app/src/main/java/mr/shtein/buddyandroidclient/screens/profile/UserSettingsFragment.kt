@@ -363,9 +363,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     val personResponse: PersonResponse? = response.body()
                     if (personResponse?.isUpgrade == true) {
                         saveNewDataToStore(personResponse.newToken)
-                        motionLayout?.transitionToEnd {
-                            Toast.makeText(requireContext(), "TEST_TEST", Toast.LENGTH_LONG).show()
-                        }
+                        motionLayout?.transitionToEnd()
                     } else {
                         Toast.makeText(
                             requireContext(),
