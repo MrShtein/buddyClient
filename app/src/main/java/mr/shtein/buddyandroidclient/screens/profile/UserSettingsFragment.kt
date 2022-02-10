@@ -1,14 +1,18 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.NestedScrollView
@@ -17,8 +21,13 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
@@ -38,6 +47,8 @@ import retrofit2.Response
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
+import java.io.File
+import java.io.InputStream
 import kotlin.properties.Delegates
 
 
@@ -51,6 +62,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
+        const val AVATAR_FILE_NAME = "avatar"
     }
 
     private var personId by Delegates.notNull<Long>()
@@ -79,6 +91,10 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var emailCallBack: MailCallback
     private lateinit var dialog: AlertDialog
+    private lateinit var avatarImg: ShapeableImageView
+    private lateinit var resultLauncher: ActivityResultLauncher<String>
+    private var coroutineScope = CoroutineScope(Dispatchers.Main)
+
     private var motionLayout: MotionLayout? = null
 
 
@@ -90,9 +106,22 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             if (newCity != null) setCity(newCity)
         }
 
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if (uri != null) {
+                    avatarImg.setImageURI(uri)
+                    coroutineScope.launch {
+                        copyFileToInternalStorage(uri)
+                    }
+                    storage.writeString(SharedPreferences.USER_AVATAR_URI_KEY,
+                        "${requireContext().filesDir}/$AVATAR_FILE_NAME")
+                }
+            }
+
+
         //val inflater = LayoutInflater.from(requireContext())
-       // val userSettingsDialog = inflater.inflate(R.layout.user_settings_dialog, null)
-       //
+        // val userSettingsDialog = inflater.inflate(R.layout.user_settings_dialog, null)
+        //
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -123,10 +152,12 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         repeatedNewPwdContainer =
             view.findViewById(R.id.user_settings_repeat_new_pwd_input_container)
         saveBtn = view.findViewById(R.id.user_settings_save_btn)
+        avatarImg = view.findViewById(R.id.user_settings_avatar_button)
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+
 
         emailCallBack = object : MailCallback {
             override fun onSuccess() {
@@ -162,6 +193,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         phoneNumber.setText(storage.readString(SharedPreferences.USER_PHONE_NUMBER_KEY, ""))
         email.setText(storage.readString(SharedPreferences.USER_LOGIN_KEY, ""))
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+
+        setImageToAvatar()
     }
 
     private fun setGender(sharedPref: SharedPreferences) {
@@ -193,10 +226,14 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun setListeners() {
 
-        cityContainer.viewTreeObserver.addOnGlobalLayoutListener(object :ViewTreeObserver.OnGlobalLayoutListener {
+        cityContainer.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 cityContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                if (isFromCityChoice != null && isFromCityChoice == true) nestedScroll.scrollTo(0, cityContainer.top)
+                if (isFromCityChoice != null && isFromCityChoice == true) nestedScroll.scrollTo(
+                    0,
+                    cityContainer.top
+                )
             }
         })
 
@@ -205,6 +242,11 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             saveBtn.isCheckable = false
             createAndShowDialog()
             saveBtn.isCheckable = true
+        }
+
+        avatarImg.setOnClickListener {
+            val type = "image/*"
+            resultLauncher.launch(type)
         }
 
         oldPwd.setOnFocusChangeListener { _, _ ->
@@ -293,7 +335,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun upgradePerson() {
-
 
 
         var gender = getGender()
@@ -393,7 +434,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun createAndShowDialog() {
 
-        dialog =  MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
+        dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.user_settings_dialog)
             .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
@@ -418,12 +459,24 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             dialog.dismiss()
             findNavController().popBackStack()
         }
-
-
-
     }
 
+    private fun setImageToAvatar() {
+        val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
+        if (imageUri == "") {
+            avatarImg.setImageResource(R.drawable.user_profile_photo_hint)
+        } else {
+            avatarImg.setImageURI(Uri.parse(imageUri))
+        }
+    }
 
+    private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
+        val file = File(requireContext().filesDir, AVATAR_FILE_NAME)
+        val fileStream = requireContext().contentResolver.openInputStream(uri)
+        if (fileStream != null) {
+            file.writeBytes(fileStream.readBytes())
+        }
+    }
 
 
 }
