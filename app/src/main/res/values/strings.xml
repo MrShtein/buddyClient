@@ -83,7 +83,9 @@
     <string name="user_settings_icon_description">Иконка на карточке настроек пользователя</string>
     <string name="user_settings_notification_text">Уведомление</string>
     <string name="user_settings_dialog_clarification_text">Вы точно хотите \n изменить настройки?</string>
+    <string name="user_settings_dialog_clarification_text_end">Поздравляем Ваш пароль успешно\n изменен</string>
     <string name="yes_btn">ДА!</string>
     <string name="no_btn">Нет</string>
+    <string name="user_settings_dialog_ok_btn">Ok</string>
 
 </resources>

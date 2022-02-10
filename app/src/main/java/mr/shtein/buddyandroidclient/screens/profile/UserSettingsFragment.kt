@@ -1,20 +1,21 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -77,7 +78,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var storage: SharedPreferences
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var emailCallBack: MailCallback
-    private lateinit var card: MaterialCardView
+    private lateinit var dialog: AlertDialog
+    private var motionLayout: MotionLayout? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +89,10 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             isFromCityChoice = bundle.getBoolean(IS_FROM_CITY_BUNDLE_KEY)
             if (newCity != null) setCity(newCity)
         }
+
+        //val inflater = LayoutInflater.from(requireContext())
+       // val userSettingsDialog = inflater.inflate(R.layout.user_settings_dialog, null)
+       //
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,9 +125,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         saveBtn = view.findViewById(R.id.user_settings_save_btn)
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
-
-        card = view.findViewById(R.id.card)
-
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
 
@@ -130,17 +134,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             }
 
             override fun onFail(error: Exception) {
+                dialog.dismiss()
                 nestedScroll.smoothScrollTo(0, emailContainer.top)
                 emailContainer.error = IS_PERSON_WITH_EMAIL_EXIST
                 emailContainer.isErrorEnabled = true
             }
 
             override fun onFailure() {
+                dialog.dismiss()
                 Toast.makeText(requireContext(), MAIL_FAILURE_TEXT, Toast.LENGTH_LONG).show()
-
             }
 
             override fun onNoAuthorize() {
+                dialog.dismiss()
                 Toast.makeText(requireContext(), NO_AUTHORIZE_TEXT, Toast.LENGTH_LONG).show()
             }
         }
@@ -233,7 +239,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun emailCheck() {
         val emailForCheck = email.text.toString()
         val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
-        val emailValidator = EmailValidator(emailCheckRequest, emailCallBack)
+        val emailValidator = EmailValidator(emailCheckRequest, emailCallBack, dialog)
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
@@ -260,18 +266,22 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 )
 
             } catch (e: OldPasswordsIsNotValidException) {
+                dialog.dismiss()
                 oldPwdContainer.error = e.message
                 oldPwdContainer.isErrorEnabled = true
                 saveBtn.isCheckable = true
             } catch (e: EmptyFieldException) {
+                dialog.dismiss()
                 newPwdContainer.error = e.message
                 newPwdContainer.isErrorEnabled = true
                 saveBtn.isCheckable = true
             } catch (e: TooShortLengthException) {
+                dialog.dismiss()
                 newPwdContainer.error = e.message
                 newPwdContainer.isErrorEnabled = true
                 saveBtn.isCheckable = true
             } catch (e: PasswordsIsDifferentException) {
+                dialog.dismiss()
                 repeatedNewPwdContainer.error = e.message
                 repeatedNewPwdContainer.isErrorEnabled = true
                 saveBtn.isCheckable = true
@@ -312,6 +322,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     val personResponse: PersonResponse? = response.body()
                     if (personResponse?.isUpgrade == true) {
                         saveNewDataToStore(personResponse.newToken)
+                        motionLayout?.transitionToEnd {
+                            Toast.makeText(requireContext(), "TEST_TEST", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -380,15 +393,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun createAndShowDialog() {
 
-        val dialog =  MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
-//            .setTitle("Уведомление")
-//            .setMessage("Вы точно хотите изменить настройки?")
-//            .setNegativeButton("Нет") { dialog, which ->
-//                dialog.cancel()
-//            }
-//            .setPositiveButton("Да") { dialog, which ->
-//                upgradePersonInfo()
-//            }
+        dialog =  MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.user_settings_dialog)
             .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
@@ -397,15 +402,24 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         val positiveDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_positive_btn)
         val negativeDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_negative_btn)
+        val okBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_ok_btn)
+
+        motionLayout = dialog.findViewById(R.id.user_settings_dialog_motion_layout)
 
         negativeDialogBtn?.setOnClickListener {
             dialog.cancel()
         }
 
         positiveDialogBtn?.setOnClickListener {
-            Toast.makeText(requireContext(), "TEST_TEST_TEST_TEST", Toast.LENGTH_LONG).show()
             upgradePersonInfo()
         }
+
+        okBtn?.setOnClickListener {
+            dialog.dismiss()
+            findNavController().popBackStack()
+        }
+
+
 
     }
 
