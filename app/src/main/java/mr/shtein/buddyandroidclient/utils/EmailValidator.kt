@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.utils
 
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
@@ -12,7 +13,8 @@ import retrofit2.Response
 
 class EmailValidator(
    val emailCheckRequest: EmailCheckRequest,
-   val emailCallback: MailCallback
+   val emailCallback: MailCallback,
+   val dialog: AlertDialog?
     ): Validator() {
 
     companion object {
@@ -38,12 +40,16 @@ class EmailValidator(
             assertIsValidEmail(value)
             isEmailExists(emailCheckRequest, emailCallback)
         } catch (error: EmptyFieldException) {
+            dialog?.dismiss()
             inputContainer.error = error.message
         } catch (error: IllegalEmailException) {
+            dialog?.dismiss()
             inputContainer.error = error.message
         } catch (error: ExistedEmailException) {
+            dialog?.dismiss()
             inputContainer.error = error.message
         } catch (error: TooShortLengthException) {
+            dialog?.dismiss()
             inputContainer.error = error.message
         }
     }

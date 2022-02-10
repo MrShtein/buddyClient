@@ -82,7 +82,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val emailCheckRequest = EmailCheckRequest(emailInput.text.toString())
-                emailValidator = EmailValidator(emailCheckRequest, callbackForEmail)
+                emailValidator = EmailValidator(emailCheckRequest, callbackForEmail, null)
                 emailValidator.emailChecker(emailInput, emailInputContainer)
                 regInfoModel.isCheckedEmail = true
             } else if (hasFocus && emailInputContainer.isErrorEnabled) {
