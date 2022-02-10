@@ -87,5 +87,8 @@
     <string name="yes_btn">ДА!</string>
     <string name="no_btn">Нет</string>
     <string name="user_settings_dialog_ok_btn">Ok</string>
+    <string name="add_kennel_fragment_kennels_btn_text">Ваши приюты</string>
+    <string name="add_kennel_fragment_volunteer_btn_text">Вы волонтер</string>
+    <string name="add_kennel_fragment_add_btn_text">Добавить приют</string>
 
 </resources>
