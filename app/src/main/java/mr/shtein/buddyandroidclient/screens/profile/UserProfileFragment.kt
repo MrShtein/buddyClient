@@ -7,33 +7,50 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 
 class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
-    private var profileAvatarImg: ImageView? = null
-    private var profileName: TextView? = null
-    private var profileStatus: TextView? = null
-    private var profileSettingsBtn: ImageButton? = null
+    private var personAvatarImg: ImageView? = null
+    private var personName: TextView? = null
+    private var personStatus: TextView? = null
+    private var personSettingsBtn: ImageButton? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
+        setTextToViews()
         setListeners()
     }
 
     private fun initViews(view: View) {
-        profileAvatarImg = view.findViewById(R.id.profile_avatar_img)
-        profileName = view.findViewById(R.id.profile_name_text)
-        profileStatus = view.findViewById(R.id.profile_status_text)
-        profileSettingsBtn = view.findViewById(R.id.profile_settings_btn)
+        personAvatarImg = view.findViewById(R.id.profile_avatar_img)
+        personName = view.findViewById(R.id.profile_name_text)
+        personStatus = view.findViewById(R.id.profile_status_text)
+        personSettingsBtn = view.findViewById(R.id.profile_settings_btn)
     }
 
     private fun setListeners() {
-        profileSettingsBtn?.setOnClickListener {
+        personSettingsBtn?.setOnClickListener {
             findNavController().navigate(R.id.userProfileFragment_to_userSettingsFragment)
         }
+    }
+
+    private fun setTextToViews() {
+        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+        val name = storage.readString(SharedPreferences.USER_NAME_KEY, "")
+        val status = storage.readString(SharedPreferences.USER_ROLE_KEY, "")
+
+        personName?.text = name
+        personStatus?.text =
+            when (status) {
+                "ROLE_USER" -> "Пользователь"
+                "ROLE_ADMIN" -> "Администратор"
+                "ROLE_VOLUNTEER" -> "Волонтер"
+                else -> ""
+            }
     }
 
 
