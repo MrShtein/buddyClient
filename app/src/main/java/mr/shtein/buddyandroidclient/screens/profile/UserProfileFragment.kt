@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
@@ -20,7 +21,11 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var storage: SharedPreferences =  SharedPreferences(requireContext(),
+            SharedPreferences.PERSISTENT_STORAGE_NAME)
+
         initViews(view)
+        setImageToAvatar(storage)
         setTextToViews()
         setListeners()
     }
@@ -51,6 +56,15 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
                 "ROLE_VOLUNTEER" -> "Волонтер"
                 else -> ""
             }
+    }
+
+    private fun setImageToAvatar(storage: SharedPreferences) {
+        val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
+        if (imageUri == "") {
+            personAvatarImg?.setImageResource(R.drawable.user_profile_photo_hint)
+        } else {
+            personAvatarImg?.setImageURI(Uri.parse(imageUri))
+        }
     }
 
 

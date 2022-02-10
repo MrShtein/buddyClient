@@ -19,14 +19,16 @@
         android:backgroundTint="@color/transparent"
          />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_avatar_img"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
         android:src="@drawable/user_profile_photo_hint"/>
 
     <View
