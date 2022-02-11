@@ -2,15 +2,13 @@ package mr.shtein.buddyandroidclient.screens
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
@@ -31,49 +29,17 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
                 SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
             val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
             if (token == "") {
-                createAndShowBottomSheetDialog(bottomNav)
+                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, this)
             } else {
                NavigationUI.onNavDestinationSelected(it, navController)
             }
             true
         }
-
-
     }
 
-    private fun findRootNavController(): NavController {
-        val navHost =
-            activity?.supportFragmentManager?.findFragmentById(R.id.main_host_fragment) as NavHostFragment
-        return navHost.navController
-    }
 
-    private fun createAndShowBottomSheetDialog(view: View) {
-        val bottomSheetDialog = BottomSheetDialog(view.context, R.style.myst)
-        bottomSheetDialog.setContentView(R.layout.signup_and_signin_bottom_sheet)
-        val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
 
-        val toRegistrationButton: Button? =
-            bottomSheet?.findViewById(R.id.to_registration_fragment_button)
-        with(toRegistrationButton) {
-            this?.setOnClickListener {
-                bottomSheetDialog.dismiss()
-                findRootNavController().navigate(R.id.action_bottomNavFragment_to_userRegistrationFragment)
-            }
-        }
 
-        val toLoginFragmentButton: Button? =
-            bottomSheet?.findViewById(R.id.to_login_fragment_button)
-        with(toLoginFragmentButton) {
-            this?.setOnClickListener {
-                bottomSheetDialog.dismiss()
-                findRootNavController().navigate(R.id.action_bottomNavFragment_to_loginFragment)
-            }
-        }
-
-        bottomSheet?.setBackgroundResource(R.color.transparent)
-
-        bottomSheetDialog.show()
-    }
 
 
 }
