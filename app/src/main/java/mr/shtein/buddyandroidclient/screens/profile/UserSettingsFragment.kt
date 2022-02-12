@@ -1,7 +1,5 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -48,7 +46,6 @@ import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import java.io.File
-import java.io.InputStream
 import kotlin.properties.Delegates
 
 
@@ -462,7 +459,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun setImageToAvatar() {
         val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
         if (imageUri == "") {
-            avatarImg.setImageResource(R.drawable.user_profile_photo_hint)
+            avatarImg.setImageResource(R.drawable.photo_hint)
         } else {
             avatarImg.setImageURI(Uri.parse(imageUri))
         }
