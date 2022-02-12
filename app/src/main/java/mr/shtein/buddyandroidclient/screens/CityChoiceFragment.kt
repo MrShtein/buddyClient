@@ -78,13 +78,28 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                 val cityForStorage = makeStringForCityStorage(cityItem)
                 sharedPropertyWriter.writeString(SharedPreferences.USER_CITY_KEY, cityForStorage)
 
-                if (navLabel == "UserSettingsFragment") {
-                    setFragmentResult(CITY_REQUEST_KEY, bundleOf(
-                        CITY_BUNDLE_KEY to cityForStorage,
-                        IS_FROM_CITY_BUNDLE_KEY to true))
-                    navController.popBackStack()
-                } else {
-                    navController.navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
+                when (navLabel) {
+                    "UserSettingsFragment" -> {
+                        setFragmentResult(
+                            CITY_REQUEST_KEY, bundleOf(
+                                CITY_BUNDLE_KEY to cityForStorage,
+                                IS_FROM_CITY_BUNDLE_KEY to true
+                            )
+                        )
+                        navController.popBackStack()
+                    }
+                    "KennelSettingsFragment" -> {
+                        setFragmentResult(
+                            CITY_REQUEST_KEY, bundleOf(
+                                CITY_BUNDLE_KEY to cityForStorage,
+                                IS_FROM_CITY_BUNDLE_KEY to true
+                            )
+                        )
+                        navController.popBackStack()
+                    }
+                    else -> {
+                        navController.navigate(R.id.action_cityChoiceFragment2_to_kennelSettingsFragment)
+                    }
                 }
             }
         })

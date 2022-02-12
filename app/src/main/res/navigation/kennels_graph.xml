@@ -18,5 +18,18 @@
         android:id="@+id/kennelSettingsFragment"
         android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelSettingsFragment"
         android:label="KennelSettingsFragment"
-        tools:layout="@layout/kennel_settings_fragment"/>
+        tools:layout="@layout/kennel_settings_fragment">
+        <action
+            android:id="@+id/action_kennelSettingsFragment_to_cityChoiceFragment2"
+            app:destination="@id/cityChoiceFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityChoiceFragment2"
+        android:name="mr.shtein.buddyandroidclient.screens.CityChoiceFragment"
+        android:label="city_choice_fragment"
+        tools:layout="@layout/city_choice_fragment" >
+        <action
+            android:id="@+id/action_cityChoiceFragment2_to_kennelSettingsFragment"
+            app:destination="@id/kennelSettingsFragment" />
+    </fragment>
 </navigation>
