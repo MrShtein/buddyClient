@@ -98,7 +98,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                         navController.popBackStack()
                     }
                     else -> {
-                        navController.navigate(R.id.action_cityChoiceFragment2_to_kennelSettingsFragment)
+                        navController.navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
                     }
                 }
             }
