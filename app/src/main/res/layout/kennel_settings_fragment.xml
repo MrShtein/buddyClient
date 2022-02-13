@@ -57,15 +57,15 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_organization_name_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_organization_name_label"
+            android:hint="@string/kennel_settings_name_hint"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_organization_name_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_name_hint"
-                android:textColor="@color/grey3"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -88,15 +88,15 @@
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_phone_number_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_phone_number_label"
+            android:hint="@string/kennel_settings_phone_number_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_phone_number_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_phone_number_hint"
-                android:textColor="@color/grey3"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -117,15 +117,16 @@
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_label"
+            android:hint="@string/kennel_settings_email_hint"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_email_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_email_hint"
-                android:textColor="@color/grey3"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -146,15 +147,15 @@
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_city_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_city_label"
+            android:hint="@string/kennel_settings_city_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_city_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_city_hint"
-                android:textColor="@color/grey3"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -175,15 +176,15 @@
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_address_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_address_label"
+            android:hint="@string/kennel_settings_street_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_street_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_street_hint"
-                android:textColor="@color/grey3"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -193,14 +194,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container"
+            android:hint="@string/kennel_settings_house_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_house_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_house_hint"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -211,15 +213,15 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             app:layout_constraintStart_toEndOf="@id/kennel_settings_house_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container"
+            android:hint="@string/kennel_settings_building_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_building_input"
                 style="@style/changeEditTextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/kennel_settings_building_hint"
-                android:textColor="@color/grey3"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -240,15 +242,15 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_label">
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_label"
+            android:hint="@string/kennel_settings_identification_number_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_identification_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/changeEditTextPadding"
-                android:text="@string/kennel_settings_identification_number_hint"
-                android:textColor="@color/grey3"/>
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

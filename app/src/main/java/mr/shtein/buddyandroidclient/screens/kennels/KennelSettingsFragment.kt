@@ -3,6 +3,7 @@ package mr.shtein.buddyandroidclient.screens.kennels
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.util.TimingLogger
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,8 +18,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
+import mr.shtein.buddyandroidclient.exceptions.validate.IllegalEmailException
 import mr.shtein.buddyandroidclient.exceptions.validate.ValidationException
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
+import mr.shtein.buddyandroidclient.utils.EmailValidator
 import mr.shtein.buddyandroidclient.utils.KennelValidationStore
 import mr.shtein.buddyandroidclient.utils.VariousValidator
 import ru.tinkoff.decoro.MaskImpl
@@ -110,7 +113,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     }
 
     private fun setListeners() {
-        cityInput.setOnFocusChangeListener() {_, isFocused ->
+        cityInput.setOnFocusChangeListener() { _, isFocused ->
             if (isFocused) {
                 cityInput.inputType = InputType.TYPE_NULL
                 findNavController().navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment2)
@@ -125,8 +128,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         nameInput.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) {
                 if (nameContainer.isErrorEnabled) nameContainer.isErrorEnabled = false
-                nameInput.setText("")
-                nameInput.setTextColor(requireContext().getColor(R.color.black))
             } else {
                 val kennelName = nameInput.text.toString()
                 try {
@@ -140,20 +141,31 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
         phoneNumberInput.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) {
-                if (phoneNumberInputContainer.isErrorEnabled) {
+                if (phoneNumberInputContainer.isErrorEnabled)
                     phoneNumberInputContainer.isErrorEnabled = false
-                } else {
-                    phoneNumberInput.setTextColor(requireContext().getColor(R.color.black))
-                    phoneNumberInput.setText("")
-                }
-                nameInput.setTextColor(requireContext().getColor(R.color.black))
             } else {
                 val kennelPhoneNum = phoneNumberInput.text.toString()
                 try {
-                    validationStoreForFields.isValidPhone = VariousValidator.isValidPhoneNum(kennelPhoneNum)
+                    validationStoreForFields.isValidPhone =
+                        VariousValidator.isValidPhoneNum(kennelPhoneNum)
                 } catch (ex: ValidationException) {
                     phoneNumberInputContainer.error = ex.message
                     phoneNumberInputContainer.isErrorEnabled = true
+                }
+            }
+        }
+
+        emailInput.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused) {
+                if (emailInputContainer.isErrorEnabled) emailInputContainer.isErrorEnabled = false
+            } else {
+                val emailInputText = emailInput.text.toString()
+                try {
+                    validationStoreForFields.isValidEmail =
+                        EmailValidator.assertIsValidEmail(emailInputText)
+                } catch (ex: IllegalEmailException) {
+                    emailInputContainer.error = ex.message
+                    emailInputContainer.isErrorEnabled = true
                 }
             }
         }
