@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/user_settings_scroll_view"
+    android:id="@+id/kennel_settings_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="60dp">
@@ -243,6 +243,8 @@
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_label"
+            app:counterEnabled="true"
+            app:counterMaxLength="12"
             android:hint="@string/kennel_settings_identification_number_hint">
 
             <com.google.android.material.textfield.TextInputEditText

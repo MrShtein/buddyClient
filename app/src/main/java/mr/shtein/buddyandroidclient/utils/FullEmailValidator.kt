@@ -11,11 +11,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EmailValidator(
+class FullEmailValidator (
    val emailCheckRequest: EmailCheckRequest,
    val emailCallback: MailCallback,
    val dialog: AlertDialog?
-    ): Validator() {
+    ): Validator, EmptyFieldValidator() {
+
+    override fun validateValue(email: String): Boolean {
+        return assertIsValidEmail(email)
+    }
 
     companion object {
          const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
@@ -33,7 +37,7 @@ class EmailValidator(
 
     }
 
-    public fun emailChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
+    fun emailChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
         try {
             val value = input.text.toString()
             assertIsNotEmptyField(value)

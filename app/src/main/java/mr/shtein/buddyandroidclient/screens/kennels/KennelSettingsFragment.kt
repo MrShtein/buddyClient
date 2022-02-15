@@ -3,10 +3,10 @@ package mr.shtein.buddyandroidclient.screens.kennels
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import android.util.TimingLogger
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -17,16 +17,12 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.IllegalEmailException
-import mr.shtein.buddyandroidclient.exceptions.validate.ValidationException
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
-import mr.shtein.buddyandroidclient.utils.EmailValidator
-import mr.shtein.buddyandroidclient.utils.KennelValidationStore
-import mr.shtein.buddyandroidclient.utils.VariousValidator
+import mr.shtein.buddyandroidclient.utils.*
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
+import java.lang.Exception
 
 
 class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
@@ -35,6 +31,14 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val AVATAR_FILE_NAME = "avatar"
+        private const val KENNEL_NAME_VALIDATION_KEY = "isValidName"
+        private const val PHONE_NUM_VALIDATION_KEY = "isValidPhone"
+        private const val EMAIL_VALIDATION_KEY = "isValidEmail"
+        private const val CITY_VALIDATION_KEY = "isValidCity"
+        private const val STREET_VALIDATION_KEY = "isValidStreet"
+        private const val HOUSE_VALIDATION_KEY = "isValidHouseNum"
+        private const val IDENTIFICATION_NUM_VALIDATION_KEY = "isValidIdentificationNum"
+
     }
 
     private lateinit var avatarImg: ShapeableImageView
@@ -54,6 +58,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private lateinit var identificationNumberInputContainer: TextInputLayout
     private lateinit var identificationNumberInput: TextInputEditText
     private lateinit var saveBtn: MaterialButton
+    private lateinit var nestedScroll: NestedScrollView
     private lateinit var getAvatarLauncher: ActivityResultLauncher<String>
     private var avatarUri: Uri? = null
     private var validationStoreForFields = KennelValidationStore()
@@ -69,7 +74,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         setFragmentResultListener(CITY_REQUEST_KEY) { _, bundle ->
             val newCity = bundle.getString(UserSettingsFragment.CITY_BUNDLE_KEY)
             isFromCityChoice = bundle.getBoolean(UserSettingsFragment.IS_FROM_CITY_BUNDLE_KEY)
-            if (newCity != null) setCity(newCity)
+            if (newCity != null) {
+                setCity(newCity)
+                cityId = newCity.split(",")[0].toLong()
+            }
         }
 
         getAvatarLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -98,6 +106,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         phoneNumberInput = view.findViewById(R.id.kennel_settings_phone_number_input)
         emailInputContainer = view.findViewById(R.id.kennel_settings_email_input_container)
         emailInput = view.findViewById(R.id.kennel_settings_email_input)
+        cityInputContainer = view.findViewById(R.id.kennel_settings_city_input_container)
         cityInput = view.findViewById(R.id.kennel_settings_city_input)
         streetInputContainer = view.findViewById(R.id.kennel_settings_street_input_container)
         streetInput = view.findViewById(R.id.kennel_settings_street_input)
@@ -109,12 +118,14 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         identificationNumberInput =
             view.findViewById(R.id.kennel_settings_identification_number_input)
         saveBtn = view.findViewById(R.id.kennel_settings_save_btn)
+        nestedScroll = view.findViewById(R.id.kennel_settings_scroll_view)
 
     }
 
     private fun setListeners() {
-        cityInput.setOnFocusChangeListener() { _, isFocused ->
-            if (isFocused) {
+        cityInput.setOnFocusChangeListener() { _, hasFocus ->
+            if (hasFocus) {
+                if (cityInputContainer.isErrorEnabled) cityInputContainer.isErrorEnabled = false
                 cityInput.inputType = InputType.TYPE_NULL
                 findNavController().navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment2)
             }
@@ -125,51 +136,104 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             getAvatarLauncher.launch(dataType)
         }
 
-        nameInput.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) {
+        nameInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
                 if (nameContainer.isErrorEnabled) nameContainer.isErrorEnabled = false
             } else {
                 val kennelName = nameInput.text.toString()
-                try {
-                    validationStoreForFields.isValidName = VariousValidator.isEmptyField(kennelName)
-                } catch (ex: EmptyFieldException) {
-                    nameContainer.error = ex.message
-                    nameContainer.isErrorEnabled = true
-                }
+                validateAndHighlightError(
+                    EmptyFieldValidator(),
+                    KENNEL_NAME_VALIDATION_KEY,
+                    kennelName,
+                    nameContainer
+                )
             }
         }
 
-        phoneNumberInput.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) {
+        phoneNumberInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
                 if (phoneNumberInputContainer.isErrorEnabled)
                     phoneNumberInputContainer.isErrorEnabled = false
             } else {
                 val kennelPhoneNum = phoneNumberInput.text.toString()
-                try {
-                    validationStoreForFields.isValidPhone =
-                        VariousValidator.isValidPhoneNum(kennelPhoneNum)
-                } catch (ex: ValidationException) {
-                    phoneNumberInputContainer.error = ex.message
-                    phoneNumberInputContainer.isErrorEnabled = true
-                }
+                validateAndHighlightError(
+                    PhoneNumberValidator(),
+                    PHONE_NUM_VALIDATION_KEY,
+                    kennelPhoneNum,
+                    phoneNumberInputContainer
+                )
             }
         }
 
-        emailInput.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) {
+        emailInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
                 if (emailInputContainer.isErrorEnabled) emailInputContainer.isErrorEnabled = false
             } else {
                 val emailInputText = emailInput.text.toString()
-                try {
-                    validationStoreForFields.isValidEmail =
-                        EmailValidator.assertIsValidEmail(emailInputText)
-                } catch (ex: IllegalEmailException) {
-                    emailInputContainer.error = ex.message
-                    emailInputContainer.isErrorEnabled = true
-                }
+                validateAndHighlightError(
+                    SimpleEmailValidator(),
+                    EMAIL_VALIDATION_KEY,
+                    emailInputText,
+                    emailInputContainer
+                )
             }
         }
 
+        streetInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (streetInputContainer.isErrorEnabled) streetInputContainer.isErrorEnabled = false
+            } else {
+                val cityNameText = cityInput.text.toString()
+                val streetText = streetInput.text.toString()
+                validateAndHighlightError(
+                    EmptyFieldValidator(),
+                    CITY_VALIDATION_KEY,
+                    cityNameText,
+                    cityInputContainer
+                )
+                validateAndHighlightError(
+                    EmptyFieldValidator(),
+                    STREET_VALIDATION_KEY,
+                    streetText,
+                    streetInputContainer
+                )
+            }
+        }
+
+        houseNumberInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (houseNumberContainer.isErrorEnabled) houseNumberContainer.isErrorEnabled = false
+            } else {
+                val houseNum = houseNumberInput.text.toString()
+                validateAndHighlightError(
+                    EmptyFieldValidator(),
+                    HOUSE_VALIDATION_KEY,
+                    houseNum,
+                    houseNumberContainer
+                )
+            }
+        }
+
+        identificationNumberInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (identificationNumberInputContainer.isErrorEnabled)
+                    identificationNumberInputContainer.isErrorEnabled = false
+            } else {
+                val identificationNum = identificationNumberInput.text.toString()
+                validateAndHighlightError(
+                    IdentificationNumberValidator(),
+                    IDENTIFICATION_NUM_VALIDATION_KEY,
+                    identificationNum,
+                    identificationNumberInputContainer
+                )
+
+            }
+        }
+
+        saveBtn.setOnClickListener {
+            saveBtn.isClickable = false
+            checkAllFieldsAndNavigate(it)
+        }
     }
 
     private fun setCity(cityInfo: String) {
@@ -184,6 +248,95 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         maskImpl.isHideHardcodedHead = true
         val watcher = MaskFormatWatcher(maskImpl)
         watcher.installOn(phoneNumberInput)
+    }
+
+    private fun checkAllFieldsAndNavigate(btn: View) {
+        val errorText = "Вы не заполнили данное поле"
+        var needScroll = true
+        var goToNextScreen = true
+        if (validationStoreForFields.mapOfValues[KENNEL_NAME_VALIDATION_KEY] == false) {
+            scrollToElementIfNeed(nameContainer)
+            needScroll = false
+            goToNextScreen = false
+            nameContainer.isErrorEnabled = true
+            nameContainer.error = errorText
+            btn.isClickable = true
+        }
+        if (validationStoreForFields.mapOfValues[PHONE_NUM_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(phoneNumberInputContainer)
+            needScroll = false
+            goToNextScreen = false
+            phoneNumberInputContainer.isErrorEnabled = true
+            phoneNumberInputContainer.error = errorText
+            btn.isClickable = true
+        }
+        if (validationStoreForFields.mapOfValues[EMAIL_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(emailInputContainer)
+            needScroll = false
+            goToNextScreen = false
+            emailInputContainer.isErrorEnabled = true
+            emailInputContainer.error = errorText
+            btn.isClickable = true
+        }
+        if (validationStoreForFields.mapOfValues[CITY_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(cityInputContainer)
+            needScroll = false
+            goToNextScreen = false
+            cityInputContainer.isErrorEnabled = true
+            cityInputContainer.error = errorText
+            btn.isClickable = true
+        }
+        if (validationStoreForFields.mapOfValues[STREET_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(streetInputContainer)
+            needScroll = false
+            goToNextScreen = false
+            streetInputContainer.isErrorEnabled = true
+            streetInputContainer.error = errorText
+            btn.isClickable = true
+        }
+        if (validationStoreForFields.mapOfValues[HOUSE_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(houseNumberContainer)
+            needScroll = false
+            goToNextScreen = false
+            houseNumberContainer.isErrorEnabled = true
+            houseNumberContainer.error = errorText
+            btn.isClickable = true
+        }
+        validateAndHighlightError(
+            IdentificationNumberValidator(),
+            IDENTIFICATION_NUM_VALIDATION_KEY,
+            identificationNumberInput.text.toString(),
+            identificationNumberInputContainer
+            )
+        if (validationStoreForFields.mapOfValues[IDENTIFICATION_NUM_VALIDATION_KEY] == false) {
+            if (needScroll) scrollToElementIfNeed(houseNumberContainer)
+            needScroll = false
+            goToNextScreen = false
+            btn.isClickable = true
+        }
+
+        if (goToNextScreen) {
+            findNavController().navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment)
+        }
+    }
+
+    private fun scrollToElementIfNeed(element: View) {
+        if (element.top < nestedScroll.scrollY) nestedScroll.scrollTo(0, element.top)
+    }
+
+    private fun validateAndHighlightError(
+        validator: Validator,
+        valueNameInStore: String,
+        valueForValidating: String,
+        container: TextInputLayout
+    ) {
+        try {
+            val isValidValue = validator.validateValue(valueForValidating)
+            validationStoreForFields.mapOfValues[valueNameInStore] = isValidValue
+        } catch (ex: Exception) {
+            container.error = ex.message
+            container.isErrorEnabled = true
+        }
     }
 
 

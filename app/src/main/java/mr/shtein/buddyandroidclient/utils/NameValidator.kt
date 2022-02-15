@@ -4,20 +4,27 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 
-class NameValidator: Validator() {
+class NameValidator(
+    private val input: TextInputEditText,
+    private val inputContainer: TextInputLayout
+) : Validator {
 
     companion object {
         private const val INVALID_NAME_MSG: String = "Имя должно быть больше одного знака"
-        private const val NO_INTERNET_MSG = "К сожалению интернет не работает"
     }
 
-    fun nameChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
+    override fun validateValue(valueForValidate: String): Boolean {
         try {
-            val value = input.text.toString()
-            assertIsValidName(value)
+            return nameChecker()
         } catch (error: TooShortLengthException) {
             inputContainer.error = error.message
         }
+        return false
+    }
+
+    fun nameChecker(): Boolean {
+        val value = input.text.toString()
+        return assertIsValidName(value)
     }
 
     private fun assertIsValidName(value: String): Boolean {

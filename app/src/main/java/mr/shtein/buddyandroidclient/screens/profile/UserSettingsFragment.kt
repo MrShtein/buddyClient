@@ -278,7 +278,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun emailCheck() {
         val emailForCheck = email.text.toString()
         val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
-        val emailValidator = EmailValidator(emailCheckRequest, emailCallBack, dialog)
+        val emailValidator = FullEmailValidator(emailCheckRequest, emailCallBack, dialog)
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
@@ -289,7 +289,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     || repeatedNewPwd.text.toString() != ""
 
         if (isPasswordChange) {
-            val passwordValidator = PasswordValidator()
+            val passwordValidator = PasswordEmptyFieldValidator()
             try {
                 passwordValidator.assertIsValidPassword(newPwd.text.toString())
                 passwordValidator.assertIsValidRepeatPassword(

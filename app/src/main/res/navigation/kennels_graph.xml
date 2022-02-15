@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_kennelSettingsFragment_to_cityChoiceFragment2"
             app:destination="@id/cityChoiceFragment2" />
+        <action
+            android:id="@+id/action_kennelSettingsFragment_to_kennelConfirmFragment"
+            app:destination="@id/kennelConfirmFragment" />
     </fragment>
     <fragment
         android:id="@+id/cityChoiceFragment2"
@@ -32,4 +35,9 @@
             android:id="@+id/action_cityChoiceFragment2_to_kennelSettingsFragment"
             app:destination="@id/kennelSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/kennelConfirmFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelConfirmFragment"
+        android:label="KennelConfirmFragment"
+        tools:layout="@layout/kennel_confirm_fragment"/>
 </navigation>
