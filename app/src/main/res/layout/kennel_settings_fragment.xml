@@ -273,8 +273,5 @@
             app:layout_constraintStart_toStartOf="@id/kennel_settings_identification_number_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_input_container"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.core.widget.NestedScrollView>

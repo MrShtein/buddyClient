@@ -107,5 +107,12 @@
     <string name="kennel_settings_house_hint">Дом</string>
     <string name="kennel_settings_building_hint">Корп.</string>
     <string name="kennel_settings_identification_number_hint">123456789123</string>
+    <string name="kennel_confirm_reg_text">Подтверждение регистрации</string>
+    <string name="kennel_confirm_name_label">Название приюта:</string>
+    <string name="kennel_confirm_phone_label">Телефон:</string>
+    <string name="kennel_confirm_email_label">e-mail:</string>
+    <string name="kennel_confirm_address_label">Адрес:</string>
+    <string name="kennel_confirm_identification_number_label">ИНН</string>
+    <string name="kennel_confirm_save_btn">Подтвердить</string>
 
 </resources>

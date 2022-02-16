@@ -6,17 +6,21 @@ import android.text.InputType
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
 import mr.shtein.buddyandroidclient.utils.*
 import ru.tinkoff.decoro.MaskImpl
@@ -31,13 +35,17 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val AVATAR_FILE_NAME = "avatar"
-        private const val KENNEL_NAME_VALIDATION_KEY = "isValidName"
-        private const val PHONE_NUM_VALIDATION_KEY = "isValidPhone"
-        private const val EMAIL_VALIDATION_KEY = "isValidEmail"
-        private const val CITY_VALIDATION_KEY = "isValidCity"
-        private const val STREET_VALIDATION_KEY = "isValidStreet"
-        private const val HOUSE_VALIDATION_KEY = "isValidHouseNum"
-        private const val IDENTIFICATION_NUM_VALIDATION_KEY = "isValidIdentificationNum"
+        private const val KENNEL_NAME_KEY = "kennel_name"
+        private const val PHONE_NUM_KEY = "phone_num"
+        private const val EMAIL_KEY = "email_key"
+        private const val CITY_KEY = "city_key"
+        private const val STREET_KEY = "street_key"
+        private const val HOUSE_KEY = "house_key"
+        private const val BUILDING_KEY = "building_key"
+        private const val IDENTIFICATION_NUM_KEY = "identification_num_key"
+        private const val AVATAR_URI_KEY = "avatar_uri"
+        private const val SETTINGS_DATA_KEY = "settings_data"
+
 
     }
 
@@ -143,7 +151,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val kennelName = nameInput.text.toString()
                 validateAndHighlightError(
                     EmptyFieldValidator(),
-                    KENNEL_NAME_VALIDATION_KEY,
+                    KENNEL_NAME_KEY,
                     kennelName,
                     nameContainer
                 )
@@ -158,7 +166,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val kennelPhoneNum = phoneNumberInput.text.toString()
                 validateAndHighlightError(
                     PhoneNumberValidator(),
-                    PHONE_NUM_VALIDATION_KEY,
+                    PHONE_NUM_KEY,
                     kennelPhoneNum,
                     phoneNumberInputContainer
                 )
@@ -172,7 +180,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val emailInputText = emailInput.text.toString()
                 validateAndHighlightError(
                     SimpleEmailValidator(),
-                    EMAIL_VALIDATION_KEY,
+                    EMAIL_KEY,
                     emailInputText,
                     emailInputContainer
                 )
@@ -187,13 +195,13 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val streetText = streetInput.text.toString()
                 validateAndHighlightError(
                     EmptyFieldValidator(),
-                    CITY_VALIDATION_KEY,
+                    CITY_KEY,
                     cityNameText,
                     cityInputContainer
                 )
                 validateAndHighlightError(
                     EmptyFieldValidator(),
-                    STREET_VALIDATION_KEY,
+                    STREET_KEY,
                     streetText,
                     streetInputContainer
                 )
@@ -207,7 +215,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val houseNum = houseNumberInput.text.toString()
                 validateAndHighlightError(
                     EmptyFieldValidator(),
-                    HOUSE_VALIDATION_KEY,
+                    HOUSE_KEY,
                     houseNum,
                     houseNumberContainer
                 )
@@ -222,7 +230,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 val identificationNum = identificationNumberInput.text.toString()
                 validateAndHighlightError(
                     IdentificationNumberValidator(),
-                    IDENTIFICATION_NUM_VALIDATION_KEY,
+                    IDENTIFICATION_NUM_KEY,
                     identificationNum,
                     identificationNumberInputContainer
                 )
@@ -254,7 +262,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         val errorText = "Вы не заполнили данное поле"
         var needScroll = true
         var goToNextScreen = true
-        if (validationStoreForFields.mapOfValues[KENNEL_NAME_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[KENNEL_NAME_KEY] == false) {
             scrollToElementIfNeed(nameContainer)
             needScroll = false
             goToNextScreen = false
@@ -262,7 +270,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             nameContainer.error = errorText
             btn.isClickable = true
         }
-        if (validationStoreForFields.mapOfValues[PHONE_NUM_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[PHONE_NUM_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(phoneNumberInputContainer)
             needScroll = false
             goToNextScreen = false
@@ -270,7 +278,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             phoneNumberInputContainer.error = errorText
             btn.isClickable = true
         }
-        if (validationStoreForFields.mapOfValues[EMAIL_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[EMAIL_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(emailInputContainer)
             needScroll = false
             goToNextScreen = false
@@ -278,7 +286,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             emailInputContainer.error = errorText
             btn.isClickable = true
         }
-        if (validationStoreForFields.mapOfValues[CITY_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[CITY_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(cityInputContainer)
             needScroll = false
             goToNextScreen = false
@@ -286,7 +294,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             cityInputContainer.error = errorText
             btn.isClickable = true
         }
-        if (validationStoreForFields.mapOfValues[STREET_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[STREET_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(streetInputContainer)
             needScroll = false
             goToNextScreen = false
@@ -294,7 +302,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             streetInputContainer.error = errorText
             btn.isClickable = true
         }
-        if (validationStoreForFields.mapOfValues[HOUSE_VALIDATION_KEY] == false) {
+        if (validationStoreForFields.mapOfValues[HOUSE_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(houseNumberContainer)
             needScroll = false
             goToNextScreen = false
@@ -304,11 +312,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
         validateAndHighlightError(
             IdentificationNumberValidator(),
-            IDENTIFICATION_NUM_VALIDATION_KEY,
+            IDENTIFICATION_NUM_KEY,
             identificationNumberInput.text.toString(),
             identificationNumberInputContainer
-            )
-        if (validationStoreForFields.mapOfValues[IDENTIFICATION_NUM_VALIDATION_KEY] == false) {
+        )
+        if (validationStoreForFields.mapOfValues[IDENTIFICATION_NUM_KEY] == false) {
             if (needScroll) scrollToElementIfNeed(houseNumberContainer)
             needScroll = false
             goToNextScreen = false
@@ -316,7 +324,21 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         if (goToNextScreen) {
-            findNavController().navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment)
+            val kennelRequest = KennelRequest(
+                avatarUri.toString(),
+                nameInput.text.toString(),
+                phoneNumberInput.text.toString(),
+                emailInput.text.toString(),
+                "${cityId},${cityInput.text.toString()}",
+                streetInput.text.toString(),
+                houseNumberInput.text.toString(),
+                buildingNumberInput.text.toString(),
+                identificationNumberInput.text.toString().toLong()
+            )
+            val kennelRequestJson = Gson().toJson(kennelRequest)
+            val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequestJson)
+            findNavController()
+                .navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment, bundle)
         }
     }
 

@@ -1,13 +1,13 @@
 package mr.shtein.buddyandroidclient.model
 
 data class KennelRequest(
-    val kennelAvtUrl: String,
-    val kennelName: String,
-    val kennelPhoneNum: String,
-    val kennelEmail: String,
-    val kennelCity: Long,
-    val kennelStreet: String,
-    val kennelHouseNum: Int,
-    val kennelBuildingNum: String,
-    val kennelIdentifyNum: Int
+    var kennelAvtUri: String = "",
+    var kennelName: String = "",
+    var kennelPhoneNum: String = "",
+    var kennelEmail: String = "",
+    var kennelCity: String = "",
+    var kennelStreet: String = "",
+    var kennelHouseNum: String = "",
+    var kennelBuildingNum: String = "",
+    var kennelIdentifyNum: Long = 0
 )

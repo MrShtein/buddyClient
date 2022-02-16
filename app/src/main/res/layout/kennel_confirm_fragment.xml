@@ -1,15 +1,256 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
         <TextView
+            android:id="@+id/kennel_confirm_reg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_reg_text"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/kennel_confirm_avatar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/photo_hint"
+            android:contentDescription="@string/add_photo_to_kennel_description"
+            app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_name_label"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10sp"/>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="ПапаКОт"
+            android:textSize="24sp"
+            android:textColor="@color/cian5"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_phone_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_phone_label"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="+7(777)777-77-77"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_email_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_email_label"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="straniiy@yande.ru"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_address_label"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_address_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Москва, Московская область"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_address_street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Маросейка д. 12 корп. 3"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_identification_number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kennel_confirm_identification_number_label"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/kennel_confirm_identification_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="123456789123"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/kennel_confirm_save_btn"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="TEST"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/cian4"
+            android:elevation="4dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="@string/kennel_confirm_save_btn"
+            android:inputType="text"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            android:layout_gravity="center"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"/>
+
+
+
+
+
+
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
