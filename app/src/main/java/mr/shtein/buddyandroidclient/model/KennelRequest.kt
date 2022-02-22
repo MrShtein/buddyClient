@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient.model
 
 data class KennelRequest(
+    var userId: Long = 0,
     var kennelAvtUri: String = "",
     var kennelName: String = "",
     var kennelPhoneNum: String = "",

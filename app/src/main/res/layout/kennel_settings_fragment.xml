@@ -22,19 +22,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/kennel_settings_avatar_button"
-            android:layout_width="200dp"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/kennel_settings_avatar_img"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:layout_marginTop="25dp"
-            android:background="@null"
-            android:src="@drawable/photo_hint"
+            android:background="@color/grey3"
             android:contentDescription="@string/add_photo_to_kennel_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_label"
             app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/kennel_settings_photo_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/kennel_settings_avatar_img"
+            app:layout_constraintBottom_toBottomOf="@id/kennel_settings_avatar_img"
+            android:src="@drawable/photo_camera"
+            android:backgroundTint="@color/transparent"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
             />
 
         <TextView
@@ -46,7 +57,7 @@
             android:text="@string/organization_name_label_text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_avatar_button" />
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_avatar_img" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/kennel_settings_organization_name_input_container"

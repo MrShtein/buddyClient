@@ -3,13 +3,15 @@ package mr.shtein.buddyandroidclient.screens.kennels
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
@@ -19,6 +21,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
@@ -26,6 +30,7 @@ import mr.shtein.buddyandroidclient.utils.*
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
+import java.io.File
 import java.lang.Exception
 
 
@@ -34,7 +39,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     companion object {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
-        const val AVATAR_FILE_NAME = "avatar"
         private const val KENNEL_NAME_KEY = "kennel_name"
         private const val PHONE_NUM_KEY = "phone_num"
         private const val EMAIL_KEY = "email_key"
@@ -45,11 +49,12 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         private const val IDENTIFICATION_NUM_KEY = "identification_num_key"
         private const val AVATAR_URI_KEY = "avatar_uri"
         private const val SETTINGS_DATA_KEY = "settings_data"
+        private const val KENNEL_AVATAR_FILE_NAME = "kennel_avt.jpeg"
 
 
     }
 
-    private lateinit var avatarImg: ShapeableImageView
+    private lateinit var avatarImg: AppCompatImageView
     private lateinit var nameContainer: TextInputLayout
     private lateinit var nameInput: TextInputEditText
     private lateinit var phoneNumberInputContainer: TextInputLayout
@@ -66,10 +71,12 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private lateinit var identificationNumberInputContainer: TextInputLayout
     private lateinit var identificationNumberInput: TextInputEditText
     private lateinit var saveBtn: MaterialButton
+    private lateinit var photoBtn: AppCompatImageButton
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var getAvatarLauncher: ActivityResultLauncher<String>
     private var avatarUri: Uri? = null
     private var validationStoreForFields = KennelValidationStore()
+    private lateinit var storage: SharedPreferences
 
     private var isFromCityChoice: Boolean = false
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -90,8 +97,14 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
         getAvatarLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                avatarImg.setImageURI(uri)
-                avatarUri = uri
+                coroutineScope.launch {
+                    val newPathForAvt = "${requireContext().filesDir}/${KENNEL_AVATAR_FILE_NAME}"
+                    avatarImg.setImageURI(uri)
+                    avatarUri = uri
+                    copyFileToInternalStorage(uri)
+                    storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, newPathForAvt)
+                }
+
             }
         }
     }
@@ -106,7 +119,12 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     }
 
     private fun initViews(view: View) {
-        avatarImg = view.findViewById(R.id.kennel_settings_avatar_button)
+        storage = SharedPreferences(
+            requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME
+        )
+        avatarImg = view.findViewById(R.id.kennel_settings_avatar_img)
+        setAvatarImgIfExist()
+        photoBtn = view.findViewById(R.id.kennel_settings_photo_btn)
         nameContainer = view.findViewById(R.id.kennel_settings_organization_name_input_container)
         nameInput = view.findViewById(R.id.kennel_settings_organization_name_input)
         phoneNumberInputContainer =
@@ -139,7 +157,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
-        avatarImg.setOnClickListener {
+        photoBtn.setOnClickListener {
             val dataType = "image/*"
             getAvatarLauncher.launch(dataType)
         }
@@ -324,8 +342,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         if (goToNextScreen) {
+            val avatarStrUri = if (avatarUri == null) "" else avatarUri.toString()
             val kennelRequest = KennelRequest(
-                avatarUri.toString(),
+                1,
+                avatarStrUri,
                 nameInput.text.toString(),
                 phoneNumberInput.text.toString(),
                 emailInput.text.toString(),
@@ -358,6 +378,19 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         } catch (ex: Exception) {
             container.error = ex.message
             container.isErrorEnabled = true
+        }
+    }
+
+    private fun setAvatarImgIfExist() {
+        val avatarPath = storage.readString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+        if (avatarPath != "") avatarImg.setImageURI(Uri.parse(avatarPath))
+    }
+
+    private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
+        val file = File(requireContext().filesDir, KENNEL_AVATAR_FILE_NAME)
+        val fileStream = requireContext().contentResolver.openInputStream(uri)
+        if (fileStream != null) {
+            file.writeBytes(fileStream.readBytes())
         }
     }
 

@@ -59,7 +59,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
-        const val AVATAR_FILE_NAME = "avatar"
+        const val PERSON_AVATAR_FILE_NAME = "person_avatar"
     }
 
     private var personId by Delegates.notNull<Long>()
@@ -111,7 +111,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                         copyFileToInternalStorage(uri)
                     }
                     storage.writeString(SharedPreferences.USER_AVATAR_URI_KEY,
-                        "${requireContext().filesDir}/$AVATAR_FILE_NAME")
+                        "${requireContext().filesDir}/$PERSON_AVATAR_FILE_NAME")
                 }
             }
 
@@ -466,7 +466,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
-        val file = File(requireContext().filesDir, AVATAR_FILE_NAME)
+        val file = File(requireContext().filesDir, PERSON_AVATAR_FILE_NAME)
         val fileStream = requireContext().contentResolver.openInputStream(uri)
         if (fileStream != null) {
             file.writeBytes(fileStream.readBytes())

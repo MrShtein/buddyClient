@@ -114,5 +114,7 @@
     <string name="kennel_confirm_address_label">Адрес:</string>
     <string name="kennel_confirm_identification_number_label">ИНН</string>
     <string name="kennel_confirm_save_btn">Подтвердить</string>
+    <string name="kennel_confirm_congratulation">Поздравляем</string>
+    <string name="kennel_confirm_description_text">Вы успешно добавили новый приют\n c Вами свяжется наш сотрудник и после небольшой проверки\nможно будет добавлять животных</string>
 
 </resources>

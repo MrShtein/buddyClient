@@ -39,5 +39,9 @@
         android:id="@+id/kennelConfirmFragment"
         android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelConfirmFragment"
         android:label="KennelConfirmFragment"
-        tools:layout="@layout/kennel_confirm_fragment"/>
+        tools:layout="@layout/kennel_confirm_fragment">
+        <action
+            android:id="@+id/action_kennelConfirmFragment_to_addKennelFragment"
+            app:destination="@id/addKennelFragment" />
+    </fragment>
 </navigation>
