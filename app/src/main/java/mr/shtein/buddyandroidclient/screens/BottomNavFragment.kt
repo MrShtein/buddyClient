@@ -35,6 +35,18 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
             }
             true
         }
+
+        bottomNav.menu.findItem(R.id.kennel_graph).setOnMenuItemClickListener {
+            val sharedPreferenceStore =
+                SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+            if (token == "") {
+                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, this)
+            } else {
+                NavigationUI.onNavDestinationSelected(it, navController)
+            }
+            true
+        }
     }
 
 
