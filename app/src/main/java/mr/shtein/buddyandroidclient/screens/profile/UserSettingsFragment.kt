@@ -1,7 +1,5 @@
 package mr.shtein.buddyandroidclient.screens.profile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -48,7 +46,6 @@ import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import java.io.File
-import java.io.InputStream
 import kotlin.properties.Delegates
 
 
@@ -62,7 +59,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
-        const val AVATAR_FILE_NAME = "avatar"
+        const val PERSON_AVATAR_FILE_NAME = "person_avatar"
     }
 
     private var personId by Delegates.notNull<Long>()
@@ -114,7 +111,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                         copyFileToInternalStorage(uri)
                     }
                     storage.writeString(SharedPreferences.USER_AVATAR_URI_KEY,
-                        "${requireContext().filesDir}/$AVATAR_FILE_NAME")
+                        "${requireContext().filesDir}/$PERSON_AVATAR_FILE_NAME")
                 }
             }
 
@@ -281,7 +278,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun emailCheck() {
         val emailForCheck = email.text.toString()
         val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
-        val emailValidator = EmailValidator(emailCheckRequest, emailCallBack, dialog)
+        val emailValidator = FullEmailValidator(emailCheckRequest, emailCallBack, dialog)
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
@@ -292,7 +289,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     || repeatedNewPwd.text.toString() != ""
 
         if (isPasswordChange) {
-            val passwordValidator = PasswordValidator()
+            val passwordValidator = PasswordEmptyFieldValidator()
             try {
                 passwordValidator.assertIsValidPassword(newPwd.text.toString())
                 passwordValidator.assertIsValidRepeatPassword(
@@ -462,14 +459,14 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun setImageToAvatar() {
         val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
         if (imageUri == "") {
-            avatarImg.setImageResource(R.drawable.user_profile_photo_hint)
+            avatarImg.setImageResource(R.drawable.photo_hint)
         } else {
             avatarImg.setImageURI(Uri.parse(imageUri))
         }
     }
 
     private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
-        val file = File(requireContext().filesDir, AVATAR_FILE_NAME)
+        val file = File(requireContext().filesDir, PERSON_AVATAR_FILE_NAME)
         val fileStream = requireContext().contentResolver.openInputStream(uri)
         if (fileStream != null) {
             file.writeBytes(fileStream.readBytes())

@@ -23,9 +23,9 @@ import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.utils.EmailValidator
+import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
-import mr.shtein.buddyandroidclient.utils.PasswordValidator
+import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +37,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
     private var isRegistered: Boolean = false
     private lateinit var callbackForEmail: MailCallback
-    private lateinit var emailValidator: EmailValidator
+    private lateinit var fullEmailValidator: FullEmailValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +66,12 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             view.findViewById(R.id.registration_repeat_password_input)
 
 
-        val passwordValidator = PasswordValidator()
-        val nameValidator = NameValidator()
+        val passwordValidator = PasswordEmptyFieldValidator()
+        val nameValidator = NameValidator(nameInput, nameInputContainer)
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                nameValidator.nameChecker(nameInput, nameInputContainer)
+                nameValidator.nameChecker()
                 regInfoModel.isCheckedName = true
             } else if (hasFocus && nameInputContainer.isErrorEnabled) {
                 nameInputContainer.isErrorEnabled = false
@@ -82,8 +82,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val emailCheckRequest = EmailCheckRequest(emailInput.text.toString())
-                emailValidator = EmailValidator(emailCheckRequest, callbackForEmail, null)
-                emailValidator.emailChecker(emailInput, emailInputContainer)
+                fullEmailValidator = FullEmailValidator(emailCheckRequest, callbackForEmail, null)
+                fullEmailValidator.emailChecker(emailInput, emailInputContainer)
                 regInfoModel.isCheckedEmail = true
             } else if (hasFocus && emailInputContainer.isErrorEnabled) {
                 emailInputContainer.isErrorEnabled = false
@@ -122,7 +122,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                         finalErrorsCheck(
                             containers,
                             view,
-                            emailValidator,
+                            fullEmailValidator,
                             passwordValidator,
                             nameValidator
                         )
@@ -216,11 +216,11 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             }
 
             override fun onFailure() {
-                Toast.makeText(requireContext(), EmailValidator.NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), FullEmailValidator.NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
             }
 
             override fun onNoAuthorize() {
-                Toast.makeText(requireContext(), EmailValidator.NO_AUTHORIZE_MSG, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), FullEmailValidator.NO_AUTHORIZE_MSG, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -245,8 +245,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private fun finalErrorsCheck(
         inputContainersList: List<TextInputLayout>,
         view: View,
-        emailValidator: EmailValidator,
-        passwordValidator: PasswordValidator,
+        fullEmailValidator: FullEmailValidator,
+        passwordValidator: PasswordEmptyFieldValidator,
         nameValidator: NameValidator
     ): TextInputLayout? {
 
@@ -266,11 +266,11 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
 
         if (!regInfoModel.isCheckedName) {
-            nameValidator.nameChecker(nameInput, nameInputContainer)
+            nameValidator.nameChecker()
         }
 
         if (!regInfoModel.isCheckedEmail) {
-            emailValidator.emailChecker(emailInput, emailInputContainer)
+            fullEmailValidator.emailChecker(emailInput, emailInputContainer)
         }
         if (!regInfoModel.isCheckedPassword) {
             passwordChecker(passwordInput, passwordInputContainer, passwordValidator)
@@ -293,7 +293,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 private fun passwordChecker(
     input: TextInputEditText,
     inputContainer: TextInputLayout,
-    passwordValidator: PasswordValidator
+    passwordValidator: PasswordEmptyFieldValidator
 ) {
     try {
         val value = input.text.toString()
@@ -308,7 +308,7 @@ private fun passwordChecker(
 private fun repeatPasswordChecker(
     input: TextInputEditText, inputContainer: TextInputLayout,
     pswInput: TextInputEditText,
-    passwordValidator: PasswordValidator,
+    passwordValidator: PasswordEmptyFieldValidator,
     regInfoModel: RegistrationInfoModel
 ) {
     try {

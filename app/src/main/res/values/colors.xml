@@ -21,6 +21,7 @@
     <color name="choice_color">#FF5858</color>
     <color name="user_settings_dialog_color">#E1EEf3</color>
     <color name="user_settings_dialog_clarification_text_color">#494547</color>
+    <color name="cian4">#1BBDD4</color>
 
 
 </resources>

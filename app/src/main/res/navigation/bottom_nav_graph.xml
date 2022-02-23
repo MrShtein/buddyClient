@@ -6,5 +6,5 @@
     app:startDestination="@id/animals_feed_graph">
     <include app:graph="@navigation/animals_feed_graph" />
     <include app:graph="@navigation/profile_graph" />
-    <include app:graph="@navigation/shelters_graph" />
+    <include app:graph="@navigation/kennels_graph" />
 </navigation>

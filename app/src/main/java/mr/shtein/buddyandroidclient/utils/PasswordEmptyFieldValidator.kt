@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordValidator(): Validator() {
+class PasswordEmptyFieldValidator(): EmptyFieldValidator() {
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
         private const val PASSWORD_IS_DIFFERENT_MSG: String = "Пароли не совпадают"

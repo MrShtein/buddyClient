@@ -54,6 +54,8 @@ class SharedPreferences(val context: Context, private val storageName: String) {
     }
 
     companion object {
+        const val USER_VOLUNTEERS_KEY = "user_volunteers"
+        const val USER_KENNELS_KEY = "user_kennels"
         const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
         const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
         const val TOKEN_KEY = "token_key"
@@ -67,5 +69,6 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         const val USER_GENDER_KEY = "user_gender"
         const val USER_CITY_KEY = "user_city"
         const val USER_AVATAR_URI_KEY = "user_avatar_uri"
+        const val KENNEL_AVATAR_URI_KEY = "kennel_avatar_uri"
     }
 }

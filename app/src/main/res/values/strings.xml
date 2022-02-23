@@ -77,7 +77,7 @@
     <string name="user_settings_old_pwd_hint">Старый пароль</string>
     <string name="user_settings_new_pwd_hint">Новый пароль</string>
     <string name="user_settings_repeat_new_pwd_hint">Повторите новый пароль</string>
-    <string name="user_settings_save_btn">Сохранить изменения</string>
+    <string name="settings_save_btn">Сохранить изменения</string>
     <string name="city_choice_description_text">Введите ваш город и мы покажем животных рядом с вами</string>
     <string name="city_choice_description_text_else_from_settings">Введите Ваш новый город</string>
     <string name="user_settings_icon_description">Иконка на карточке настроек пользователя</string>
@@ -87,5 +87,34 @@
     <string name="yes_btn">ДА!</string>
     <string name="no_btn">Нет</string>
     <string name="user_settings_dialog_ok_btn">Ok</string>
+    <string name="add_kennel_fragment_kennels_btn_text">Ваши приюты</string>
+    <string name="add_kennel_fragment_volunteer_btn_text">Вы волонтер</string>
+    <string name="add_kennel_fragment_add_btn_text">Добавить приют</string>
+    <string name="add_kennel_fragment_empty_kennels_text">К сожалению у Вас пока \n нет приютов</string>
+    <string name="add_kennel_fragment_empty_volunteers_text">К сожалению Вы пока не участвуете \n в волонтерской программе</string>
+    <string name="kennel_settings_label">Регистрация приюта</string>
+    <string name="add_photo_to_kennel_description">Кнопка для установки фотографии для профиля приюта</string>
+    <string name="organization_name_label_text">Название организации</string>
+    <string name="kennel_settings_phone_number_label">Телефон организации</string>
+    <string name="kennel_settings_address_label">Адрес</string>
+    <string name="kennel_settings_city_label">Город</string>
+    <string name="kennel_settings_identification_number_label">ИНН</string>
+    <string name="kennel_settings_name_hint">Папа Кот</string>
+    <string name="kennel_settings_phone_number_hint">+7(928)555-55-55</string>
+    <string name="kennel_settings_email_hint">papakot@yandex.ru</string>
+    <string name="kennel_settings_city_hint">Ростов-на-Дону, Ростовская область</string>
+    <string name="kennel_settings_street_hint">Улица</string>
+    <string name="kennel_settings_house_hint">Дом</string>
+    <string name="kennel_settings_building_hint">Корп.</string>
+    <string name="kennel_settings_identification_number_hint">123456789123</string>
+    <string name="kennel_confirm_reg_text">Подтверждение регистрации</string>
+    <string name="kennel_confirm_name_label">Название приюта:</string>
+    <string name="kennel_confirm_phone_label">Телефон:</string>
+    <string name="kennel_confirm_email_label">e-mail:</string>
+    <string name="kennel_confirm_address_label">Адрес:</string>
+    <string name="kennel_confirm_identification_number_label">ИНН</string>
+    <string name="kennel_confirm_save_btn">Подтвердить</string>
+    <string name="kennel_confirm_congratulation">Поздравляем</string>
+    <string name="kennel_confirm_description_text">Вы успешно добавили новый приют\n c Вами свяжется наш сотрудник и после небольшой проверки\nможно будет добавлять животных</string>
 
 </resources>
