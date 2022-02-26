@@ -3,6 +3,7 @@ package mr.shtein.buddyandroidclient.retrofit
 import mr.shtein.buddyandroidclient.model.*
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
 import mr.shtein.buddyandroidclient.model.response.NewKennelResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -50,6 +51,12 @@ interface RetrofitServices {
         @HeaderMap headers: Map<String, String>,
         @Part("kennel") kennelRequest: RequestBody,
         @Part file: MultipartBody.Part?
-    ) : Response<Boolean>
+    ): Response<Boolean>
+
+    @GET("/api/v1/person/{personId}/kennel")
+    suspend fun getKennelsByPersonId(
+        @Header ("Authorization") token: String,
+        @Path("personId") personId: Long
+    ): Response<MutableList<KennelPreviewResponse>>
 
 }
