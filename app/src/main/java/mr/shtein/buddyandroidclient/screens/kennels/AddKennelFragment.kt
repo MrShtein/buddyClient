@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
@@ -21,6 +23,10 @@ import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
+
+    companion object {
+        private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
+    }
 
     private lateinit var kennelsBtn: MaterialButton
     private lateinit var volunteersBtn: MaterialButton
@@ -128,7 +134,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private fun goToLogin() {
-        Log.i("info", "Логин протух, необходимо его обновить")
+        Log.i("info", "Токен протух, необходимо его обновить")
         TODO()
     }
 
@@ -140,7 +146,13 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             kennelsList,
             object : KennelsAdapter.OnKennelItemClickListener {
                 override fun onClick(kennelItem: KennelPreview) {
-                    TODO("Not yet implemented")
+                    val gson = Gson()
+                    val kennelItemJson = gson.toJson(kennelItem)
+                    val bundle = bundleOf(KENNEL_ITEM_BUNDLE_KEY to kennelItemJson)
+                    findNavController().navigate(
+                        R.id.action_addKennelFragment_to_kennelHomeFragment,
+                        bundle
+                    )
                 }
             }
         )

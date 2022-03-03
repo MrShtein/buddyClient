@@ -121,5 +121,8 @@
     <string name="kennel_home_volunteers_icon_description">Иконка с изображением волонтеров</string>
     <string name="kennel_home_animals_icon_description">Иконка с изображением лапы животного</string>
     <string name="kennel_home_add_new_dog_btn_description">Кнопка для добавления новой собаки</string>
+    <string name="kennel_home_dogs_label_text">Собаки</string>
+    <string name="kennel_home_cats_label_text">Кошки</string>
+    <string name="animal_in_kennel_avatar_description">Фото животного для входа в профиль животного</string>
 
 </resources>

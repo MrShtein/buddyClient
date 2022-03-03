@@ -1,5 +1,7 @@
 package mr.shtein.buddyandroidclient.retrofit
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.model.*
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
@@ -58,5 +60,12 @@ interface RetrofitServices {
         @Header ("Authorization") token: String,
         @Path("personId") personId: Long
     ): Response<MutableList<KennelPreviewResponse>>
+
+    @GET("/api/v1/animal/kennel/{kennel_id}/{animal_type}")
+    suspend fun getAnimalsByKennelIdAndAnimalType(
+        @Header ("Authorization") token: String,
+        @Path("kennel_id") kennelId: Int,
+        @Path("animal_type") animalType: String
+    ): Response<MutableList<Animal>>
 
 }

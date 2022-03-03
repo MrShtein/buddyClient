@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_addKennelFragment_to_kennelSettingsFragment"
             app:destination="@id/kennelSettingsFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_kennelHomeFragment"
+            app:destination="@id/kennelHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/kennelSettingsFragment"
@@ -44,4 +47,9 @@
             android:id="@+id/action_kennelConfirmFragment_to_addKennelFragment"
             app:destination="@id/addKennelFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/kennelHomeFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelHomeFragment"
+        android:label="KennelHomeFragment"
+        tools:layout="@layout/kennel_home_fragment"/>
 </navigation>
