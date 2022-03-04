@@ -1,18 +1,19 @@
 package mr.shtein.buddyandroidclient.screens.kennels
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 import kotlinx.coroutines.*
@@ -50,6 +51,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     companion object {
         private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
         private const val KENNEL_AVATAR_ENDPOINT = "http://10.0.2.2:8881/api/v1/kennel/avatar/"
+        private const val KENNEL_ID_KEY = "kennel_id"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
         initViews(view)
         setValuesToViews(kennelItem)
+        setListeners(kennelItem)
 
     }
 
@@ -145,16 +148,27 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                    catsAmount.text = getAnimalCountText(catsList.size)
                    dogsAmount.text = getAnimalCountText(dogsList.size)
 
+
+
            } catch (ex: Exception) {
                Log.e("error", "Что-то пошло не так")
            }
         }
+    }
 
-
-
-
-
-
+    private fun setListeners(kennelItem: KennelPreview) {
+        addDogsBtn.setOnClickListener {
+            val kennelId = kennelItem.kennelId
+            val bundle = bundleOf(KENNEL_ID_KEY to kennelId)
+            if (kennelItem.isValid) {
+                findNavController().navigate(
+                    R.id.action_kennelHomeFragment_to_addAnimalFragment,
+                    bundle
+                )
+            } else {
+                showKennelIsNotValidDialog()
+            }
+        }
     }
 
     private fun makeVolunteersText(amount: Int): String {
@@ -201,6 +215,18 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             2, 3, 4 -> "$amount ${pet}ца"
             else -> "$amount ${pet}цев"
         }
+    }
+
+    private fun showKennelIsNotValidDialog() {
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
+            .setView(R.layout.not_valid_kennel_dialog)
+            .setBackground(ColorDrawable(requireContext().getColor((R.color.transparent))))
+            .show()
+        val okBtn: Button? = dialog.findViewById(R.id.not_valid_kennel_dialog_ok_btn)
+        okBtn?.setOnClickListener {
+            dialog.cancel()
+        }
+
     }
 
 
