@@ -20,7 +20,12 @@ import retrofit2.Response
 import android.util.TypedValue
 
 import android.content.res.Resources
+import android.os.Build
 import android.view.*
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 
 private const val ROLE_KEY: String = "user_role"
@@ -48,6 +53,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<LinearLayout>(R.id.container_for_search_animal_menu_and_filter).setOnApplyWindowInsetsListener { v, insets ->
+            val sysWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
+            } else {
+                insets.systemWindowInsets
+            }
+            v.updatePadding(top = sysWindow.top)
+
+            insets
+        }
 
         mService = Common.retrofitService
         getAnimalTypesAndDoChips(view)
