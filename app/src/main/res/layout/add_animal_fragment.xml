@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/add_animal_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/add_animal_label_text"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/add_animal_top_image_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_label" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/add_animal_image_accept_hint"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/photo_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_label"
+            app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView" />
+
+        <View
+            android:id="@+id/add_animal_round_image_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_image_accept_hint" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/add_animal_add_image_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:constraint_referenced_ids="
+            add_animal_image_accept_hint,
+            add_animal_round_image_divider" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/add_animal_images_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:constraint_referenced_ids="
+            add_animal_first_animal_img,
+            add_animal_second_animal_img,
+            add_animal_third_animal_img,
+            add_animal_fourth_animal_img,
+            add_animal_top_image_divider,
+            add_animal_bottom_image_divider" />
+
+        <ImageView
+            android:id="@+id/add_animal_first_animal_img"
+            android:layout_width="165dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey4"
+            android:contentDescription="@string/add_animal_first_img_description"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
+
+        <ImageButton
+            android:id="@+id/add_animal_first_add_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_add_btn_description"
+            android:src="@drawable/add_img_btn"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_first_cancel_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_cancel_image_btn_description"
+            android:src="@drawable/cancel_adding_img"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img" />
+
+
+        <ImageView
+            android:id="@+id/add_animal_second_animal_img"
+            android:layout_width="165dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey4"
+            android:contentDescription="@string/add_animal_second_img_description"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/add_animal_first_animal_img"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
+
+        <ImageButton
+            android:id="@+id/add_animal_second_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_add_btn_description"
+            android:src="@drawable/add_img_btn"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_second_cancel_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_cancel_image_btn_description"
+            android:src="@drawable/cancel_adding_img"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img" />
+
+        <ImageView
+            android:id="@+id/add_animal_third_animal_img"
+            android:layout_width="165dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey4"
+            android:contentDescription="@string/add_animal_third_img_description"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_first_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_third_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_add_btn_description"
+            android:src="@drawable/add_img_btn"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_third_cancel_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_cancel_image_btn_description"
+            android:src="@drawable/cancel_adding_img"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img" />
+
+        <ImageView
+            android:id="@+id/add_animal_fourth_animal_img"
+            android:layout_width="165dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey4"
+            android:contentDescription="@string/add_animal_fourth_img_description"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/add_animal_third_animal_img"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_second_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_fourth_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_add_btn_description"
+            android:src="@drawable/add_img_btn"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img" />
+
+        <ImageButton
+            android:id="@+id/add_animal_fourth_cancel_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/add_animal_cancel_image_btn_description"
+            android:src="@drawable/cancel_adding_img"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img" />
+
+        <View
+            android:id="@+id/add_animal_bottom_image_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_fourth_animal_img" />
+
+        <TextView
+            android:id="@+id/add_animal_age_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/add_animal_age_label_Text"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/add_animal_round_image_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_round_image_divider" />
+
+        <View
+            android:id="@+id/add_animal_years_container"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/animal_age_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
+
+        <TextView
+            android:id="@+id/add_animal_year_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@id/add_animal_years_container_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
+            app:layout_constraintTop_toTopOf="@id/add_animal_years_container"
+            tools:text="5" />
+
+        <View
+            android:id="@+id/add_animal_years_container_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/grey4"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_years_container"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
+            app:layout_constraintTop_toTopOf="@id/add_animal_years_container" />
+
+        <TextView
+            android:id="@+id/add_animal_year_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cian5"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_years_container"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_years_container_divider"
+            tools:text="Лет" />
+
+        <View
+            android:id="@+id/add_animal_months_container"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/animal_age_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
+
+        <TextView
+            android:id="@+id/add_animal_month_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@id/add_animal_months_container_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
+            app:layout_constraintTop_toTopOf="@id/add_animal_months_container"
+            tools:text="8" />
+
+        <View
+            android:id="@+id/add_animal_months_container_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/grey4"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_months_container"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
+            app:layout_constraintTop_toTopOf="@id/add_animal_months_container" />
+
+        <TextView
+            android:id="@+id/add_animal_months_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cian5"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_months_container"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
+            app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_months_container_divider"
+            tools:text="Мес." />
+
+        <View
+            android:id="@+id/add_animal_age_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_months_container"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
+            />
+
+        <TextView
+            android:id="@+id/add_animal_year_slider_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/year"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_age_divider"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            android:layout_marginTop="15dp"/>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/add_animal_years_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:valueFrom="0"
+            android:valueTo="20"
+            app:trackColor="@color/cian5"
+            app:thumbColor="@color/cian5"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_age_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_year_slider_text"/>
+
+        <TextView
+            android:id="@+id/add_animal_month_slider_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_years_slider"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            android:layout_marginTop="15dp"/>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/add_animal_months_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:valueFrom="0"
+            android:valueTo="20"
+            app:trackColor="@color/cian5"
+            app:thumbColor="@color/cian5"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_age_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_month_slider_text"/>
+
+        <View
+            android:id="@+id/add_animal_sliders_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_months_slider"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"/>
+
+        <TextView
+            android:id="@+id/add_animal_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nickname_text"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
+            android:layout_marginTop="10dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_animal_name_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textInputContainer"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_name_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_animal_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/cursorColorForInputs"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/add_animal_breed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_breed_text"
+            app:layout_constraintStart_toStartOf="@id/add_animal_name_label"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_name_container"
+            android:layout_marginTop="15dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_animal_breed_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textInputContainer"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="100dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_animal_breed_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/cursorColorForInputs"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/add_animal_color_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_color_text"
+            app:layout_constraintStart_toStartOf="@id/add_animal_breed_label"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_container"
+            android:layout_marginTop="15dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_animal_color_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textInputContainer"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_color_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_animal_color_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/cursorColorForInputs"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/add_animal_genre_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_genre_text"
+            app:layout_constraintStart_toStartOf="@id/add_animal_years_slider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_color_container"
+            android:layout_marginTop="15dp"/>
+
+        <RadioGroup
+            android:id="@+id/add_animal_genre_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/add_animal_genre_label"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_label"
+            android:layout_marginTop="15dp">
+
+            <RadioButton
+                android:id="@+id/add_animal_male_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cian5"
+                android:text="@string/male_letter"
+                android:textSize="20sp"
+                android:textColor="@color/grey3"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="1dp"/>
+
+            <RadioButton
+                android:id="@+id/add_animal_female_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cian5"
+                android:text="@string/female_letter"
+                android:textSize="20sp"
+                android:textColor="@color/grey3"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="1dp"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/add_animal_description_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_description_label_text"
+            app:layout_constraintStart_toStartOf="@id/add_animal_color_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group"
+            android:layout_marginTop="15dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_animal_description_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textInputContainer"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_description_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_animal_description_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:theme="@style/cursorColorForInputs"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/add_animal_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_add_btn_text"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_description_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="75dp"
+            android:backgroundTint="@color/cian5"
+            android:padding="20dp"
+            />
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

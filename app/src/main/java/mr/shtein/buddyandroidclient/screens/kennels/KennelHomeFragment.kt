@@ -160,6 +160,19 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         addDogsBtn.setOnClickListener {
             val kennelId = kennelItem.kennelId
             val bundle = bundleOf(KENNEL_ID_KEY to kennelId)
+            if (true) {
+                findNavController().navigate(
+                    R.id.action_kennelHomeFragment_to_addAnimalFragment,
+                    bundle
+                )
+            } else {
+                showKennelIsNotValidDialog()
+            }
+        }
+
+        addCatsBtn.setOnClickListener {
+            val kennelId = kennelItem.kennelId
+            val bundle = bundleOf(KENNEL_ID_KEY to kennelId)
             if (kennelItem.isValid) {
                 findNavController().navigate(
                     R.id.action_kennelHomeFragment_to_addAnimalFragment,
@@ -169,6 +182,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 showKennelIsNotValidDialog()
             }
         }
+
     }
 
     private fun makeVolunteersText(amount: Int): String {

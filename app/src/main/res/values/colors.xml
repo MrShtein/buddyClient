@@ -12,6 +12,7 @@
     <color name="cian5">#1998A7</color>
     <color name="grey2">#EEEEEE</color>
     <color name="grey3">#999999</color>
+    <color name="grey4">#CCCCCC</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
 
     <color name="input_unfocused">#8CFFFFFF</color>

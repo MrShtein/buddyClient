@@ -51,5 +51,14 @@
         android:id="@+id/kennelHomeFragment"
         android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelHomeFragment"
         android:label="KennelHomeFragment"
-        tools:layout="@layout/kennel_home_fragment"/>
+        tools:layout="@layout/kennel_home_fragment">
+        <action
+            android:id="@+id/action_kennelHomeFragment_to_addAnimalFragment"
+            app:destination="@id/addAnimalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAnimalFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddAnimalFragment"
+        android:label="AddAnimalFragment"
+        tools:layout="@layout/add_animal_fragment"/>
 </navigation>
