@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_animal_main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -53,7 +54,7 @@
             app:layout_constraintTop_toBottomOf="@id/add_animal_image_accept_hint" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/add_animal_add_image_group"
+            android:id="@+id/add_animal_hint_image_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
@@ -82,6 +83,7 @@
             android:background="@color/grey4"
             android:contentDescription="@string/add_animal_first_img_description"
             app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toStartOf="@id/add_animal_second_animal_img"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,6 +124,7 @@
             android:background="@color/grey4"
             android:contentDescription="@string/add_animal_second_img_description"
             app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/add_animal_first_animal_img"
@@ -160,6 +163,7 @@
             android:background="@color/grey4"
             android:contentDescription="@string/add_animal_third_img_description"
             app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toStartOf="@id/add_animal_fourth_animal_img"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +203,7 @@
             android:background="@color/grey4"
             android:contentDescription="@string/add_animal_fourth_img_description"
             app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_animal_third_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_second_animal_img" />
