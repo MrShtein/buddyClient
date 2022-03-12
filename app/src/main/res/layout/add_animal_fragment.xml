@@ -266,9 +266,10 @@
             app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
 
         <TextView
-            android:id="@+id/add_animal_year_number"
+            android:id="@+id/add_animal_years_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="0"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@id/add_animal_years_container_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
@@ -289,10 +290,11 @@
             app:layout_constraintTop_toTopOf="@id/add_animal_years_container" />
 
         <TextView
-            android:id="@+id/add_animal_year_text"
+            android:id="@+id/add_animal_years_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/cian5"
+            android:text="@string/add_animal_years_text"
             android:textSize="35sp"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_years_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
@@ -311,9 +313,10 @@
             app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
 
         <TextView
-            android:id="@+id/add_animal_month_number"
+            android:id="@+id/add_animal_months_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/zero"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@id/add_animal_months_container_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
@@ -338,6 +341,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/cian5"
+            android:text="@string/abbr_month"
             android:textSize="35sp"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_months_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
@@ -374,6 +378,8 @@
             android:layout_height="wrap_content"
             android:valueFrom="0"
             android:valueTo="20"
+            android:stepSize="1"
+            app:tickVisible="false"
             app:trackColor="@color/cian5"
             app:thumbColor="@color/cian5"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
@@ -395,7 +401,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:valueFrom="0"
-            android:valueTo="20"
+            android:valueTo="12"
+            android:stepSize="1"
+            app:tickVisible="false"
             app:trackColor="@color/cian5"
             app:thumbColor="@color/cian5"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"

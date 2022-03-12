@@ -144,5 +144,9 @@
     <string name="female_letter">Ж</string>
     <string name="add_animal_description_label_text">Описание</string>
     <string name="add_animal_add_btn_text">Добавить питомца</string>
+    <string name="add_animal_years_text">Лет</string>
+    <string name="add_animal_moths_text">Мес</string>
+    <string name="zero">0</string>
+    <string name="abbr_month">Мес</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.Fragment
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +23,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.ImageContainer
 
 private const val IMAGE_TYPE = "image/*"
+
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
@@ -42,6 +45,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var fourthImage: ImageView
     private lateinit var fourthImageAddBtn: ImageButton
     private lateinit var fourthImageCancelBtn: ImageButton
+    private lateinit var yearsSlider: Slider
+    private lateinit var animalYearsNum: TextView
+    private lateinit var animalYearsText: TextView
+    private lateinit var monthsSlider: Slider
+    private lateinit var animalMonthsNum: TextView
+    private lateinit var animalMonthsText: TextView
     private lateinit var getSomeImages: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var getOneImage: ActivityResultLauncher<String>
@@ -114,6 +123,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         fourthImageCancelBtn = view.findViewById(R.id.add_animal_fourth_cancel_image_btn)
         imageContainerList.add(ImageContainer(fourthImage, fourthImageAddBtn, fourthImageCancelBtn))
 
+        yearsSlider = view.findViewById(R.id.add_animal_years_slider)
+        animalYearsNum = view.findViewById(R.id.add_animal_years_number)
+        animalYearsText = view.findViewById(R.id.add_animal_years_text)
+
+        monthsSlider = view.findViewById(R.id.add_animal_months_slider)
+        animalMonthsNum = view.findViewById(R.id.add_animal_months_number)
+        animalMonthsText = view.findViewById(R.id.add_animal_months_text)
+
 
     }
 
@@ -135,12 +152,20 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             }
         }
 
+        yearsSlider.addOnChangeListener { _, value, _ ->
+            setYears(value.toInt())
+        }
+        monthsSlider.addOnChangeListener { _, value, _ ->
+            animalMonthsNum.text = value.toInt().toString()
+        }
+
 
     }
 
     private fun setNewConstraints(view: View) {
         val constraintSet = ConstraintSet()
-        val constraintLayout = view.findViewById(R.id.add_animal_main_container) as ConstraintLayout;
+        val constraintLayout =
+            view.findViewById(R.id.add_animal_main_container) as ConstraintLayout;
         constraintSet.clone(constraintLayout)
         constraintSet.clear(R.id.add_animal_age_label, ConstraintSet.TOP)
         val marginTop = requireContext().resources.getDimension(R.dimen.margin_for_add_kennel_text)
@@ -151,6 +176,26 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         )
         constraintSet.applyTo(constraintLayout)
 
+    }
+
+    private fun setYears(value: Int) {
+        val years = requireContext().resources.getString(R.string.add_animal_years_text)
+        val year = requireContext().resources.getString(R.string.year)
+        val yearWithLetterA = "${year}а"
+        when (value) {
+            1 -> {
+                animalYearsNum.text = value.toString()
+                animalYearsText.text = year
+            }
+            2, 3, 4 -> {
+                animalYearsNum.text = value.toString()
+                animalYearsText.text = yearWithLetterA
+            }
+            else -> {
+                animalYearsNum.text = value.toString()
+                animalYearsText.text = years
+            }
+        }
     }
 
     //TODO Сделать edge-to-edge fragment
