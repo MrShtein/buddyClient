@@ -3,10 +3,7 @@ package mr.shtein.buddyandroidclient.screens.kennels
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +20,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.ImageContainer
 
 private const val IMAGE_TYPE = "image/*"
+private const val TOO_MANY_IMG_UPLOAD_MSG = "Максиальное число фото равняется 4"
 
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
@@ -30,9 +28,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var addBtn: Button
     private lateinit var descriptionContainer: TextInputLayout
     private lateinit var descriptionInput: TextInputEditText
-    private lateinit var hintGroup: Group
-    private lateinit var imageAcceptHint: ShapeableImageView
-    private lateinit var animalImagesGroup: Group
     private lateinit var firstImage: ImageView
     private lateinit var firstImageAddBtn: ImageButton
     private lateinit var firstImageCancelBtn: ImageButton
@@ -65,25 +60,18 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             ActivityResultContracts.GetMultipleContents()
         ) { uriList: List<Uri> ->
             if (uriList.isNotEmpty()) {
-                hintGroup.visibility = View.GONE
-                animalImagesGroup.visibility = View.VISIBLE
-                for ((index, value) in uriList.withIndex()) {
-                    val imageContainer = imageContainerList[index]
-                    imageContainer.imageView.setImageURI(value)
+                var indexForUriList = 0
+                for (i in 0..3) {
+                    val imageContainer = imageContainerList[i]
+                    if (imageContainer.imageView.drawable != null) continue
+                    imageContainer.imageView.setImageURI(uriList[indexForUriList])
                     imageContainer.addBtn.visibility = View.GONE
                     imageContainer.cancelBtn.visibility = View.VISIBLE
+                    indexForUriList++
+                    if (indexForUriList == uriList.size) break
                 }
             }
         }
-        getOneImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri != null) {
-                currentImage?.addBtn?.visibility = View.INVISIBLE
-                currentImage?.cancelBtn?.visibility = View.VISIBLE
-                currentImage?.imageView?.setImageURI(uri)
-                currentImage = null
-            }
-        }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,30 +86,39 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         descriptionContainer = view.findViewById(R.id.add_animal_description_container)
         descriptionInput = view.findViewById(R.id.add_animal_description_input)
 
-        hintGroup = view.findViewById(R.id.add_animal_hint_image_group)
-        imageAcceptHint = view.findViewById(R.id.add_animal_image_accept_hint)
-
-        animalImagesGroup = view.findViewById(R.id.add_animal_images_group)
-
         firstImage = view.findViewById(R.id.add_animal_first_animal_img)
         firstImageAddBtn = view.findViewById(R.id.add_animal_first_add_image_btn)
         firstImageCancelBtn = view.findViewById(R.id.add_animal_first_cancel_image_btn)
-        imageContainerList.add(ImageContainer(firstImage, firstImageAddBtn, firstImageCancelBtn))
+        imageContainerList.add(ImageContainer(0, firstImage, firstImageAddBtn, firstImageCancelBtn))
 
         secondImage = view.findViewById(R.id.add_animal_second_animal_img)
         secondImageAddBtn = view.findViewById(R.id.add_animal_second_add_btn)
         secondImageCancelBtn = view.findViewById(R.id.add_animal_second_cancel_image_btn)
-        imageContainerList.add(ImageContainer(secondImage, secondImageAddBtn, secondImageCancelBtn))
+        imageContainerList.add(
+            ImageContainer(
+                1,
+                secondImage,
+                secondImageAddBtn,
+                secondImageCancelBtn
+            )
+        )
 
         thirdImage = view.findViewById(R.id.add_animal_third_animal_img)
         thirdImageAddBtn = view.findViewById(R.id.add_animal_third_add_btn)
         thirdImageCancelBtn = view.findViewById(R.id.add_animal_third_cancel_image_btn)
-        imageContainerList.add(ImageContainer(thirdImage, thirdImageAddBtn, thirdImageCancelBtn))
+        imageContainerList.add(ImageContainer(2, thirdImage, thirdImageAddBtn, thirdImageCancelBtn))
 
         fourthImage = view.findViewById(R.id.add_animal_fourth_animal_img)
         fourthImageAddBtn = view.findViewById(R.id.add_animal_fourth_add_btn)
         fourthImageCancelBtn = view.findViewById(R.id.add_animal_fourth_cancel_image_btn)
-        imageContainerList.add(ImageContainer(fourthImage, fourthImageAddBtn, fourthImageCancelBtn))
+        imageContainerList.add(
+            ImageContainer(
+                3,
+                fourthImage,
+                fourthImageAddBtn,
+                fourthImageCancelBtn
+            )
+        )
 
         yearsSlider = view.findViewById(R.id.add_animal_years_slider)
         animalYearsNum = view.findViewById(R.id.add_animal_years_number)
@@ -135,20 +132,17 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     }
 
     private fun setListeners(view: View) {
-        imageAcceptHint.setOnClickListener {
-            getSomeImages.launch(IMAGE_TYPE)
-            setNewConstraints(view)
-        }
 
         imageContainerList.forEach { image ->
             image.addBtn.setOnClickListener {
                 currentImage = image
-                getOneImage.launch(IMAGE_TYPE)
+                getSomeImages.launch(IMAGE_TYPE)
             }
             image.cancelBtn.setOnClickListener {
                 image.cancelBtn.visibility = View.INVISIBLE
                 image.addBtn.visibility = View.VISIBLE
-                image.imageView.setImageURI(null)
+                currentImage = image
+                transferImages()
             }
         }
 
@@ -159,22 +153,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             animalMonthsNum.text = value.toInt().toString()
         }
 
-
-    }
-
-    private fun setNewConstraints(view: View) {
-        val constraintSet = ConstraintSet()
-        val constraintLayout =
-            view.findViewById(R.id.add_animal_main_container) as ConstraintLayout;
-        constraintSet.clone(constraintLayout)
-        constraintSet.clear(R.id.add_animal_age_label, ConstraintSet.TOP)
-        val marginTop = requireContext().resources.getDimension(R.dimen.margin_for_add_kennel_text)
-        constraintSet.connect(
-            R.id.add_animal_age_label, ConstraintSet.TOP,
-            R.id.add_animal_bottom_image_divider, ConstraintSet.BOTTOM,
-            marginTop.toInt()
-        )
-        constraintSet.applyTo(constraintLayout)
 
     }
 
@@ -194,6 +172,31 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             else -> {
                 animalYearsNum.text = value.toString()
                 animalYearsText.text = years
+            }
+        }
+    }
+
+    private fun transferImages() {
+        for (i in currentImage?.id!!..3) {
+            val currentImageContainer = imageContainerList[i]
+            if (i == imageContainerList.size - 1) {
+                currentImageContainer.imageView.setImageURI(null)
+                currentImageContainer.addBtn.visibility = View.VISIBLE
+                currentImageContainer.cancelBtn.visibility = View.INVISIBLE
+                break
+            }
+            val nextImageContainer = imageContainerList[i + 1]
+
+            val nextImg = nextImageContainer.imageView.drawable
+
+            if (nextImg != null) {
+                currentImageContainer.imageView.setImageDrawable(nextImg)
+                currentImageContainer.addBtn.visibility = View.INVISIBLE
+                currentImageContainer.cancelBtn.visibility = View.VISIBLE
+            } else {
+                currentImageContainer.imageView.setImageDrawable(null)
+                currentImageContainer.addBtn.visibility = View.VISIBLE
+                currentImageContainer.cancelBtn.visibility = View.INVISIBLE
             }
         }
     }

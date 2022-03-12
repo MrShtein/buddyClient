@@ -32,49 +32,6 @@
             android:background="@color/grey2"
             app:layout_constraintTop_toBottomOf="@id/add_animal_label" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/add_animal_image_accept_hint"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/photo_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_label"
-            app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView" />
-
-        <View
-            android:id="@+id/add_animal_round_image_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/grey2"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_image_accept_hint" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/add_animal_hint_image_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            app:constraint_referenced_ids="
-            add_animal_image_accept_hint,
-            add_animal_round_image_divider" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/add_animal_images_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            app:constraint_referenced_ids="
-            add_animal_first_animal_img,
-            add_animal_second_animal_img,
-            add_animal_third_animal_img,
-            add_animal_fourth_animal_img,
-            add_animal_top_image_divider,
-            add_animal_bottom_image_divider" />
-
         <ImageView
             android:id="@+id/add_animal_first_animal_img"
             android:layout_width="165dp"
@@ -252,8 +209,8 @@
             android:layout_marginTop="15dp"
             android:text="@string/add_animal_age_label_Text"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/add_animal_round_image_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_round_image_divider" />
+            app:layout_constraintStart_toStartOf="@id/add_animal_bottom_image_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_image_divider" />
 
         <View
             android:id="@+id/add_animal_years_container"
@@ -379,7 +336,6 @@
             android:valueFrom="0"
             android:valueTo="20"
             android:stepSize="1"
-            app:tickVisible="false"
             app:trackColor="@color/cian5"
             app:thumbColor="@color/cian5"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
@@ -403,7 +359,6 @@
             android:valueFrom="0"
             android:valueTo="12"
             android:stepSize="1"
-            app:tickVisible="false"
             app:trackColor="@color/cian5"
             app:thumbColor="@color/cian5"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
