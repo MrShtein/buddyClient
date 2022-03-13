@@ -6,18 +6,20 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.Fragment
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.ImageContainer
+import mr.shtein.buddyandroidclient.model.dto.AnimalType
+import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import java.lang.Exception
 
 private const val IMAGE_TYPE = "image/*"
 private const val TOO_MANY_IMG_UPLOAD_MSG = "Максиальное число фото равняется 4"
@@ -46,11 +48,13 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var monthsSlider: Slider
     private lateinit var animalMonthsNum: TextView
     private lateinit var animalMonthsText: TextView
+    private lateinit var animalTypeInput: AutoCompleteTextView
     private lateinit var getSomeImages: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var getOneImage: ActivityResultLauncher<String>
     private var uriForImage: Uri? = null
     private var imageContainerList = arrayListOf<ImageContainer>()
+    private var animalTypes: List<String> = listOf()
     private var currentImage: ImageContainer? = null
 
 
@@ -72,12 +76,25 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 }
             }
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initViews(view)
         setListeners(view)
+
+        coroutineScope.launch {
+            try {
+                animalTypes = getAnimalTypes()
+                setAnimalsTypeToAdapter()
+            } catch (ex: Exception) {
+                Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+            }
+
+        }
+
     }
 
 
@@ -128,6 +145,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         animalMonthsNum = view.findViewById(R.id.add_animal_months_number)
         animalMonthsText = view.findViewById(R.id.add_animal_months_text)
 
+        animalTypeInput = view.findViewById(R.id.add_animal_type_input)
 
     }
 
@@ -154,6 +172,11 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
 
+    }
+
+    private fun setAnimalsTypeToAdapter() {
+        val adapter = ArrayAdapter(requireContext(), R.layout.animal_type_row, animalTypes)
+        animalTypeInput.setAdapter(adapter)
     }
 
     private fun setYears(value: Int) {
@@ -199,6 +222,17 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 currentImageContainer.cancelBtn.visibility = View.INVISIBLE
             }
         }
+    }
+
+    private suspend fun getAnimalTypes(): List<String> = withContext(Dispatchers.IO) {
+        val retrofitService = Common.retrofitService
+        val response = retrofitService.getAnimalsType()
+        if (response.isSuccessful) {
+            return@withContext response.body()?.map { type -> type.animalType } ?: listOf()
+        } else {
+            throw Exception("Что-то не так с сервером") //TODO разобраться с ошибками
+        }
+
     }
 
     //TODO Сделать edge-to-edge fragment

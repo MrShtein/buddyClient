@@ -378,11 +378,49 @@
             android:layout_marginEnd="15dp"/>
 
         <TextView
+            android:id="@+id/add_animal_kind_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_animal_kind_label_text"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
+            android:layout_marginTop="10dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_animal_kind_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:boxBackgroundColor="@color/grey2"
+            app:boxStrokeColor="@color/cian5"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/cian5"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_kind_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/add_animal_type_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <TextView
             android:id="@+id/add_animal_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nickname_text"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_kind_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
             android:layout_marginTop="10dp"/>
 

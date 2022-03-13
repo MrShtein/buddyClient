@@ -148,5 +148,6 @@
     <string name="add_animal_moths_text">Мес</string>
     <string name="zero">0</string>
     <string name="abbr_month">Мес</string>
+    <string name="add_animal_kind_label_text">Вид животного</string>
 
 </resources>
