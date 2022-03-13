@@ -11,7 +11,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.AnimalType
+import mr.shtein.buddyandroidclient.model.dto.AnimalType
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
 import retrofit2.Call
@@ -23,9 +23,10 @@ import android.content.res.Resources
 import android.os.Build
 import android.view.*
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 
 private const val ROLE_KEY: String = "user_role"
@@ -36,6 +37,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
+    private val coroutine = CoroutineScope(Dispatchers.Main)
     val text = "ok"
 
 
@@ -50,70 +52,62 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<LinearLayout>(R.id.container_for_search_animal_menu_and_filter).setOnApplyWindowInsetsListener { v, insets ->
-            val sysWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
-            } else {
-                insets.systemWindowInsets
-            }
-            v.updatePadding(top = sysWindow.top)
+        view.findViewById<LinearLayout>(R.id.container_for_search_animal_menu_and_filter)
+            .setOnApplyWindowInsetsListener { v, insets ->
+                val sysWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
+                } else {
+                    insets.systemWindowInsets
+                }
+                v.updatePadding(top = sysWindow.top)
 
-            insets
-        }
+                insets
+            }
 
         mService = Common.retrofitService
-        getAnimalTypesAndDoChips(view)
-        animalRecyclerView = view.findViewById(R.id.animal_list)
-        animalRecyclerView.setHasFixedSize(true);
-        animalRecyclerView.layoutManager = LinearLayoutManager(context)
-        getAllAnimalsList(view)
+        coroutine.launch {
+            getAnimalTypesAndDoChips(view)
+            animalRecyclerView = view.findViewById(R.id.animal_list)
+            animalRecyclerView.setHasFixedSize(true);
+            animalRecyclerView.layoutManager = LinearLayoutManager(context)
+            getAllAnimalsList(view)
+        }
 
 
     }
 
-    private fun getAnimalTypesAndDoChips(view: View) {
-        mService
-            .getAnimalTypes()
-            .enqueue(object : Callback<MutableList<AnimalType>> {
-                override fun onResponse(
-                    call: Call<MutableList<AnimalType>>,
-                    response: Response<MutableList<AnimalType>>
-                ) {
-                    val typeList: MutableList<AnimalType> =
-                        response.body() as MutableList<AnimalType>
-                    val typeChipGroup: ChipGroup = view.findViewById(R.id.animal_choice_chips)
-                    for (type in typeList) {
-                        val topAndDownPadding = dpToPx(16, view)
-                        val startAndStopPadding = dpToPx(32, view)
+    private suspend fun getAnimalTypesAndDoChips(view: View) {
+        val response = mService.getAnimalsType()
+        if (response.isSuccessful) {
+            val typeList: MutableList<AnimalType> =
+                response.body() as MutableList<AnimalType>
+            val typeChipGroup: ChipGroup = view.findViewById(R.id.animal_choice_chips)
+            for (type in typeList) {
+                val topAndDownPadding = dpToPx(16, view)
+                val startAndStopPadding = dpToPx(32, view)
 
-                        val curChip: Chip = Chip(view.context)
-                        curChip.text = type.pluralAnimalType
-                        curChip.chipBackgroundColor =
-                            context?.getColorStateList(R.color.choice_color)
-                        curChip.setPadding(
-                            startAndStopPadding,
-                            topAndDownPadding,
-                            startAndStopPadding,
-                            topAndDownPadding
-                        )
-                        typeChipGroup.addView(curChip)
-                    }
-                }
-
-                override fun onFailure(call: Call<MutableList<AnimalType>>, t: Throwable) {
-                    t.message?.let { Log.d("Animal", it) }
-                }
-            })
+                val curChip: Chip = Chip(view.context)
+                curChip.text = type.pluralAnimalType
+                curChip.chipBackgroundColor =
+                    context?.getColorStateList(R.color.choice_color)
+                curChip.setPadding(
+                    startAndStopPadding,
+                    topAndDownPadding,
+                    startAndStopPadding,
+                    topAndDownPadding
+                )
+                typeChipGroup.addView(curChip)
+            }
+        }
     }
 
     override fun onAnimalCardClick(animalId: Long) {
         val bundle = Bundle()
         bundle.putLong("animalId", animalId)
-       // findNavController().navigate(R.id.animalsCardFragment, bundle)
+        // findNavController().navigate(R.id.animalsCardFragment, bundle)
     }
 
     private fun dpToPx(dp: Int, view: View): Int {

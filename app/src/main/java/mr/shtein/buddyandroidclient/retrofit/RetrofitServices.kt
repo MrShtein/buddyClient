@@ -1,12 +1,10 @@
 package mr.shtein.buddyandroidclient.retrofit
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.model.*
+import mr.shtein.buddyandroidclient.model.dto.AnimalType
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
-import mr.shtein.buddyandroidclient.model.response.NewKennelResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -14,11 +12,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface RetrofitServices {
-    @GET("/api/v1/animals")
+    @GET("/api/v1/animal")
     fun getAnimals(): Call<MutableList<Animal>>
-
-    @GET("/api/v1/animal/types")
-    fun getAnimalTypes(): Call<MutableList<AnimalType>>
 
     @GET("api/v1/animal/{id}")
     fun getAnimalById(@Path("id") id: Long): Call<AnimalDetails>
@@ -67,5 +62,8 @@ interface RetrofitServices {
         @Path("kennel_id") kennelId: Int,
         @Path("animal_type") animalType: String
     ): Response<MutableList<Animal>>
+
+    @GET("/api/v1/animal/type")
+    suspend fun getAnimalsType(): Response<List<AnimalType>>
 
 }
