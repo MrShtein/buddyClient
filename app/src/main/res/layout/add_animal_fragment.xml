@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_animal_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -37,7 +38,7 @@
             android:layout_width="165dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:background="@color/grey4"
+            android:background="@drawable/no_image_stroke"
             android:contentDescription="@string/add_animal_first_img_description"
             app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
@@ -378,49 +379,11 @@
             android:layout_marginEnd="15dp"/>
 
         <TextView
-            android:id="@+id/add_animal_kind_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_animal_kind_label_text"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
-            app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
-            android:layout_marginTop="10dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/add_animal_kind_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            app:boxBackgroundColor="@color/grey2"
-            app:boxStrokeColor="@color/cian5"
-            app:boxStrokeWidthFocused="1dp"
-            app:endIconMode="dropdown_menu"
-            app:endIconTint="@color/cian5"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_kind_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/add_animal_type_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <TextView
             android:id="@+id/add_animal_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nickname_text"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_kind_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
             android:layout_marginTop="10dp"/>
 
@@ -459,19 +422,23 @@
             android:id="@+id/add_animal_breed_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainer"
+            style="@style/textInputContainerForAutocomplete"
+            app:endIconMode="none"
             app:layout_constraintTop_toBottomOf="@id/add_animal_breed_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintStart_toEndOf="parent"
             android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="100dp">
+            >
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/add_animal_breed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:completionThreshold="1"
+                android:dropDownAnchor="@id/add_animal_breed_container"
                 android:theme="@style/cursorColorForInputs"
                 />
 
@@ -490,7 +457,9 @@
             android:id="@+id/add_animal_color_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainer"
+            style="@style/textInputContainerForAutocomplete"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/cian5"
             app:layout_constraintTop_toBottomOf="@id/add_animal_color_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintStart_toEndOf="parent"
@@ -499,11 +468,11 @@
             android:layout_marginEnd="15dp"
             >
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/add_animal_color_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/cursorColorForInputs"
+                android:inputType="none"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>

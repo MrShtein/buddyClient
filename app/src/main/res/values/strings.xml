@@ -149,5 +149,8 @@
     <string name="zero">0</string>
     <string name="abbr_month">Мес</string>
     <string name="add_animal_kind_label_text">Вид животного</string>
+    <string name="elder_token_msg">К сожалению Ваш токен устарел,\n необходимо залогиниться</string>
+    <string name="add_animal_dialog_clarification_text">Добавить питомца</string>
+    <string name="bad_token_dialog_text">Срок действия логина закончился,\n необходимо заново войти в приложение</string>
 
 </resources>

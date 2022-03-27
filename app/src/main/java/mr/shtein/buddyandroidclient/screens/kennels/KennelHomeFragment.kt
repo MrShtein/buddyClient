@@ -26,6 +26,14 @@ import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import java.lang.Exception
 
+private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
+private const val KENNEL_AVATAR_ENDPOINT = "http://10.0.2.2:8881/api/v1/kennel/avatar/"
+private const val KENNEL_ID_KEY = "kennel_id"
+private const val DOG_ID = 1
+private const val CAT_ID = 2
+private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
+
+
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private lateinit var kennelAvatar: ImageView
@@ -47,12 +55,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var dogsList: MutableList<Animal>
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
-
-    companion object {
-        private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
-        private const val KENNEL_AVATAR_ENDPOINT = "http://10.0.2.2:8881/api/v1/kennel/avatar/"
-        private const val KENNEL_ID_KEY = "kennel_id"
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,53 +116,62 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
         animalsAmount.text = makeAnimalText(kennelItem.animalsAmount)
 
-       coroutine.launch {
-           val kennelId = kennelItem.kennelId
-           try {
-               val dogType = requireContext()
-                   .resources.getString(R.string.kennel_home_dogs_label_text)
-               val catType = requireContext()
-                   .resources.getString(R.string.kennel_home_cats_label_text)
-               dogsList = loadAnimals(kennelId, dogType)
-               catsList = loadAnimals(kennelId, catType)
+        coroutine.launch {
+            val kennelId = kennelItem.kennelId
+            try {
+                val dogType = requireContext()
+                    .resources.getString(R.string.kennel_home_dogs_label_text)
+                val catType = requireContext()
+                    .resources.getString(R.string.kennel_home_cats_label_text)
+                dogsList = loadAnimals(kennelId, dogType)
+                catsList = loadAnimals(kennelId, catType)
 
-               dogCarousel.visibility = View.VISIBLE
-               dogCarousel.setHasFixedSize(true)
-               dogAdapter = DogPhotoAdapter(dogsList, token, object : DogPhotoAdapter.OnAnimalItemClickListener {
-                   override fun onClick(animalItem: Animal) {
-                       Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
-                   }
-               })
-               dogCarousel.adapter = dogAdapter
-               dogCarousel.layoutManager =
-                   LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                dogCarousel.visibility = View.VISIBLE
+                dogCarousel.setHasFixedSize(true)
+                dogAdapter = DogPhotoAdapter(
+                    dogsList,
+                    token,
+                    object : DogPhotoAdapter.OnAnimalItemClickListener {
+                        override fun onClick(animalItem: Animal) {
+                            Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                dogCarousel.adapter = dogAdapter
+                dogCarousel.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-               catCarousel.visibility = View.VISIBLE
-               catCarousel.setHasFixedSize(true)
-               catAdapter = CatPhotoAdapter(catsList, token, object : CatPhotoAdapter.OnAnimalItemClickListener {
-                   override fun onClick(animalItem: Animal) {
-                       Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
-                   }
-               })
-               catCarousel.adapter = catAdapter
-               catCarousel.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                catCarousel.visibility = View.VISIBLE
+                catCarousel.setHasFixedSize(true)
+                catAdapter = CatPhotoAdapter(
+                    catsList,
+                    token,
+                    object : CatPhotoAdapter.OnAnimalItemClickListener {
+                        override fun onClick(animalItem: Animal) {
+                            Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                catCarousel.adapter = catAdapter
+                catCarousel.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-                   catsAmount.text = getAnimalCountText(catsList.size)
-                   dogsAmount.text = getAnimalCountText(dogsList.size)
+                catsAmount.text = getAnimalCountText(catsList.size)
+                dogsAmount.text = getAnimalCountText(dogsList.size)
 
 
-
-           } catch (ex: Exception) {
-               Log.e("error", "Что-то пошло не так")
-           }
+            } catch (ex: Exception) {
+                Log.e("error", "Что-то пошло не так")
+            }
         }
     }
 
     private fun setListeners(kennelItem: KennelPreview) {
         addDogsBtn.setOnClickListener {
             val kennelId = kennelItem.kennelId
-            val bundle = bundleOf(KENNEL_ID_KEY to kennelId)
-            if (true) {
+            val bundle = bundleOf(
+                KENNEL_ID_KEY to kennelId,
+                ANIMAL_TYPE_ID_KEY to DOG_ID
+            )
+            if (kennelItem.isValid) {
                 findNavController().navigate(
                     R.id.action_kennelHomeFragment_to_addAnimalFragment,
                     bundle
@@ -172,7 +183,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
         addCatsBtn.setOnClickListener {
             val kennelId = kennelItem.kennelId
-            val bundle = bundleOf(KENNEL_ID_KEY to kennelId)
+            val bundle = bundleOf(
+                KENNEL_ID_KEY to kennelId,
+                ANIMAL_TYPE_ID_KEY to CAT_ID
+            )
             if (kennelItem.isValid) {
                 findNavController().navigate(
                     R.id.action_kennelHomeFragment_to_addAnimalFragment,
@@ -203,18 +217,18 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         withContext(Dispatchers.IO) {
             val retrofit = Common.retrofitService
             val token = "Bearer ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
-                val response = retrofit.getAnimalsByKennelIdAndAnimalType(
-                    token, kennelId, animalType
-                )
-                if (response.isSuccessful) {
-                    response.body() ?: mutableListOf()
-                } else {
-                    when (response.code()) {
-                        403 -> goToLogin()
-                        else -> mutableListOf<Animal>()
-                    }
-                    mutableListOf()
+            val response = retrofit.getAnimalsByKennelIdAndAnimalType(
+                token, kennelId, animalType
+            )
+            if (response.isSuccessful) {
+                response.body() ?: mutableListOf()
+            } else {
+                when (response.code()) {
+                    403 -> goToLogin()
+                    else -> mutableListOf<Animal>()
                 }
+                mutableListOf()
+            }
         }
 
     private fun goToLogin() {
@@ -224,7 +238,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private fun getAnimalCountText(amount: Int): String {
         val pet = "питом"
-        return when(amount % 10) {
+        return when (amount % 10) {
             1 -> "$amount ${pet}ец"
             2, 3, 4 -> "$amount ${pet}ца"
             else -> "$amount ${pet}цев"
@@ -242,7 +256,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
 
     }
-
 
 
 }

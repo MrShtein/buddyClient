@@ -1,11 +1,10 @@
 package mr.shtein.buddyandroidclient.model.dto
 
-data class AnimalType(
+data class AnimalCharacteristic(
     val id: Int,
-    val pluralAnimalType: String,
-    val animalType: String
+    val name: String
 ) {
     override fun toString(): String {
-        return animalType
+        return name
     }
 }
