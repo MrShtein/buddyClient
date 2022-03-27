@@ -16,7 +16,6 @@
         android:theme="@style/Theme.BuddyAndroidClient">
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize"
             android:exported="true"
            >
             <intent-filter>
