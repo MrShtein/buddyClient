@@ -322,8 +322,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                     newAnimalDto.years = yearsNum.text.toString().toInt()
                     newAnimalDto.months = monthsNum.text.toString().toInt()
                     newAnimalDto.name = animalName.text.toString()
-                    validateForm(this)
-                    showDialog()
+                    val isValid = validateForm()
+                    if (!isValid) showDialog()
 
                 } catch (ex: Exception) {
                     Log.d("result", "Result was wrong")
@@ -481,7 +481,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     }
 
-    private fun validateForm(coroutineScope: CoroutineScope) {
+    private fun validateForm(): Boolean {
         var hasInvalidValue = false
         val imageValidator = ImageValidator()
         if (imageValidator.hasPhotoChecker(imageContainerList)) {
@@ -489,7 +489,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             scroll.smoothScrollTo(0, firstImage.top)
             changeImageErrorHighLight(true)
             Toast.makeText(requireContext(), NO_PHOTO_ERROR, Toast.LENGTH_LONG).show()
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.years == 0 && newAnimalDto.months == 0) {
@@ -497,7 +496,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             hasInvalidValue = true
             changeAgeContainersErrorHighLight(true)
             Toast.makeText(requireContext(), NO_AGE_ERROR, Toast.LENGTH_LONG).show()
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.name == "") {
@@ -507,28 +505,24 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             }
             animalNameInputContainer.isErrorEnabled = true
             animalNameInputContainer.error = EMPTY_NAME_ERROR
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.breedId == 0) {
             hasInvalidValue = true
             animalBreedsInputContainer.isErrorEnabled = true
             animalBreedsInputContainer.error = NOT_EXISTED_BREED_ERROR
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.colorCharacteristicId == 0) {
             hasInvalidValue = true
             animalColorInputContainer.isErrorEnabled = true
             animalColorInputContainer.error = EMPTY_COLOR_ERROR
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.description == "") {
             hasInvalidValue = true
             animalDescriptionInputContainer.isErrorEnabled = true
             animalDescriptionInputContainer.error = EMPTY_DESCRIPTION_ERROR
-            coroutineScope.cancel()
         }
 
         if (newAnimalDto.genderId == 0) {
@@ -538,6 +532,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             femaleBtn.buttonTintList = ColorStateList
                 .valueOf(requireContext().getColor(R.color.choice_color))
         }
+        return hasInvalidValue
     }
 
     private fun changeImageErrorHighLight(isError: Boolean) {

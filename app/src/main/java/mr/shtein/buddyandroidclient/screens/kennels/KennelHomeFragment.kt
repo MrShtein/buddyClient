@@ -125,6 +125,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                     .resources.getString(R.string.kennel_home_cats_label_text)
                 dogsList = loadAnimals(kennelId, dogType)
                 catsList = loadAnimals(kennelId, catType)
+                animalsAmount.text = makeAnimalText(dogsList.size + catsList.size)
 
                 dogCarousel.visibility = View.VISIBLE
                 dogCarousel.setHasFixedSize(true)
