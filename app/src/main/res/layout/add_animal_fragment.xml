@@ -208,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/add_animal_age_label_Text"
+            android:text="@string/animal_age_label_Text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_bottom_image_divider"
             app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_image_divider" />
@@ -413,7 +413,7 @@
             android:id="@+id/add_animal_breed_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_animal_breed_text"
+            android:text="@string/animal_breed_label_text"
             app:layout_constraintStart_toStartOf="@id/add_animal_name_label"
             app:layout_constraintTop_toBottomOf="@id/add_animal_name_container"
             android:layout_marginTop="15dp"/>
@@ -448,7 +448,7 @@
             android:id="@+id/add_animal_color_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_animal_color_text"
+            android:text="@string/animal_color_label_text"
             app:layout_constraintStart_toStartOf="@id/add_animal_breed_label"
             app:layout_constraintTop_toBottomOf="@id/add_animal_breed_container"
             android:layout_marginTop="15dp"/>
@@ -481,7 +481,7 @@
             android:id="@+id/add_animal_genre_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_animal_genre_text"
+            android:text="@string/animal_gender_label_text"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_slider"
             app:layout_constraintTop_toBottomOf="@id/add_animal_color_container"
             android:layout_marginTop="15dp"/>

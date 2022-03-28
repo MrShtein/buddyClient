@@ -133,13 +133,13 @@
     <string name="add_animal_fourth_img_description">Четвертая картинка с животным</string>
     <string name="add_animal_add_btn_description">Кнопка для добавления новой фотографии</string>
     <string name="add_animal_cancel_image_btn_description">Кнопка для удаления фотографии животного</string>
-    <string name="add_animal_age_label_Text">Возраст</string>
+    <string name="animal_age_label_Text">Возраст</string>
     <string name="year">Год</string>
     <string name="month">Месяц</string>
     <string name="nickname_text">Кличка</string>
-    <string name="add_animal_breed_text">Порода</string>
-    <string name="add_animal_color_text">Цвет</string>
-    <string name="add_animal_genre_text">Пол</string>
+    <string name="animal_breed_label_text">Порода</string>
+    <string name="animal_color_label_text">Цвет</string>
+    <string name="animal_gender_label_text">Пол</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
     <string name="add_animal_description_label_text">Описание</string>
@@ -152,5 +152,6 @@
     <string name="elder_token_msg">К сожалению Ваш токен устарел,\n необходимо залогиниться</string>
     <string name="add_animal_dialog_clarification_text">Добавить питомца</string>
     <string name="bad_token_dialog_text">Срок действия логина закончился,\n необходимо заново войти в приложение</string>
+    <string name="animal_settings_change_btn_description">Кнопка для перехода к изменению питомца</string>
 
 </resources>
