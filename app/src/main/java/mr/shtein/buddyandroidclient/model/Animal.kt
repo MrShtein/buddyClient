@@ -16,4 +16,25 @@ data class Animal  (
     val description: String,
     val breed: String,
     val characteristics: Map<String, String>
-) : Parcelable
+) : Parcelable {
+
+    fun getAge(): String {
+        val years = age / 12
+        val months = age % 12
+        return if (years == 0) {
+            "$months м."
+        } else if (months == 0) {
+            "$years ${getLetterForYear(years)}"
+        } else {
+            "$years ${getLetterForYear(years)} $months м."
+        }
+    }
+
+    private fun getLetterForYear(years: Int): String {
+        return when(years) {
+            1,2,3,4 -> "г."
+            else -> "л."
+        }
+    }
+
+}
