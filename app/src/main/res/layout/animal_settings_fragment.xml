@@ -19,6 +19,23 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/animal_settings_photo_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1/1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:background="@drawable/big_animal_photo_count_background"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/animal_settings_photo_container"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
             android:id="@+id/animal_settings_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
