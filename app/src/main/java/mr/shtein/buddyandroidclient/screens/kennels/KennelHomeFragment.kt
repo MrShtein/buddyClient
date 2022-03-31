@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -147,6 +149,8 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 dogCarousel.adapter = dogAdapter
                 dogCarousel.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                val dogCarouselHelper = LinearSnapHelper()
+                dogCarouselHelper.attachToRecyclerView(dogCarousel)
 
                 catCarousel.visibility = View.VISIBLE
                 catCarousel.setHasFixedSize(true)
@@ -167,6 +171,8 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 catCarousel.adapter = catAdapter
                 catCarousel.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                val catCarouselHelper = LinearSnapHelper()
+                catCarouselHelper.attachToRecyclerView(catCarousel)
 
                 catsAmount.text = getAnimalCountText(catsList.size)
                 dogsAmount.text = getAnimalCountText(dogsList.size)

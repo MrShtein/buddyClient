@@ -5,8 +5,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
@@ -55,6 +54,8 @@ class AnimalSettingsFragment: Fragment(R.layout.animal_settings_fragment) {
     private fun setDataToViews() {
         photoRecyclerView.setHasFixedSize(true)
         photoRecyclerView.layoutManager = layoutManager
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(photoRecyclerView)
         val animalPhotoInString = animal?.imgUrl?.map {
             it.url
         }
