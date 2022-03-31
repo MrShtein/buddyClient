@@ -104,7 +104,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                         SnapOnScrollListener(snapHelper, this@AnimalsCardFragment)
                     animalRecyclerView.addOnScrollListener(snapOnScrollListener)
                     snapHelper.attachToRecyclerView(animalRecyclerView)
-                    adapter = AnimalPhotoAdapter(view.context, animalDetails.imgUrl)
+                    adapter = AnimalPhotoAdapter(animalDetails.imgUrl)
                     adapter.notifyDataSetChanged()
                     animalRecyclerView.adapter = adapter
 

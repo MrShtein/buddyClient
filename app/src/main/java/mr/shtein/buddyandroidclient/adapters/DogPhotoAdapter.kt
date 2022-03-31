@@ -14,7 +14,7 @@ import mr.shtein.buddyandroidclient.model.Animal
 class DogPhotoAdapter(
     private val animalsList: List<Animal>,
     val token: String,
-    val animalTouchCallback: OnAnimalItemClickListener
+    private val animalTouchCallback: OnAnimalItemClickListener
 ): RecyclerView.Adapter<DogPhotoAdapter.AnimalInKennelViewHolder>() {
 
     private lateinit var host: String
@@ -49,25 +49,21 @@ class DogPhotoAdapter(
 
         private val avatar = itemView.findViewById<ImageButton>(R.id.animal_in_kennel_avatar)
 
+        init {
+            avatar.setOnClickListener(this)
+        }
+
         fun bind(animalCard: Animal) {
             val animalAvatarUrl = animalCard.imgUrl.find {
                 it.primary
             }
             val fullUrl = "$host/$pathForAnimalPhoto${animalAvatarUrl?.url}"
-            val header = LazyHeaders.Builder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-            val urlWithHeaders = GlideUrl(
-                fullUrl,
-                header
-            )
             Glide.with(itemView.context)
-                .load(urlWithHeaders)
+                .load(fullUrl)
                 .into(avatar)
         }
 
-
-        override fun onClick(p0: View?) {
+        override fun onClick(view: View?) {
             onItemListener.onClick(animalsList[absoluteAdapterPosition])
         }
     }

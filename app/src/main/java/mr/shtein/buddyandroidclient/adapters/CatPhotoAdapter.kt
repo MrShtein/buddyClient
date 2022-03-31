@@ -14,7 +14,7 @@ import mr.shtein.buddyandroidclient.model.Animal
 class CatPhotoAdapter(
     private val animalsList: List<Animal>,
     val token: String,
-    val animalTouchCallback: OnAnimalItemClickListener
+    private val animalTouchCallback: OnAnimalItemClickListener
 ): RecyclerView.Adapter<CatPhotoAdapter.AnimalInKennelViewHolder>() {
 
     private lateinit var host: String
@@ -48,6 +48,10 @@ class CatPhotoAdapter(
     ): RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val avatar = itemView.findViewById<ImageButton>(R.id.animal_in_kennel_avatar)
+
+        init {
+            avatar.setOnClickListener(this)
+        }
 
         fun bind(animalCard: Animal) {
             val animalAvatarUrl = animalCard.imgUrl.find {

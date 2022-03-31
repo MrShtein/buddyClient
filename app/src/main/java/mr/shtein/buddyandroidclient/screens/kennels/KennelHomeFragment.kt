@@ -32,6 +32,7 @@ private const val KENNEL_ID_KEY = "kennel_id"
 private const val DOG_ID = 1
 private const val CAT_ID = 2
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
+private const val ANIMAL_KEY = "animal_key"
 
 
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
@@ -134,7 +135,13 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                     token,
                     object : DogPhotoAdapter.OnAnimalItemClickListener {
                         override fun onClick(animalItem: Animal) {
-                            Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
+                            val bundle = Bundle()
+                            bundle.putParcelable(ANIMAL_KEY, animalItem)
+                            findNavController()
+                                .navigate(
+                                    R.id.action_kennelHomeFragment_to_animalSettingsFragment,
+                                    bundle
+                                )
                         }
                     })
                 dogCarousel.adapter = dogAdapter
@@ -148,7 +155,13 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                     token,
                     object : CatPhotoAdapter.OnAnimalItemClickListener {
                         override fun onClick(animalItem: Animal) {
-                            Toast.makeText(requireContext(), "text", Toast.LENGTH_LONG).show()
+                            val bundle = Bundle()
+                            bundle.putParcelable(ANIMAL_KEY, animalItem)
+                            findNavController()
+                                .navigate(
+                                    R.id.action_kennelHomeFragment_to_animalSettingsFragment,
+                                    bundle
+                                )
                         }
                     })
                 catCarousel.adapter = catAdapter

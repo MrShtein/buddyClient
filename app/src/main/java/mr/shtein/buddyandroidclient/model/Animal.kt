@@ -1,5 +1,10 @@
 package mr.shtein.buddyandroidclient.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
 data class Animal  (
     val id: Long,
     val imgUrl: List<AnimalPhoto>,
@@ -11,4 +16,4 @@ data class Animal  (
     val description: String,
     val breed: String,
     val characteristics: Map<String, String>
-)
+) : Parcelable

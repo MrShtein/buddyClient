@@ -4,17 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.viewholders.AnimalPhotoViewHolder
 
 class AnimalPhotoAdapter(
-    private val context: Context,
     private var animalPhotos: List<String>,
-    ): RecyclerView.Adapter<AnimalPhotoViewHolder>() {
+) : RecyclerView.Adapter<AnimalPhotoAdapter.AnimalPhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalPhotoViewHolder {
-        return AnimalPhotoViewHolder(LayoutInflater.from(context).inflate(R.layout.big_animal_photo_card, parent, false))
+        val context: Context = parent.context
+        return AnimalPhotoViewHolder(
+            LayoutInflater
+                .from(context)
+                .inflate(R.layout.animal_big_photo_row, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: AnimalPhotoViewHolder, position: Int) {
@@ -29,4 +36,17 @@ class AnimalPhotoAdapter(
         return animalPhotos.size
     }
 
+    inner class AnimalPhotoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)    {
+
+        private val animalImage: ImageView = itemView.findViewById(R.id.animal_big_photo_row_img)
+
+        fun bind(url: String) {
+            val host = itemView.context.resources.getString(R.string.host)
+            val path = "$host/animal/photo/$url"
+
+            Glide.with(animalImage.context)
+                .load(path)
+                .into(animalImage)
+        }
+    }
 }
