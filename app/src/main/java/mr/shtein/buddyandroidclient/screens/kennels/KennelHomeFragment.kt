@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -35,6 +36,8 @@ private const val DOG_ID = 1
 private const val CAT_ID = 2
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val ANIMAL_KEY = "animal_key"
+private const val RESULT_LISTENER_KEY = "result_key"
+private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 
 
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
@@ -58,6 +61,14 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var dogsList: MutableList<Animal>
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(RESULT_LISTENER_KEY) { _, bundle ->
+            val messageAboutSomeChange = bundle.getString(RESULT_LISTENER_BUNDLE_KEY)
+            Toast.makeText(context, messageAboutSomeChange, Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -276,6 +287,4 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
 
     }
-
-
 }

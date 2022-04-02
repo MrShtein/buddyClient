@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="310dp"
+        android:layout_height="290dp"
+        app:cardCornerRadius="30dp"
+        android:backgroundTint="@color/dialog_primary_color"
+        android:layout_gravity="center">
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/animal_delete_dialog_motion_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutDescription="@xml/animal_delete_dialog_xml_scene">
+
+            <Spinner
+                android:id="@+id/animal_delete_dialog_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/animal_delete_dialog_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:contentDescription="@string/user_settings_icon_description"
+                android:src="@drawable/notification_dialog_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/animal_delete_dialog_clarification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/alert_dialog_notification_text"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_delete_dialog_icon" />
+
+            <TextView
+                android:id="@+id/animal_delete_dialog_clarification_text_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/animal_delete_dialog_clarification_text"
+                android:textAlignment="center"
+                android:textColor="@color/dialog_clarification_text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_delete_dialog_clarification" />
+
+            <TextView
+                android:id="@+id/animal_delete_dialog_error_clarification_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/animal_delete_error_dialog_clarification_text"
+                android:textAlignment="center"
+                android:textColor="@color/dialog_clarification_text_color"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_delete_dialog_clarification" />
+
+            <Button
+                android:id="@+id/animal_delete_dialog_positive_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@color/transparent"
+                android:text="@string/yes_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/cian5"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/animal_delete_dialog_negative_btn"
+                app:layout_constraintEnd_toStartOf="@+id/animal_delete_dialog_negative_btn" />
+
+            <Button
+                android:id="@+id/animal_delete_dialog_negative_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="40dp"
+                android:background="@color/transparent"
+                android:text="@string/no_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/cian5"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/animal_delete_dialog_ok_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="40dp"
+                android:background="@color/transparent"
+                android:text="@string/user_settings_dialog_ok_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/cian5"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

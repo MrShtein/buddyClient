@@ -226,17 +226,39 @@
             android:justificationMode="inter_word"
             />
 
-        <ImageButton
-            android:id="@+id/animal_settings_change_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/animal_settings_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_btn_text"
+            android:textColor="@color/choice_color"
+            android:textAllCaps="false"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             app:layout_constraintTop_toBottomOf="@id/animal_settings_description"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/animal_settings_change_btn"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/animal_settings_delete_btn_description"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/animal_settings_change_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_btn_text"
+            android:textColor="@color/cian5"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_description"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_delete_btn"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
             android:contentDescription="@string/animal_settings_change_btn_description"
-            android:src="@drawable/settings_btn"
-            android:background="@color/transparent"/>
+           />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

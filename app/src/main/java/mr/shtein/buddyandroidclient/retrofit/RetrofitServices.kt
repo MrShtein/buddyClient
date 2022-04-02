@@ -89,4 +89,10 @@ interface RetrofitServices {
         @Part("animal_info") newAnimalRequest: NewAnimal
     ): Response<Unit>
 
+    @DELETE("/api/v1/animal/{animal_id}")
+    suspend fun deleteAnimal(
+        @Header("Authorization") token: String,
+        @Path("animal_id") animalId: Long
+    ): Response<Unit>
+
 }
