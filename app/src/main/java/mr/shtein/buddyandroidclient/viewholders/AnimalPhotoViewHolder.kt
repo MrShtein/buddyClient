@@ -11,19 +11,3 @@ import jp.wasabeef.picasso.transformations.CropTransformation
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import mr.shtein.buddyandroidclient.R
 
-class AnimalPhotoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-    private val animalImage: ImageView = itemView.findViewById(R.id.big_animal_image)
-
-    fun bind(url: String) {
-        val host = itemView.context.resources.getString(R.string.host)
-        val path: String = "$host/animal/photo/$url"
-
-        Picasso
-            .get()
-            .load(path)
-            .transform(RoundedCornersTransformation(20,  0, RoundedCornersTransformation.CornerType.ALL))
-            .into(animalImage)
-    }
-
-}

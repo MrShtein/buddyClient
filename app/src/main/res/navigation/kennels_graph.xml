@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/shelters_graph"
+    android:id="@+id/kennel_graph"
     app:startDestination="@id/addKennelFragment">
 
     <fragment
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_addKennelFragment_to_kennelSettingsFragment"
             app:destination="@id/kennelSettingsFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_kennelHomeFragment"
+            app:destination="@id/kennelHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/kennelSettingsFragment"
@@ -44,4 +47,26 @@
             android:id="@+id/action_kennelConfirmFragment_to_addKennelFragment"
             app:destination="@id/addKennelFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/kennelHomeFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelHomeFragment"
+        android:label="KennelHomeFragment"
+        tools:layout="@layout/kennel_home_fragment">
+        <action
+            android:id="@+id/action_kennelHomeFragment_to_addAnimalFragment"
+            app:destination="@id/addAnimalFragment" />
+        <action
+            android:id="@+id/action_kennelHomeFragment_to_animalSettingsFragment"
+            app:destination="@id/animalSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAnimalFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddAnimalFragment"
+        android:label="AddAnimalFragment"
+        tools:layout="@layout/add_animal_fragment"/>
+    <fragment
+        android:id="@+id/animalSettingsFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AnimalSettingsFragment"
+        android:label="AnimalSettingsFragment"
+        tools:layout="@layout/animal_settings_fragment"/>
 </navigation>

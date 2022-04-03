@@ -8,7 +8,7 @@
         android:layout_width="310dp"
         android:layout_height="290dp"
         app:cardCornerRadius="30dp"
-        android:backgroundTint="@color/user_settings_dialog_color"
+        android:backgroundTint="@color/dialog_primary_color"
         android:layout_gravity="center">
 
         <androidx.constraintlayout.motion.widget.MotionLayout
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:contentDescription="@string/user_settings_icon_description"
-                android:src="@drawable/user_settings_dialog_icon"
+                android:src="@drawable/notification_dialog_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/user_settings_notification_text"
+                android:text="@string/alert_dialog_notification_text"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/user_settings_dialog_clarification_text"
                 android:textAlignment="center"
-                android:textColor="@color/user_settings_dialog_clarification_text_color"
+                android:textColor="@color/dialog_clarification_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_settings_dialog_clarification" />
@@ -70,7 +70,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/user_settings_dialog_clarification_text_end"
                 android:textAlignment="center"
-                android:textColor="@color/user_settings_dialog_clarification_text_color"
+                android:textColor="@color/dialog_clarification_text_color"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_settings_dialog_clarification" />
 

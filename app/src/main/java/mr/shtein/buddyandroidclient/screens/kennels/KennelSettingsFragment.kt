@@ -353,8 +353,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 streetInput.text.toString(),
                 houseNumberInput.text.toString(),
                 buildingNumberInput.text.toString(),
-                identificationNumberInput.text.toString().toLong()
+                identificationNumberInput.text.toString().toLong(),
+                ""
             )
+            storage.writeString(SharedPreferences.USER_ROLE_KEY, "")
             val kennelRequestJson = Gson().toJson(kennelRequest)
             val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequestJson)
             findNavController()

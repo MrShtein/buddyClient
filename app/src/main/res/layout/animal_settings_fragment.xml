@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/animal_settings_photo_container"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/animal_settings_photo_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1/1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:background="@drawable/big_animal_photo_count_background"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/animal_settings_photo_container"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/animal_settings_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nickname_text"
+            app:layout_constraintEnd_toStartOf="@id/animal_settings_breed_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_photo_container" />
+
+        <TextView
+            android:id="@+id/animal_settings_breed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/animal_breed_label_text"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_age_label"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_name_label"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name_label" />
+
+        <TextView
+            android:id="@+id/animal_settings_age_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/animal_age_label_Text"
+            app:layout_constraintEnd_toStartOf="@id/animal_settings_color_label"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_breed_label"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name_label" />
+
+        <TextView
+            android:id="@+id/animal_settings_color_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/animal_color_label_text"
+            app:layout_constraintEnd_toStartOf="@id/animal_settings_gender_label"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_age_label"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name_label" />
+
+        <TextView
+            android:id="@+id/animal_settings_gender_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/animal_gender_label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_color_label"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name_label" />
+
+        <View
+            android:id="@+id/animal_settings_name_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-10dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_name_label"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_name_label"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_name_label" />
+
+        <View
+            android:id="@+id/animal_settings_breed_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-10dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_breed_label"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_breed_label"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_breed_label" />
+
+        <View
+            android:id="@+id/animal_settings_age_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-5dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_age_label"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_age_label"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_age_label" />
+
+        <View
+            android:id="@+id/animal_settings_color_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-10dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_color_label"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_color_label"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_color_label" />
+
+        <View
+            android:id="@+id/animal_settings_gender_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-10dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_gender_label"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_gender_label"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_gender_label" />
+
+        <TextView
+            android:id="@+id/animal_settings_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_name_divider"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_name_divider"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_gender_divider"
+            tools:text="Леонид" />
+
+        <TextView
+            android:id="@+id/animal_settings_breed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_breed_divider"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_breed_divider"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name"
+            tools:text="Московская сторожевая" />
+
+        <TextView
+            android:id="@+id/animal_settings_age"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_age_divider"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_age_divider"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name"
+            tools:text="5 лет" />
+
+        <TextView
+            android:id="@+id/animal_settings_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_color_divider"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_color_divider"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name"
+            tools:text="Черный" />
+
+        <TextView
+            android:id="@+id/animal_settings_gender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_gender_divider"
+            app:layout_constraintTop_toTopOf="@id/animal_settings_name"
+            tools:text="Девочка" />
+
+        <View
+            android:id="@+id/animal_settings_description_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_breed" />
+
+        <TextView
+            android:id="@+id/animal_settings_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Взрослый воспитанный пес. Откликается на кличку Леонид, знает много команд, привередлив кормам, отличный друг и защитник. Ждёт преданного хозяина двадцать четыре года."
+            app:layout_constraintTop_toBottomOf="@+id/animal_settings_description_divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:lineHeight="20sp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textAlignment="textStart"
+            android:justificationMode="inter_word"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/animal_settings_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_btn_text"
+            android:textColor="@color/choice_color"
+            android:textAllCaps="false"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/animal_settings_change_btn"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/animal_settings_delete_btn_description"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/animal_settings_change_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_btn_text"
+            android:textColor="@color/cian5"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintTop_toBottomOf="@id/animal_settings_description"
+            app:layout_constraintStart_toEndOf="@id/animal_settings_delete_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/animal_settings_change_btn_description"
+           />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>

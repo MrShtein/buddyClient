@@ -10,5 +10,6 @@ data class KennelRequest(
     var kennelStreet: String = "",
     var kennelHouseNum: String = "",
     var kennelBuildingNum: String = "",
-    var kennelIdentifyNum: Long = 0
+    var kennelIdentifyNum: Long = 0,
+    var role: String
 )

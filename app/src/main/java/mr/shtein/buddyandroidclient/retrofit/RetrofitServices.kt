@@ -1,9 +1,13 @@
 package mr.shtein.buddyandroidclient.retrofit
 
 import mr.shtein.buddyandroidclient.model.*
+import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
+import mr.shtein.buddyandroidclient.model.dto.AnimalType
+import mr.shtein.buddyandroidclient.model.dto.Breed
+import mr.shtein.buddyandroidclient.model.dto.NewAnimal
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
-import mr.shtein.buddyandroidclient.model.response.NewKennelResponse
+import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -11,11 +15,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface RetrofitServices {
-    @GET("/api/v1/animals")
+    @GET("/api/v1/animal")
     fun getAnimals(): Call<MutableList<Animal>>
-
-    @GET("/api/v1/animal/types")
-    fun getAnimalTypes(): Call<MutableList<AnimalType>>
 
     @GET("api/v1/animal/{id}")
     fun getAnimalById(@Path("id") id: Long): Call<AnimalDetails>
@@ -50,6 +51,48 @@ interface RetrofitServices {
         @HeaderMap headers: Map<String, String>,
         @Part("kennel") kennelRequest: RequestBody,
         @Part file: MultipartBody.Part?
-    ) : Response<Boolean>
+    ): Response<Boolean>
+
+    @GET("/api/v1/person/{personId}/kennel")
+    suspend fun getKennelsByPersonId(
+        @Header("Authorization") token: String,
+        @Path("personId") personId: Long
+    ): Response<MutableList<KennelPreviewResponse>>
+
+    @GET("/api/v1/animal/kennel/{kennel_id}/{animal_type}")
+    suspend fun getAnimalsByKennelIdAndAnimalType(
+        @Header("Authorization") token: String,
+        @Path("kennel_id") kennelId: Int,
+        @Path("animal_type") animalType: String
+    ): Response<MutableList<Animal>>
+
+    @GET("/api/v1/animal/type")
+    suspend fun getAnimalsType(): Response<List<AnimalType>>
+
+    @GET("/api/v1/animal/{animal_type}/breed")
+    suspend fun getAnimalsBreed(
+        @Header("Authorization") token: String,
+        @Path("animal_type") animalType: Int
+    ): Response<List<Breed>>
+
+    @GET("/api/v1/animal/characteristic/{characteristic_id}")
+    suspend fun getAnimalsCharacteristicByCharacteristicTypeId(
+        @Header("Authorization") token: String,
+        @Path("characteristic_id") characteristicId: Int
+    ): Response<List<AnimalCharacteristic>>
+
+    @Multipart
+    @POST("/api/v1/animal")
+    suspend fun addNewAnimal(
+        @Header("Authorization") token: String,
+        @Part files: List<MultipartBody.Part>,
+        @Part("animal_info") newAnimalRequest: NewAnimal
+    ): Response<Unit>
+
+    @DELETE("/api/v1/animal/{animal_id}")
+    suspend fun deleteAnimal(
+        @Header("Authorization") token: String,
+        @Path("animal_id") animalId: Long
+    ): Response<Unit>
 
 }
