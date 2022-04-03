@@ -241,8 +241,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 getSomeImages.launch(IMAGE_TYPE)
             }
             image.cancelBtn.setOnClickListener {
-                image.cancelBtn.visibility = View.INVISIBLE
-                image.addBtn.visibility = View.VISIBLE
                 currentImage = image
                 transferImages()
             }
@@ -368,7 +366,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         for (i in currentImage?.id!!..3) {
             val currentImageContainer = imageContainerList[i]
             if (i == imageContainerList.size - 1) {
-                currentImageContainer.imageView.setImageURI(null)
+                currentImageContainer.imageView.setImageDrawable(null)
                 currentImageContainer.uri = null
                 currentImageContainer.addBtn.visibility = View.VISIBLE
                 currentImageContainer.cancelBtn.visibility = View.INVISIBLE
@@ -383,7 +381,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 currentImageContainer.addBtn.visibility = View.INVISIBLE
                 currentImageContainer.cancelBtn.visibility = View.VISIBLE
             } else {
-                currentImageContainer.imageView.setImageURI(null)
+                currentImageContainer.imageView.setImageDrawable(null)
                 currentImageContainer.uri = null
                 currentImageContainer.addBtn.visibility = View.VISIBLE
                 currentImageContainer.cancelBtn.visibility = View.INVISIBLE
