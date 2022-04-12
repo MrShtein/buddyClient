@@ -57,6 +57,11 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         setListeners(view)
     }
 
+    override fun onStop() {
+        super.onStop()
+        kennelsList = mutableListOf()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         coroutineScope.cancel()
