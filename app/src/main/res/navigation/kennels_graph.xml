@@ -63,10 +63,20 @@
         android:id="@+id/addAnimalFragment"
         android:name="mr.shtein.buddyandroidclient.screens.kennels.AddAnimalFragment"
         android:label="AddAnimalFragment"
-        tools:layout="@layout/add_animal_fragment"/>
+        tools:layout="@layout/add_animal_fragment">
+        <action
+            android:id="@+id/action_addAnimalFragment_to_animalSettingsFragment"
+            app:destination="@id/animalSettingsFragment"
+            app:popUpTo="@+id/animalSettingsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/animalSettingsFragment"
         android:name="mr.shtein.buddyandroidclient.screens.kennels.AnimalSettingsFragment"
         android:label="AnimalSettingsFragment"
-        tools:layout="@layout/animal_settings_fragment"/>
+        tools:layout="@layout/animal_settings_fragment">
+        <action
+            android:id="@+id/action_animalSettingsFragment_to_addAnimalFragment"
+            app:destination="@id/addAnimalFragment" />
+    </fragment>
 </navigation>

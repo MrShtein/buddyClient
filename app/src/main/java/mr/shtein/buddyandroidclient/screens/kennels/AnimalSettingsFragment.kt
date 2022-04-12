@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.google.android.material.button.MaterialButton
@@ -28,9 +29,12 @@ import java.lang.Exception
 
 private const val ANIMAL_KEY = "animal_key"
 private const val RESULT_LISTENER_KEY = "result_key"
+private const val RESULT_FROM_ANIMAL_SETTINGS = "result_from_animal_settings"
+private const val ANIMAL_SETTINGS_KEY = "message_from_animal_settings"
 private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 private const val DELETE_ANIMAL_MSG = "Питомец успешно удален"
 private const val TOKEN_PREFIX = "Bearer"
+private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 
 class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     OnSnapPositionChangeListener {
@@ -51,11 +55,17 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        animal = arguments?.getParcelable(ANIMAL_KEY)
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        animal = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        animal = arguments?.getParcelable(ANIMAL_KEY)
 
         initViews(view);
         setDataToViews()
@@ -118,6 +128,17 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
         deleteBtn.setOnClickListener {
             buildAndShowDeleteAnimalDialog()
             Log.d("dialog", "Dialog was build")
+        }
+
+        changeBtn.setOnClickListener {
+            val bundle = bundleOf(
+                ANIMAL_KEY to animal,
+                FROM_SETTINGS_FRAGMENT_KEY to true
+            )
+            findNavController().navigate(
+                R.id.action_animalSettingsFragment_to_addAnimalFragment,
+                bundle
+            )
         }
     }
 

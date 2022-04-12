@@ -9,8 +9,8 @@ import mr.shtein.buddyandroidclient.model.ImageContainer
 
 class ImageValidator() {
 
-    fun hasPhotoChecker(valuesForValidate: List<ImageContainer>): Boolean {
-        return valuesForValidate.all { it.uri == null }
+    fun hasPhotoChecker(valuesForValidate: MutableList<String>): Boolean {
+        return valuesForValidate.size == 0
     }
 
 

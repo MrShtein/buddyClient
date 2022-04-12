@@ -47,6 +47,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
 
+        <View
+            android:id="@+id/add_animal_first_img_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/ten_percent_black_overlay"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            android:visibility="invisible"
+            />
+
+        <ProgressBar
+            android:id="@+id/add_animal_first_img_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            android:indeterminateTint="@color/cian5"
+            android:visibility="invisible"
+           />
+
         <ImageButton
             android:id="@+id/add_animal_first_add_image_btn"
             android:layout_width="wrap_content"
@@ -88,6 +112,30 @@
             app:layout_constraintStart_toEndOf="@id/add_animal_first_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
 
+        <View
+            android:id="@+id/add_animal_second_img_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/ten_percent_black_overlay"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            android:visibility="invisible"
+            />
+
+        <ProgressBar
+            android:id="@+id/add_animal_second_img_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            android:indeterminateTint="@color/cian5"
+            android:visibility="invisible"
+            />
+
         <ImageButton
             android:id="@+id/add_animal_second_add_btn"
             android:layout_width="wrap_content"
@@ -127,6 +175,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_animal_first_animal_img" />
 
+        <View
+            android:id="@+id/add_animal_third_img_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/ten_percent_black_overlay"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            android:visibility="invisible"
+            />
+
+        <ProgressBar
+            android:id="@+id/add_animal_third_img_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            android:indeterminateTint="@color/cian5"
+            android:visibility="invisible"
+            />
+
         <ImageButton
             android:id="@+id/add_animal_third_add_btn"
             android:layout_width="wrap_content"
@@ -165,6 +237,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_animal_third_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_second_animal_img" />
+
+        <View
+            android:id="@+id/add_animal_third_fourth_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/ten_percent_black_overlay"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            android:visibility="invisible"
+            />
+
+        <ProgressBar
+            android:id="@+id/add_animal_fourth_img_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            android:indeterminateTint="@color/cian5"
+            android:visibility="invisible"
+            />
 
         <ImageButton
             android:id="@+id/add_animal_fourth_add_btn"
@@ -567,11 +663,6 @@
             android:backgroundTint="@color/cian5"
             android:padding="20dp"
             />
-
-
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

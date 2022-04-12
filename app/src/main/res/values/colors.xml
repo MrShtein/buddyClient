@@ -16,7 +16,8 @@
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
 
     <color name="input_unfocused">#8CFFFFFF</color>
-    <color name="input_unfocused_underline_and_hint">#808080</color>
+    <color name="ten_percent_black_overlay">#33000000</color>
+    <color name="input_unfocused_underline_and_hint">#1A000000</color>
     <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="choice_color">#FF5858</color>

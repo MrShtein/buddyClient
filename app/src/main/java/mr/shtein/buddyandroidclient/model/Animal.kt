@@ -8,9 +8,11 @@ import kotlinx.parcelize.Parcelize
 data class Animal  (
     val id: Long,
     val imgUrl: List<AnimalPhoto>,
-    val spices: String,
+    val type: String,
+    val typeId: Int,
     val name: String,
     val kennelName: String,
+    val kennelId: Int,
     val gender: String,
     val age: Int,
     val description: String,

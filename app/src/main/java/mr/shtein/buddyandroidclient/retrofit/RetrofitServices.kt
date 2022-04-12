@@ -4,7 +4,7 @@ import mr.shtein.buddyandroidclient.model.*
 import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.model.dto.AnimalType
 import mr.shtein.buddyandroidclient.model.dto.Breed
-import mr.shtein.buddyandroidclient.model.dto.NewAnimal
+import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
@@ -81,13 +81,23 @@ interface RetrofitServices {
         @Path("characteristic_id") characteristicId: Int
     ): Response<List<AnimalCharacteristic>>
 
-    @Multipart
     @POST("/api/v1/animal")
     suspend fun addNewAnimal(
         @Header("Authorization") token: String,
-        @Part files: List<MultipartBody.Part>,
-        @Part("animal_info") newAnimalRequest: NewAnimal
+        @Body addOrUpdateAnimalRequest: AddOrUpdateAnimal
     ): Response<Unit>
+
+    @PUT("/api/v1/animal")
+    suspend fun updateAnimal(
+        @Header("Authorization") token: String,
+        @Body addOrUpdateAnimalRequest: AddOrUpdateAnimal
+    ): Response<Animal>
+
+    @POST("/api/v1/animal/photo")
+    suspend fun addPhotoToTmpDir(
+        @Header("Authorization") token: String,
+        @Body bytes: RequestBody
+    ): Response<String>
 
     @DELETE("/api/v1/animal/{animal_id}")
     suspend fun deleteAnimal(
