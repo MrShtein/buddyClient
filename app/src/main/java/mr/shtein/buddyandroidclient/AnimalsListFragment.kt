@@ -24,90 +24,113 @@ import android.os.Build
 import android.view.*
 import android.widget.LinearLayout
 import androidx.core.view.updatePadding
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
-
-private const val ROLE_KEY: String = "user_role"
-private const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
+import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
+    lateinit var animals: MutableList<Animal>
+    private var currentAnimalsList: MutableList<Animal> = mutableListOf()
+    private var oldAnimalList: MutableList<Animal> = mutableListOf()
+    private var dogsList: MutableList<Animal> = mutableListOf()
+    private var catsList: MutableList<Animal> = mutableListOf()
+    private lateinit var dogChip: Chip
+    private lateinit var catChip: Chip
     private val coroutine = CoroutineScope(Dispatchers.Main)
-    val text = "ok"
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
-
-        return view
+        return inflater.inflate(R.layout.animals_list_fragment, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<LinearLayout>(R.id.container_for_search_animal_menu_and_filter)
-            .setOnApplyWindowInsetsListener { v, insets ->
-                val sysWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
-                } else {
-                    insets.systemWindowInsets
-                }
-                v.updatePadding(top = sysWindow.top)
-
-                insets
-            }
-
         mService = Common.retrofitService
         coroutine.launch {
-            getAnimalTypesAndDoChips(view)
             animalRecyclerView = view.findViewById(R.id.animal_list)
             animalRecyclerView.setHasFixedSize(true);
             animalRecyclerView.layoutManager = LinearLayoutManager(context)
             getAllAnimalsList(view)
         }
-
-
+        initViews(view)
+        setListeners()
     }
 
-    private suspend fun getAnimalTypesAndDoChips(view: View) {
-        val response = mService.getAnimalsType()
-        if (response.isSuccessful) {
-            val typeList: MutableList<AnimalType> =
-                response.body() as MutableList<AnimalType>
-            val typeChipGroup: ChipGroup = view.findViewById(R.id.animal_choice_chips)
-            for (type in typeList) {
-                val topAndDownPadding = dpToPx(16, view)
-                val startAndStopPadding = dpToPx(32, view)
+    private fun initViews(view: View) {
+        dogChip = view.findViewById(R.id.animals_list_dog_chip)
+        catChip = view.findViewById(R.id.animals_list_cat_chip)
+    }
 
-                val curChip: Chip = Chip(view.context)
-                curChip.text = type.pluralAnimalType
-                curChip.chipBackgroundColor =
-                    context?.getColorStateList(R.color.choice_color)
-                curChip.setPadding(
-                    startAndStopPadding,
-                    topAndDownPadding,
-                    startAndStopPadding,
-                    topAndDownPadding
-                )
-                typeChipGroup.addView(curChip)
+    private fun setListeners() {
+
+        dogChip.setOnCheckedChangeListener { _, isChecked ->
+            when(isChecked) {
+                true -> {
+                    oldAnimalList = currentAnimalsList.toMutableList()
+                    currentAnimalsList.addAll(dogsList)
+
+                    val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
+                    val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+                    adapter.animals = currentAnimalsList
+                    diffResult.dispatchUpdatesTo(adapter)
+
+                }
+                else -> {
+                    oldAnimalList = currentAnimalsList.toMutableList()
+                    currentAnimalsList.removeAll(dogsList)
+
+                    val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
+                    val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+                    adapter.animals = currentAnimalsList
+                    diffResult.dispatchUpdatesTo(adapter)
+                }
             }
         }
+
+        catChip.setOnCheckedChangeListener { _, isChecked ->
+            when(isChecked) {
+                true -> {
+                    oldAnimalList = currentAnimalsList.toMutableList()
+                    currentAnimalsList.addAll(catsList)
+
+                    val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
+                    val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+                    adapter.animals = currentAnimalsList
+                    diffResult.dispatchUpdatesTo(adapter)
+
+                }
+                else -> {
+                    oldAnimalList = currentAnimalsList.toMutableList()
+                    currentAnimalsList.removeAll(catsList)
+
+                    val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
+                    val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+                    adapter.animals = currentAnimalsList
+                    diffResult.dispatchUpdatesTo(adapter)
+                }
+            }
+        }
+
     }
 
     override fun onAnimalCardClick(animalId: Long) {
         val bundle = Bundle()
         bundle.putLong("animalId", animalId)
-        // findNavController().navigate(R.id.animalsCardFragment, bundle)
+        findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
     private fun dpToPx(dp: Int, view: View): Int {
@@ -130,18 +153,35 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                 response: Response<MutableList<Animal>>
             ) {
                 Log.d("Animal", "onResponse is ready")
+                animals = response.body() as MutableList<Animal>
+                currentAnimalsList.addAll(animals)
+                coroutine.launch {
+                    filterCats()
+                    filterDogs()
+                }
                 adapter = AnimalsAdapter(
                     requireContext(),
-                    response.body() as MutableList<Animal>,
+                    currentAnimalsList,
                     this@AnimalsListFragment
                 )
                 adapter.notifyDataSetChanged()
                 view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility =
                     View.INVISIBLE
-                view.findViewById<ImageView>(R.id.logo_in_animal_list).visibility = View.INVISIBLE
                 animalRecyclerView.adapter = adapter
             }
         })
+    }
+
+    private suspend fun filterDogs() = withContext(Dispatchers.IO) {
+        dogsList = animals.filter {
+            it.typeId == 1
+        }.toMutableList()
+    }
+
+    private suspend fun filterCats() = withContext(Dispatchers.IO) {
+        catsList = animals.filter {
+            it.typeId == 2
+        }.toMutableList()
     }
 
 

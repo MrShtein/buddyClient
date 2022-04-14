@@ -10,5 +10,14 @@
         android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
         android:label="AnimalsListFragment"
         tools:layout="@layout/animals_list_fragment"
-        />
+        >
+        <action
+            android:id="@+id/action_animalsListFragment_to_animalsCardFragment"
+            app:destination="@id/animalsCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalsCardFragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
+        android:label="animal_card_fragment"
+        tools:layout="@layout/animal_card_fragment" />
 </navigation>

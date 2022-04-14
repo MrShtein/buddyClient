@@ -11,7 +11,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -134,9 +133,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             val kennelId = kennelItem.kennelId
             try {
                 val dogType = requireContext()
-                    .resources.getString(R.string.kennel_home_dogs_label_text)
+                    .resources.getString(R.string.dogs)
                 val catType = requireContext()
-                    .resources.getString(R.string.kennel_home_cats_label_text)
+                    .resources.getString(R.string.cats)
                 dogsList = loadAnimals(kennelId, dogType)
                 catsList = loadAnimals(kennelId, catType)
                 animalsAmount.text = makeAnimalText(dogsList.size + catsList.size)

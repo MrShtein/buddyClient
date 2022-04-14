@@ -123,8 +123,7 @@
     <string name="kennel_home_volunteers_icon_description">Иконка с изображением волонтеров</string>
     <string name="kennel_home_animals_icon_description">Иконка с изображением лапы животного</string>
     <string name="kennel_home_add_new_dog_btn_description">Кнопка для добавления новой собаки</string>
-    <string name="kennel_home_dogs_label_text">Собаки</string>
-    <string name="kennel_home_cats_label_text">Кошки</string>
+
     <string name="animal_in_kennel_avatar_description">Фото животного для входа в профиль животного</string>
     <string name="not_valid_kennel_dialog_verification_text">К сожалению Ваш приют еще \n не прошел верификацию</string>
     <string name="ok_btn_text">OK</string>
@@ -160,5 +159,8 @@
     <string name="animal_photo_description">Фото питомца</string>
     <string name="delete_btn_text">Удалить</string>
     <string name="change_btn_text">Изменить</string>
+    <string name="animals_list_search_btn_description">Кнопка для поиска питомца</string>
+    <string name="dogs">Собаки</string>
+    <string name="cats">Кошки</string>
 
 </resources>

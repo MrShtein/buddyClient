@@ -20,7 +20,7 @@ private const val STATEMENT_TYPE = 0
 
 class AnimalsAdapter(
     context: Context,
-    private var animals: List<Animal>,
+    var animals: List<Animal>,
     var onAnimalCardClickListener: OnAnimalCardClickListener
 ) : RecyclerView.Adapter<ProtoAnimalsViewHolder>() {
 
