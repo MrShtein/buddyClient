@@ -162,5 +162,12 @@
     <string name="animals_list_search_btn_description">Кнопка для поиска питомца</string>
     <string name="dogs">Собаки</string>
     <string name="cats">Кошки</string>
+    <plurals name="animal_found_count">
+        <item quantity="zero">Найдено %d питомцев</item>
+        <item quantity="one">Найдено %d питомец</item>
+        <item quantity="few">Найдено %d питомца</item>
+        <item quantity="many">Найдено %d питомцев</item>
+        <item quantity="other">Найдено %d питомцев</item>
+    </plurals>
 
 </resources>

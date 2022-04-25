@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="animal_found_count">
+        <item quantity="one">Найдено %d питомец</item>
+        <item quantity="few">Найдено %d питомца</item>
+        <item quantity="many">Найдено %d питомцев</item>
+        <item quantity="other">Найдено %d питомцев</item>
+    </plurals>
+</resources>
