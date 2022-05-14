@@ -29,8 +29,9 @@
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
     <string name="login_main_text">Вход</string>
-    <string name="e_mail">E-mail</string>
-    <string name="password">Придумайте пароль:</string>
+    <string name="e_mail">E-mail:</string>
+    <string name="make_password">Придумайте пароль:</string>
+    <string name="password">Password:</string>
     <string name="registration_kennel_name">Название приюта:</string>
     <string name="registration_main_text">Регистрация</string>
     <string name="registration_kennel_name_text">Название приюта:</string>
