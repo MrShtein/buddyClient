@@ -70,6 +70,11 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         setListeners()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        currentAnimalsList = mutableListOf()
+    }
+
     private fun initViews(view: View) {
         dogChip = view.findViewById(R.id.animals_list_dog_chip)
         catChip = view.findViewById(R.id.animals_list_cat_chip)
