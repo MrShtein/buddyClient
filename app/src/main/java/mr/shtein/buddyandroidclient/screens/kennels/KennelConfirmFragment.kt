@@ -112,7 +112,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
             .append(" д.")
             .append(settingsData.kennelHouseNum)
         if (settingsData.kennelBuildingNum != "") {
-            strBuilder.append("корп. ${settingsData.kennelBuildingNum}")
+            strBuilder.append(" корп. ${settingsData.kennelBuildingNum}")
         }
         return strBuilder.toString()
     }
