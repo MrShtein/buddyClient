@@ -42,6 +42,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     companion object {
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val KENNEL_AVATAR_FILE_NAME = "kennel_avatar"
+        private const val ADMIN_ROLE_TXT = "ROLE_ADMIN"
     }
 
     private lateinit var settingsData: KennelRequest
@@ -126,6 +127,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                     val avatarWrapper: AvatarWrapper? = getPhotoAndType()
                     val response = addNewKennel(avatarWrapper)
                     if (response.isSuccessful) {
+                        storage.writeString(SharedPreferences.USER_ROLE_KEY, ADMIN_ROLE_TXT)
                         avatarWrapper?.file?.delete()
                         showDialog()
 
