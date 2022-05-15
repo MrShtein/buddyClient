@@ -70,8 +70,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
         setListeners()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
         currentAnimalsList = mutableListOf()
     }
 

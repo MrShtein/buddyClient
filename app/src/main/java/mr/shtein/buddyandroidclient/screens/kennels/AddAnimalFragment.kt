@@ -360,7 +360,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
         maleBtn.setOnClickListener {
-            animalDto.genderId = Gender.MALE.ordinal
+            animalDto.genderId = Gender.MALE.genderId
             maleBtn.buttonTintList = ColorStateList
                 .valueOf(requireContext().getColor(R.color.cian5))
             femaleBtn.buttonTintList = ColorStateList
@@ -368,7 +368,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
         femaleBtn.setOnClickListener {
-            animalDto.genderId = Gender.FEMALE.ordinal
+            animalDto.genderId = Gender.FEMALE.genderId
             maleBtn.buttonTintList = ColorStateList
                 .valueOf(requireContext().getColor(R.color.cian5))
             femaleBtn.buttonTintList = ColorStateList
