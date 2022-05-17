@@ -68,7 +68,11 @@ class KennelsAdapter(
                 .into(avatar)
             kennelName.text = kennelPreviewItem.name
             volunteers.text = makeVolunteersText(kennelPreviewItem.volunteersAmount)
-            animalsAmount.text = makeAnimalText(kennelPreviewItem.animalsAmount)
+            animalsAmount.text = itemView.resources.getQuantityString(
+                R.plurals.animal_found_count,
+                kennelPreviewItem.animalsAmount,
+                kennelPreviewItem.animalsAmount
+            )
         }
 
         override fun onClick(v: View?) {
@@ -88,11 +92,4 @@ class KennelsAdapter(
             else -> "$amount ${mainText}ов"
         }
     }
-
-    private fun makeAnimalText(amount: Int): String {
-        val mainText = "животн"
-        return if (amount == 1) "1 ${mainText}е" else "$amount ${mainText}ых"
-    }
-
-
 }
