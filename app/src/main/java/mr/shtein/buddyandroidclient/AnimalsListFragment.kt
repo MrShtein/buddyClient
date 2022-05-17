@@ -23,6 +23,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -45,6 +46,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     private var catsList: MutableList<Animal> = mutableListOf()
     private lateinit var dogChip: Chip
     private lateinit var catChip: Chip
+    private lateinit var animalCountText: TextView
     private val coroutine = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(
@@ -76,8 +78,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
     }
 
     private fun initViews(view: View) {
+        animalCountText = view.findViewById(R.id.animals_list_found_animal_count)
         dogChip = view.findViewById(R.id.animals_list_dog_chip)
         catChip = view.findViewById(R.id.animals_list_cat_chip)
+    }
+
+    private fun setViews() {
+        animalCountText.text = resources.getQuantityString(
+            R.plurals.animal_found_count,
+            currentAnimalsList.size,
+            currentAnimalsList.size
+        )
     }
 
     private fun setListeners() {
@@ -87,12 +98,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                 true -> {
                     oldAnimalList = currentAnimalsList.toMutableList()
                     currentAnimalsList.addAll(dogsList)
+                    currentAnimalsList.shuffle()
 
                     val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
                     val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                    adapter.animals = currentAnimalsList
                     diffResult.dispatchUpdatesTo(adapter)
-
+                    setViews()
                 }
                 else -> {
                     oldAnimalList = currentAnimalsList.toMutableList()
@@ -100,8 +111,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
                     val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
                     val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                    adapter.animals = currentAnimalsList
                     diffResult.dispatchUpdatesTo(adapter)
+                    setViews()
                 }
             }
         }
@@ -111,11 +122,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                 true -> {
                     oldAnimalList = currentAnimalsList.toMutableList()
                     currentAnimalsList.addAll(catsList)
+                    currentAnimalsList.shuffle()
 
                     val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
                     val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                    adapter.animals = currentAnimalsList
                     diffResult.dispatchUpdatesTo(adapter)
+                    setViews()
 
                 }
                 else -> {
@@ -124,8 +136,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
                     val animalDiffUtil = AnimalDiffUtil(oldAnimalList, currentAnimalsList)
                     val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                    adapter.animals = currentAnimalsList
                     diffResult.dispatchUpdatesTo(adapter)
+                    setViews()
                 }
             }
         }
@@ -160,6 +172,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
                 Log.d("Animal", "onResponse is ready")
                 animals = response.body() as MutableList<Animal>
                 currentAnimalsList.addAll(animals)
+                setViews()
                 coroutine.launch {
                     filterCats()
                     filterDogs()

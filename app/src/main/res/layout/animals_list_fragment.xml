@@ -108,8 +108,7 @@
         tools:text="Найдено 100 000 питомцев"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/animal_choice_scroll_chips"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/animals_list_search_panel_container"
         />
 
     <androidx.recyclerview.widget.RecyclerView

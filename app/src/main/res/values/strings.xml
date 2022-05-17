@@ -166,6 +166,7 @@
     <plurals name="animal_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найдено %d питомец</item>
+        <item quantity="two">Найдено %d питомца</item>
         <item quantity="few">Найдено %d питомца</item>
         <item quantity="many">Найдено %d питомцев</item>
         <item quantity="other">Найдено %d питомцев</item>
