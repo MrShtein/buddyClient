@@ -13,7 +13,7 @@
     <string name="animal_choice_text_in_current_city">КОГО ИЩЕМ в</string>
     <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
     <string name="logo_discription">Logo</string>
-    <string name="read_more">Читать еще ...</string>
+    <string name="more">Еще ...</string>
     <string name="menu_button_description">It\'s menu button</string>
     <string name="animal_filter_button">It\'s a filter button</string>
     <string name="kennel_name">Приют \"%1$s\"</string>
@@ -163,13 +163,30 @@
     <string name="animals_list_search_btn_description">Кнопка для поиска питомца</string>
     <string name="dogs">Собаки</string>
     <string name="cats">Кошки</string>
-    <plurals name="animal_found_count">
+    <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
-        <item quantity="one">Найдено %d питомец</item>
+        <item quantity="one">Найден %d питомец</item>
         <item quantity="two">Найдено %d питомца</item>
         <item quantity="few">Найдено %d питомца</item>
         <item quantity="many">Найдено %d питомцев</item>
         <item quantity="other">Найдено %d питомцев</item>
+    </plurals>
+
+    <plurals name="buddy_found_count_without_word_find">
+        <item quantity="zero">%d питомцев</item>
+        <item quantity="one">%d питомец</item>
+        <item quantity="two">%d питомца</item>
+        <item quantity="few">%d питомца</item>
+        <item quantity="many">%d питомцев</item>
+        <item quantity="other">%d питомцев</item>
+    </plurals>
+    <plurals name="animal_found_count">
+        <item quantity="zero">%d животных</item>
+        <item quantity="one">%d животное</item>
+        <item quantity="two">%d питомцых</item>
+        <item quantity="few">%d животного</item>
+        <item quantity="many">%d животных</item>
+        <item quantity="other">%d животных</item>
     </plurals>
 
 </resources>

@@ -13,9 +13,6 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalPhoto
 
-private const val ANIMAL_TYPE = 1
-private const val STATEMENT_TYPE = 0
-
 class AnimalsAdapter(
     context: Context,
     var animals: List<Animal>,
@@ -35,8 +32,7 @@ class AnimalsAdapter(
                 Log.d("mag", path)
                 Picasso.get()
                     .load(path)
-                    .transform(CropCircleTransformation())
-                    .into(holder.itemView.findViewById<ImageView>(R.id.animal_image))
+                    .into(holder.itemView.findViewById<ImageView>(R.id.animal_row_image))
                 holder.bind(getItem(position))
 
     }

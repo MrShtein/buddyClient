@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -12,7 +11,6 @@ import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 
 class KennelsAdapter(
     private val token: String,
@@ -69,7 +67,7 @@ class KennelsAdapter(
             kennelName.text = kennelPreviewItem.name
             volunteers.text = makeVolunteersText(kennelPreviewItem.volunteersAmount)
             animalsAmount.text = itemView.resources.getQuantityString(
-                R.plurals.animal_found_count,
+                R.plurals.buddy_found_count_without_word_find,
                 kennelPreviewItem.animalsAmount,
                 kennelPreviewItem.animalsAmount
             )

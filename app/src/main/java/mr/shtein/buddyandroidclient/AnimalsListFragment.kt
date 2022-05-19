@@ -2,16 +2,13 @@ package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.dto.AnimalType
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
 import retrofit2.Call
@@ -20,11 +17,8 @@ import retrofit2.Response
 import android.util.TypedValue
 
 import android.content.res.Resources
-import android.os.Build
 import android.view.*
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.CoroutineScope
@@ -85,7 +79,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     private fun setViews() {
         animalCountText.text = resources.getQuantityString(
-            R.plurals.animal_found_count,
+            R.plurals.buddy_found_count,
             currentAnimalsList.size,
             currentAnimalsList.size
         )

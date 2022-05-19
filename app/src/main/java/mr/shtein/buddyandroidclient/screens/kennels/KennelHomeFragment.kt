@@ -127,7 +127,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
         kennelName.text = kennelItem.name
         volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
-        animalsAmount.text = makeAnimalText(kennelItem.animalsAmount)
+        animalsAmount.text = getAnimalCountText(kennelItem.animalsAmount)
 
         coroutine.launch {
             val kennelId = kennelItem.kennelId
@@ -194,6 +194,14 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
     }
 
+    private fun makeAnimalText(amount: Int): String {
+        return resources.getQuantityString(
+            R.plurals.animal_found_count,
+            amount,
+            amount
+        )
+    }
+
     private fun setListeners(kennelItem: KennelPreview) {
         addDogsBtn.setOnClickListener {
             val kennelId = kennelItem.kennelId
@@ -238,11 +246,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
     }
 
-    private fun makeAnimalText(amount: Int): String {
-        val mainText = "животн"
-        return if (amount == 1) "1 ${mainText}е" else "$amount ${mainText}ых"
-    }
-
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val retrofit = Common.retrofitService
@@ -267,12 +270,11 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     }
 
     private fun getAnimalCountText(amount: Int): String {
-        val pet = "питом"
-        return when (amount % 10) {
-            1 -> "$amount ${pet}ец"
-            2, 3, 4 -> "$amount ${pet}ца"
-            else -> "$amount ${pet}цев"
-        }
+        return resources.getQuantityString(
+            R.plurals.buddy_found_count,
+            amount,
+            amount
+        )
     }
 
     private fun showKennelIsNotValidDialog() {
