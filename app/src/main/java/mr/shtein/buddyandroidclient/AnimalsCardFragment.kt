@@ -69,7 +69,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         httpClient = Common.retrofitService
         val animalId = arguments?.getLong("animalId") ?: 0
         currentView = view
-        animalRecyclerView = view.findViewById(R.id.big_card_photo_gallery)
+        animalRecyclerView = view.findViewById(R.id.animal_card_photo_gallery)
 
 
         getAnimalDetails(httpClient, view, animalId)
@@ -78,7 +78,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
     override fun onSnapPositionChange(position: Int) {
         val elementsCount = animalRecyclerView.adapter?.itemCount
-        val counter = currentView.findViewById<TextView>(R.id.big_animal_image_count)
+        val counter = currentView.findViewById<TextView>(R.id.animal_card_image_count)
 
         counter.text =
             getString(R.string.big_card_animal_photo_counter, position + 1, elementsCount)
@@ -109,7 +109,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                     animalRecyclerView.adapter = adapter
 
 
-                    view.findViewById<ImageButton>(R.id.phone_icon).apply {
+                    view.findViewById<ImageButton>(R.id.animal_card_phone_btn).apply {
                         this.setOnClickListener {
                             intentForCall = Intent(Intent.ACTION_CALL)
                             intentForCall.data = Uri.parse("tel:${animalDetails.kennelPhoneNumber}")
@@ -130,7 +130,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
 
                     view
-                        .findViewById<TextView>(R.id.big_animal_image_count)
+                        .findViewById<TextView>(R.id.animal_card_image_count)
                         .text =
                         getString(R.string.big_card_animal_photo_counter, 1, adapter.itemCount)
 
@@ -138,19 +138,19 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                         .findViewById<TextView>(R.id.big_card_kennel_name)
                         .text = getString(R.string.kennel_name, animalDetails.kennelName)
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_name)
+                        .findViewById<TextView>(R.id.animal_card_animal_name)
                         .text = animalDetails.name
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_gender)
+                        .findViewById<TextView>(R.id.animal_card_gender_label)
                         .text = getString(R.string.animal_gender, animalDetails.gender)
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_age)
+                        .findViewById<TextView>(R.id.animal_card_age_label)
                         .text = getString(R.string.animal_age, animalDetails.age.toString())
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_breed)
+                        .findViewById<TextView>(R.id.animal_card_breed_label)
                         .text = getString(R.string.animal_breed, animalDetails.breed)
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_color)
+                        .findViewById<TextView>(R.id.animal_card_color_label)
                         .text =
                         getString(R.string.animal_color, animalDetails.characteristics["color"])
                     view
@@ -160,11 +160,11 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                         animalDetails.characteristics["fur_length"]
                     )
                     view
-                        .findViewById<TextView>(R.id.big_card_animal_description)
+                        .findViewById<TextView>(R.id.animal_card_description)
                         .text = animalDetails.description
 
                     with(view) {
-                        val emailButton = findViewById<ImageButton>(R.id.email_icon)
+                        val emailButton = findViewById<ImageButton>(R.id.animal_card_email_btn)
                         emailButton.setOnClickListener {
                             val emailIntent = Intent(ACTION_SENDTO).apply {
                                 data = Uri.parse("mailto:")

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_for_animal_card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="8dp">
 
     <ImageView
         android:id="@+id/animal_big_photo_row_img"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="250dp"
         android:contentDescription="@string/animal_photo_description"
         android:scaleType="centerCrop"/>
 
