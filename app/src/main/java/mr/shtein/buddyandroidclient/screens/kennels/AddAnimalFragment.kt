@@ -163,10 +163,10 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
         if (isFromAnimalSettings) {
             animalDto.animalId = animalForChange?.id ?: 0
-            animalDto.kennelId = animalForChange?.kennelId ?: 0
+            animalDto.kennelId = animalForChange?.kennel?.id ?: 0
             animalDto.animalTypeId = animalForChange?.typeId ?: 0
         } else {
-            animalDto.kennelId = arguments?.getInt(KENNEL_ID_KEY) ?: 0
+            animalDto.kennelId = arguments?.getLong(KENNEL_ID_KEY) ?: 0
             animalDto.animalTypeId = arguments?.getInt(ANIMAL_TYPE_ID_KEY) ?: 0
         }
 
