@@ -11,12 +11,13 @@ import mr.shtein.buddyandroidclient.model.Animal
 
 class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalCardClickListener) : ProtoAnimalsViewHolder(itemView), View.OnClickListener {
 
+    private val animalImage: ImageView = itemView.findViewById(R.id.animal_row_image)
     private val animalName: TextView = itemView.findViewById(R.id.animal_row_name)
     private val gender: TextView = itemView.findViewById(R.id.gender_name)
     private val age: TextView = itemView.findViewById(R.id.animal_row_approximately_age)
     private val breed: TextView = itemView.findViewById(R.id.animal_row_breed_name)
     private val animalColor: TextView = itemView.findViewById(R.id.animal_row_color)
-    private var animalId: Long = 0
+    private lateinit var animal: Animal
 
     init {
         itemView.setOnClickListener(this)
@@ -24,7 +25,7 @@ class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalC
 
 
     fun bind(animal: Animal) {
-        animalId = animal.id
+        this.animal = animal
         val currentContext: Context = animalName.context
         this.animalName.text =  animal.name
         this.gender.text = currentContext.getString(R.string.animal_gender, animal.gender)
@@ -34,19 +35,16 @@ class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalC
     }
 
     override fun onClick(v: View?) {
-        onAnimalCardClickListener.onAnimalCardClick(animalId)
+        onAnimalCardClickListener.onAnimalCardClick(animal)
     }
 
-    private fun makeAgeString(months: Int): String {
-        val ageFromMonths = months / 12
-        return if (ageFromMonths == 0) {
-            "$months мес."
-        } else if(ageFromMonths == 1 || ageFromMonths == 21 || ageFromMonths == 31 || ageFromMonths == 41) {
-            "$ageFromMonths год"
-        } else if (ageFromMonths in 2..4 || ageFromMonths in 22..24 || ageFromMonths in 32..34 || ageFromMonths in 42..44) {
-            "$ageFromMonths года"
+    private fun makeAgeString(age: Int): String {
+        return if (age == 1 || age == 21 || age == 31 || age == 41) {
+            "$age год"
+        } else if (age in 2..4 || age in 22..24 || age in 32..34 || age in 42..44) {
+            "$age года"
         } else {
-            "$ageFromMonths лет"
+            "$age лет"
         }
     }
 }

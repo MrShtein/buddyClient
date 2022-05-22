@@ -138,9 +138,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener {
 
     }
 
-    override fun onAnimalCardClick(animalId: Long) {
+    override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
-        bundle.putLong("animalId", animalId)
+        bundle.putParcelable("animal", animal)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 

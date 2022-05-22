@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalPhoto
+import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 
 class AnimalsAdapter(
     context: Context,
@@ -33,7 +32,7 @@ class AnimalsAdapter(
                 Picasso.get()
                     .load(path)
                     .into(holder.itemView.findViewById<ImageView>(R.id.animal_row_image))
-                holder.bind(getItem(position))
+                holder.bind(animals[position])
 
     }
 
