@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalPhoto
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 
 class AnimalsAdapter(
@@ -21,18 +22,14 @@ class AnimalsAdapter(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalsViewHolder {
-        return AnimalsViewHolder(inflater.inflate(R.layout.animal_row, parent, false), onAnimalCardClickListener)
+        return AnimalsViewHolder(
+            inflater.inflate(R.layout.animal_row, parent, false),
+            onAnimalCardClickListener
+        )
     }
 
     override fun onBindViewHolder(holder: AnimalsViewHolder, position: Int) {
-                val primaryUrl: List<AnimalPhoto> = getItem(position).imgUrl.filter { it.primary }
-                val url: String = primaryUrl[0].url
-                val path: String = "http://10.0.2.2:8881/api/v1/animal/photo/$url"
-                Log.d("mag", path)
-                Picasso.get()
-                    .load(path)
-                    .into(holder.itemView.findViewById<ImageView>(R.id.animal_row_image))
-                holder.bind(animals[position])
+        holder.bind(animals[position])
 
     }
 

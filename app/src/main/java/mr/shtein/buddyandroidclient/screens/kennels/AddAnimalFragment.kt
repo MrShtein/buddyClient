@@ -32,6 +32,7 @@ import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.showBadTokenDialog
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
@@ -58,7 +59,6 @@ private const val TOKEN_PREFIX = "Bearer"
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val ANIMAL_KEY = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
-private const val PATH_TO_PHOTO = "http://10.0.2.2:8881/api/v1/animal/photo/"
 private const val ERROR = "error"
 
 
@@ -188,8 +188,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
             }
         }
-
-
 
 
     }
@@ -675,9 +673,10 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 currentContainer.url = currentImgUrl
                 animalDto.photoNamesForCreate.add(currentImgUrl)
                 switchAddAndCancelBtnVisibility(true, currentContainer)
-                Glide.with(this)
-                    .load("$PATH_TO_PHOTO$currentImgUrl")
-                    .into(currentContainer.imageView)
+                val host = resources.getString(R.string.host)
+                val endpoint = resources.getString(R.string.animal_photo_endpoint)
+                val imageLoader = ImageLoader(host, endpoint, currentImgUrl)
+                imageLoader.setPhotoToView(currentContainer.imageView)
             }
 
             yearsSlider.value = (animal.age / 12).toFloat()
@@ -686,8 +685,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             animalName.setText(animal.name)
 
             animalBreedsInput.setText(animal.breed)
-            val breed =  animalBreeds.find {
-              it.name == animal.breed
+            val breed = animalBreeds.find {
+                it.name == animal.breed
             }
             animalDto.breedId = breed?.id ?: 0
 

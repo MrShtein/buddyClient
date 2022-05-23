@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 
 class AnimalPhotoAdapter(
     private var animalPhotos: List<String>,
@@ -42,11 +43,9 @@ class AnimalPhotoAdapter(
 
         fun bind(url: String) {
             val host = itemView.context.resources.getString(R.string.host)
-            val path = "$host/animal/photo/$url"
-
-            Glide.with(animalImage.context)
-                .load(path)
-                .into(animalImage)
+            val endpoint = itemView.context.resources.getString(R.string.animal_photo_endpoint)
+            val imageLoader = ImageLoader(host, endpoint, url)
+            imageLoader.setPhotoToView(animalImage)
         }
     }
 }

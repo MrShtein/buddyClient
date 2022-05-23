@@ -46,7 +46,6 @@
     <string name="avatar">Avatar</string>
     <string name="name_surname_text">Ф.И.О.</string>
     <string name="kennel_identify_num">ИНН предприятия:</string>
-    <string name="host">http://10.0.2.2:8881/api/v1</string>
     <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
     <string name="profile_btn_name">Профиль</string>
     <string name="animal_list_btn_name">Лента</string>

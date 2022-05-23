@@ -10,6 +10,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 
 class DogPhotoAdapter(
     private val animalsList: List<Animal>,
@@ -17,12 +18,8 @@ class DogPhotoAdapter(
     private val animalTouchCallback: OnAnimalItemClickListener
 ): RecyclerView.Adapter<DogPhotoAdapter.AnimalInKennelViewHolder>() {
 
-    private lateinit var host: String
-    private val pathForAnimalPhoto = "animal/photo/"
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalInKennelViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
-        host = parent.context.resources.getString(R.string.host)
         return AnimalInKennelViewHolder(
             inflater.inflate(R.layout.animal_in_kennel_row, parent, false),
             animalTouchCallback
@@ -57,10 +54,10 @@ class DogPhotoAdapter(
             val animalAvatarUrl = animalCard.imgUrl.find {
                 it.primary
             }
-            val fullUrl = "$host/$pathForAnimalPhoto${animalAvatarUrl?.url}"
-            Glide.with(itemView.context)
-                .load(fullUrl)
-                .into(avatar)
+            val host = itemView.resources.getString(R.string.host)
+            val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
+            val imageLoader = ImageLoader(host, endpoint, animalAvatarUrl?.url!!)
+            imageLoader.setPhotoToView(avatar)
         }
 
         override fun onClick(view: View?) {

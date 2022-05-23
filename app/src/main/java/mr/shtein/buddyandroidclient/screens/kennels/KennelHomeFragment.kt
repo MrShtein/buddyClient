@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
@@ -25,11 +23,11 @@ import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import java.lang.Exception
 
 private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
-private const val KENNEL_AVATAR_ENDPOINT = "http://10.0.2.2:8881/api/v1/kennel/avatar/"
 private const val KENNEL_ID_KEY = "kennel_id"
 private const val DOG_ID = 1
 private const val CAT_ID = 2
@@ -98,18 +96,12 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     }
 
     private fun setValuesToViews(kennelItem: KennelPreview) {
-        val urlForKennelAvatar = "$KENNEL_AVATAR_ENDPOINT${kennelItem.avatarUrl}"
+        val host = getString(R.string.host)
+        val endpoint = getString(R.string.kennel_avatar_endpoint)
+        val photoName = kennelItem.avatarUrl
+        val imageLoader = ImageLoader(host, endpoint, photoName)
         token = storage.readString(SharedPreferences.TOKEN_KEY, "")
-        val header = LazyHeaders.Builder()
-            .addHeader("Authorization", "Bearer $token")
-            .build()
-        val urlForGlide = GlideUrl(
-            urlForKennelAvatar,
-            header
-        )
-        Glide.with(this)
-            .load(urlForGlide)
-            .into(kennelAvatar)
+        imageLoader.setPhotoToView(kennelAvatar, token)
 
         val uriForUserToken = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
         if (uriForUserToken != "") {

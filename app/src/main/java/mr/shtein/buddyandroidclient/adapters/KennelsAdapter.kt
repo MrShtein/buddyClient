@@ -5,12 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 
 class KennelsAdapter(
     private val token: String,
@@ -42,7 +40,6 @@ class KennelsAdapter(
         private val onKennelListener: OnKennelItemClickListener
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        private val photoUrl = "http://10.0.2.2:8881/api/v1/kennel/avatar/"
         private val avatar: ShapeableImageView = itemView.findViewById(R.id.kennel_row_image)
         private val kennelName: TextView = itemView.findViewById(R.id.kennel_row_name)
         private val volunteers: TextView = itemView.findViewById(R.id.kennel_row_volunteers_amount)
@@ -53,17 +50,12 @@ class KennelsAdapter(
         }
 
         fun bind(kennelPreviewItem: KennelPreview) {
-            val url = "$photoUrl${kennelPreviewItem.avatarUrl}"
-            val header = LazyHeaders.Builder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-            val urlForGlide = GlideUrl(
-                url,
-                header
-            )
-            Glide.with(itemView)
-                .load(urlForGlide)
-                .into(avatar)
+            val host = itemView.resources.getString(R.string.host)
+            val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
+            val photoName = kennelPreviewItem.avatarUrl
+            val imageLoader = ImageLoader(host, endpoint, photoName)
+            imageLoader.setPhotoToView(avatar,token)
+
             kennelName.text = kennelPreviewItem.name
             volunteers.text = makeVolunteersText(kennelPreviewItem.volunteersAmount)
             animalsAmount.text = itemView.resources.getQuantityString(
