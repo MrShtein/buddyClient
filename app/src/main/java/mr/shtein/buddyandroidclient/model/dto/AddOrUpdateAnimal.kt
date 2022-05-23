@@ -7,7 +7,7 @@ data class AddOrUpdateAnimal(
     var years: Int = 0,
     var months: Int = 0,
     var name: String = "",
-    var kennelId: Long = 0,
+    var kennelId: Int = 0,
     var personId: Long = 0,
     var animalTypeId: Int = 0,
     var breedId: Int = 0,
