@@ -152,7 +152,7 @@
     <string name="add_animal_kind_label_text">Вид животного</string>
     <string name="bad_token_msg">К сожалению Ваш токен устарел,\n необходимо заново залогиниться</string>
     <string name="server_error_msg">К сожалению на серевере произошла ошибка,\n попробуйте чуть позже</string>
-    <string name="add_animal_dialog_clarification_text">Добавить питомца</string>
+    <string name="add_animal_dialog_clarification_text">%1$s питомца</string>
     <string name="bad_token_dialog_text">Срок действия логина закончился,\n необходимо заново войти в приложение</string>
     <string name="animal_settings_change_btn_description">Кнопка для перехода к изменению питомца</string>
     <string name="animal_settings_delete_btn_description">Кнопка для удаления питомца</string>
@@ -166,6 +166,8 @@
     <string name="shelter">Приют:</string>
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
+    <string name="add">Добавить</string>
+    <string name="update">Обновить</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>

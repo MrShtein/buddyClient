@@ -610,6 +610,21 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
+        val addOrUpdateText: TextView? = dialog.findViewById(R.id.add_animal_dialog_clarification)
+        if (isFromAnimalSettings) {
+            val addingAnimalText = getString(R.string.update)
+            addOrUpdateText?.text = getString(
+                R.string.add_animal_dialog_clarification_text,
+                addingAnimalText
+            )
+        } else {
+            val addingAnimalText = getString(R.string.add)
+            addOrUpdateText?.text = getString(
+                R.string.add_animal_dialog_clarification_text,
+                addingAnimalText
+            )
+        }
+
         val positiveBtn: Button? = dialog.findViewById(R.id.add_animal_dialog_positive_btn)
         val negativeBtn: Button? = dialog.findViewById(R.id.add_animal_dialog_negative_btn)
         val spinner: Spinner? = dialog.findViewById(R.id.add_animal_dialog_spinner)
