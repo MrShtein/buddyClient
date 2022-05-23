@@ -67,7 +67,7 @@
     <string name="add_photo_to_profile_description">Кнопка для добавления фотографии в профиль</string>
     <string name="name_label_text">Имя</string>
     <string name="user_settings_surname_label">Фамилия</string>
-    <string name="user_settings_gender_label">Пол</string>
+    <string name="gender_label">Пол:</string>
     <string name="user_settings_men_btn">Мужской</string>
     <string name="user_settings_women_btn">Женский</string>
     <string name="user_settings_city_label">Город</string>
@@ -134,12 +134,12 @@
     <string name="add_animal_fourth_img_description">Четвертая картинка с животным</string>
     <string name="add_animal_add_btn_description">Кнопка для добавления новой фотографии</string>
     <string name="add_animal_cancel_image_btn_description">Кнопка для удаления фотографии животного</string>
-    <string name="animal_age_label_Text">Возраст</string>
+    <string name="animal_age_label">Возраст:</string>
     <string name="year">Год</string>
     <string name="month">Месяц</string>
     <string name="nickname_text">Кличка</string>
-    <string name="animal_breed_label_text">Порода</string>
-    <string name="animal_color_label_text">Цвет</string>
+    <string name="animal_breed_label">Порода:</string>
+    <string name="animal_color_label">Цвет:</string>
     <string name="animal_gender_label_text">Пол</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
