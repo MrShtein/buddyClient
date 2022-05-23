@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -25,32 +26,56 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
-import mr.shtein.buddyandroidclient.model.AnimalDetails
+import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.buddyandroidclient.model.Kennel
+import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
 
 
 class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
-    private lateinit var httpClient: RetrofitServices
-    lateinit var adapter: AnimalPhotoAdapter
-    lateinit var animalRecyclerView: RecyclerView
-    lateinit var currentView: View
-    lateinit var intentForCall: Intent
-    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var adapter: AnimalPhotoAdapter
+    private lateinit var animalRecyclerView: RecyclerView
+    private lateinit var currentView: View
+    private lateinit var intentForCall: Intent
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var imageCount: TextView
+    private lateinit var animalName: TextView
+    private lateinit var gender: TextView
+    private lateinit var age: TextView
+    private lateinit var breed: TextView
+    private lateinit var color: TextView
+    private lateinit var description: TextView
+    private lateinit var kennelName: TextView
+    private lateinit var address: TextView
+    private lateinit var avatar: ShapeableImageView
+    private lateinit var locationBtn: ImageButton
+    private lateinit var distance: TextView
+    private lateinit var heartBox: CheckBox
+    private lateinit var writeBtn: MaterialButton
+    private lateinit var callBtn: MaterialButton
+    private lateinit var storage: SharedPreferences
+    private var animal: Animal? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.animal_card_fragment, container, false)
+        animal = arguments?.getParcelable("animal")
+        val view = inflater.inflate(R.layout.animal_card_fragment, container, false)
+        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+        initViews(view)
+        setValuesToView()
+        setListeners()
+        currentView = view
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,13 +91,8 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             }
 
         super.onViewCreated(view, savedInstanceState)
-        httpClient = Common.retrofitService
-        val animalId = arguments?.getLong("animalId") ?: 0
-        currentView = view
         animalRecyclerView = view.findViewById(R.id.animal_card_photo_gallery)
-
-
-        getAnimalDetails(httpClient, view, animalId)
+        getAnimalPhotos()
 
     }
 
@@ -85,100 +105,98 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     }
 
 
-    private fun getAnimalDetails(httpClient: RetrofitServices, view: View, animalId: Long) {
-        httpClient
-            .getAnimalById(animalId)
-            .enqueue(object : Callback<AnimalDetails> {
-                override fun onResponse(
-                    call: Call<AnimalDetails>,
-                    response: Response<AnimalDetails>
-                ) {
-                    Log.d("response", response.body().toString())
-                    val animalDetails: AnimalDetails = response.body()!!
+    private fun getAnimalPhotos() {
 
-                    animalRecyclerView.setHasFixedSize(true)
-                    animalRecyclerView.layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    val snapHelper = PagerSnapHelper()
-                    val snapOnScrollListener =
-                        SnapOnScrollListener(snapHelper, this@AnimalsCardFragment)
-                    animalRecyclerView.addOnScrollListener(snapOnScrollListener)
-                    snapHelper.attachToRecyclerView(animalRecyclerView)
-                    adapter = AnimalPhotoAdapter(animalDetails.imgUrl)
-                    adapter.notifyDataSetChanged()
-                    animalRecyclerView.adapter = adapter
+        animalRecyclerView.setHasFixedSize(true)
+        animalRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val snapHelper = PagerSnapHelper()
+        val snapOnScrollListener =
+            SnapOnScrollListener(snapHelper, this@AnimalsCardFragment)
+        animalRecyclerView.addOnScrollListener(snapOnScrollListener)
+        snapHelper.attachToRecyclerView(animalRecyclerView)
 
-
-                    view.findViewById<ImageButton>(R.id.animal_card_phone_btn).apply {
-                        this.setOnClickListener {
-                            intentForCall = Intent(Intent.ACTION_CALL)
-                            intentForCall.data = Uri.parse("tel:${animalDetails.kennelPhoneNumber}")
-
-                            if (ContextCompat.checkSelfPermission(
-                                    context,
-                                    Manifest.permission.CALL_PHONE
-                                ) == PackageManager.PERMISSION_GRANTED
-                            ) {
-                                context.startActivity(intentForCall)
-                            } else {
-                                requestPermissionLauncher.launch("android.permission.CALL_PHONE")
-                                Log.d("tup", "dialog was open")
-                            }
-
-                        }
-                    }
-
-
-                    view
-                        .findViewById<TextView>(R.id.animal_card_image_count)
-                        .text =
-                        getString(R.string.big_card_animal_photo_counter, 1, adapter.itemCount)
-
-                    view
-                        .findViewById<TextView>(R.id.big_card_kennel_name)
-                        .text = getString(R.string.kennel_name, animalDetails.kennelName)
-                    view
-                        .findViewById<TextView>(R.id.animal_card_animal_name)
-                        .text = animalDetails.name
-                    view
-                        .findViewById<TextView>(R.id.animal_card_gender_label)
-                        .text = getString(R.string.animal_gender, animalDetails.gender)
-                    view
-                        .findViewById<TextView>(R.id.animal_card_age_label)
-                        .text = getString(R.string.animal_age, animalDetails.age.toString())
-                    view
-                        .findViewById<TextView>(R.id.animal_card_breed_label)
-                        .text = getString(R.string.animal_breed, animalDetails.breed)
-                    view
-                        .findViewById<TextView>(R.id.animal_card_color_label)
-                        .text =
-                        getString(R.string.animal_color, animalDetails.characteristics["color"])
-                    view
-                        .findViewById<TextView>(R.id.big_card_animal_fur_length)
-                        .text = getString(
-                        R.string.animal_fur_length,
-                        animalDetails.characteristics["fur_length"]
-                    )
-                    view
-                        .findViewById<TextView>(R.id.animal_card_description)
-                        .text = animalDetails.description
-
-                    with(view) {
-                        val emailButton = findViewById<ImageButton>(R.id.animal_card_email_btn)
-                        emailButton.setOnClickListener {
-                            val emailIntent = Intent(ACTION_SENDTO).apply {
-                                data = Uri.parse("mailto:")
-                                putExtra(EXTRA_EMAIL, arrayOf(animalDetails.kennelEmail))
-                            }
-                            startActivity(emailIntent)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<AnimalDetails>, t: Throwable) {
-                    Log.d("ERROR", t.message ?: "The response is empty")
-                }
-            })
+        animal?.let { animal ->
+            val imgUrls = animal.getImgUrls()
+            adapter = AnimalPhotoAdapter(imgUrls)
+            adapter.notifyDataSetChanged()
+            animalRecyclerView.adapter = adapter
+        }
     }
 
+    private fun initViews(view: View) {
+        imageCount = view.findViewById(R.id.animal_card_image_count)
+        animalName = view.findViewById(R.id.animal_card_animal_name)
+        heartBox = view.findViewById(R.id.animal_card_heart)
+        locationBtn = view.findViewById(R.id.animal_card_location_btn)
+        distance = view.findViewById(R.id.animal_card_distance_text)
+        gender = view.findViewById(R.id.animal_card_gender_value)
+        age = view.findViewById(R.id.animal_card_age_value)
+        breed = view.findViewById(R.id.animal_card_breed_value)
+        color = view.findViewById(R.id.animal_card_color_value)
+        description = view.findViewById(R.id.animal_card_description)
+        kennelName = view.findViewById(R.id.animal_card_kennel_name_value)
+        address = view.findViewById(R.id.animal_card_kennel_address)
+        avatar = view.findViewById(R.id.animal_card_kennel_avatar)
+        writeBtn = view.findViewById(R.id.animal_card_email_btn)
+        callBtn = view.findViewById(R.id.animal_card_phone_btn)
+
+    }
+
+    private fun setValuesToView() {
+        animal?.let { animal ->
+            imageCount.text = getString(
+                R.string.big_card_animal_photo_counter,
+                1,
+                animal.imgUrl.size
+            )
+            animalName.text = animal.name
+            gender.text = animal.gender
+            age.text = animal.getAge()
+            breed.text = animal.breed
+            color.text = animal.characteristics["color"]
+            description.text = animal.description
+
+            val kennel: Kennel = animal.kennel
+            kennelName.text = kennel.name
+            address.text = kennel.address
+
+            val host = resources.getString(R.string.host)
+            val endpoint = resources.getString(R.string.kennel_avatar_endpoint)
+            val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+            val imageLoader = ImageLoader(host, endpoint, kennel.avatarUrl)
+            imageLoader.setPhotoToView(avatar, token)
+
+        }
+    }
+
+    private fun setListeners() {
+        animal?.let { animal ->
+            val kennel = animal.kennel
+            callBtn.setOnClickListener {
+                intentForCall = Intent(Intent.ACTION_CALL)
+                intentForCall.data =
+                    Uri.parse("tel:${kennel.phoneNumber}")
+
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CALL_PHONE
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    requireContext().startActivity(intentForCall)
+                } else {
+                    requestPermissionLauncher.launch("android.permission.CALL_PHONE")
+                }
+
+            }
+
+            writeBtn.setOnClickListener {
+                val emailIntent = Intent(ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:")
+                    putExtra(EXTRA_EMAIL, arrayOf(kennel.email))
+                }
+                startActivity(emailIntent)
+            }
+        }
+    }
 }

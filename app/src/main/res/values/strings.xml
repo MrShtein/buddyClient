@@ -164,6 +164,8 @@
     <string name="cats">Кошки</string>
     <string name="destination_btn_description">Кнопка для определения местоположения питомца</string>
     <string name="shelter">Приют:</string>
+    <string name="write">Написать</string>
+    <string name="Call">Позвонить</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>
