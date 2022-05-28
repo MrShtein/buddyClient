@@ -15,7 +15,8 @@ data class Animal  (
     val description: String,
     val breed: String,
     val characteristics: Map<String, String>,
-    val kennel: Kennel
+    val kennel: Kennel,
+    var distance: String
 ) : Parcelable {
 
     fun getAge(): String {
