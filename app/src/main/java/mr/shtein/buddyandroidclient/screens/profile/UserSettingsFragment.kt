@@ -350,7 +350,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val retrofitService = Common.retrofitService
         val headerMap = hashMapOf<String, String>()
         token = storage.readString(SharedPreferences.TOKEN_KEY, "")
-        headerMap["Authorization"] = "Bearer $token"
+        headerMap["Authorization"] = token
         retrofitService.upgradePersonInfo(headerMap, personRequest)
             .enqueue(object : Callback<PersonResponse> {
                 override fun onResponse(

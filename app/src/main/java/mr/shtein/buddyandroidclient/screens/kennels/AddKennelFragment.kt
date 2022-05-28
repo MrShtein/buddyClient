@@ -113,7 +113,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private suspend fun getKennels(personId: Long) = withContext(Dispatchers.IO) {
-        val token = "Bearer ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
+        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         val retrofit = Common.retrofitService
         val response = retrofit.getKennelsByPersonId(token, personId)
         if (response.isSuccessful) {

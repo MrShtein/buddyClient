@@ -15,7 +15,7 @@ class ImageLoader(
 
         if (token.isNotEmpty()) {
             val header = LazyHeaders.Builder()
-                .addHeader("Authorization", "Bearer $token")
+                .addHeader("Authorization", token)
                 .build()
             val headerWithUrl = GlideUrl(
                 fullUrl,

@@ -241,7 +241,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val retrofit = Common.retrofitService
-            val token = "Bearer ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
+            val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
             val response = retrofit.getAnimalsByKennelIdAndAnimalType(
                 token, kennelId, animalType
             )

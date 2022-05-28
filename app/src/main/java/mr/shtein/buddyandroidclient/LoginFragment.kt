@@ -67,7 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         if (loginResponse?.error == "") {
                             val loginInfo: LoginInfo = loginResponse.loginInfo
 
-                            sharedPropertyStore.writeString(SharedPreferences.TOKEN_KEY, loginInfo.token)
+                            sharedPropertyStore.writeString(SharedPreferences.TOKEN_KEY, "Bearer ${loginInfo.token}")
                             sharedPropertyStore.writeLong(SharedPreferences.USER_ID_KEY, loginInfo.id)
                             sharedPropertyStore.writeString(SharedPreferences.USER_LOGIN_KEY, loginInfo.login)
                             sharedPropertyStore.writeString(SharedPreferences.USER_ROLE_KEY, loginInfo.role)

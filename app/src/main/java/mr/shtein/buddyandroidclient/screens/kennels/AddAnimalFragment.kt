@@ -51,11 +51,9 @@ private const val EMPTY_COLOR_ERROR = "Необходимо выбрать цв�
 private const val EMPTY_DESCRIPTION_ERROR = "Необходимо ввести описание питомца"
 private const val KENNEL_ID_KEY = "kennel_id"
 private const val SERVER_ERROR = "Что-то не так с сервером, попробуйте позже"
-private const val NETWORK_ERROR = "Что-то не так с сетью, попробуйте позже"
 private const val FILE_NOT_FOUND_EXCEPTION_MSG = "К сожалению, файл не найден"
 private const val COLOR_CHARACTERISTIC_ID = 1
 private const val PART_NAME_FOR_FILES = "files"
-private const val TOKEN_PREFIX = "Bearer"
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val ANIMAL_KEY = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
@@ -465,7 +463,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             if (animalType != 0) {
                 val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
                 val retrofitService = Common.retrofitService
-                val response = retrofitService.getAnimalsBreed("$TOKEN_PREFIX $token", animalType)
+                val response = retrofitService.getAnimalsBreed(token, animalType)
                 if (response.isSuccessful) {
                     return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
                 } else {
@@ -490,7 +488,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
             val retrofitService = Common.retrofitService
             val response = retrofitService.getAnimalsCharacteristicByCharacteristicTypeId(
-                "$TOKEN_PREFIX $token", colorId
+                token, colorId
             )
             if (response.isSuccessful) {
                 return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
@@ -509,13 +507,13 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
     private suspend fun addNewAnimal() = withContext(Dispatchers.IO) {
-        val token = "$TOKEN_PREFIX ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
+        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         val retrofit = Common.retrofitService
         return@withContext retrofit.addNewAnimal(token, animalDto)
     }
 
     private suspend fun updateAnimal() = withContext(Dispatchers.IO) {
-        val token = "$TOKEN_PREFIX ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
+        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         val retrofit = Common.retrofitService
         return@withContext retrofit.updateAnimal(token, animalDto)
     }
@@ -741,13 +739,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private suspend fun uploadImage(uri: Uri): String = withContext(Dispatchers.IO) {
         val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
-        val tokenWithPrefix = "$TOKEN_PREFIX $token"
         val retrofit = Common.retrofitService
         val resolver = requireContext().contentResolver
         val imgInBytes = resolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
         val contentType = resolver.getType(uri) ?: "image/jpeg"
         val requestBody = RequestBody.create(MediaType.get(contentType), imgInBytes)
-        val result = retrofit.addPhotoToTmpDir(tokenWithPrefix, requestBody)
+        val result = retrofit.addPhotoToTmpDir(token, requestBody)
         when (result.code()) {
             201 -> {
                 return@withContext result.body() ?: ""

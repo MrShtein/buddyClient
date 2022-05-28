@@ -33,7 +33,7 @@ class PasswordEmptyFieldValidator(): EmptyFieldValidator() {
                                  token: String, oldPwdCallBack: PasswordCallBack) {
         val retrofitService = Common.retrofitService
         var headerMap = hashMapOf<String, String>()
-        headerMap["Authorization"] = "Bearer $token"
+        headerMap["Authorization"] = token
         val passwordRequest = PasswordCheckRequest(password, personId)
 
         retrofitService.checkOldPassword(headerMap, passwordRequest)

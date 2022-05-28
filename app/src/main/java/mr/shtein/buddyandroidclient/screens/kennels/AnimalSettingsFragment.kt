@@ -33,7 +33,6 @@ private const val RESULT_FROM_ANIMAL_SETTINGS = "result_from_animal_settings"
 private const val ANIMAL_SETTINGS_KEY = "message_from_animal_settings"
 private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 private const val DELETE_ANIMAL_MSG = "Питомец успешно удален"
-private const val TOKEN_PREFIX = "Bearer"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 
 class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
@@ -144,7 +143,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
     private fun buildAndShowDeleteAnimalDialog() {
         val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val token = "$TOKEN_PREFIX ${storage.readString(SharedPreferences.TOKEN_KEY, "")}"
+        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.animal_delete_dialog)
