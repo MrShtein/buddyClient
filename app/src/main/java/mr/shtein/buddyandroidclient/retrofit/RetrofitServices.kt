@@ -105,4 +105,11 @@ interface RetrofitServices {
         @Path("animal_id") animalId: Long
     ): Response<Unit>
 
+    @GET("/api/v1/distance/")
+    suspend fun getAllDistances(
+        @Header("Authorization") token: String,
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double
+    ): Response<HashMap<Int, Int>>
+
 }

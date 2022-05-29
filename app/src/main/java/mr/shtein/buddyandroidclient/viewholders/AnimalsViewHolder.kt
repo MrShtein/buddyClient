@@ -2,17 +2,23 @@ package mr.shtein.buddyandroidclient.viewholders
 
 import android.content.Context
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import mr.shtein.buddyandroidclient.OnLocationBtnClickListener
 import mr.shtein.buddyandroidclient.ProtoAnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.AnimalPhoto
+import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 
-class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalCardClickListener) :
+class AnimalsViewHolder(
+    private val itemView: View,
+    var onAnimalCardClickListener: OnAnimalCardClickListener,
+    var onLocationBtnClickListener: OnLocationBtnClickListener
+) :
     ProtoAnimalsViewHolder(itemView), View.OnClickListener {
 
     private val animalImage: ImageView = itemView.findViewById(R.id.animal_row_image)
@@ -21,10 +27,17 @@ class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalC
     private val age: TextView = itemView.findViewById(R.id.animal_row_approximately_age)
     private val breed: TextView = itemView.findViewById(R.id.animal_row_breed_name)
     private val animalColor: TextView = itemView.findViewById(R.id.animal_row_color)
+    private val locationBtn: ImageButton = itemView.findViewById(R.id.animal_row_location_btn)
+    private var locationText: TextView = itemView.findViewById(R.id.animal_row_distance_text)
+    private val locationSpinner: ProgressBar =
+        itemView.findViewById(R.id.animal_row_distance_progress)
     private lateinit var animal: Animal
 
     init {
         itemView.setOnClickListener(this)
+        locationBtn.setOnClickListener {
+            onLocationBtnClickListener.onClickToLocationBtn()
+        }
     }
 
 
@@ -37,9 +50,48 @@ class AnimalsViewHolder(itemView: View, var onAnimalCardClickListener: OnAnimalC
         this.breed.text = currentContext.getString(R.string.animal_breed, animal.breed)
         this.animalColor.text =
             currentContext.getString(R.string.animal_color, animal.characteristics["color"])
-
         setPrimaryPhoto(animal)
+        makeViewByState(animal.locationState, animal.distance)
+    }
 
+    fun bindDistanceText(distance: String) {
+        locationText.text = distance
+    }
+
+    fun makeViewByState(state: LocationState, distance: String) {
+        when (state) {
+            LocationState.INIT_STATE -> {
+                makeInitState()
+            }
+            LocationState.SEARCH_STATE -> {
+                makeSearchState()
+            }
+            LocationState.DISTANCE_VISIBLE_STATE -> {
+                makeDistanceVisibleState(distance)
+            }
+            else -> {
+                makeInitState()
+            }
+        }
+    }
+
+    private fun makeInitState() {
+        locationBtn.visibility = View.VISIBLE
+        locationText.visibility = View.GONE
+        locationSpinner.visibility = View.GONE
+    }
+
+    private fun makeSearchState() {
+        locationBtn.visibility = View.GONE
+        locationText.visibility = View.GONE
+        locationSpinner.visibility = View.VISIBLE
+    }
+
+    private fun makeDistanceVisibleState(distance: String) {
+        locationBtn.visibility = View.GONE
+        locationSpinner.visibility = View.GONE
+        locationText.visibility = View.VISIBLE
+        locationText.text = distance
     }
 
     override fun onClick(v: View?) {

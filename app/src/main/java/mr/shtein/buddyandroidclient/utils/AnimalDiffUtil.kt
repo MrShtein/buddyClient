@@ -2,7 +2,7 @@ package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.buddyandroidclient.model.LocationState
 
 class AnimalDiffUtil(
     var oldList: List<Animal>,
@@ -25,6 +25,16 @@ class AnimalDiffUtil(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
-        return oldItem.name == newItem.name
+        return oldItem.distance == newItem.distance && oldItem.locationState == newItem.locationState
+    }
+
+    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+        if (oldItem.distance != newItem.distance) return LocationState.DISTANCE_VISIBLE_STATE
+        if (newItem.locationState == LocationState.INIT_STATE) return LocationState.INIT_STATE
+        if (newItem.locationState == LocationState.SEARCH_STATE) return LocationState.SEARCH_STATE
+        if (newItem.locationState == LocationState.BAD_RESULT_STATE) return LocationState.BAD_RESULT_STATE
+        return null
     }
 }

@@ -11,5 +11,5 @@ data class Kennel(
     val phoneNumber: String,
     val email: String,
     val avatarUrl: String,
-    val coordinates: Coordinates
+    val coordinates: Coordinates,
 ) : Parcelable

@@ -16,7 +16,8 @@ data class Animal  (
     val breed: String,
     val characteristics: Map<String, String>,
     val kennel: Kennel,
-    var distance: String
+    var distance: String,
+    var locationState: LocationState
 ) : Parcelable {
 
     fun getAge(): String {
@@ -42,7 +43,7 @@ data class Animal  (
         }
     }
 
-    public fun getImgUrls(): List<String> {
+    fun getImgUrls(): List<String> {
         val photoList = mutableListOf<String>()
         imgUrl.map {
             photoList.add(it.url)
@@ -50,4 +51,17 @@ data class Animal  (
         return photoList
     }
 
+
+
 }
+
+@Parcelize
+enum class LocationState : Parcelable {
+    INIT_STATE,
+    SEARCH_STATE,
+    DISTANCE_VISIBLE_STATE,
+    BAD_RESULT_STATE
+}
+
+
+
