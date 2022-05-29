@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.ProgressBar
@@ -20,6 +21,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -69,50 +72,54 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             val failureText = getString(R.string.location_failure_text)
-            changeLocationState(LocationState.SEARCH_STATE)
             when {
                 (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
                         permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    try {
-                        val locationTask = fusedLocationClient.getCurrentLocation(
-                            LocationRequest.PRIORITY_HIGH_ACCURACY,
-                            cancelTokenSourceForLocation.token
-                        )
-                        locationTask.addOnSuccessListener {
-                            val location = locationTask.result
-                            val currentCoordinates =
-                                Coordinates(location.latitude, location.longitude)
-                            coroutine.launch {
-                                try {
-                                    val token =
-                                        storage.readString(SharedPreferences.TOKEN_KEY, "")
-                                    val distances =
-                                        getDistancesResult(token, currentCoordinates)
-                                    showResult(distances)
-                                } catch (ex: SocketTimeoutException) {
-                                    changeLocationState(LocationState.BAD_RESULT_STATE)
-                                    val noInternetText =
-                                        getString(R.string.internet_failure_text)
-                                    Toast.makeText(
-                                        requireContext(), noInternetText, Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        }
-                        locationTask.addOnFailureListener {
-                            val error = it.message
-                            changeLocationState(LocationState.BAD_RESULT_STATE)
-                            Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG)
-                                .show()
-                        }
-                    } catch (ex: SecurityException) {
-                        Log.d("error", "errorrrrrrrrrrrrInSecurity")
-                    }
+                    setLocationToView(failureText)
                 }
                 else -> {
                     Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    private fun setLocationToView(failureText: String) {
+        try {
+            changeLocationState(LocationState.SEARCH_STATE)
+            val locationTask = fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                cancelTokenSourceForLocation.token
+            )
+            locationTask.addOnSuccessListener {
+                val location = locationTask.result
+                val currentCoordinates =
+                    Coordinates(location.latitude, location.longitude)
+                coroutine.launch {
+                    try {
+                        val token =
+                            storage.readString(SharedPreferences.TOKEN_KEY, "")
+                        val distances =
+                            getDistancesResult(token, currentCoordinates)
+                        showResult(distances)
+                    } catch (ex: SocketTimeoutException) {
+                        changeLocationState(LocationState.BAD_RESULT_STATE)
+                        val noInternetText =
+                            getString(R.string.internet_failure_text)
+                        Toast.makeText(
+                            requireContext(), noInternetText, Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            locationTask.addOnFailureListener {
+                val error = it.message
+                changeLocationState(LocationState.BAD_RESULT_STATE)
+                Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } catch (ex: SecurityException) {
+            Log.d("error", "errorrrrrrrrrrrrInSecurity")
         }
     }
 
@@ -199,7 +206,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         )
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -208,13 +214,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         coroutine = CoroutineScope(Dispatchers.Main)
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
         mService = Common.retrofitService
-        coroutine.launch {
-            animalRecyclerView = view.findViewById(R.id.animal_list)
-            animalRecyclerView.setHasFixedSize(true);
-            animalRecyclerView.layoutManager = LinearLayoutManager(context)
-            getAllAnimalsList(view)
-        }
-
+        animalRecyclerView = view.findViewById(R.id.animal_list)
+        animalRecyclerView.setHasFixedSize(true);
+        animalRecyclerView.layoutManager = LinearLayoutManager(context)
         return view
     }
 
@@ -222,6 +224,25 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
         setListeners()
+        getAllAnimalsList(view)
+    }
+
+    private fun checkLocationPermission() {
+        val failureText = getString(R.string.location_failure_text)
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                setLocationToView(failureText)
+            }
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) -> {
+                setLocationToView(failureText)
+            }
+        }
     }
 
     override fun onStop() {
@@ -339,6 +360,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                     animalListViewModel.animalList = allAnimalsList
                     visibleAnimalList.addAll(allAnimalsList)
                     setViews()
+                    checkLocationPermission()
                     adapter.notifyItemRangeInserted(0, allAnimalsList.size)
                     view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility =
                         View.INVISIBLE
