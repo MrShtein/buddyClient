@@ -9,7 +9,7 @@
     android:elevation="0dp">
 
     <ProgressBar
-        android:id="@+id/animal_search_progress"
+        android:id="@+id/animals_list_search_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="#9EFFFFFF"

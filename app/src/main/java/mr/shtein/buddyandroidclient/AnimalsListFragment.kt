@@ -12,9 +12,6 @@ import com.google.android.material.chip.Chip
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import android.view.*
 import android.widget.TextView
@@ -22,7 +19,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -30,6 +26,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
@@ -40,13 +37,11 @@ import kotlin.math.floor
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener {
 
-    lateinit var mService: RetrofitServices
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
-    lateinit var allAnimalsList: MutableList<Animal>
-    private var visibleAnimalList: MutableList<Animal> = mutableListOf()
     private lateinit var dogChip: Chip
     private lateinit var catChip: Chip
+    private lateinit var animalDownloadProgress: ProgressBar
     private lateinit var animalCountText: TextView
     private val animalListViewModel: AnimalListViewModel by lazy {
         ViewModelProvider(this).get(AnimalListViewModel::class.java)
@@ -64,29 +59,29 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        cancelTokenSourceForLocation.token.onCanceledRequested {
-
-        }
+        coroutine = CoroutineScope(Dispatchers.Main)
 
         locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
-            val failureText = getString(R.string.location_failure_text)
             when {
                 (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
                         permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    setLocationToView(failureText)
+                    setLocationToView()
                 }
                 else -> {
+                    val failureText = getString(R.string.location_failure_text)
                     Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    private fun setLocationToView(failureText: String) {
+    private fun setLocationToView() {
         try {
-            changeLocationState(LocationState.SEARCH_STATE)
+            val newAnimalList = changeLocationState(LocationState.SEARCH_STATE)
+            diffUtilComparator(animalListViewModel.visibleAnimalList, newAnimalList)
+            animalListViewModel.visibleAnimalList = newAnimalList
             val locationTask = fusedLocationClient.getCurrentLocation(
                 LocationRequest.PRIORITY_HIGH_ACCURACY,
                 cancelTokenSourceForLocation.token
@@ -103,7 +98,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                             getDistancesResult(token, currentCoordinates)
                         showResult(distances)
                     } catch (ex: SocketTimeoutException) {
-                        changeLocationState(LocationState.BAD_RESULT_STATE)
+                        val newAnimalList = changeLocationState(LocationState.BAD_RESULT_STATE)
+                        diffUtilComparator(animalListViewModel.visibleAnimalList, newAnimalList)
                         val noInternetText =
                             getString(R.string.internet_failure_text)
                         Toast.makeText(
@@ -113,14 +109,131 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                 }
             }
             locationTask.addOnFailureListener {
-                val error = it.message
-                changeLocationState(LocationState.BAD_RESULT_STATE)
+                val newAnimalList = changeLocationState(LocationState.BAD_RESULT_STATE)
+                diffUtilComparator(animalListViewModel.visibleAnimalList, newAnimalList)
+                val failureText = getString(R.string.location_failure_text)
                 Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG)
                     .show()
             }
         } catch (ex: SecurityException) {
             Log.d("error", "errorrrrrrrrrrrrInSecurity")
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
+        initViewsAndValues(view)
+        setListeners()
+        coroutine.launch {
+            try {
+                showAnimals()
+            } catch (ex: SocketTimeoutException) {
+                val exText = getString(R.string.socket_timeout_exception_text)
+                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+            } catch (ex: ServerErrorException) {
+                Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+            }
+        }
+        return view
+    }
+
+    private fun initViewsAndValues(view: View) {
+        animalRecyclerView = view.findViewById(R.id.animal_list)
+        animalRecyclerView.setHasFixedSize(true)
+        animalRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        adapter = AnimalsAdapter(
+            requireContext(),
+            animalListViewModel.visibleAnimalList,
+            this@AnimalsListFragment,
+            this@AnimalsListFragment
+        )
+        animalRecyclerView.adapter = adapter
+
+        animalCountText = view.findViewById(R.id.animals_list_found_animal_count)
+        dogChip = view.findViewById(R.id.animals_list_dog_chip)
+        catChip = view.findViewById(R.id.animals_list_cat_chip)
+        animalDownloadProgress = view.findViewById(R.id.animals_list_search_progress_bar)
+    }
+
+
+    private suspend fun showAnimals() {
+        val isLocationPermissionGranted = checkLocationPermission()
+        if (animalListViewModel.visibleAnimalList.isEmpty()) {
+            animalDownloadProgress.visibility = View.VISIBLE
+            animalListViewModel.animalList = getAllAnimalsFromServer()
+            animalListViewModel.visibleAnimalList =
+                animalListViewModel.animalList.toMutableList()
+            animalDownloadProgress.visibility = View.INVISIBLE
+
+            showDistanceOrLocationIcon(isLocationPermissionGranted)
+            val emptyAnimalList = mutableListOf<Animal>()
+            diffUtilComparator(emptyAnimalList, animalListViewModel.visibleAnimalList)
+        }
+        setAnimalCountText()
+    }
+
+    private fun checkLocationPermission(): Boolean {
+        val fineLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val coarseLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        return fineLocationPermission == PackageManager.PERMISSION_GRANTED
+                || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    private suspend fun getAllAnimalsFromServer(): MutableList<Animal> =
+        withContext(Dispatchers.IO) {
+            val retrofit = Common.retrofitService
+            val result = retrofit.getAnimals()
+            when (result.code()) {
+                200 -> {
+                    return@withContext result.body() ?: mutableListOf()
+                }
+                500 -> {
+                    val exText = getString(R.string.server_error_msg)
+                    throw ServerErrorException(exText)
+                }
+                else -> {
+                    throw SocketTimeoutException()
+                }
+            }
+        }
+
+    private fun showDistanceOrLocationIcon(isLocationPermissionGranted: Boolean) {
+        if (isLocationPermissionGranted) {
+            setLocationToView()
+        }
+    }
+
+    private fun changeLocationState(state: LocationState): MutableList<Animal> {
+        animalListViewModel.locationState = state
+        val newAnimalList = mutableListOf<Animal>()
+        animalListViewModel.visibleAnimalList.forEach { animal ->
+            val newAnimal = animal.copy()
+            newAnimal.locationState = state
+            newAnimalList.add(newAnimal)
+        }
+        return newAnimalList
+    }
+
+    private fun diffUtilComparator(
+        oldAnimalList: MutableList<Animal>,
+        newAnimalList: MutableList<Animal>
+    ) {
+        val animalDiffUtil = AnimalDiffUtil(oldAnimalList, newAnimalList)
+        val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+        adapter.animals = newAnimalList
+        animalListViewModel.visibleAnimalList = newAnimalList
+        diffResult.dispatchUpdatesTo(adapter)
     }
 
     private suspend fun getDistancesResult(
@@ -139,57 +252,42 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         withContext(Dispatchers.Main) {
             when (result.code()) {
                 200 -> {
-                    calculateDiffAndShowResult(result.body() ?: hashMapOf())
+                    val distances = result.body() ?: hashMapOf()
+                    animalListViewModel.distances = distances
+                    val newAnimalList = setDistancesToAnimals(animalListViewModel.distances)
+                    diffUtilComparator(animalListViewModel.visibleAnimalList, newAnimalList)
+                    animalListViewModel.visibleAnimalList = newAnimalList
                 }
             }
         }
 
-    private fun calculateDiffAndShowResult(distances: HashMap<Int, Int>) {
-        coroutine.launch {
-            val newAnimalList = mutableListOf<Animal>()
-            allAnimalsList.forEach { animal ->
-                val newAnimal = animal.copy()
-                newAnimal.locationState = LocationState.DISTANCE_VISIBLE_STATE
-                newAnimalList.add(newAnimal)
-                val kennel = animal.kennel
-                val distance = distances[kennel.id] ?: 0
-                distance.let {
-                    if (distance < 1000) {
-                        newAnimal.distance = getString(
-                            R.string.animal_row_distance_meter_text,
-                            distance.toString()
-                        )
-                    } else {
-                        val distanceInKm = floor(distance.toDouble() / 100) / 10
-                        newAnimal.distance = getString(
-                            R.string.animal_row_distance_kilometer_text,
-                            distanceInKm.toString()
-                        )
-                    }
-                }
-            }
-            val animalDiffUtil = AnimalDiffUtil(allAnimalsList, newAnimalList)
-            val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-            adapter.animals = newAnimalList
-            animalListViewModel.animalList = newAnimalList
-            diffResult.dispatchUpdatesTo(adapter)
-        }
-    }
-
-    private fun changeLocationState(state: LocationState) {
+    private fun setDistancesToAnimals(distances: HashMap<Int, Int>): MutableList<Animal> {
+        animalListViewModel.locationState = LocationState.DISTANCE_VISIBLE_STATE
         val newAnimalList = mutableListOf<Animal>()
-        allAnimalsList.forEach { animal ->
+        animalListViewModel.visibleAnimalList.forEach { animal ->
             val newAnimal = animal.copy()
-            newAnimal.locationState = state
+            newAnimal.locationState = animalListViewModel.locationState
             newAnimalList.add(newAnimal)
+            val kennel = animal.kennel
+            val distance = distances[kennel.id] ?: 0
+            distance.let {
+                if (distance < 1000) {
+                    newAnimal.distance = getString(
+                        R.string.animal_row_distance_meter_text,
+                        distance
+                    )
+                } else {
+                    val distanceInKm = floor(distance.toDouble() / 100) / 10
+                    newAnimal.distance = getString(
+                        R.string.animal_row_distance_kilometer_text,
+                        distanceInKm.toString()
+                    )
+                }
+            }
         }
-
-        val diffUtil = AnimalDiffUtil(allAnimalsList, newAnimalList)
-        val diffResult = DiffUtil.calculateDiff(diffUtil)
-        adapter.animals = newAnimalList
-        animalListViewModel.animalList = newAnimalList
-        diffResult.dispatchUpdatesTo(adapter)
+        return newAnimalList
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -206,61 +304,18 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        coroutine = CoroutineScope(Dispatchers.Main)
-        val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
-        mService = Common.retrofitService
-        animalRecyclerView = view.findViewById(R.id.animal_list)
-        animalRecyclerView.setHasFixedSize(true);
-        animalRecyclerView.layoutManager = LinearLayoutManager(context)
-        return view
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view)
-        setListeners()
-        getAllAnimalsList(view)
+        initViewsAndValues(view)
     }
 
-    private fun checkLocationPermission() {
-        val failureText = getString(R.string.location_failure_text)
-        when (PackageManager.PERMISSION_GRANTED) {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) -> {
-                setLocationToView(failureText)
-            }
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) -> {
-                setLocationToView(failureText)
-            }
-        }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        visibleAnimalList = mutableListOf()
-    }
-
-    private fun initViews(view: View) {
-        animalCountText = view.findViewById(R.id.animals_list_found_animal_count)
-        dogChip = view.findViewById(R.id.animals_list_dog_chip)
-        catChip = view.findViewById(R.id.animals_list_cat_chip)
-    }
-
-    private fun setViews() {
+    private fun setAnimalCountText() {
         animalCountText.text = resources.getQuantityString(
             R.plurals.buddy_found_count,
-            visibleAnimalList.size,
-            visibleAnimalList.size
+            animalListViewModel.visibleAnimalList.size,
+            animalListViewModel.visibleAnimalList.size
         )
     }
 
@@ -268,29 +323,32 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
         dogChip.setOnCheckedChangeListener { _, isChecked ->
             coroutine.launch {
-                val dogsList = filterDogs(allAnimalsList)
+                val dogsList = filterDogs(animalListViewModel.animalList)
+
                 when (isChecked) {
                     true -> {
-                        val oldAnimalList = visibleAnimalList.toMutableList()
-                        visibleAnimalList.addAll(dogsList)
-                        visibleAnimalList.shuffle()
+                        val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
+                        animalListViewModel.visibleAnimalList.addAll(dogsList)
+                        animalListViewModel.visibleAnimalList.shuffle()
 
-                        val animalDiffUtil = AnimalDiffUtil(oldAnimalList, visibleAnimalList)
+                        val animalDiffUtil =
+                            AnimalDiffUtil(oldAnimalList, animalListViewModel.visibleAnimalList)
                         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                        adapter.animals = visibleAnimalList
+                        adapter.animals = animalListViewModel.visibleAnimalList
                         diffResult.dispatchUpdatesTo(adapter)
-                        setViews()
+                        setAnimalCountText()
                     }
                     else -> {
-                        val oldAnimalList = visibleAnimalList.toMutableList()
-                        visibleAnimalList.removeAll(dogsList)
-                        visibleAnimalList.shuffle()
+                        val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
+                        animalListViewModel.visibleAnimalList.removeAll(dogsList)
+                        animalListViewModel.visibleAnimalList.shuffle()
 
-                        val animalDiffUtil = AnimalDiffUtil(oldAnimalList, visibleAnimalList)
+                        val animalDiffUtil =
+                            AnimalDiffUtil(oldAnimalList, animalListViewModel.visibleAnimalList)
                         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                        adapter.animals = visibleAnimalList
+                        adapter.animals = animalListViewModel.visibleAnimalList
                         diffResult.dispatchUpdatesTo(adapter)
-                        setViews()
+                        setAnimalCountText()
                     }
                 }
             }
@@ -298,29 +356,31 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
         catChip.setOnCheckedChangeListener { _, isChecked ->
             coroutine.launch {
-                val catsList = filterCats(allAnimalsList)
+                val catsList = filterCats(animalListViewModel.animalList)
                 when (isChecked) {
                     true -> {
-                        val oldAnimalList = visibleAnimalList.toMutableList()
-                        visibleAnimalList.addAll(catsList)
-                        visibleAnimalList.shuffle()
+                        val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
+                        animalListViewModel.visibleAnimalList.addAll(catsList)
+                        animalListViewModel.visibleAnimalList.shuffle()
 
-                        val animalDiffUtil = AnimalDiffUtil(oldAnimalList, visibleAnimalList)
+                        val animalDiffUtil =
+                            AnimalDiffUtil(oldAnimalList, animalListViewModel.visibleAnimalList)
                         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                        adapter.animals = visibleAnimalList
+                        adapter.animals = animalListViewModel.visibleAnimalList
                         diffResult.dispatchUpdatesTo(adapter)
-                        setViews()
+                        setAnimalCountText()
                     }
                     else -> {
-                        val oldAnimalList = visibleAnimalList.toMutableList()
-                        visibleAnimalList.removeAll(catsList)
-                        visibleAnimalList.shuffle()
+                        val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
+                        animalListViewModel.visibleAnimalList.removeAll(catsList)
+                        animalListViewModel.visibleAnimalList.shuffle()
 
-                        val animalDiffUtil = AnimalDiffUtil(oldAnimalList, visibleAnimalList)
+                        val animalDiffUtil =
+                            AnimalDiffUtil(oldAnimalList, animalListViewModel.visibleAnimalList)
                         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
-                        adapter.animals = visibleAnimalList
+                        adapter.animals = animalListViewModel.visibleAnimalList
                         diffResult.dispatchUpdatesTo(adapter)
-                        setViews()
+                        setAnimalCountText()
                     }
                 }
             }
@@ -333,61 +393,59 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
-    private fun getAllAnimalsList(view: View) {
-        adapter = AnimalsAdapter(
-            requireContext(),
-            visibleAnimalList,
-            this@AnimalsListFragment,
-            this@AnimalsListFragment
-        )
-        animalRecyclerView.adapter = adapter
-
-        if (animalListViewModel.animalList.isEmpty()) {
-            mService.getAnimals().enqueue(object : Callback<MutableList<Animal>> {
-                override fun onFailure(call: Call<MutableList<Animal>>, t: Throwable) {
-                    t.message?.let { Log.d("Animal", it) }
-                }
-
-                override fun onResponse(
-                    call: Call<MutableList<Animal>>,
-                    response: Response<MutableList<Animal>>
-                ) {
-                    Log.d("Animal", "onResponse is ready")
-                    allAnimalsList = response.body() as MutableList<Animal>
-                    allAnimalsList.forEach {
-                        it.locationState = LocationState.INIT_STATE
-                    }
-                    animalListViewModel.animalList = allAnimalsList
-                    visibleAnimalList.addAll(allAnimalsList)
-                    setViews()
-                    checkLocationPermission()
-                    adapter.notifyItemRangeInserted(0, allAnimalsList.size)
-                    view.findViewById<ProgressBar>(R.id.animal_search_progress).visibility =
-                        View.INVISIBLE
-                }
-            })
-        } else {
-            allAnimalsList = animalListViewModel.animalList
-            visibleAnimalList.addAll(animalListViewModel.animalList)
-            adapter.notifyItemRangeInserted(0, allAnimalsList.size)
-            setViews()
-        }
-
-    }
 
     private suspend fun filterDogs(listForFilter: MutableList<Animal>): MutableList<Animal> =
         withContext(Dispatchers.IO) {
-            return@withContext listForFilter.filter {
-                it.typeId == 1
-            }.toMutableList()
+            val dogsList = mutableListOf<Animal>()
+            listForFilter.forEach { animal ->
+                when {
+                    animal.locationState != animalListViewModel.locationState -> {
+                        animal.locationState = animalListViewModel.locationState
+                    }
+                    animal.distance == "" && animalListViewModel.locationState == LocationState.DISTANCE_VISIBLE_STATE -> {
+                        animal.distance = makeDistanceStringForAnimal(animal)
+                    }
+                }
+                if (animal.typeId == 1) {
+                    dogsList.add(animal)
+                }
+            }
+            return@withContext dogsList
         }
 
     private suspend fun filterCats(listForFilter: MutableList<Animal>): MutableList<Animal> =
         withContext(Dispatchers.IO) {
-            return@withContext listForFilter.filter {
-                it.typeId == 2
-            }.toMutableList()
+            val catsList = mutableListOf<Animal>()
+            listForFilter.forEach { animal ->
+                when {
+                    animal.locationState != animalListViewModel.locationState -> {
+                        animal.locationState = animalListViewModel.locationState
+                    }
+                    animal.distance == "" && animalListViewModel.locationState == LocationState.DISTANCE_VISIBLE_STATE -> {
+                        animal.distance = makeDistanceStringForAnimal(animal)
+                    }
+                }
+                if (animal.typeId == 2) {
+                    catsList.add(animal)
+                }
+
+            }
+
+            return@withContext catsList
         }
+
+    private fun makeDistanceStringForAnimal(animal: Animal): String {
+        val distance: Int = animalListViewModel.distances[animal.kennel.id] ?: 0
+        return when {
+            distance < 1000 -> {
+                getString(R.string.animal_row_distance_meter_text, distance)
+            }
+            else -> {
+                val distanceInKm = floor(distance.toDouble() / 100) / 10
+                getString(R.string.animal_row_distance_kilometer_text, distanceInKm.toString())
+            }
+        }
+    }
 }
 
 interface OnLocationBtnClickListener {

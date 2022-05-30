@@ -16,7 +16,7 @@ import retrofit2.http.*
 
 interface RetrofitServices {
     @GET("/api/v1/animal")
-    fun getAnimals(): Call<MutableList<Animal>>
+    suspend fun getAnimals(): Response<MutableList<Animal>>
 
     @GET("api/v1/animal/{id}")
     fun getAnimalById(@Path("id") id: Long): Call<Animal>
