@@ -128,7 +128,6 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         imageCount = view.findViewById(R.id.animal_card_image_count)
         animalName = view.findViewById(R.id.animal_card_animal_name)
         heartBox = view.findViewById(R.id.animal_card_heart)
-        locationBtn = view.findViewById(R.id.animal_card_location_btn)
         distance = view.findViewById(R.id.animal_card_distance_text)
         gender = view.findViewById(R.id.animal_card_gender_value)
         age = view.findViewById(R.id.animal_card_age_value)
@@ -156,6 +155,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             breed.text = animal.breed
             color.text = animal.characteristics["color"]
             description.text = animal.description
+            distance.text = animal.distance
 
             val kennel: Kennel = animal.kennel
             kennelName.text = kennel.name

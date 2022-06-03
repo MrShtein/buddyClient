@@ -59,25 +59,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/animal_card_animal_name" />
 
-        <ImageButton
-            android:id="@+id/animal_card_location_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/location_icon"
-            android:background="@color/transparent"
-            android:contentDescription="@string/destination_btn_description"
-            app:layout_constraintBottom_toBottomOf="@id/animal_card_animal_name"
-            app:layout_constraintEnd_toStartOf="@id/animal_card_heart"
-            app:layout_constraintTop_toTopOf="@id/animal_card_animal_name" />
-
         <TextView
             android:id="@+id/animal_card_distance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:textSize="14sp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/animal_card_animal_name"
             app:layout_constraintEnd_toStartOf="@id/animal_card_heart"
             app:layout_constraintTop_toTopOf="@id/animal_card_animal_name"
