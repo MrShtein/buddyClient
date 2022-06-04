@@ -2,9 +2,13 @@ package mr.shtein.buddyandroidclient.screens.kennels
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +21,6 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.buddyandroidclient.model.VolunteersPreview
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
@@ -42,10 +45,23 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var isReadyKennelsList = false
     private var volunteersList = mutableListOf<KennelPreview>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        view?.let {
+            setInsetsListener(it)
+            initViews(it)
+            setListeners(it)
+        }
+
+        return view
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view)
         coroutineScope.launch {
             val personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
             getKennels(personId)
@@ -54,7 +70,15 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
             }
         }
-        setListeners(view)
+    }
+
+    private fun setInsetsListener(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, 0)
+
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     override fun onStop() {

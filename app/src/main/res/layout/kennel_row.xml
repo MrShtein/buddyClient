@@ -17,13 +17,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView" />
+        app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
+        tools:background="@color/cian5"/>
 
     <TextView
         android:id="@+id/kennel_row_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/kennel_row_image"
@@ -34,9 +35,7 @@
         android:id="@+id/kennel_row_volunteers_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/kennel_row_image"
+        app:layout_constraintStart_toStartOf="@id/kennel_row_name"
         app:layout_constraintTop_toBottomOf="@id/kennel_row_name"
         tools:text="137 волонтеров" />
 
@@ -44,10 +43,8 @@
         android:id="@+id/kennel_row_animals_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/kennel_row_image"
+        app:layout_constraintStart_toStartOf="@id/kennel_row_name"
         app:layout_constraintTop_toBottomOf="@id/kennel_row_volunteers_amount"
         tools:text="1575 животных" />
 
