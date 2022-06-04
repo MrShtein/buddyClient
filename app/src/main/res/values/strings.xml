@@ -169,7 +169,7 @@
     <string name="internet_failure_text">Что-то не так с сетью, попробуйте позже</string>
     <string name="animal_row_distance_meter_text">%1$d м. от Вас</string>
     <string name="animal_row_distance_kilometer_text">%1$s км. от Вас</string>
-    <string name="shelter">Приют:</string>
+    <string name="shelter">Приют</string>
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
     <string name="add">Добавить</string>

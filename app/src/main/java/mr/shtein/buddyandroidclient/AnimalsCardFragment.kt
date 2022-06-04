@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
@@ -24,6 +25,10 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.button.MaterialButton
@@ -54,7 +59,6 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var kennelName: TextView
     private lateinit var address: TextView
     private lateinit var avatar: ShapeableImageView
-    private lateinit var locationBtn: ImageButton
     private lateinit var distance: TextView
     private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
@@ -71,6 +75,13 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         animal = arguments?.getParcelable("animal")
         val view = inflater.inflate(R.layout.animal_card_fragment, container, false)
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, 0, 0, insets.bottom + 200) //TODO Изменить при отключении BottomNavigationView
+            WindowInsetsCompat.CONSUMED
+        }
+
         initViews(view)
         setValuesToView()
         setListeners()
