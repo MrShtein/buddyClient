@@ -72,6 +72,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setStatusBarColor(false)
         animal = arguments?.getParcelable("animal")
         val view = inflater.inflate(R.layout.animal_card_fragment, container, false)
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)

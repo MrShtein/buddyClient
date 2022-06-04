@@ -59,8 +59,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStatusBarColor(true)
-
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         coroutine = CoroutineScope(Dispatchers.Main)
@@ -130,7 +128,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
-
+        setStatusBarColor(true)
         initViewsAndValues(view)
         setInsetsListener(animalChoiceHorizontalScroll)
         setListeners()

@@ -9,6 +9,7 @@ import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 
@@ -21,6 +22,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val logoText: ImageView = view!!.findViewById(R.id.buddy_logo_text)
         ViewCompat.setOnApplyWindowInsetsListener(logoText) { textView, windowInsets ->
