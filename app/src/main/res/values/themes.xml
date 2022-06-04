@@ -13,10 +13,7 @@
 <!--         Customize your theme here. -->
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
         <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:windowLightStatusBar">
-            true
-        </item>
-
+        <item name="android:navigationBarColor">@color/transparent</item>
 
 
     </style>
