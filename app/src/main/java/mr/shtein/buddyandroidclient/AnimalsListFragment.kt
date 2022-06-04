@@ -14,11 +14,13 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.Common
 import retrofit2.Response
 import android.view.*
+import android.widget.HorizontalScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -39,6 +41,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     lateinit var adapter: AnimalsAdapter
     lateinit var animalRecyclerView: RecyclerView
+    private lateinit var animalChoiceHorizontalScroll: HorizontalScrollView
     private lateinit var dogChip: Chip
     private lateinit var catChip: Chip
     private lateinit var animalDownloadProgress: ProgressBar
@@ -46,7 +49,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     private val animalListViewModel: AnimalListViewModel by lazy {
         ViewModelProvider(this).get(AnimalListViewModel::class.java)
     }
-
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var storage: SharedPreferences
@@ -56,6 +58,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setStatusBarColor(true)
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -126,7 +130,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
+
         initViewsAndValues(view)
+        setInsetsListener(animalChoiceHorizontalScroll)
         setListeners()
         coroutine.launch {
             try {
@@ -139,6 +145,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             }
         }
         return view
+    }
+
+    private fun setInsetsListener(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
+            }
+
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun initViewsAndValues(view: View) {
@@ -155,11 +172,11 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         animalRecyclerView.adapter = adapter
 
         animalCountText = view.findViewById(R.id.animals_list_found_animal_count)
+        animalChoiceHorizontalScroll = view.findViewById(R.id.animal_choice_scroll_chips)
         dogChip = view.findViewById(R.id.animals_list_dog_chip)
         catChip = view.findViewById(R.id.animals_list_cat_chip)
         animalDownloadProgress = view.findViewById(R.id.animals_list_search_progress_bar)
     }
-
 
     private suspend fun showAnimals() {
         val isLocationPermissionGranted = checkLocationPermission()
@@ -310,7 +327,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         initViewsAndValues(view)
     }
 
-
     private fun setAnimalCountText() {
         animalCountText.text = resources.getQuantityString(
             R.plurals.buddy_found_count,
@@ -321,12 +337,13 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     private fun setListeners() {
 
-        dogChip.setOnCheckedChangeListener { _, isChecked ->
+        dogChip.setOnCheckedChangeListener { chip, isChecked ->
             coroutine.launch {
                 val dogsList = filterDogs(animalListViewModel.animalList)
 
                 when (isChecked) {
                     true -> {
+                        chip.setTextColor(requireContext().getColor(R.color.white))
                         val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
                         animalListViewModel.visibleAnimalList.addAll(dogsList)
                         animalListViewModel.visibleAnimalList.shuffle()
@@ -339,6 +356,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                         setAnimalCountText()
                     }
                     else -> {
+                        chip.setTextColor(requireContext().getColor(R.color.cian5))
                         val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
                         animalListViewModel.visibleAnimalList.removeAll(dogsList)
                         animalListViewModel.visibleAnimalList.shuffle()
@@ -354,11 +372,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             }
         }
 
-        catChip.setOnCheckedChangeListener { _, isChecked ->
+        catChip.setOnCheckedChangeListener { chip, isChecked ->
             coroutine.launch {
                 val catsList = filterCats(animalListViewModel.animalList)
                 when (isChecked) {
                     true -> {
+                        chip.setTextColor(requireContext().getColor(R.color.white))
                         val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
                         animalListViewModel.visibleAnimalList.addAll(catsList)
                         animalListViewModel.visibleAnimalList.shuffle()
@@ -371,6 +390,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                         setAnimalCountText()
                     }
                     else -> {
+                        chip.setTextColor(requireContext().getColor(R.color.cian5))
                         val oldAnimalList = animalListViewModel.visibleAnimalList.toMutableList()
                         animalListViewModel.visibleAnimalList.removeAll(catsList)
                         animalListViewModel.visibleAnimalList.shuffle()

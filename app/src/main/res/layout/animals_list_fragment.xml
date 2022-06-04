@@ -5,56 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey2"
-    tools:context="mr.shtein.buddyandroidclient.AnimalsListFragment"
-    android:elevation="0dp">
+    android:elevation="0dp"
+    tools:context="mr.shtein.buddyandroidclient.AnimalsListFragment">
 
     <ProgressBar
         android:id="@+id/animals_list_search_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="#9EFFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/animals_list_search_panel_container"
-        style="@style/overlaySearchInputStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:elevation="15dp"
-        app:startIconDrawable="@drawable/search_icon"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/filter_button"
-        app:startIconTint="@color/cian5"
-        app:endIconTint="@color/cian5"
-        >
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/animals_list_search_panel_container"-->
+    <!--        style="@style/overlaySearchInputStyle"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        android:layout_marginStart="10dp"-->
+    <!--        android:layout_marginEnd="10dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:elevation="15dp"-->
+    <!--        app:startIconDrawable="@drawable/search_icon"-->
+    <!--        app:endIconMode="custom"-->
+    <!--        app:endIconDrawable="@drawable/filter_button"-->
+    <!--        app:startIconTint="@color/cian5"-->
+    <!--        app:endIconTint="@color/cian5"-->
+    <!--        >-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/animals_list_search_panel_input"
-            style="@style/changeEditTextPadding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <!--        <com.google.android.material.textfield.TextInputEditText-->
+    <!--            android:id="@+id/animals_list_search_panel_input"-->
+    <!--            style="@style/changeEditTextPadding"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"/>-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <HorizontalScrollView
+        android:id="@+id/animal_choice_scroll_chips"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/animal_choice_scroll_chips"
         android:background="@color/transparent"
-        app:layout_constraintEnd_toEndOf="@id/animals_list_search_panel_container"
-        app:layout_constraintStart_toStartOf="@id/animals_list_search_panel_container"
-        app:layout_constraintTop_toBottomOf="@id/animals_list_search_panel_container"
-        android:layout_marginTop="10dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/animal_choice_chips"
@@ -65,36 +64,35 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/animals_list_dog_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:checked="true"
-                app:rippleColor="@color/cian5"
-                app:chipStrokeColor="@color/grey3"
-                app:chipStrokeWidth="1dp"
-                app:chipBackgroundColor="@color/chip_background_color"
                 android:text="@string/dogs"
-                android:textColor="@color/cian5"
-                app:checkedIcon="@drawable/dog_for_chips"
+                android:textColor="@color/white"
+                app:checkedIcon="@drawable/pressed_dog_for_chips"
+                app:chipBackgroundColor="@color/chip_background_color"
+                app:chipStrokeColor="@color/transparent"
                 app:iconStartPadding="5dp"
-
+                android:elevation="5dp"
+                app:rippleColor="@color/cian5"
+                android:layout_marginStart="10dp"
                 />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/animals_list_cat_chip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:checked="true"
-                app:rippleColor="@color/cian5"
-                app:chipStrokeColor="@color/grey3"
-                app:chipStrokeWidth="1dp"
-                app:chipBackgroundColor="@color/chip_background_color"
                 android:text="@string/cats"
-                android:textColor="@color/cian5"
+                android:textColor="@color/white"
                 app:checkedIcon="@drawable/cat_for_chips"
+                app:chipBackgroundColor="@color/chip_background_color"
                 app:iconStartPadding="5dp"
-
+                android:elevation="5dp"
+                app:rippleColor="@color/cian5"
+                android:layout_marginEnd="10dp"
                 />
 
         </com.google.android.material.chip.ChipGroup>
@@ -105,17 +103,21 @@
         android:id="@+id/animals_list_found_animal_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Найдено 100 000 питомцев"
+        android:layout_marginStart="10dp"
         android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/animal_choice_scroll_chips"
-        app:layout_constraintStart_toStartOf="@id/animals_list_search_panel_container"
-        />
+        tools:text="Найдено 100 000 питомцев" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/animal_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="104dp"
         android:layoutAnimation="@anim/layout_animation"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -124,11 +126,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/animals_list_found_animal_count"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="60dp"/>
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

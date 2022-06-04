@@ -13,7 +13,8 @@
     <string name="animal_choice_text_in_current_city">КОГО ИЩЕМ в</string>
     <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
     <string name="logo_discription">Logo</string>
-    <string name="more">Еще ...</string>
+    <string name="more">Ещё</string>
+    <string name="bird_for_more">v</string>
     <string name="menu_button_description">It\'s menu button</string>
     <string name="animal_filter_button">It\'s a filter button</string>
     <string name="kennel_name">Приют \"%1$s\"</string>

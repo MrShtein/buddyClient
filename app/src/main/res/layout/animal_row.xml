@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardCornerRadius="8dp">
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,6 +42,7 @@
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
             android:button="@drawable/heart_checkbox"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_row_image" />
@@ -133,10 +134,21 @@
             android:text="@string/more"
             android:textColor="@color/blue1"
             android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_row_color" />
+
+        <TextView
+            android:id="@+id/animal_row_read_more_bird"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/bird_for_more"
+            android:textColor="@color/blue1"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/animal_row_read_more_text"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_read_more_text"
+            android:layout_marginStart="5dp"/>
 
         <androidx.legacy.widget.Space
             android:layout_width="wrap_content"
