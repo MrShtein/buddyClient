@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -111,7 +112,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
         initMaskForPhone(phoneNumberInput)
         setListeners()

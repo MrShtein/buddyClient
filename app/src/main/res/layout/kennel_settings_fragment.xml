@@ -14,7 +14,6 @@
             android:id="@+id/kennel_settings_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:text="@string/kennel_settings_label"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -41,11 +40,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_avatar_img"
+            app:layout_constraintEnd_toEndOf="@id/kennel_settings_avatar_img"
+            app:layout_constraintTop_toTopOf="@id/kennel_settings_avatar_img"
             app:layout_constraintBottom_toBottomOf="@id/kennel_settings_avatar_img"
             android:src="@drawable/photo_camera"
             android:backgroundTint="@color/transparent"
-            android:layout_marginStart="15dp"
-            android:layout_marginBottom="15dp"
             />
 
         <TextView
@@ -140,15 +139,25 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/kennel_settings_email_bottom_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="@id/kennel_settings_email_input_container"
+            app:layout_constraintEnd_toEndOf="@id/kennel_settings_email_input_container"
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_input_container"
+            android:layout_marginTop="15dp"/>
+
         <TextView
             android:id="@+id/kennel_settings_city_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:text="@string/kennel_settings_city_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_email_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_input_container" />
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_bottom_divider"
+            android:layout_marginTop="15dp"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/kennel_settings_city_input_container"
@@ -173,7 +182,7 @@
             android:id="@+id/kennel_settings_address_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="15dp"
             android:text="@string/kennel_settings_address_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_city_input_container"
@@ -235,22 +244,31 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/kennel_settings_email_building_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="@id/kennel_settings_email_input_container"
+            app:layout_constraintEnd_toEndOf="@id/kennel_settings_email_input_container"
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_building_input_container"
+            android:layout_marginTop="15dp"/>
+
         <TextView
             android:id="@+id/kennel_settings_identification_number_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:text="@string/kennel_settings_identification_number_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_street_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_building_input_container" />
+            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_building_divider"
+            android:layout_marginTop="15dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/kennel_settings_identification_number_input_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/textInputContainer"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_label"
@@ -269,20 +287,20 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/kennel_settings_save_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:backgroundTint="@color/cian4"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/cian5"
             android:elevation="4dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
             android:text="@string/settings_save_btn"
             android:textColor="@color/white"
+            android:textAllCaps="false"
             app:cornerRadius="5dp"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_identification_number_input_container"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_identification_number_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_input_container"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="104dp"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

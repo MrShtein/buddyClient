@@ -32,6 +32,7 @@ import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.showBadTokenDialog
 import mr.shtein.buddyandroidclient.utils.ImageLoader
@@ -158,7 +159,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(true)
-        setInsets(view)
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         animalForChange = arguments?.getParcelable(ANIMAL_KEY)
         isFromAnimalSettings = arguments
@@ -766,14 +767,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 Log.d(ERROR, errorMsg)
                 throw ServerErrorException(errorMsg)
             }
-        }
-    }
-
-    private fun setInsets(mainView: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(mainView) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, insets.top, 0, 0)
-            WindowInsetsCompat.CONSUMED
         }
     }
 }
