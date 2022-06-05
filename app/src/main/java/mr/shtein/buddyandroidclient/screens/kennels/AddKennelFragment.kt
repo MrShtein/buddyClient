@@ -102,12 +102,12 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 volunteersUnderscore.isVisible = false
                 kennelsUnderscore.isVisible = true
                 descriptionView.text = ""
+                val diffUtil = KennelDiffUtil(volunteersList, kennelsList)
+                val diffResult = DiffUtil.calculateDiff(diffUtil)
+                kennelAdapter.kennels = kennelsList
+                diffResult.dispatchUpdatesTo(kennelAdapter)
+                if (kennelsList.size == 0) showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
             }
-            val diffUtil = KennelDiffUtil(volunteersList, kennelsList)
-            val diffResult = DiffUtil.calculateDiff(diffUtil)
-            kennelAdapter.kennels = kennelsList
-            diffResult.dispatchUpdatesTo(kennelAdapter)
-            if (kennelsList.size == 0) showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
         }
 
         volunteersBtn.setOnClickListener {
@@ -116,13 +116,13 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 kennelsUnderscore.isVisible = false
                 volunteersUnderscore.isVisible = true
                 descriptionView.text = ""
+                val diffUtil = KennelDiffUtil(kennelsList, volunteersList)
+                val diffResult = DiffUtil.calculateDiff(diffUtil)
+                kennelAdapter.kennels = volunteersList
+                diffResult.dispatchUpdatesTo(kennelAdapter)
+                if (volunteersList.size == 0)
+                    showDescriptionText(R.string.add_kennel_fragment_empty_volunteers_text)
             }
-            val diffUtil = KennelDiffUtil(kennelsList, volunteersList)
-            val diffResult = DiffUtil.calculateDiff(diffUtil)
-            kennelAdapter.kennels = volunteersList
-            diffResult.dispatchUpdatesTo(kennelAdapter)
-            if (volunteersList.size == 0)
-                showDescriptionText(R.string.add_kennel_fragment_empty_volunteers_text)
         }
 
         addKennelBtn.setOnClickListener {
