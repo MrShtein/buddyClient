@@ -45,6 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:visibility="invisible"
             android:contentDescription="@string/kennel_settings_btn_description" />
 
         <View
@@ -55,15 +56,17 @@
             app:layout_constraintEnd_toEndOf="@id/kennel_home_person_avatar"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_settings_btn"
             android:layout_marginTop="20dp"
-            android:background="@color/grey2"/>
+            android:background="@color/grey2"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/kennel_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/kennel_home_after_settings_divider"
-            app:layout_constraintTop_toBottomOf="@id/kennel_home_after_settings_divider"
+            app:layout_constraintTop_toBottomOf="@id/kennel_home_person_avatar"
             android:layout_marginTop="20dp"
+            android:textSize="20sp"
             tools:text="Папа Крот"
             android:textColor="@color/black"
             />
@@ -83,7 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="576 волонтеров"
-            android:textSize="11sp"
             app:layout_constraintTop_toTopOf="@id/kennel_home_volunteers_icon"
             app:layout_constraintBottom_toBottomOf="@id/kennel_home_volunteers_icon"
             app:layout_constraintStart_toEndOf="@id/kennel_home_volunteers_icon"
@@ -105,7 +107,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1204 животных"
-            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@id/kennel_home_animals_icon"
             app:layout_constraintTop_toTopOf="@id/kennel_home_animals_icon"
             app:layout_constraintBottom_toBottomOf="@id/kennel_home_animals_icon"
@@ -128,7 +129,7 @@
             android:layout_height="wrap_content"
             android:text="@string/dogs"
             android:textColor="@color/black"
-            android:textSize="11sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_animals_icon"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_after_kennel_info_divider"
             android:layout_marginTop="10dp"/>
@@ -138,7 +139,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="237 питомцев"
-            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_dogs_label"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_dogs_label"
             android:layout_marginTop="5dp"/>
@@ -173,10 +173,9 @@
             android:layout_height="wrap_content"
             android:text="@string/cats"
             android:textColor="@color/black"
-            android:textSize="11sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_dogs_label"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_dog_carousel"
-            android:layout_marginTop="10dp"
             />
 
         <TextView
@@ -184,7 +183,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="118 питомцев"
-            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_cats_label"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_cats_label"
             android:layout_marginTop="5dp"/>
@@ -212,7 +210,7 @@
             app:layout_constraintTop_toBottomOf="@id/kennel_home_cats_amount"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="154dp"
             android:visibility="gone"/>
 
 
