@@ -53,6 +53,13 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         return sharedPref.getBoolean(prefName, pref)
     }
 
+    fun cleanAllData() {
+        sharedPref
+            .edit()
+            .clear()
+            .apply()
+    }
+
     companion object {
         const val USER_VOLUNTEERS_KEY = "user_volunteers"
         const val USER_KENNELS_KEY = "user_kennels"

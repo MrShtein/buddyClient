@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
@@ -19,11 +20,13 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private var personName: TextView? = null
     private var personStatus: TextView? = null
     private var personSettingsBtn: ImageButton? = null
+    private lateinit var exitBtn: MaterialButton
+    private lateinit var storage: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var storage: SharedPreferences =  SharedPreferences(requireContext(),
+        storage = SharedPreferences(requireContext(),
             SharedPreferences.PERSISTENT_STORAGE_NAME)
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
@@ -34,6 +37,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     }
 
     private fun initViews(view: View) {
+        exitBtn = view.findViewById(R.id.user_profile_exit_btn)
         personAvatarImg = view.findViewById(R.id.profile_avatar_img)
         personName = view.findViewById(R.id.profile_name_text)
         personStatus = view.findViewById(R.id.profile_status_text)
@@ -43,6 +47,12 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private fun setListeners() {
         personSettingsBtn?.setOnClickListener {
             findNavController().navigate(R.id.userProfileFragment_to_userSettingsFragment)
+        }
+        exitBtn.setOnClickListener {
+            val city = storage.readString(SharedPreferences.USER_CITY_KEY, "")
+            storage.cleanAllData()
+            storage.writeString(SharedPreferences.USER_CITY_KEY, city)
+            findNavController().popBackStack()
         }
     }
 
