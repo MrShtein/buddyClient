@@ -3,10 +3,13 @@ package mr.shtein.buddyandroidclient.screens.profile
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -38,6 +41,7 @@ import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -91,6 +95,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var avatarImg: ShapeableImageView
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
+    private var isTextChange = false
 
     private var motionLayout: MotionLayout? = null
 
@@ -123,7 +128,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
         setUserCurrentUserSettings()
         setListeners()
@@ -190,6 +195,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         phoneNumber.setText(storage.readString(SharedPreferences.USER_PHONE_NUMBER_KEY, ""))
         email.setText(storage.readString(SharedPreferences.USER_LOGIN_KEY, ""))
         personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+        if (!isTextChange) {
+            saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
+        }
 
         setImageToAvatar()
     }
@@ -222,6 +230,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun setListeners() {
+        val textWatcher = getTextWatcher()
+        userName.addTextChangedListener(textWatcher)
+        userSurname.addTextChangedListener(textWatcher)
+
+        maleRadioBtn.setOnClickListener {
+                isTextChange = true
+                changeSaveBtnColor(isTextChange)
+        }
+
+        femaleRadioBtn.setOnClickListener {
+                isTextChange = true
+                changeSaveBtnColor(isTextChange)
+        }
 
         cityContainer.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -233,45 +254,47 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 )
             }
         })
+        city.addTextChangedListener(textWatcher)
+        city.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused) {
+                findNavController().navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
+            }
+        }
 
+        phoneNumber.addTextChangedListener(textWatcher)
+
+        email.addTextChangedListener(textWatcher)
+        email.setOnFocusChangeListener { _, _ ->
+            emailContainer.isErrorEnabled = false
+        }
+        email.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == 67) emailContainer.isErrorEnabled = false
+            false
+        }
+
+        oldPwd.setOnFocusChangeListener { _, _ ->
+            oldPwdContainer.isErrorEnabled = false
+        }
+        oldPwd.addTextChangedListener(textWatcher)
+
+        newPwd.setOnFocusChangeListener { _, _ ->
+            newPwdContainer.isErrorEnabled = false
+        }
+        newPwd.addTextChangedListener(textWatcher)
+
+        repeatedNewPwd.setOnFocusChangeListener { _, _ ->
+            repeatedNewPwdContainer.isErrorEnabled = false
+        }
+        repeatedNewPwd.addTextChangedListener(textWatcher)
 
         saveBtn.setOnClickListener {
             saveBtn.isCheckable = false
             createAndShowDialog()
             saveBtn.isCheckable = true
         }
-
         avatarImg.setOnClickListener {
             val type = "image/*"
             resultLauncher.launch(type)
-        }
-
-        oldPwd.setOnFocusChangeListener { _, _ ->
-            oldPwdContainer.isErrorEnabled = false
-        }
-
-        newPwd.setOnFocusChangeListener { _, _ ->
-            newPwdContainer.isErrorEnabled = false
-        }
-
-        repeatedNewPwd.setOnFocusChangeListener { _, _ ->
-            repeatedNewPwdContainer.isErrorEnabled = false
-        }
-
-        email.setOnFocusChangeListener { _, _ ->
-            emailContainer.isErrorEnabled = false
-        }
-
-        email.setOnKeyListener { _, keyCode, _ ->
-            if (keyCode == 67) emailContainer.isErrorEnabled = false
-            false
-        }
-
-        city.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused) {
-                findNavController().navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
-            }
-
         }
     }
 
@@ -458,10 +481,10 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun setImageToAvatar() {
         val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
-        if (imageUri == "") {
-            avatarImg.setImageResource(R.drawable.photo_hint)
-        } else {
+        if (imageUri !== "") {
             avatarImg.setImageURI(Uri.parse(imageUri))
+            avatarImg.scaleType = ImageView.ScaleType.CENTER_CROP
+            avatarImg.background = null
         }
     }
 
@@ -470,6 +493,38 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val fileStream = requireContext().contentResolver.openInputStream(uri)
         if (fileStream != null) {
             file.writeBytes(fileStream.readBytes())
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isTextChange = false
+    }
+
+    private fun getTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (!isTextChange) {
+                    isTextChange = true
+                    changeSaveBtnColor(isTextChange)
+                }
+            }
+        }
+    }
+
+    private fun changeSaveBtnColor(isTextChange: Boolean) {
+        if (isTextChange) {
+            saveBtn.setBackgroundColor(requireContext().getColor(R.color.cian5))
+        } else {
+            saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
         }
     }
 
