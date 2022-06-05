@@ -6,12 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -114,6 +115,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private var animalBreeds: List<Breed> = mutableListOf()
     private var animalColors: List<AnimalCharacteristic> = listOf()
     private var deletedImage: ImageContainer? = null
+    private var isInsetsWorked = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,6 +157,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setStatusBarColor(true)
+        setInsets(view)
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         animalForChange = arguments?.getParcelable(ANIMAL_KEY)
         isFromAnimalSettings = arguments
@@ -642,6 +646,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             spinner?.isVisible = false
                             dialog.dismiss()
                             val updatedAnimal = result.body()
+                            isInsetsWorked = false
                             findNavController()
                                 .navigate(
                                     R.id.action_addAnimalFragment_to_animalSettingsFragment,
@@ -651,6 +656,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                         201 -> {
                             spinner?.isVisible = false
                             dialog.dismiss()
+                            isInsetsWorked = false
                             findNavController().popBackStack()
                         }
                         403 -> {
@@ -761,45 +767,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 throw ServerErrorException(errorMsg)
             }
         }
-
-
     }
 
+    private fun setInsets(mainView: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(mainView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, 0)
+            WindowInsetsCompat.CONSUMED
+        }
+    }
 }
-
-//TODO Сделать edge-to-edge fragment
-//    @RequiresApi(Build.VERSION_CODES.R)
-//    private fun addAnimationWhenKeyboardAppear(view: View): WindowInsetsAnimation.Callback {
-//        var startBottom = 0
-//        var endBottom = 0
-///home/mrshtein/Projects/AndroidStudioProjects/Tests/app/src/main/res/layout
-//        return object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
-//            override fun onPrepare(animation: WindowInsetsAnimation) {
-//                startBottom = view.bottom
-//            }
-//
-//            override fun onStart(
-//                animation: WindowInsetsAnimation,
-//                bounds: WindowInsetsAnimation.Bounds
-//            ): WindowInsetsAnimation.Bounds {
-//
-//                return bounds
-//            }
-//
-//            override fun onProgress(
-//                insets: WindowInsets,
-//                p1: MutableList<WindowInsetsAnimation>
-//            ): WindowInsets {
-//
-//                Log.d("insets", "scrollPosition - ${scroll.scrollY}")
-//                return insets
-//
-//            }
-//
-//            override fun onEnd(animation: WindowInsetsAnimation) {
-//                super.onEnd(animation)
-//            }
-//
-//        }
-//    }
 

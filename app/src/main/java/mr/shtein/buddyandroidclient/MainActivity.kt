@@ -43,3 +43,5 @@ fun Fragment.setStatusBarColor(isBlack: Boolean) {
     windowInsetsController!!.isAppearanceLightStatusBars = isBlack
 }
 
+
+

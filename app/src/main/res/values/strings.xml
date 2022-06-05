@@ -144,7 +144,7 @@
     <string name="animal_gender_label_text">Пол:</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
-    <string name="add_animal_description_label_text">Описание</string>
+    <string name="add_animal_description_label_text">Описание:</string>
     <string name="add_animal_add_btn_text">Сохранить питомца</string>
     <string name="add_animal_years_text">Лет</string>
     <string name="add_animal_moths_text">Мес</string>

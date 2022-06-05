@@ -479,6 +479,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nickname_text"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
             android:layout_marginTop="10dp"/>
@@ -510,6 +511,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_breed_label"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_name_label"
             app:layout_constraintTop_toBottomOf="@id/add_animal_name_container"
             android:layout_marginTop="15dp"/>
@@ -545,6 +547,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_color_label"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_breed_label"
             app:layout_constraintTop_toBottomOf="@id/add_animal_breed_container"
             android:layout_marginTop="15dp"/>
@@ -573,13 +576,24 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <View
+            android:id="@+id/add_animal_bottom_color_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_color_container" />
+
         <TextView
             android:id="@+id/add_animal_genre_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_gender_label_text"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_slider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_color_container"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_color_divider"
             android:layout_marginTop="15dp"/>
 
         <RadioGroup
@@ -615,13 +629,24 @@
                 android:paddingBottom="1dp"/>
         </RadioGroup>
 
+        <View
+            android:id="@+id/add_animal_bottom_gender_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/grey2"
+            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group" />
+
         <TextView
             android:id="@+id/add_animal_description_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_animal_description_label_text"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_color_container"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_gender_divider"
             android:layout_marginTop="15dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -650,7 +675,7 @@
         <Button
             android:id="@+id/add_animal_add_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="@string/add_animal_add_btn_text"
             android:textAllCaps="false"
             android:textSize="16sp"
@@ -659,9 +684,8 @@
             app:layout_constraintTop_toBottomOf="@id/add_animal_description_container"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="75dp"
+            android:layout_marginBottom="134dp"
             android:backgroundTint="@color/cian5"
-            android:padding="20dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
