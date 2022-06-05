@@ -12,7 +12,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/animal_settings_photo_container"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,15 +23,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1/1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/white"
             android:background="@drawable/big_animal_photo_count_background"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintStart_toStartOf="@id/animal_settings_photo_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_settings_photo_container"
             app:layout_constraintBottom_toBottomOf="@id/animal_settings_photo_container"
             android:layout_marginBottom="20dp"/>
 
@@ -229,7 +228,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_settings_delete_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="@string/delete_btn_text"
             android:textColor="@color/choice_color"
             android:textAllCaps="false"
@@ -241,14 +240,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="25dp"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="134dp"
             android:contentDescription="@string/animal_settings_delete_btn_description"
             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_settings_change_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="@string/change_btn_text"
             android:textColor="@color/cian5"
             android:textAllCaps="false"
@@ -260,7 +259,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="134dp"
             android:contentDescription="@string/animal_settings_change_btn_description"
            />
 

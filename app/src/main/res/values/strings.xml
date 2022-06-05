@@ -138,10 +138,10 @@
     <string name="animal_age_label">Возраст:</string>
     <string name="year">Год</string>
     <string name="month">Месяц</string>
-    <string name="nickname_text">Кличка</string>
+    <string name="nickname_text">Кличка:</string>
     <string name="animal_breed_label">Порода:</string>
     <string name="animal_color_label">Цвет:</string>
-    <string name="animal_gender_label_text">Пол</string>
+    <string name="animal_gender_label_text">Пол:</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
     <string name="add_animal_description_label_text">Описание</string>
