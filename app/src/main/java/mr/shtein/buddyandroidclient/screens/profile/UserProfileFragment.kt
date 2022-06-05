@@ -72,7 +72,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private fun setImageToAvatar(storage: SharedPreferences) {
         val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
         if (imageUri == "") {
-            personAvatarImg?.setImageResource(R.drawable.photo_hint)
+            personAvatarImg?.setImageResource(R.drawable.user_photo_placeholder)
         } else {
             personAvatarImg?.setImageURI(Uri.parse(imageUri))
         }
