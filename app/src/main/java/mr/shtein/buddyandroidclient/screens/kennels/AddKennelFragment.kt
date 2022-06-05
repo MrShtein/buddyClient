@@ -22,6 +22,8 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
+import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
@@ -52,7 +54,8 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.let {
-            setInsetsListener(it)
+            setStatusBarColor(true)
+            setInsetsListenerForPadding(it, left = false, top = true, right = false, bottom = false)
             initViews(it)
             setListeners(it)
         }
@@ -69,15 +72,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             if (kennelsList.size == 0) {
                 showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
             }
-        }
-    }
-
-    private fun setInsetsListener(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, insets.top, 0, 0)
-
-            WindowInsetsCompat.CONSUMED
         }
     }
 
