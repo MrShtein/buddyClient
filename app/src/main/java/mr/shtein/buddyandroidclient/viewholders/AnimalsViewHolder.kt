@@ -46,7 +46,7 @@ class AnimalsViewHolder(
         val currentContext: Context = animalName.context
         this.animalName.text = animal.name
         this.gender.text = currentContext.getString(R.string.animal_gender, animal.gender)
-        this.age.text = currentContext.getString(R.string.animal_age, makeAgeString(animal.age))
+        this.age.text = currentContext.getString(R.string.animal_age, animal.getAge())
         this.breed.text = currentContext.getString(R.string.animal_breed, animal.breed)
         this.animalColor.text =
             currentContext.getString(R.string.animal_color, animal.characteristics["color"])
@@ -96,16 +96,6 @@ class AnimalsViewHolder(
 
     override fun onClick(v: View?) {
         onAnimalCardClickListener.onAnimalCardClick(animal)
-    }
-
-    private fun makeAgeString(age: Int): String {
-        return if (age == 1 || age == 21 || age == 31 || age == 41) {
-            "$age год"
-        } else if (age in 2..4 || age in 22..24 || age in 32..34 || age in 42..44) {
-            "$age года"
-        } else {
-            "$age лет"
-        }
     }
 
     private fun setPrimaryPhoto(animal: Animal) {
