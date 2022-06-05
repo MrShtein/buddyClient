@@ -8,6 +8,8 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
+import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 
@@ -23,7 +25,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
         var storage: SharedPreferences =  SharedPreferences(requireContext(),
             SharedPreferences.PERSISTENT_STORAGE_NAME)
-
+        setStatusBarColor(true)
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
         setImageToAvatar(storage)
         setTextToViews()
