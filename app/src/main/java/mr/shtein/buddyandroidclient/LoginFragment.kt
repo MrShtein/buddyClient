@@ -46,7 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val emailInput: TextInputEditText = view.findViewById(R.id.login_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.login_password_input)
         val button: Button = view.findViewById(R.id.login_button)
-        val user = Person("", "", "")
+        val user = Person("", "", "", "")
 
         button.setOnClickListener {
 
@@ -67,6 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         if (loginResponse?.error == "") {
                             val loginInfo: LoginInfo = loginResponse.loginInfo
 
+                            sharedPropertyStore.writeString(SharedPreferences.USER_CITY_KEY, loginInfo.cityInfo)
                             sharedPropertyStore.writeString(SharedPreferences.TOKEN_KEY, "Bearer ${loginInfo.token}")
                             sharedPropertyStore.writeLong(SharedPreferences.USER_ID_KEY, loginInfo.id)
                             sharedPropertyStore.writeString(SharedPreferences.USER_LOGIN_KEY, loginInfo.login)

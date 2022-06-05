@@ -26,6 +26,7 @@ import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
+import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +39,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private var isRegistered: Boolean = false
     private lateinit var callbackForEmail: MailCallback
     private lateinit var fullEmailValidator: FullEmailValidator
+    private lateinit var storage: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
 
         val nameInputContainer: TextInputLayout =
             view.findViewById(R.id.registration_name_input_container)
@@ -133,11 +137,13 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                         val endAnimValue: Int =
                             activity?.getColor(R.color.black_with_transparency_50) ?: 0
                         animateFrame(startAnimValue, endAnimValue, frame)
+                        val cityInfo = storage.readString(SharedPreferences.USER_CITY_KEY, "")
                         val newUser =
                             Person(
                                 emailInput.text.toString(),
                                 passwordInput.text.toString(),
-                                nameInput.text.toString()
+                                nameInput.text.toString(),
+                                cityInfo
                             )
                         val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
                         progressBar.visibility = View.VISIBLE

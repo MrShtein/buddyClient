@@ -14,6 +14,9 @@
             android:id="@+id/userProfileFragment_to_userSettingsFragment"
             app:destination="@id/userSettingsFragment"
             />
+        <action
+            android:id="@+id/action_userProfileFragment2_to_cityChoiceFragmentForUserSettings"
+            app:destination="@id/cityChoiceFragmentForUserSettings" />
     </fragment>
     <fragment
         android:id="@+id/userSettingsFragment"

@@ -49,10 +49,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             findNavController().navigate(R.id.userProfileFragment_to_userSettingsFragment)
         }
         exitBtn.setOnClickListener {
-            val city = storage.readString(SharedPreferences.USER_CITY_KEY, "")
             storage.cleanAllData()
-            storage.writeString(SharedPreferences.USER_CITY_KEY, city)
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_userProfileFragment2_to_cityChoiceFragmentForUserSettings)
         }
     }
 
