@@ -77,7 +77,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             sharedPropertyStore.writeString(SharedPreferences.USER_PHONE_NUMBER_KEY, loginInfo.phone)
                             sharedPropertyStore.writeString(SharedPreferences.USER_GENDER_KEY, loginInfo.gender)
 
-                        findNavController().navigate(R.id.action_loginFragment_to_bottomNavFragment)
+                        findNavController().popBackStack(R.id.bottomNavFragment, false)
                         } else {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setMessage("Вы ввели неправильный логин или пароль")
