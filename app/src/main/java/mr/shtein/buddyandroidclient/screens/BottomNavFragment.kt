@@ -13,16 +13,30 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
 
+    private lateinit var bottomNav: BottomNavigationView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val navHostFragment = childFragmentManager
             .findFragmentById(R.id.bottom_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val bottomNav: BottomNavigationView = view.findViewById(R.id.bottom_nav_view)
+
+        bottomNav = view.findViewById(R.id.bottom_nav_view)
 
 
         bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            run {
+                when (destination.id) {
+                    R.id.addKennelFragment -> showBottomNav()
+                    R.id.userProfileFragment2 -> showBottomNav()
+                    R.id.animalsListFragment -> showBottomNav()
+                    else -> hideBottomNav()
+                }
+            }
+        }
 
         bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
             val sharedPreferenceStore =
@@ -31,7 +45,7 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
             if (token == "") {
                 BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, this)
             } else {
-               NavigationUI.onNavDestinationSelected(it, navController)
+                NavigationUI.onNavDestinationSelected(it, navController)
             }
             true
         }
@@ -49,9 +63,13 @@ class BottomNavFragment : Fragment(R.layout.bottom_nav_fragment) {
         }
     }
 
+    private fun hideBottomNav() {
+        bottomNav.visibility = View.GONE
+    }
 
-
-
+    private fun showBottomNav() {
+        bottomNav.visibility = View.VISIBLE
+    }
 
 
 }
