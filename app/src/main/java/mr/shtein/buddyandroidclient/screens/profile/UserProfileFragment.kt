@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
@@ -22,6 +23,12 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private var personSettingsBtn: ImageButton? = null
     private lateinit var exitBtn: MaterialButton
     private lateinit var storage: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

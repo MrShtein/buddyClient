@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
@@ -62,6 +63,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
         setFragmentResultListener(RESULT_LISTENER_KEY) { _, bundle ->
             val messageAboutSomeChange = bundle.getString(RESULT_LISTENER_BUNDLE_KEY)
             Toast.makeText(context, messageAboutSomeChange, Toast.LENGTH_LONG).show()

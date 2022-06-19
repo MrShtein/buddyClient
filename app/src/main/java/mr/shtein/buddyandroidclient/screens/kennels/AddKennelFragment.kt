@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
@@ -46,6 +47,12 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var kennelsList = mutableListOf<KennelPreview>()
     private var isReadyKennelsList = false
     private var volunteersList = mutableListOf<KennelPreview>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
