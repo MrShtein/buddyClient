@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,9 +14,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
@@ -40,7 +37,6 @@ import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.Response
 
 
 private const val IMAGE_TYPE = "image/*"
@@ -404,13 +400,13 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private fun setAnimalsColorsToAdapter() {
         val adapter =
-            ArrayAdapter(requireContext(), R.layout.animal_type_or_breed_row, animalColors)
+            ArrayAdapter(requireContext(), R.layout.one_string_row, animalColors)
         animalColorInput.setAdapter(adapter)
     }
 
     private fun setAnimalsBreedToAdapter() {
         val adapter =
-            ArrayAdapter(requireContext(), R.layout.animal_type_or_breed_row, animalBreeds)
+            ArrayAdapter(requireContext(), R.layout.one_string_row, animalBreeds)
         animalBreedsInput.setAdapter(adapter)
     }
 

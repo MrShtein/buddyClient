@@ -22,11 +22,13 @@
         app:startIconDrawable="@drawable/search_icon"
         app:startIconTint="@color/cian5">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
             android:id="@+id/input_text_for_city_choice"
-            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:completionThreshold="1"
+            android:theme="@style/cursorColorForInputs"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

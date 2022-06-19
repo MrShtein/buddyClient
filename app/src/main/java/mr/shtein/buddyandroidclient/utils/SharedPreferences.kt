@@ -77,5 +77,7 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         const val USER_CITY_KEY = "user_city"
         const val USER_AVATAR_URI_KEY = "user_avatar_uri"
         const val KENNEL_AVATAR_URI_KEY = "kennel_avatar_uri"
+        const val DATABASE_VERSION = "database_version"
+        const val DATABASE_NAME = "database_name"
     }
 }
