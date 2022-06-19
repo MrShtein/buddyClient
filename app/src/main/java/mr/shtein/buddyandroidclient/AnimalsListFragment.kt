@@ -34,6 +34,7 @@ import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
 
@@ -135,6 +136,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         coroutine.launch {
             try {
                 showAnimals()
+            } catch (ex: ConnectException) {
+                val exText = getString(R.string.socket_timeout_exception_text)
+                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
                 val exText = getString(R.string.socket_timeout_exception_text)
                 Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
