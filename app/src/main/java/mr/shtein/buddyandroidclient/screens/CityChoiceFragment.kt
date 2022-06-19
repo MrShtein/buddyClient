@@ -55,6 +55,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private fun initViews(view: View) {
         cityInputText = view.findViewById(R.id.input_text_for_city_choice)
         cityInputContainer = view.findViewById(R.id.input_text_for_city_choice_container)
+        textHint = view.findViewById(R.id.city_choice_description_text)
     }
 
     private fun setListeners() {
