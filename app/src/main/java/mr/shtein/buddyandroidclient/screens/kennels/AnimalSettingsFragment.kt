@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.google.android.material.button.MaterialButton
@@ -33,6 +34,8 @@ private const val RESULT_LISTENER_KEY = "result_key"
 private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 private const val DELETE_ANIMAL_MSG = "Питомец успешно удален"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
+private const val FROM_ADD_ANIMAL_REQUEST_KEY = "key_from_add_animal"
+private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 
 class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     OnSnapPositionChangeListener {
@@ -53,6 +56,11 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setFragmentResultListener(RESULT_LISTENER_KEY) { requestKey, bundle ->
+            animal = bundle.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT)
+        }
+
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)

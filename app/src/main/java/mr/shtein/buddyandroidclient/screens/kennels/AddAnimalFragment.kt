@@ -14,6 +14,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
@@ -55,9 +56,10 @@ private const val FILE_NOT_FOUND_EXCEPTION_MSG = "К сожалению, фай�
 private const val COLOR_CHARACTERISTIC_ID = 1
 private const val PART_NAME_FOR_FILES = "files"
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
-private const val ANIMAL_KEY = "animal_key"
+private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 private const val ERROR = "error"
+private const val FROM_ADD_ANIMAL_REQUEST_KEY = "key_from_add_animal"
 
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
@@ -163,7 +165,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        animalForChange = arguments?.getParcelable(ANIMAL_KEY)
+        animalForChange = arguments?.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT)
         isFromAnimalSettings = arguments
             ?.getBoolean(FROM_SETTINGS_FRAGMENT_KEY, false) ?: false
 
@@ -648,13 +650,11 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                         200 -> {
                             spinner?.isVisible = false
                             dialog.dismiss()
-                            val updatedAnimal = result.body()
+                            val updatedAnimal = result.body() as Animal
                             isInsetsWorked = false
-                            findNavController()
-                                .navigate(
-                                    R.id.action_addAnimalFragment_to_animalSettingsFragment,
-                                    bundleOf(ANIMAL_KEY to updatedAnimal)
-                                )
+                            val bundle = Bundle()
+                            bundle.putParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT, updatedAnimal)
+                            setFragmentResult(FROM_ADD_ANIMAL_REQUEST_KEY, bundle)
                         }
                         201 -> {
                             spinner?.isVisible = false

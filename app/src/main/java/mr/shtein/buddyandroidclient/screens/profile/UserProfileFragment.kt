@@ -53,11 +53,11 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
     private fun setListeners() {
         personSettingsBtn?.setOnClickListener {
-            findNavController().navigate(R.id.userProfileFragment_to_userSettingsFragment)
+            findNavController().navigate(R.id.action_userProfileFragment_to_userSettingsFragment)
         }
         exitBtn.setOnClickListener {
             storage.cleanAllData()
-            findNavController().navigate(R.id.action_userProfileFragment2_to_cityChoiceFragmentForUserSettings)
+            findNavController().navigate(R.id.action_userProfileFragment_to_cityChoiceFragment)
         }
     }
 

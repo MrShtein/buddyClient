@@ -160,7 +160,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             if (hasFocus) {
                 if (cityInputContainer.isErrorEnabled) cityInputContainer.isErrorEnabled = false
                 cityInput.inputType = InputType.TYPE_NULL
-                findNavController().navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment2)
+                findNavController().navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment)
             }
         }
 

@@ -1,8 +1,10 @@
 package mr.shtein.buddyandroidclient
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -12,10 +14,24 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
+private const val USER_PROFILE_LABEL = "UserProfileFragment"
+private const val ANIMAL_LIST_LABEL = "animals_list_fragment"
+private const val ADD_KENNEL_LABEL = "AddKennelFragment"
+
+
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +39,85 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
         }
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.main_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        bottomNav = findViewById(R.id.bottom_nav_view)
+
+
+        bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            run {
+                when (destination.id) {
+                    R.id.addKennelFragment -> showBottomNav()
+                    R.id.userProfileFragment -> showBottomNav()
+                    R.id.animalsListFragment -> showBottomNav()
+                    else -> hideBottomNav()
+                }
+            }
+        }
+
+        bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
+            val sharedPreferenceStore =
+                SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
+            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+            if (token == "") {
+                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
+            } else {
+                when (navController.currentBackStackEntry?.destination?.label) {
+                    ANIMAL_LIST_LABEL -> navController.navigate(
+                        R.id.action_animalsListFragment_to_userProfileFragment
+                    )
+                    ADD_KENNEL_LABEL -> navController.navigate(
+                        R.id.action_addKennelFragment_to_userProfileFragment
+                    )
+                }
+
+            }
+            true
+        }
+
+        bottomNav.menu.findItem(R.id.kennel_graph).setOnMenuItemClickListener {
+            val sharedPreferenceStore =
+                SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
+            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+            if (token == "") {
+                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
+            } else {
+                when (navController.currentBackStackEntry?.destination?.label) {
+                    ANIMAL_LIST_LABEL -> navController.navigate(
+                        R.id.action_animalsListFragment_to_addKennelFragment
+                    )
+                    USER_PROFILE_LABEL  -> navController.navigate(
+                        R.id.action_userProfileFragment_to_addKennelFragment
+                    )
+                }
+            }
+            true
+        }
+
+        bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
+            when (navController.currentBackStackEntry?.destination?.label) {
+                ADD_KENNEL_LABEL -> navController.navigate(
+                    R.id.action_addKennelFragment_to_animalsListFragment
+                )
+                USER_PROFILE_LABEL  -> navController.navigate(
+                    R.id.action_userProfileFragment_to_animalsListFragment
+                )
+            }
+            true
+        }
+    }
+
+    private fun hideBottomNav() {
+        bottomNav.visibility = View.GONE
+    }
+
+    private fun showBottomNav() {
+        bottomNav.visibility = View.VISIBLE
     }
 }
 
@@ -47,7 +142,13 @@ fun Fragment.setStatusBarColor(isBlack: Boolean) {
     windowInsetsController!!.isAppearanceLightStatusBars = isBlack
 }
 
-fun Fragment.setInsetsListenerForPadding(view: View, left: Boolean, top: Boolean, right: Boolean, bottom: Boolean) {
+fun Fragment.setInsetsListenerForPadding(
+    view: View,
+    left: Boolean,
+    top: Boolean,
+    right: Boolean,
+    bottom: Boolean
+) {
     ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
         var leftInt = 0
@@ -65,6 +166,9 @@ fun Fragment.setInsetsListenerForPadding(view: View, left: Boolean, top: Boolean
         WindowInsetsCompat.CONSUMED
     }
 }
+
+val FragmentManager.currentNavigationFragment: Fragment?
+    get() = primaryNavigationFragment?.childFragmentManager?.fragments?.first()
 
 
 

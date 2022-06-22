@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.SplashScreenFragment"
+        android:label="StartFragment"
+        tools:layout="@layout/start_fragment">
+        <action
+            android:id="@+id/action_startFragment_to_cityChoiceFragment"
+            app:destination="@id/cityChoiceFragment"
+            />
+        <action
+            android:id="@+id/action_startFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <argument
+        android:name="ShowBottomBar"
+        android:defaultValue="false"/>
+    <fragment
+        android:id="@+id/cityChoiceFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.CityChoiceFragment"
+        android:label="city_choice_fragment"
+        tools:layout="@layout/city_choice_fragment" >
+        <action
+            android:id="@+id/action_cityChoiceFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="mr.shtein.buddyandroidclient.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegistrationFragment"
+        android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
+        android:label="UserRegistrationFragment"
+        tools:layout="@layout/user_registration_fragment">
+        <action
+            android:id="@+id/action_userRegistrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.profile.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/user_profile_fragment">
+        <action
+            android:id="@+id/action_userProfileFragment_to_userRegistrationFragment"
+            app:destination="@id/userRegistrationFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userSettingsFragment"
+            app:destination="@id/userSettingsFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment"
+            app:popUpTo="@id/animalsListFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_cityChoiceFragment"
+            app:destination="@id/cityChoiceFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_addKennelFragment"
+            app:destination="@id/addKennelFragment"
+            app:popUpTo="@id/animalsListFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/animalsListFragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
+        android:label="animals_list_fragment"
+        tools:layout="@layout/animals_list_fragment" >
+        <action
+            android:id="@+id/action_animalsListFragment_to_userRegistrationFragment"
+            app:destination="@id/userRegistrationFragment" />
+        <action
+            android:id="@+id/action_animalsListFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_animalsListFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            />
+        <action
+            android:id="@+id/action_animalsListFragment_to_animalsCardFragment"
+            app:destination="@id/animalsCardFragment" />
+        <action
+            android:id="@+id/action_animalsListFragment_to_addKennelFragment"
+            app:destination="@id/addKennelFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment"
+        android:label="UserSettingsFragment"
+        tools:layout="@layout/user_settings_fragment">
+        <action
+            android:id="@+id/action_userSettingsFragment_to_cityChoiceFragment"
+            app:destination="@id/cityChoiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalsCardFragment"
+        android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
+        android:label="AnimalsCardFragment"
+        tools:layout="@layout/animal_card_fragment"/>
+    <fragment
+        android:id="@+id/addKennelFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddKennelFragment"
+        android:label="AddKennelFragment"
+        tools:layout="@layout/add_kennel_fragment">
+        <action
+            android:id="@+id/action_addKennelFragment_to_userRegistrationFragment"
+            app:destination="@id/userRegistrationFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_kennelSettingsFragment"
+            app:destination="@id/kennelSettingsFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment"
+            app:popUpTo="@id/animalsListFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_addKennelFragment_to_kennelHomeFragment"
+            app:destination="@id/kennelHomeFragment" />
+        <action
+            android:id="@+id/action_addKennelFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:popUpTo="@id/animalsListFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/kennelSettingsFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelSettingsFragment"
+        android:label="KennelSettingsFragment"
+        tools:layout="@layout/kennel_settings_fragment">
+        <action
+            android:id="@+id/action_kennelSettingsFragment_to_kennelConfirmFragment"
+            app:destination="@id/kennelConfirmFragment" />
+        <action
+            android:id="@+id/action_kennelSettingsFragment_to_cityChoiceFragment"
+            app:destination="@id/cityChoiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/kennelConfirmFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelConfirmFragment"
+        android:label="KennelConfirmFragment"
+        tools:layout="@layout/kennel_confirm_fragment">
+        <action
+            android:id="@+id/action_kennelConfirmFragment_to_addKennelFragment"
+            app:destination="@id/addKennelFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalSettingsFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AnimalSettingsFragment"
+        android:label="AnimalSettingsFragment"
+        tools:layout="@layout/animal_settings_fragment">
+        <action
+            android:id="@+id/action_animalSettingsFragment_to_addAnimalFragment"
+            app:destination="@id/addAnimalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAnimalFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddAnimalFragment"
+        android:label="AddAnimalFragment"
+        tools:layout="@layout/add_animal_fragment"/>
+    <fragment
+        android:id="@+id/kennelHomeFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelHomeFragment"
+        android:label="KennelHomeFragment"
+        tools:layout="@layout/kennel_home_fragment">
+        <action
+            android:id="@+id/action_kennelHomeFragment_to_addAnimalFragment"
+            app:destination="@id/addAnimalFragment" />
+        <action
+            android:id="@+id/action_kennelHomeFragment_to_animalSettingsFragment"
+            app:destination="@id/animalSettingsFragment" />
+    </fragment>
+</navigation>

@@ -40,7 +40,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             if (storage.readString(SharedPreferences.USER_CITY_KEY, "") == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
-                findNavController().navigate(R.id.action_startFragment_to_bottomNavFragment2)
+                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment)
             }
         }, 3000)
 

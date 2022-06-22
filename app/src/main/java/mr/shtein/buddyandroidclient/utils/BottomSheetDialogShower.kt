@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import mr.shtein.buddyandroidclient.R
@@ -13,13 +14,7 @@ class BottomSheetDialogShower {
 
     companion object {
 
-        private fun findRootNavController(fragment: Fragment): NavController {
-            val navHost =
-                fragment.activity?.supportFragmentManager?.findFragmentById(R.id.main_host_fragment) as NavHostFragment
-            return navHost.navController
-        }
-
-        fun createAndShowBottomSheetDialog(view: View, fragment: Fragment) {
+        fun createAndShowBottomSheetDialog(view: View, navController: NavController) {
             val bottomSheetDialog = BottomSheetDialog(view.context, R.style.myst)
             bottomSheetDialog.setContentView(R.layout.signup_and_signin_bottom_sheet)
             val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
@@ -29,7 +24,7 @@ class BottomSheetDialogShower {
             with(toRegistrationButton) {
                 this?.setOnClickListener {
                     bottomSheetDialog.dismiss()
-                    findRootNavController(fragment).navigate(R.id.action_bottomNavFragment_to_userRegistrationFragment)
+                    navController.navigate(R.id.action_animalsListFragment_to_userRegistrationFragment)
                 }
             }
 
@@ -38,7 +33,7 @@ class BottomSheetDialogShower {
             with(toLoginFragmentButton) {
                 this?.setOnClickListener {
                     bottomSheetDialog.dismiss()
-                    findRootNavController(fragment).navigate(R.id.action_bottomNavFragment_to_loginFragment)
+                    navController.navigate(R.id.action_animalsListFragment_to_loginFragment)
                 }
             }
 
@@ -47,6 +42,4 @@ class BottomSheetDialogShower {
             bottomSheetDialog.show()
         }
     }
-
-
 }

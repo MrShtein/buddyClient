@@ -108,7 +108,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                     )
                 }
                 else -> {
-                    navController.navigate(R.id.action_cityChoiceFragment_to_bottomNavFragment)
+                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment)
                 }
             }
         }
