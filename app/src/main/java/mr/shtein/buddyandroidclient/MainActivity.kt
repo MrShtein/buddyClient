@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -49,6 +50,12 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.setupWithNavController(navController)
 
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in)
+            .setExitAnim(R.anim.slide_out)
+            .setPopUpTo(R.id.startFragment, true)
+            .build()
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             run {
                 when (destination.id) {
@@ -69,10 +76,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
                     ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_userProfileFragment
+                        R.id.action_animalsListFragment_to_userProfileFragment, null, navOptions
                     )
                     ADD_KENNEL_LABEL -> navController.navigate(
-                        R.id.action_addKennelFragment_to_userProfileFragment
+                        R.id.action_addKennelFragment_to_userProfileFragment, null, navOptions
                     )
                 }
 
@@ -89,10 +96,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
                     ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_addKennelFragment
+                        R.id.action_animalsListFragment_to_addKennelFragment, null, navOptions
                     )
                     USER_PROFILE_LABEL  -> navController.navigate(
-                        R.id.action_userProfileFragment_to_addKennelFragment
+                        R.id.action_userProfileFragment_to_addKennelFragment, null, navOptions
                     )
                 }
             }
@@ -102,10 +109,10 @@ class MainActivity : AppCompatActivity() {
         bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
             when (navController.currentBackStackEntry?.destination?.label) {
                 ADD_KENNEL_LABEL -> navController.navigate(
-                    R.id.action_addKennelFragment_to_animalsListFragment
+                    R.id.action_addKennelFragment_to_animalsListFragment, null, navOptions
                 )
                 USER_PROFILE_LABEL  -> navController.navigate(
-                    R.id.action_userProfileFragment_to_animalsListFragment
+                    R.id.action_userProfileFragment_to_animalsListFragment, null, navOptions
                 )
             }
             true

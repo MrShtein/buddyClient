@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey2"
     android:elevation="0dp"
+    android:transitionGroup="true"
     tools:context="mr.shtein.buddyandroidclient.AnimalsListFragment">
 
     <ProgressBar

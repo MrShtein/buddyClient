@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
@@ -22,6 +24,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        exitTransition
         setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val logoText: ImageView = view!!.findViewById(R.id.buddy_logo_text)
@@ -40,7 +43,12 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             if (storage.readString(SharedPreferences.USER_CITY_KEY, "") == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
-                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment)
+                val navOptions = NavOptions.Builder()
+                    .setEnterAnim(R.anim.slide_in)
+                    .setExitAnim(R.anim.slide_out)
+                    .setPopUpTo(R.id.startFragment, true)
+                    .build()
+                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment, null, navOptions)
             }
         }, 3000)
 
