@@ -14,6 +14,7 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.Common
 import retrofit2.Response
 import android.view.*
+import android.view.animation.DecelerateInterpolator
 import android.widget.HorizontalScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,7 @@ import androidx.core.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
+import androidx.transition.Slide
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.transition.MaterialSharedAxis
@@ -60,6 +62,13 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+//        val enterSlide = Slide()
+//        enterSlide.slideEdge = Gravity.RIGHT
+//        enterSlide.duration = 300
+//        enterSlide.interpolator = DecelerateInterpolator()
+//        enterTransition = enterSlide
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -129,6 +138,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
         setStatusBarColor(true)
         initViewsAndValues(view)
@@ -154,7 +164,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.top 
+                topMargin = insets.top
             }
 
             WindowInsetsCompat.CONSUMED

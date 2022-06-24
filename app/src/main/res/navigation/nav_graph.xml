@@ -12,10 +12,14 @@
         tools:layout="@layout/start_fragment">
         <action
             android:id="@+id/action_startFragment_to_cityChoiceFragment"
-            app:destination="@id/cityChoiceFragment" />
+            app:destination="@id/cityChoiceFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_startFragment_to_animalsListFragment"
-            app:destination="@id/animalsListFragment" />
+            app:destination="@id/animalsListFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <argument
         android:name="ShowBottomBar"

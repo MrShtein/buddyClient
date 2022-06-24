@@ -2,7 +2,11 @@ package mr.shtein.buddyandroidclient.screens
 
 import android.database.Cursor
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -10,9 +14,11 @@ import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +37,7 @@ private const val MAG = "City"
 const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
 const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
+const val SPLASH_SCREEN_ID = "startFragment"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
@@ -44,8 +51,25 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val previousFragment = findNavController().previousBackStackEntry?.id
+        if (previousFragment == null) {
+            val slideEnterTransition = Slide()
+            slideEnterTransition.duration = 300
+            slideEnterTransition.slideEdge = Gravity.RIGHT
+            slideEnterTransition.interpolator = DecelerateInterpolator()
+            enterTransition = slideEnterTransition
+
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,7 +132,10 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                     )
                 }
                 else -> {
-                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment)
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.cityChoiceFragment, true)
+                        .build()
+                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment, null, navOptions)
                 }
             }
         }

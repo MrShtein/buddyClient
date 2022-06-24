@@ -50,12 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.setupWithNavController(navController)
 
-        val navOptions = NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in)
-            .setExitAnim(R.anim.slide_out)
-            .setPopUpTo(R.id.startFragment, true)
-            .build()
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             run {
                 when (destination.id) {
@@ -76,13 +70,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
                     ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_userProfileFragment, null, navOptions
+                        R.id.action_animalsListFragment_to_userProfileFragment
                     )
                     ADD_KENNEL_LABEL -> navController.navigate(
-                        R.id.action_addKennelFragment_to_userProfileFragment, null, navOptions
+                        R.id.action_addKennelFragment_to_userProfileFragment
                     )
                 }
-
             }
             true
         }
@@ -96,10 +89,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
                     ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_addKennelFragment, null, navOptions
+                        R.id.action_animalsListFragment_to_addKennelFragment
                     )
                     USER_PROFILE_LABEL  -> navController.navigate(
-                        R.id.action_userProfileFragment_to_addKennelFragment, null, navOptions
+                        R.id.action_userProfileFragment_to_addKennelFragment
                     )
                 }
             }
@@ -109,10 +102,10 @@ class MainActivity : AppCompatActivity() {
         bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
             when (navController.currentBackStackEntry?.destination?.label) {
                 ADD_KENNEL_LABEL -> navController.navigate(
-                    R.id.action_addKennelFragment_to_animalsListFragment, null, navOptions
+                    R.id.action_addKennelFragment_to_animalsListFragment
                 )
                 USER_PROFILE_LABEL  -> navController.navigate(
-                    R.id.action_userProfileFragment_to_animalsListFragment, null, navOptions
+                    R.id.action_userProfileFragment_to_animalsListFragment
                 )
             }
             true

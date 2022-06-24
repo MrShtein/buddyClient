@@ -1,15 +1,19 @@
 package mr.shtein.buddyandroidclient.screens
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.transition.platform.MaterialSharedAxis
+import androidx.transition.Slide
+import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
@@ -18,6 +22,15 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
     private var isInsetsWorked = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val exitSlide = Slide()
+        exitSlide.slideEdge = Gravity.LEFT
+        exitSlide.duration = 300
+        exitSlide.interpolator = DecelerateInterpolator()
+        exitTransition = exitSlide
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,15 +53,12 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         view.postDelayed({
             isInsetsWorked = false
+
             if (storage.readString(SharedPreferences.USER_CITY_KEY, "") == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
-                val navOptions = NavOptions.Builder()
-                    .setEnterAnim(R.anim.slide_in)
-                    .setExitAnim(R.anim.slide_out)
-                    .setPopUpTo(R.id.startFragment, true)
-                    .build()
-                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment, null, navOptions)
+
+                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment)
             }
         }, 3000)
 
