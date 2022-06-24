@@ -64,12 +64,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         super.onCreate(savedInstanceState)
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
 
-//        val enterSlide = Slide()
-//        enterSlide.slideEdge = Gravity.RIGHT
-//        enterSlide.duration = 300
-//        enterSlide.interpolator = DecelerateInterpolator()
-//        enterTransition = enterSlide
-
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         coroutine = CoroutineScope(Dispatchers.Main)
@@ -138,7 +132,13 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        if (findNavController().previousBackStackEntry == null) {
+            val enterSlide = Slide()
+            enterSlide.slideEdge = Gravity.RIGHT
+            enterSlide.duration = 300
+            enterSlide.interpolator = DecelerateInterpolator()
+            enterTransition = enterSlide
+        }
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
         setStatusBarColor(true)
         initViewsAndValues(view)
