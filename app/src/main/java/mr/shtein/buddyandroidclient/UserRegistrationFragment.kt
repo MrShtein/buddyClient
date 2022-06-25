@@ -83,9 +83,37 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         val repeatPasswordInput: TextInputEditText =
             view.findViewById(R.id.registration_repeat_password_input)
 
+        callbackForEmail = object : MailCallback {
+            override fun onSuccess() {
+                regInfoModel.email = emailInput.text.toString()
+            }
+
+            override fun onFail(error: Exception) {
+                emailInputContainer.error = error.message
+            }
+
+            override fun onFailure() {
+                Toast.makeText(
+                    requireContext(),
+                    FullEmailValidator.NO_INTERNET_MSG,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            override fun onNoAuthorize() {
+                Toast.makeText(
+                    requireContext(),
+                    FullEmailValidator.NO_AUTHORIZE_MSG,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
         val passwordValidator = PasswordEmptyFieldValidator()
         val nameValidator = NameValidator(nameInput, nameInputContainer)
+        var fullEmailValidator = FullEmailValidator(
+            EmailCheckRequest(emailInput.text.toString()), callbackForEmail, null
+        )
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
@@ -226,24 +254,6 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                     }
                 }
             }
-        callbackForEmail = object : MailCallback {
-            override fun onSuccess() {
-                regInfoModel.email = emailInput.text.toString()
-            }
-
-            override fun onFail(error: Exception) {
-                emailInputContainer.error = error.message
-            }
-
-            override fun onFailure() {
-                Toast.makeText(requireContext(), FullEmailValidator.NO_INTERNET_MSG, Toast.LENGTH_LONG).show()
-            }
-
-            override fun onNoAuthorize() {
-                Toast.makeText(requireContext(), FullEmailValidator.NO_AUTHORIZE_MSG, Toast.LENGTH_LONG).show()
-            }
-        }
-
     }
 
     override fun onResume() {
@@ -286,7 +296,12 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             view.findViewById<TextInputLayout>(R.id.registration_repeat_password_input_container)
 
         if (!regInfoModel.isCheckedName) {
-            nameValidator.nameChecker()
+            try {
+                nameValidator.nameChecker()
+            } catch (ex: TooShortLengthException) {
+                nameInputContainer.isErrorEnabled = true
+                nameInputContainer.error = ex.message
+            }
         }
 
         if (!regInfoModel.isCheckedEmail) {

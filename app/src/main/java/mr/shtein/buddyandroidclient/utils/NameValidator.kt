@@ -28,7 +28,8 @@ class NameValidator(
     }
 
     private fun assertIsValidName(value: String): Boolean {
-        if (value.length < 2) throw TooShortLengthException(INVALID_NAME_MSG)
+        val valueLength = value.length
+        if (valueLength < 2 ) throw TooShortLengthException(INVALID_NAME_MSG)
         return true
     }
 }
