@@ -2,8 +2,10 @@ package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.Toast
@@ -51,6 +53,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         exitSlide.duration = 300
         exitSlide.interpolator = DecelerateInterpolator()
         exitTransition = exitSlide
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        view?.let {
+            setInsetsListenerForPadding(it, left = false, top = true, right = false, bottom = false)
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

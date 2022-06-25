@@ -59,6 +59,18 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        view?.let {
+            setInsetsListenerForPadding(it, left = false, top = true, right = false, bottom = false)
+        }
+        return view
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -111,7 +123,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
         val passwordValidator = PasswordEmptyFieldValidator()
         val nameValidator = NameValidator(nameInput, nameInputContainer)
-        var fullEmailValidator = FullEmailValidator(
+        fullEmailValidator = FullEmailValidator(
             EmailCheckRequest(emailInput.text.toString()), callbackForEmail, null
         )
 
