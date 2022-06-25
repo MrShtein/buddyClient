@@ -129,8 +129,13 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                nameValidator.nameChecker()
-                regInfoModel.isCheckedName = true
+                try {
+                    nameValidator.nameChecker()
+                    regInfoModel.isCheckedName = true
+                } catch (ex: TooShortLengthException) {
+                    nameInputContainer.isErrorEnabled = true
+                    nameInputContainer.error = ex.message
+                }
             } else if (hasFocus && nameInputContainer.isErrorEnabled) {
                 nameInputContainer.isErrorEnabled = false
             }
@@ -185,12 +190,6 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                             nameValidator
                         )
                     if (container == null) {
-                        val frame: FrameLayout = view.findViewById(R.id.registration_frame)
-                        val startAnimValue: Int =
-                            activity?.getColor(R.color.black_with_transparency_0) ?: 0
-                        val endAnimValue: Int =
-                            activity?.getColor(R.color.black_with_transparency_50) ?: 0
-                        animateFrame(startAnimValue, endAnimValue, frame)
                         val cityInfo = storage.readString(SharedPreferences.USER_CITY_KEY, "")
                         val newUser =
                             Person(
@@ -201,36 +200,6 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                             )
                         val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
                         progressBar.visibility = View.VISIBLE
-                        object : CountDownTimer(10000, 1000) {
-                            val startAnimReverseValue =
-                                activity?.getColor(R.color.black_with_transparency_50) ?: 0
-                            val endAnimReverseValue =
-                                activity?.getColor(R.color.black_with_transparency_0) ?: 0
-
-                            override fun onTick(millisUntilFinished: Long) {
-
-                                if (isRegistered) {
-                                    val bundle: Bundle = Bundle()
-                                    bundle.putBoolean("is_from_registration", true)
-                                    findNavController().navigate(
-                                        R.id.action_userRegistrationFragment_to_loginFragment,
-                                        bundle
-                                    )
-                                    cancel()
-                                }
-                            }
-
-                            override fun onFinish() {
-                                progressBar.visibility = View.INVISIBLE
-                                animateFrame(startAnimReverseValue, endAnimReverseValue, frame)
-                                MaterialAlertDialogBuilder(requireContext())
-                                    .setMessage("Что-то пошло не так, попробуйте позже")
-                                    .setPositiveButton("Ok") { dialog, _ ->
-                                        dialog?.cancel()
-                                    }
-                                    .show()
-                            }
-                        }.start()
 
                         val retrofitService = Common.retrofitService
                         retrofitService.registerUser(newUser)
@@ -240,7 +209,12 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                                     response: Response<Boolean>
                                 ) {
                                     if (response.body() == true) {
-                                        isRegistered = true
+                                        val bundle: Bundle = Bundle()
+                                        bundle.putBoolean("is_from_registration", true)
+                                        findNavController().navigate(
+                                            R.id.action_userRegistrationFragment_to_loginFragment,
+                                            bundle
+                                        )
                                     }
                                 }
 
@@ -249,7 +223,12 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                                     t: Throwable
                                 ) {
                                     val serverErrorMsg = getString(R.string.server_error_msg)
-                                    Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
+                                    progressBar.visibility = View.INVISIBLE
+                                    Toast.makeText(
+                                        requireContext(),
+                                        serverErrorMsg,
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             })
 
