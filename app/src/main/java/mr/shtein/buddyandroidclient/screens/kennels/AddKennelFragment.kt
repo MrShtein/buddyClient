@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,11 +24,14 @@ import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
-import mr.shtein.buddyandroidclient.utils.LastFragment
+import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 private const val ANIMAL_LIST_ID = "animalsListFragment"
 private const val LAST_FRAGMENT_KEY = "last_fragment"
+private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
+private const val KENNEL_HOME_LABEL = "KennelHomeFragment"
+
 
 class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
@@ -54,6 +55,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
     }
 
@@ -62,9 +64,14 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        if (lastFragment != null) {
-            changeAnimations(lastFragment)
+        findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.label == KENNEL_SETTINGS_LABEL || destination.label == KENNEL_HOME_LABEL) {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+            }
+        }
+        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (workFragment != null) {
+            changeAnimationsWhenStartFragment(workFragment)
         }
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.let {
@@ -205,9 +212,9 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             .getText(stringId)
     }
 
-    private fun changeAnimations(lastFragment: LastFragment) {
-        when (lastFragment) {
-            LastFragment.ANIMAL_LIST -> {
+    private fun changeAnimationsWhenStartFragment(workFragment: WorkFragment) {
+        when (workFragment) {
+            WorkFragment.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
         }

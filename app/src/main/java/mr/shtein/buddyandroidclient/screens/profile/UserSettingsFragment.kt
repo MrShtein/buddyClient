@@ -105,6 +105,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         super.onCreate(savedInstanceState)
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
 
         setFragmentResultListener(CITY_REQUEST_KEY) { requestKey, bundle ->

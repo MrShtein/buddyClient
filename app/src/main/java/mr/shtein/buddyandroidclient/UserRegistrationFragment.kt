@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.*
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ProgressBar
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.transition.Slide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -43,6 +45,18 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val enterSlide = Slide()
+        enterSlide.slideEdge = Gravity.RIGHT
+        enterSlide.duration = 300
+        enterSlide.interpolator = DecelerateInterpolator()
+        enterTransition = enterSlide
+
+        val exitSlide = Slide()
+        exitSlide.slideEdge = Gravity.LEFT
+        exitSlide.duration = 300
+        exitSlide.interpolator = DecelerateInterpolator()
+        exitTransition = exitSlide
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

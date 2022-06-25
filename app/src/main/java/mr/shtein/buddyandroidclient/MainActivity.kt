@@ -1,31 +1,24 @@
 package mr.shtein.buddyandroidclient
 
-import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
-import mr.shtein.buddyandroidclient.utils.LastFragment
+import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
@@ -98,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 when (navController.currentBackStackEntry?.destination?.label) {
                     ANIMAL_LIST_LABEL -> {
                         val lastFragmentBundle = bundleOf()
-                        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.ANIMAL_LIST)
+                        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ANIMAL_LIST)
                         navController.navigate(
                             R.id.action_animalsListFragment_to_addKennelFragment, lastFragmentBundle
                         )
@@ -115,14 +108,14 @@ class MainActivity : AppCompatActivity() {
             when (navController.currentBackStackEntry?.destination?.label) {
                 ADD_KENNEL_LABEL -> {
                     val lastFragmentBundle = bundleOf()
-                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.ADD_KENNEL)
+                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ADD_KENNEL)
                     navController.navigate(
                         R.id.action_addKennelFragment_to_animalsListFragment, lastFragmentBundle
                     )
                 }
                 USER_PROFILE_LABEL  -> {
                     val lastFragmentBundle = bundleOf()
-                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.USER_PROFILE)
+                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.USER_PROFILE)
                     navController.navigate(
                         R.id.action_userProfileFragment_to_animalsListFragment, lastFragmentBundle
                     )

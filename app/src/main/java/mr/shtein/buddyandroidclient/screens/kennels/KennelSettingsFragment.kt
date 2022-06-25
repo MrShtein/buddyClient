@@ -87,11 +87,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
 
         setFragmentResultListener(CITY_REQUEST_KEY) { _, bundle ->
             val newCity = bundle.getString(UserSettingsFragment.CITY_BUNDLE_KEY)

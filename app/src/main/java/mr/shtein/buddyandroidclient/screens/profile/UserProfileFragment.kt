@@ -12,7 +12,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.utils.LastFragment
+import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 
@@ -37,8 +37,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        lastFragment?.let {
+        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        workFragment?.let {
             changeAnimations(it)
         }
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -101,9 +101,9 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         }
     }
 
-    private fun changeAnimations(lastFragment: LastFragment) {
-        when (lastFragment) {
-            LastFragment.ANIMAL_LIST -> {
+    private fun changeAnimations(workFragment: WorkFragment) {
+        when (workFragment) {
+            WorkFragment.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }
         }

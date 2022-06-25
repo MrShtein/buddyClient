@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.transition.Slide
@@ -35,7 +36,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
-import mr.shtein.buddyandroidclient.utils.LastFragment
+import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
 import java.net.ConnectException
@@ -44,6 +45,11 @@ import kotlin.math.floor
 
 const val IS_FROM_CITY = "is_from_city"
 private const val LAST_FRAGMENT_KEY = "last_fragment"
+private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
+private const val KENNEL_LABEL = "AddKennelFragment"
+private const val USER_PROFILE_LABEL = "UserProfileFragment"
+private const val REGISTRATION_LABEL = "UserRegistrationFragment"
+private const val LOGIN_LABEL = "LoginFragment"
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener {
 
@@ -66,7 +72,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            val workFragment = makeWorkFragment(destination)
+            changeAnimationsWhenNavigate(workFragment)
+        }
         if (arguments != null) {
             enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
         } else {
@@ -94,6 +103,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                     Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    private fun makeWorkFragment(destination: NavDestination): WorkFragment {
+        return when(destination.label) {
+            ANIMAL_CARD_LABEL -> WorkFragment.ANIMAL_CARD
+            KENNEL_LABEL -> WorkFragment.ADD_KENNEL
+            USER_PROFILE_LABEL -> WorkFragment.USER_PROFILE
+            REGISTRATION_LABEL -> WorkFragment.REGISTRATION
+            LOGIN_LABEL -> WorkFragment.LOGIN
+            else -> WorkFragment.OTHER
         }
     }
 
@@ -145,9 +165,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        if (lastFragment != null) {
-            changeAnimations(lastFragment)
+        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (workFragment != null) {
+            changeAnimationsWhenStartFragment(workFragment)
         }
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
         setStatusBarColor(true)
@@ -433,6 +453,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
+        changeAnimationsWhenNavigate(WorkFragment.ANIMAL_CARD)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
@@ -490,13 +511,45 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
     }
 
-    private fun changeAnimations(lastFragment: LastFragment) {
-        when (lastFragment) {
-            LastFragment.ADD_KENNEL -> {
+    private fun changeAnimationsWhenStartFragment(workFragment: WorkFragment) {
+        when (workFragment) {
+            WorkFragment.ADD_KENNEL -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
-            LastFragment.USER_PROFILE -> {
+            WorkFragment.USER_PROFILE -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+            }
+            WorkFragment.LOGIN -> {
+                val enterSlide = Slide()
+                enterSlide.slideEdge = Gravity.RIGHT
+                enterSlide.duration = 300
+                enterSlide.interpolator = DecelerateInterpolator()
+                enterTransition = enterSlide
+            }
+
+        }
+    }
+
+    private fun changeAnimationsWhenNavigate(workFragment: WorkFragment) {
+        when(workFragment) {
+            WorkFragment.ANIMAL_CARD -> {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+            }
+            WorkFragment.ADD_KENNEL -> {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+            }
+            WorkFragment.USER_PROFILE -> {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+            }
+            else -> {
+                val exitSlide = Slide()
+                exitSlide.slideEdge = Gravity.LEFT
+                exitSlide.duration = 300
+                exitSlide.interpolator = DecelerateInterpolator()
+                exitTransition = exitSlide
             }
         }
     }
