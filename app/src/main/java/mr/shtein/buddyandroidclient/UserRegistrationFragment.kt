@@ -248,7 +248,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                                     call: Call<Boolean>,
                                     t: Throwable
                                 ) {
-                                    println()
+                                    val serverErrorMsg = getString(R.string.server_error_msg)
+                                    Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
                                 }
                             })
 

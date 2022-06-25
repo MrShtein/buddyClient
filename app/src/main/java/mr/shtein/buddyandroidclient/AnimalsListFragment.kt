@@ -178,10 +178,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             try {
                 showAnimals()
             } catch (ex: ConnectException) {
-                val exText = getString(R.string.socket_timeout_exception_text)
+                val exText = getString(R.string.server_error_msg)
                 Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
-                val exText = getString(R.string.socket_timeout_exception_text)
+                val exText = getString(R.string.server_error_msg)
                 Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
             } catch (ex: ServerErrorException) {
                 Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()

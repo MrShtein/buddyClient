@@ -133,7 +133,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
 
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(requireContext(), "Что-то пошло не так", Toast.LENGTH_LONG)
+                        val noServerError = getString(R.string.server_error_msg)
+                        Toast.makeText(requireContext(), noServerError, Toast.LENGTH_LONG)
                             .show()
                     }
                 })
