@@ -35,11 +35,15 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
+import mr.shtein.buddyandroidclient.utils.LastFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
+
+const val IS_FROM_CITY = "is_from_city"
+private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener {
 
@@ -62,7 +66,16 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+        if (arguments != null) {
+            enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+        } else {
+            val enterSlide = Slide()
+            enterSlide.slideEdge = Gravity.RIGHT
+            enterSlide.duration = 300
+            enterSlide.interpolator = DecelerateInterpolator()
+            enterTransition = enterSlide
+        }
 
         storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -132,12 +145,9 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (findNavController().previousBackStackEntry == null) {
-            val enterSlide = Slide()
-            enterSlide.slideEdge = Gravity.RIGHT
-            enterSlide.duration = 300
-            enterSlide.interpolator = DecelerateInterpolator()
-            enterTransition = enterSlide
+        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (lastFragment != null) {
+            changeAnimations(lastFragment)
         }
         val view = inflater.inflate(R.layout.animals_list_fragment, container, false)
         setStatusBarColor(true)
@@ -476,6 +486,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             else -> {
                 val distanceInKm = floor(distance.toDouble() / 100) / 10
                 getString(R.string.animal_row_distance_kilometer_text, distanceInKm.toString())
+            }
+        }
+    }
+
+    private fun changeAnimations(lastFragment: LastFragment) {
+        when (lastFragment) {
+            LastFragment.ADD_KENNEL -> {
+                enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+            }
+            LastFragment.USER_PROFILE -> {
+                enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }
         }
     }

@@ -26,7 +26,11 @@ import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
+import mr.shtein.buddyandroidclient.utils.LastFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+
+private const val ANIMAL_LIST_ID = "animalsListFragment"
+private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
@@ -50,7 +54,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
     }
 
@@ -59,6 +62,10 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (lastFragment != null) {
+            changeAnimations(lastFragment)
+        }
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.let {
             setStatusBarColor(true)
@@ -196,5 +203,13 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         descriptionView.text = requireContext()
             .resources
             .getText(stringId)
+    }
+
+    private fun changeAnimations(lastFragment: LastFragment) {
+        when (lastFragment) {
+            LastFragment.ANIMAL_LIST -> {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+            }
+        }
     }
 }

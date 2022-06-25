@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,13 +23,15 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
+import mr.shtein.buddyandroidclient.utils.LastFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val ANIMAL_LIST_LABEL = "animals_list_fragment"
 private const val ADD_KENNEL_LABEL = "AddKennelFragment"
-
+private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,9 +72,14 @@ class MainActivity : AppCompatActivity() {
                 BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
-                    ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_userProfileFragment
-                    )
+
+                    ANIMAL_LIST_LABEL -> {
+                        val currentFragment = supportFragmentManager.currentNavigationFragment
+                        currentFragment?.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+                        navController.navigate(
+                            R.id.action_animalsListFragment_to_userProfileFragment
+                        )
+                    }
                     ADD_KENNEL_LABEL -> navController.navigate(
                         R.id.action_addKennelFragment_to_userProfileFragment
                     )
@@ -88,9 +96,13 @@ class MainActivity : AppCompatActivity() {
                 BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
             } else {
                 when (navController.currentBackStackEntry?.destination?.label) {
-                    ANIMAL_LIST_LABEL -> navController.navigate(
-                        R.id.action_animalsListFragment_to_addKennelFragment
-                    )
+                    ANIMAL_LIST_LABEL -> {
+                        val lastFragmentBundle = bundleOf()
+                        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.ANIMAL_LIST)
+                        navController.navigate(
+                            R.id.action_animalsListFragment_to_addKennelFragment, lastFragmentBundle
+                        )
+                    }
                     USER_PROFILE_LABEL  -> navController.navigate(
                         R.id.action_userProfileFragment_to_addKennelFragment
                     )
@@ -101,12 +113,20 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
             when (navController.currentBackStackEntry?.destination?.label) {
-                ADD_KENNEL_LABEL -> navController.navigate(
-                    R.id.action_addKennelFragment_to_animalsListFragment
-                )
-                USER_PROFILE_LABEL  -> navController.navigate(
-                    R.id.action_userProfileFragment_to_animalsListFragment
-                )
+                ADD_KENNEL_LABEL -> {
+                    val lastFragmentBundle = bundleOf()
+                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.ADD_KENNEL)
+                    navController.navigate(
+                        R.id.action_addKennelFragment_to_animalsListFragment, lastFragmentBundle
+                    )
+                }
+                USER_PROFILE_LABEL  -> {
+                    val lastFragmentBundle = bundleOf()
+                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, LastFragment.USER_PROFILE)
+                    navController.navigate(
+                        R.id.action_userProfileFragment_to_animalsListFragment, lastFragmentBundle
+                    )
+                }
             }
             true
         }

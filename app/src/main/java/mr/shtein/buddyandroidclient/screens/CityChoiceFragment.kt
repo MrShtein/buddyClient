@@ -38,6 +38,7 @@ const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
 const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
 const val SPLASH_SCREEN_ID = "startFragment"
+const val IS_FROM_CITY = "is_from_city"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
@@ -133,10 +134,11 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                     )
                 }
                 else -> {
+                    val bundle = bundleOf(IS_FROM_CITY to true)
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.cityChoiceFragment, true)
                         .build()
-                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment, null, navOptions)
+                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment, bundle, navOptions)
                 }
             }
         }

@@ -12,8 +12,11 @@ import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
+import mr.shtein.buddyandroidclient.utils.LastFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 
+
+private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
@@ -26,15 +29,28 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val lastFragment: LastFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        lastFragment?.let {
+            changeAnimations(it)
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        storage = SharedPreferences(requireContext(),
-            SharedPreferences.PERSISTENT_STORAGE_NAME)
+        storage = SharedPreferences(
+            requireContext(),
+            SharedPreferences.PERSISTENT_STORAGE_NAME
+        )
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
@@ -82,6 +98,14 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             personAvatarImg?.setImageResource(R.drawable.user_photo_placeholder)
         } else {
             personAvatarImg?.setImageURI(Uri.parse(imageUri))
+        }
+    }
+
+    private fun changeAnimations(lastFragment: LastFragment) {
+        when (lastFragment) {
+            LastFragment.ANIMAL_LIST -> {
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+            }
         }
     }
 
