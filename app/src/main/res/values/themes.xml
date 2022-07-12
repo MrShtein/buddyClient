@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.BuddyAndroidClient" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/grey2</item>
+        <item name="colorPrimary">@color/background_grey2</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -14,6 +14,8 @@
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
+
+        <item name="android:colorBackground">@color/background_grey2</item>
 
     </style>
 

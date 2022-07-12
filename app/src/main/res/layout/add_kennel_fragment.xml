@@ -54,7 +54,7 @@
         android:id="@+id/add_kennel_fragment_divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/grey2"
+        android:background="@color/background_grey2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_kennel_fragment_volunteers_btn"

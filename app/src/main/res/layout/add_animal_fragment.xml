@@ -30,7 +30,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="15dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintTop_toBottomOf="@id/add_animal_label" />
 
         <ImageView
@@ -294,7 +294,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_animal_fourth_animal_img" />
@@ -407,7 +407,7 @@
             android:id="@+id/add_animal_age_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
             app:layout_constraintTop_toBottomOf="@id/add_animal_months_container"
@@ -466,7 +466,7 @@
             android:id="@+id/add_animal_sliders_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_animal_months_slider"
@@ -581,7 +581,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="15dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
             app:layout_constraintTop_toBottomOf="@id/add_animal_color_container" />
@@ -634,7 +634,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="15dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
             app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group" />

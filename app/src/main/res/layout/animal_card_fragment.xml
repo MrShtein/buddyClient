@@ -77,7 +77,7 @@
             android:layout_marginStart="-2dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
-            app:dividerColor="@color/grey2"
+            app:dividerColor="@color/background_grey2"
             app:layout_constraintEnd_toEndOf="@id/animal_card_heart"
             app:layout_constraintStart_toStartOf="@id/animal_card_animal_name"
             app:layout_constraintTop_toBottomOf="@id/animal_card_animal_name" />
@@ -160,7 +160,7 @@
             android:layout_marginStart="-2dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
-            app:dividerColor="@color/grey2"
+            app:dividerColor="@color/background_grey2"
             app:layout_constraintEnd_toEndOf="@id/animal_card_heart"
             app:layout_constraintStart_toStartOf="@id/animal_card_animal_name"
             app:layout_constraintTop_toBottomOf="@id/animal_card_color_label" />
