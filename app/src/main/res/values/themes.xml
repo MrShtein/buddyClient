@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BuddyAndroidClient" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.BuddyAndroidClient" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/grey2</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,7 +14,6 @@
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
-
 
     </style>
 
