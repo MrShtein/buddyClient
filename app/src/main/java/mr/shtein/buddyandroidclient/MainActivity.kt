@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
 
         bottomNav.setupWithNavController(navController)
+        bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             run {
@@ -57,72 +58,88 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
-            val sharedPreferenceStore =
-                SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
-            if (token == "") {
-                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
-            } else {
-                when (navController.currentBackStackEntry?.destination?.label) {
+        bottomNav.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.profile_graph -> {
+                    val sharedPreferenceStore =
+                        SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
+                    val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+                    if (token == "") {
+                        BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
+                        return@setOnItemSelectedListener false
+                    } else {
+                        when (navController.currentBackStackEntry?.destination?.label) {
 
-                    ANIMAL_LIST_LABEL -> {
-                        val currentFragment = supportFragmentManager.currentNavigationFragment
-                        currentFragment?.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-                        navController.navigate(
-                            R.id.action_animalsListFragment_to_userProfileFragment
-                        )
+                            ANIMAL_LIST_LABEL -> {
+                                val currentFragment = supportFragmentManager.currentNavigationFragment
+                                currentFragment?.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+                                navController.navigate(
+                                    R.id.action_animalsListFragment_to_userProfileFragment
+                                )
+                            }
+                            ADD_KENNEL_LABEL -> navController.navigate(
+                                R.id.action_addKennelFragment_to_userProfileFragment
+                            )
+                        }
                     }
-                    ADD_KENNEL_LABEL -> navController.navigate(
-                        R.id.action_addKennelFragment_to_userProfileFragment
-                    )
+                    true
                 }
-            }
-            true
-        }
-
-        bottomNav.menu.findItem(R.id.kennel_graph).setOnMenuItemClickListener {
-            val sharedPreferenceStore =
-                SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-            val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
-            if (token == "") {
-                BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
-            } else {
-                when (navController.currentBackStackEntry?.destination?.label) {
-                    ANIMAL_LIST_LABEL -> {
-                        val lastFragmentBundle = bundleOf()
-                        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ANIMAL_LIST)
-                        navController.navigate(
-                            R.id.action_animalsListFragment_to_addKennelFragment, lastFragmentBundle
-                        )
+                R.id.kennel_graph -> {
+                    val sharedPreferenceStore =
+                        SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
+                    val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+                    if (token == "") {
+                        BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
+                        return@setOnItemSelectedListener false
+                    } else {
+                        when (navController.currentBackStackEntry?.destination?.label) {
+                            ANIMAL_LIST_LABEL -> {
+                                val lastFragmentBundle = bundleOf()
+                                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ANIMAL_LIST)
+                                navController.navigate(
+                                    R.id.action_animalsListFragment_to_addKennelFragment, lastFragmentBundle
+                                )
+                            }
+                            USER_PROFILE_LABEL  -> navController.navigate(
+                                R.id.action_userProfileFragment_to_addKennelFragment
+                            )
+                        }
                     }
-                    USER_PROFILE_LABEL  -> navController.navigate(
-                        R.id.action_userProfileFragment_to_addKennelFragment
-                    )
+                    true
                 }
+                R.id.animals_feed_graph -> {
+                    when (navController.currentBackStackEntry?.destination?.label) {
+                        ADD_KENNEL_LABEL -> {
+                            val lastFragmentBundle = bundleOf()
+                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ADD_KENNEL)
+                            navController.navigate(
+                                R.id.action_addKennelFragment_to_animalsListFragment, lastFragmentBundle
+                            )
+                        }
+                        USER_PROFILE_LABEL  -> {
+                            val lastFragmentBundle = bundleOf()
+                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.USER_PROFILE)
+                            navController.navigate(
+                                R.id.action_userProfileFragment_to_animalsListFragment, lastFragmentBundle
+                            )
+                        }
+                    }
+                    true
+                } else -> false
             }
-            true
         }
 
-        bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
-            when (navController.currentBackStackEntry?.destination?.label) {
-                ADD_KENNEL_LABEL -> {
-                    val lastFragmentBundle = bundleOf()
-                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ADD_KENNEL)
-                    navController.navigate(
-                        R.id.action_addKennelFragment_to_animalsListFragment, lastFragmentBundle
-                    )
-                }
-                USER_PROFILE_LABEL  -> {
-                    val lastFragmentBundle = bundleOf()
-                    lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.USER_PROFILE)
-                    navController.navigate(
-                        R.id.action_userProfileFragment_to_animalsListFragment, lastFragmentBundle
-                    )
-                }
-            }
-            true
-        }
+//        bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
+//
+//        }
+//
+//        bottomNav.menu.findItem(R.id.kennel_graph).setOnMenuItemClickListener {
+//
+//        }
+//
+//        bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
+//
+//        }
     }
 
     private fun hideBottomNav() {
