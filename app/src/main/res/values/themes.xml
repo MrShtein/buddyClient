@@ -21,7 +21,6 @@
 
         <item name="materialCardViewStyle">@style/Widget.Buddy.CardView</item>
 
-        <item name="secondaryTextColor">@color/black_40</item>
 
     </style>
 
