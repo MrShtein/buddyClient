@@ -52,11 +52,15 @@ class MainActivity : AppCompatActivity() {
                 when (destination.id) {
                     R.id.addKennelFragment -> showBottomNav()
                     R.id.userProfileFragment -> showBottomNav()
-                    R.id.animalsListFragment -> showBottomNav()
+                    R.id.animalsListFragment -> {
+                        showBottomNav()
+                        bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
+                    }
                     else -> hideBottomNav()
                 }
             }
         }
+
 
         bottomNav.setOnItemSelectedListener { item ->
             when(item.itemId) {
