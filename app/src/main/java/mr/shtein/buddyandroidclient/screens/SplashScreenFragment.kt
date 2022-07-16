@@ -2,7 +2,6 @@ package mr.shtein.buddyandroidclient.screens
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,8 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
-import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
@@ -44,7 +41,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
         when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                view?.setBackgroundColor(requireContext().getColor(R.color.cian5_10_percent))
+                view?.setBackgroundColor(requireContext().getColor(R.color.cian5_10))
             }
         }
         val logoText: ImageView = view!!.findViewById(R.id.buddy_logo_text)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -52,11 +54,15 @@ class MainActivity : AppCompatActivity() {
                 when (destination.id) {
                     R.id.addKennelFragment -> showBottomNav()
                     R.id.userProfileFragment -> showBottomNav()
-                    R.id.animalsListFragment -> showBottomNav()
+                    R.id.animalsListFragment -> {
+                        showBottomNav()
+                        bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
+                    }
                     else -> hideBottomNav()
                 }
             }
         }
+
 
         bottomNav.setOnItemSelectedListener { item ->
             when(item.itemId) {

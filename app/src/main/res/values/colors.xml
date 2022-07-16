@@ -6,11 +6,11 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="black_with_transparency_50">#80000000</color>
-    <color name="black_with_transparency_0">#00000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_0">#00000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="cian5">#1998A7</color>
-    <color name="cian6">#1F1998A7</color>
+    <color name="cian5_12">#1F1998A7</color>
     <color name="background_grey2">#EEEEEE</color>
     <color name="grey3">#999999</color>
     <color name="grey4">#CCCCCC</color>
@@ -18,8 +18,8 @@
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
 
     <color name="input_unfocused">#8CFFFFFF</color>
-    <color name="ten_percent_black_overlay">#33000000</color>
-    <color name="input_unfocused_underline_and_hint">#1A000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_10">#1A000000</color>
     <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="choice_color">#FF5858</color>
@@ -28,7 +28,7 @@
     <color name="cian4">#1BBDD4</color>
 
     <color name="dark_00_Dp">#121212</color>
-    <color name="cian5_10_percent">#1A1998A7</color>
+    <color name="cian5_10">#1A1998A7</color>
 
 
 </resources>

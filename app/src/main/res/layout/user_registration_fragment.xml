@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:id="@+id/registration_frame"
-        android:background="@color/black_with_transparency_0"
+        android:background="@color/black_0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="3dp"/>
