@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="@id/kennel_home_person_avatar"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_settings_btn"
             android:layout_marginTop="20dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             android:visibility="invisible"/>
 
         <TextView
@@ -117,7 +117,7 @@
             android:id="@+id/kennel_home_after_kennel_info_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/grey2"
+            android:background="@color/background_grey2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/kennel_home_animals_amount"

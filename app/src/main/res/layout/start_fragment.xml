@@ -8,17 +8,30 @@
     android:transitionGroup="true"
     tools:context="mr.shtein.buddyandroidclient.screens.SplashScreenFragment">
 
-    <ImageView
+<!--    <ImageView-->
+<!--        android:id="@+id/buddy_logo_dog"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/dog_img"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:contentDescription="@string/project_logo_dog_sun_and_grass"-->
+<!--        />-->
+
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/buddy_logo_dog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/dog_img"
-        android:layout_gravity="center_vertical"
+        app:lottie_fileName="dogSplashAlpha.json"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/project_logo_dog_sun_and_grass"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
         />
 
     <ImageView

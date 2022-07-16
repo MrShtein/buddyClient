@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.screens
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -40,6 +41,12 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         exitTransition
         setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                view?.setBackgroundColor(requireContext().getColor(R.color.cian5_10_percent))
+            }
+        }
         val logoText: ImageView = view!!.findViewById(R.id.buddy_logo_text)
         ViewCompat.setOnApplyWindowInsetsListener(logoText) { textView, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())

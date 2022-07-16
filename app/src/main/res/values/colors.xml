@@ -11,7 +11,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cian5">#1998A7</color>
     <color name="cian6">#1F1998A7</color>
-    <color name="grey2">#EEEEEE</color>
+    <color name="background_grey2">#EEEEEE</color>
     <color name="grey3">#999999</color>
     <color name="grey4">#CCCCCC</color>
     <color name="blue1">#007AE9</color>
@@ -26,6 +26,9 @@
     <color name="dialog_primary_color">#E1EEf3</color>
     <color name="dialog_clarification_text_color">#494547</color>
     <color name="cian4">#1BBDD4</color>
+
+    <color name="dark_00_Dp">#121212</color>
+    <color name="cian5_10_percent">#1A1998A7</color>
 
 
 </resources>

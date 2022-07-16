@@ -63,7 +63,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/grey2"
+            android:backgroundTint="@color/background_grey2"
             android:text="@string/registration_btn_text"
             android:textColor="@color/cian5"
             app:rippleColor="@color/cian5"
