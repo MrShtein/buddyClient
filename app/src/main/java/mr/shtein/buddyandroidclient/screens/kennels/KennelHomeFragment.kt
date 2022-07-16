@@ -139,7 +139,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 catsList = loadAnimals(kennelId, catType)
                 animalsAmount.text = makeAnimalText(dogsList.size + catsList.size)
 
-                dogCarousel.visibility = View.VISIBLE
                 dogCarousel.setHasFixedSize(true)
                 dogAdapter = DogPhotoAdapter(
                     dogsList,
@@ -160,8 +159,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 val dogCarouselHelper = LinearSnapHelper()
                 dogCarouselHelper.attachToRecyclerView(dogCarousel)
+                if (dogsList.isNotEmpty()) dogCarousel.visibility = View.VISIBLE
 
-                catCarousel.visibility = View.VISIBLE
+
                 catCarousel.setHasFixedSize(true)
                 catAdapter = CatPhotoAdapter(
                     catsList,
@@ -182,6 +182,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 val catCarouselHelper = LinearSnapHelper()
                 catCarouselHelper.attachToRecyclerView(catCarousel)
+                if (catsList.isNotEmpty()) catCarousel.visibility = View.VISIBLE
 
                 catsAmount.text = getAnimalCountText(catsList.size)
                 dogsAmount.text = getAnimalCountText(dogsList.size)
