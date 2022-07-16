@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/apk/res/android">
 
+    <style name="Widget.Buddy.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">4dp</item>
+        <item name="shapeAppearanceOverlay">@style/Widget.Buddy.CardView.Shape</item>
+    </style>
+
+    <style name="TextAppearance.Buddy.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/cian5</item>
+    </style>
+
+    <style name="Widget.Buddy.CardView.Shape">
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeBottomLeft">16dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+    </style>
+
     <style name="MyLayout" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="backgroundTint">@color/input_background</item>
         <item name="colorPrimary">@color/cian5</item>
@@ -11,7 +27,6 @@
 
     <style name="myst" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
-
     </style>
 
     <style name="ShoppingList.BottomSheetDialog" parent="Widget.Material3.BottomSheet">
