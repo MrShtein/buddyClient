@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_loginFragment_to_animalsListFragment"
             app:destination="@id/animalsListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"
@@ -186,4 +189,9 @@
             android:id="@+id/action_kennelHomeFragment_to_animalSettingsFragment"
             app:destination="@id/animalSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="mr.shtein.buddyandroidclient.screens.ResetPasswordFragment"
+        android:label="ResetPasswordFragment"
+        tools:layout="@layout/reset_password_fragment"/>
 </navigation>
