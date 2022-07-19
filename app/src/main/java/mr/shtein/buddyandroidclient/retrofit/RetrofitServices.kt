@@ -31,7 +31,7 @@ interface RetrofitServices {
     fun loginUser(@Body person: Person): Call<LoginResponse>
 
     @POST("/api/v1/auth/reset")
-    suspend fun resetPassword(@Body email: String): Response<Boolean>
+    suspend fun resetPassword(@Body email: String): Response<String>
 
     @POST("/api/v1/user")
     fun upgradePersonInfo(

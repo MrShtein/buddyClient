@@ -82,11 +82,11 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
             try {
                 val email = binding.resetPasswordEmailText.text.toString()
                 val result = authRepository.resetPassword(email)
-                if (result) {
+                if (result != null) {
                     val msgForLoginFragment = getString(R.string.reset_password_success_phrase)
                     setFragmentResult(
                         LOGIN_REQUEST_KEY,
-                        bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to msgForLoginFragment)
+                        bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to result)
                     )
                     findNavController().popBackStack()
                 } else {

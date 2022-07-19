@@ -10,9 +10,9 @@ class AuthenticationRepository {
 
     private val retrofit: RetrofitServices = Common.retrofitService
 
-    public suspend fun resetPassword(email: String) : Boolean = withContext(Dispatchers.IO) {
+    public suspend fun resetPassword(email: String) : String? = withContext(Dispatchers.IO) {
         val result = retrofit.resetPassword(email)
-        return@withContext result.body() ?: false
+        return@withContext result.body()
     }
 
 }
