@@ -179,7 +179,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             kennelName.text = kennel.name
             address.text = kennel.address
 
-            val host = resources.getString(R.string.host)
+            val host = BuildConfig.HOST
             val endpoint = resources.getString(R.string.kennel_avatar_endpoint)
             val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
             val imageLoader = ImageLoader(host, endpoint, kennel.avatarUrl)

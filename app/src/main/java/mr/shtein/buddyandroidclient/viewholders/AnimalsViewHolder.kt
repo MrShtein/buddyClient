@@ -6,6 +6,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.OnLocationBtnClickListener
 import mr.shtein.buddyandroidclient.ProtoAnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
@@ -101,7 +102,7 @@ class AnimalsViewHolder(
     private fun setPrimaryPhoto(animal: Animal) {
         val primaryUrl = animal.imgUrl.filter { it.primary }
         val url: String = primaryUrl[0].url
-        val host = itemView.resources.getString(R.string.host)
+        val host = BuildConfig.HOST
         val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
         val imageLoader = ImageLoader(host, endpoint, url)
         imageLoader.setPhotoToView(animalImage)
