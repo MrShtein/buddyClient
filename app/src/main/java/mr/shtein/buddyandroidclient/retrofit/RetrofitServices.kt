@@ -30,6 +30,9 @@ interface RetrofitServices {
     @POST("/api/v1/auth/login")
     fun loginUser(@Body person: Person): Call<LoginResponse>
 
+    @POST("/api/v1/auth/reset")
+    suspend fun resetPassword(@Body email: String): Response<String>
+
     @POST("/api/v1/user")
     fun upgradePersonInfo(
         @HeaderMap headers: Map<String, String>,
@@ -111,5 +114,7 @@ interface RetrofitServices {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double
     ): Response<HashMap<Int, Int>>
+
+
 
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 
@@ -42,7 +43,7 @@ class AnimalPhotoAdapter(
         private val animalImage: ImageView = itemView.findViewById(R.id.animal_big_photo_row_img)
 
         fun bind(url: String) {
-            val host = itemView.context.resources.getString(R.string.host)
+            val host = BuildConfig.HOST
             val endpoint = itemView.context.resources.getString(R.string.animal_photo_endpoint)
             val imageLoader = ImageLoader(host, endpoint, url)
             imageLoader.setPhotoToView(animalImage)

@@ -175,6 +175,13 @@
     <string name="add">Добавить</string>
     <string name="update">Обновить</string>
     <string name="exit_btn">Выйти</string>
+    <string name="forget_password_question"><u>Забыли пароль?</u></string>
+    <string name="password_reset_or_rebuild_headline">Восстановление пароля</string>
+    <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
+    <string name="reset_password_success_phrase">Новый пароль успешно отправлен</string>
+    <string name="admin_email">mr.shtein61@yandex.ru</string>
+    <string name="email_subject">Сброс пароля</string>
+    <string name="reset_password_btn">Сбросить пароль</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>

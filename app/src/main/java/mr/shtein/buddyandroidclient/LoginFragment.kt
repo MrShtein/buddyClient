@@ -10,6 +10,8 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
@@ -28,6 +30,8 @@ import retrofit2.Response
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
+private const val RESET_REQUEST_KEY = "from_reset_password"
+private const val MSG_FROM_RESET_FRAGMENT_KEY = "message_for_login"
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -53,6 +57,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         exitSlide.duration = 300
         exitSlide.interpolator = DecelerateInterpolator()
         exitTransition = exitSlide
+
+        setFragmentResultListener(RESET_REQUEST_KEY) { _, bundle ->
+            val msg = bundle.getString(MSG_FROM_RESET_FRAGMENT_KEY)
+            msg?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -81,6 +92,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val passwordInput: TextInputEditText = view.findViewById(R.id.login_password_input)
         val button: Button = view.findViewById(R.id.login_button)
         val user = Person("", "", "", "")
+        val forgotPasswordBtn = view.findViewById<Button>(R.id.login_fragment_forgot_password_btn)
+
+        forgotPasswordBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+        }
 
         button.setOnClickListener {
 

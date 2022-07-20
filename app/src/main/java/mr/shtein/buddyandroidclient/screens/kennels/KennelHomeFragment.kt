@@ -18,6 +18,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import kotlinx.coroutines.*
+import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
@@ -103,7 +104,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     }
 
     private fun setValuesToViews(kennelItem: KennelPreview) {
-        val host = getString(R.string.host)
+        val host = BuildConfig.HOST
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
         val imageLoader = ImageLoader(host, endpoint, photoName)

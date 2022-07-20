@@ -5,22 +5,43 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            Properties keystoreConfig = new Properties()
+            keystoreConfig.load(new FileInputStream(file('keystore.config')))
+
+            storeFile file(keystoreConfig['storeFile'])
+            storePassword keystoreConfig['storePassword']
+            keyPassword keystoreConfig['keyPassword']
+            keyAlias keystoreConfig['keyAlias']
+        }
+    }
     compileSdk 31
+
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId "mr.shtein.buddyandroidclient"
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
+        }
+
+        debug {
+            buildConfigField "String", "HOST", "\"http://10.0.2.2:8881\""
         }
     }
     compileOptions {
@@ -46,11 +67,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'ru.tinkoff.decoro:decoro:1.5.0'
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+        implementation 'com.google.android.gms:play-services-location:19.0.1'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'

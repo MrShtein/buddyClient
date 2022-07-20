@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.utils.ImageLoader
@@ -54,7 +55,7 @@ class DogPhotoAdapter(
             val animalAvatarUrl = animalCard.imgUrl.find {
                 it.primary
             }
-            val host = itemView.resources.getString(R.string.host)
+            val host = BuildConfig.HOST
             val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
             val imageLoader = ImageLoader(host, endpoint, animalAvatarUrl?.url!!)
             imageLoader.setPhotoToView(avatar)

@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
-import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Gender
@@ -31,9 +31,6 @@ import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
-import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.showBadTokenDialog
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
@@ -696,7 +693,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 currentContainer.url = currentImgUrl
                 animalDto.photoNamesForCreate.add(currentImgUrl)
                 switchAddAndCancelBtnVisibility(true, currentContainer)
-                val host = resources.getString(R.string.host)
+                val host = BuildConfig.HOST
                 val endpoint = resources.getString(R.string.animal_photo_endpoint)
                 val imageLoader = ImageLoader(host, endpoint, currentImgUrl)
                 imageLoader.setPhotoToView(currentContainer.imageView)

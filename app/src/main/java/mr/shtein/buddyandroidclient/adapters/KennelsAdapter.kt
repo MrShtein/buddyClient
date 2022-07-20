@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
+import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.utils.ImageLoader
@@ -50,7 +51,7 @@ class KennelsAdapter(
         }
 
         fun bind(kennelPreviewItem: KennelPreview) {
-            val host = itemView.resources.getString(R.string.host)
+            val host = BuildConfig.HOST
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
             val imageLoader = ImageLoader(host, endpoint, photoName)
