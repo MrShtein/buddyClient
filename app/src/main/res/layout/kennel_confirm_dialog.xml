@@ -57,21 +57,18 @@
                 android:id="@+id/kennel_confirm_dialog_ok_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_marginEnd="40dp"
-                android:layout_marginBottom="40dp"
                 android:background="@color/transparent"
                 android:text="@string/user_settings_dialog_ok_btn"
                 android:textColor="@color/cian5"
                 app:layout_constraintTop_toBottomOf="@id/kennel_confirm_dialog_clarification_text_start"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="@id/kennel_confirm_dialog_clarification_text_start"
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
     </androidx.cardview.widget.CardView>
 

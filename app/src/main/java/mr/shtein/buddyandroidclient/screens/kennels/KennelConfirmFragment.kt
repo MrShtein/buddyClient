@@ -57,7 +57,6 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var saveBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
     private lateinit var storage: SharedPreferences
-    private var layout: MotionLayout? = null
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,7 +124,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
     private fun setListeners() {
         saveBtn.setOnClickListener {
-            saveBtn.isClickable = false
+            saveBtn.isEnabled = false
             progressBar.isVisible = true
 
             coroutineScope.launch {
@@ -221,8 +220,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
             .show()
 
 
-        val okBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_ok_btn)
-        layout = dialog.findViewById(R.id.kennel_confirm_dialog_layout)
+        val okBtn: Button? = dialog.findViewById(R.id.kennel_confirm_dialog_ok_btn)
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.addKennelFragment, true)
             .build()
