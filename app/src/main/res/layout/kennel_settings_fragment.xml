@@ -48,6 +48,17 @@
             android:backgroundTint="@color/transparent"
             />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/kennel_settings_cancel_avatar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cancel_adding_img"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/kennel_settings_avatar_img"
+            app:layout_constraintEnd_toEndOf="@id/kennel_settings_avatar_img"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"/>
+
         <TextView
             android:id="@+id/kennel_settings_organization_name_label"
             android:layout_width="wrap_content"

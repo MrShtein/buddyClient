@@ -57,6 +57,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     }
 
     private lateinit var avatarImg: AppCompatImageView
+    private lateinit var avatarCancelBtn: AppCompatImageView
     private lateinit var nameContainer: TextInputLayout
     private lateinit var nameInput: TextInputEditText
     private lateinit var phoneNumberInputContainer: TextInputLayout
@@ -130,8 +131,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME
         )
         avatarImg = view.findViewById(R.id.kennel_settings_avatar_img)
-        setAvatarImgIfExist()
         photoBtn = view.findViewById(R.id.kennel_settings_photo_btn)
+        avatarCancelBtn = view.findViewById(R.id.kennel_settings_cancel_avatar_btn)
+
+        setAvatarImgIfExist()
         nameContainer = view.findViewById(R.id.kennel_settings_organization_name_input_container)
         nameInput = view.findViewById(R.id.kennel_settings_organization_name_input)
         phoneNumberInputContainer =
@@ -167,6 +170,15 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         photoBtn.setOnClickListener {
             val dataType = "image/*"
             getAvatarLauncher.launch(dataType)
+            it.visibility = View.INVISIBLE
+            avatarCancelBtn.visibility = View.VISIBLE
+        }
+
+        avatarCancelBtn.setOnClickListener {
+            storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+            avatarImg.setImageDrawable(null)
+            photoBtn.visibility = View.VISIBLE
+            it.visibility = View.INVISIBLE
         }
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
@@ -392,7 +404,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     private fun setAvatarImgIfExist() {
         val avatarPath = storage.readString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
-        if (avatarPath != "") avatarImg.setImageURI(Uri.parse(avatarPath))
+        if (avatarPath != "") {
+            avatarImg.setImageURI(Uri.parse(avatarPath))
+            photoBtn.visibility = View.INVISIBLE
+            avatarCancelBtn.visibility = View.VISIBLE
+        }
     }
 
     private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
@@ -403,5 +419,8 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+    }
 }
