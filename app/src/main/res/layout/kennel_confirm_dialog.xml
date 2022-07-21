@@ -53,9 +53,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_settings_dialog_clarification" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/kennel_confirm_dialog_ok_btn"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="40dp"
@@ -63,7 +63,6 @@
                 android:background="@color/transparent"
                 android:text="@string/user_settings_dialog_ok_btn"
                 android:textColor="@color/cian5"
-                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/kennel_confirm_dialog_clarification_text_start"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
