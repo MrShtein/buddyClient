@@ -131,15 +131,15 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                 try {
                     val avatarWrapper: AvatarWrapper? = getPhotoAndType()
                     val response = addNewKennel(avatarWrapper)
-                    if (response.isSuccessful) {
-                        storage.writeString(SharedPreferences.USER_ROLE_KEY, ADMIN_ROLE_TXT)
-                        avatarWrapper?.file?.delete()
-                        showDialog()
-
-                    } else {
-                        when (response.code()) {
-                            403 -> TODO()
-                            404 -> TODO()
+                    when (response.code()) {
+                        201 -> {
+                            storage.writeString(SharedPreferences.USER_ROLE_KEY, ADMIN_ROLE_TXT)
+                            avatarWrapper?.file?.delete()
+                            showDialog(true)
+                        }
+                        409 -> {
+                            avatarWrapper?.file?.delete()
+                            showDialog(false)
                         }
                     }
 
@@ -159,7 +159,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         }
     }
 
-    private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?): Response<Boolean> {
+    private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?): Response<Void> {
         val retrofit = Common.retrofitService
         var requestFile: RequestBody? = null
         var body: MultipartBody.Part? = null
@@ -211,14 +211,28 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
     }
 
-    private fun showDialog() {
+    private fun showDialog(isKennelAlreadyExist: Boolean) {
+
+        if (!isKennelAlreadyExist) {
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
+
+                .setView(R.layout.kennel_failed_dialog)
+                .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+                .show()
+
+            val okBtn: Button? = dialog.findViewById(R.id.kennel_failed_ok_btn)
+            okBtn?.setOnClickListener {
+                dialog.dismiss()
+                findNavController().popBackStack()
+            }
+            return
+        }
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.kennel_confirm_dialog)
             .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
-
 
         val okBtn: Button? = dialog.findViewById(R.id.kennel_confirm_dialog_ok_btn)
         val navOptions = NavOptions.Builder()

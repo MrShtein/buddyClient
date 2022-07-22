@@ -54,7 +54,7 @@ interface RetrofitServices {
         @HeaderMap headers: Map<String, String>,
         @Part("kennel") kennelRequest: RequestBody,
         @Part file: MultipartBody.Part?
-    ): Response<Boolean>
+    ): Response<Void>
 
     @GET("/api/v1/person/{personId}/kennel")
     suspend fun getKennelsByPersonId(

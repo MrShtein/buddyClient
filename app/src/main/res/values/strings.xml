@@ -119,6 +119,7 @@
     <string name="kennel_confirm_save_btn">Подтвердить</string>
     <string name="kennel_confirm_congratulation">Поздравляем</string>
     <string name="kennel_confirm_description_text">Приют успешно добавлен\n в ближайшие 2 дня мы свяжемся с вами\nи можно будет публиковать питомцев</string>
+    <string name="kennel_confirm_failed_text">Данный приют уже зарегистрирован\n за дополнительной информацией можно\n можно обратиться по адресу mr.shtein61@yandex.ru</string>
     <string name="kennel_avatar_description">Аватарка приюта</string>
     <string name="kennel_settings_btn_description">Кнопка выбора настроек приюта</string>
     <string name="kennel_home_volunteers_icon_description">Иконка с изображением волонтеров</string>
