@@ -55,7 +55,8 @@ class KennelsAdapter(
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
             val imageLoader = ImageLoader(host, endpoint, photoName)
-            imageLoader.setPhotoToView(avatar,token)
+            val placeHolder = itemView.context.getDrawable(R.drawable.user_photo_placeholder)
+            imageLoader.setPhotoToView(avatar,token, placeHolder)
 
             kennelName.text = kennelPreviewItem.name
             volunteers.text = makeVolunteersText(kennelPreviewItem.volunteersAmount)
