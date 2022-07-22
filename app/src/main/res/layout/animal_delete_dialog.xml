@@ -76,7 +76,7 @@
 
             <Button
                 android:id="@+id/animal_delete_dialog_positive_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -90,7 +90,7 @@
 
             <Button
                 android:id="@+id/animal_delete_dialog_negative_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
