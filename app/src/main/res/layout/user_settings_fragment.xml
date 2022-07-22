@@ -266,6 +266,7 @@
             android:layout_marginTop="20dp"
             android:enabled="true"
             android:hint="@string/user_settings_old_pwd_hint"
+            app:endIconMode="password_toggle"
             android:theme="@style/MyLayout"
             app:layout_constraintEnd_toEndOf="@id/user_settings_address_divider"
             app:layout_constraintStart_toStartOf="@id/user_settings_address_divider"
@@ -275,7 +276,7 @@
                 android:id="@+id/user_settings_old_pwd_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -286,6 +287,7 @@
             android:layout_marginTop="20dp"
             android:enabled="true"
             android:hint="@string/user_settings_new_pwd_hint"
+            app:endIconMode="password_toggle"
             android:theme="@style/MyLayout"
             app:layout_constraintEnd_toEndOf="@id/user_settings_old_pwd_input_container"
             app:layout_constraintStart_toStartOf="@id/user_settings_old_pwd_input_container"
@@ -295,7 +297,7 @@
                 android:id="@+id/user_settings_new_pwd_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -308,6 +310,7 @@
             android:backgroundTint="@color/background_grey2"
             android:enabled="true"
             android:hint="@string/user_settings_repeat_new_pwd_hint"
+            app:endIconMode="password_toggle"
             android:theme="@style/MyLayout"
             app:layout_constraintEnd_toEndOf="@id/user_settings_new_pwd_input_container"
             app:layout_constraintStart_toStartOf="@id/user_settings_new_pwd_input_container"
@@ -318,7 +321,7 @@
                 android:id="@+id/user_settings_repeat_new_pwd_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
