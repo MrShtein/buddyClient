@@ -119,6 +119,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private fun setListeners(view: View) {
         kennelsBtn.setOnClickListener {
             val volunteersUnderscoreVisibility = volunteersUnderscore.isVisible
+            addKennelBtn.visibility = View.VISIBLE
             if (volunteersUnderscoreVisibility) {
                 volunteersUnderscore.isVisible = false
                 kennelsUnderscore.isVisible = true
@@ -133,6 +134,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
         volunteersBtn.setOnClickListener {
             val kennelsUnderscoreVisibility = kennelsUnderscore.isVisible
+            addKennelBtn.visibility = View.GONE
             if (kennelsUnderscoreVisibility) {
                 kennelsUnderscore.isVisible = false
                 volunteersUnderscore.isVisible = true
