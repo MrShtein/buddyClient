@@ -34,4 +34,18 @@ class UserRepository {
         }
     }
 
+    public suspend fun signUp(person: Person) = withContext(Dispatchers.IO) {
+        val result = retrofit.registerUser(person)
+        when(result.code()) {
+            201 -> {
+                return@withContext
+            }
+            400 -> {
+                throw IncorrectDataException()
+            }
+            else -> throw ServerErrorException()
+        }
+    }
+
+
 }

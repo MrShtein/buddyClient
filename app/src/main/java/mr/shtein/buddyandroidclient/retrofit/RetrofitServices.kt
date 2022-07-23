@@ -25,7 +25,7 @@ interface RetrofitServices {
     fun isEmailExists(@Body emailCheckRequest: EmailCheckRequest): Call<Boolean>
 
     @POST("/api/v1/auth/registration")
-    fun registerUser(@Body person: Person): Call<Boolean>
+    suspend fun registerUser(@Body person: Person): Response<Void>
 
     @POST("/api/v1/auth/login")
     suspend fun loginUser(@Body person: Person): Response<LoginResponse>
