@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +17,7 @@ import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.databinding.ResetPasswordFragmentBinding
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.repository.AuthenticationRepository
+import mr.shtein.buddyandroidclient.repository.UserRepository
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -76,7 +74,7 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
     }
 
     private fun resetPassword() {
-        val authRepository = AuthenticationRepository()
+        val authRepository = UserRepository()
         showProgressBar()
         CoroutineScope(Dispatchers.Main).launch {
             try {

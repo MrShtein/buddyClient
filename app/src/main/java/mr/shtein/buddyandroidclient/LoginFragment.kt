@@ -22,16 +22,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.LoginResponse
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
-import mr.shtein.buddyandroidclient.repository.AuthenticationRepository
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.NullPointerException
 
 
@@ -44,7 +39,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var isEmailChecked: Boolean? = null
     private var isPasswordChecked: Boolean? = null
     private lateinit var coroutine: CoroutineScope
-    private val authenticationRepository = AuthenticationRepository()
+    private val userRepository = UserRepository()
 
     override fun onStart() {
         super.onStart()
@@ -125,7 +120,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         coroutine.launch {
             try {
-                val loginResult = authenticationRepository.signIn(user)
+                val loginResult = userRepository.signIn(user)
                 val loginInfo: LoginInfo = loginResult.loginInfo
 
                 sharedPropertyStore.writeString(SharedPreferences.USER_CITY_KEY, loginInfo.cityInfo)

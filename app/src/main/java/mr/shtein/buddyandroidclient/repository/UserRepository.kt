@@ -10,7 +10,7 @@ import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
 import retrofit2.Response
 
-class AuthenticationRepository {
+class UserRepository {
 
     private val retrofit: RetrofitServices = Common.retrofitService
 
