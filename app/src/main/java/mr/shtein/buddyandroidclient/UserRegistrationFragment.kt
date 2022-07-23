@@ -38,7 +38,6 @@ import java.lang.Exception
 class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
-    private var isRegistered: Boolean = false
     private lateinit var callbackForEmail: MailCallback
     private lateinit var fullEmailValidator: FullEmailValidator
     private lateinit var storage: SharedPreferences
