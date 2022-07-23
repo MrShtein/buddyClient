@@ -175,16 +175,15 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         setInsetsListener(animalChoiceHorizontalScroll)
         setListeners()
         coroutine.launch {
+            val errorText = getString(R.string.server_error_msg)
             try {
                 showAnimals()
             } catch (ex: ConnectException) {
-                val exText = getString(R.string.server_error_msg)
-                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
-                val exText = getString(R.string.server_error_msg)
-                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             } catch (ex: ServerErrorException) {
-                Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             }
         }
         return view
@@ -259,8 +258,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                     return@withContext result.body() ?: mutableListOf()
                 }
                 500 -> {
-                    val exText = getString(R.string.server_error_msg)
-                    throw ServerErrorException(exText)
+                    throw ServerErrorException()
                 }
                 else -> {
                     throw SocketTimeoutException()
