@@ -28,6 +28,7 @@ import mr.shtein.buddyandroidclient.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import java.lang.NullPointerException
+import java.net.SocketTimeoutException
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -167,6 +168,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG)
                     .show()
             } catch (ex: NullPointerException) {
+                Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG)
+                    .show()
+            } catch (ex: SocketTimeoutException) {
+                val exText = getString(R.string.internet_failure_text)
                 Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG)
                     .show()
             }
