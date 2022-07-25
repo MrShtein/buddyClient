@@ -6,7 +6,7 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.LocationState
 
 class AnimalListViewModel : ViewModel() {
-    var animalList: MutableList<Animal> = mutableListOf()
+    var animalList: List<Animal> = mutableListOf()
     var visibleAnimalList: MutableList<Animal> = mutableListOf()
     var locationState: LocationState = LocationState.INIT_STATE
     var distances: HashMap<Int, Int> = hashMapOf()

@@ -143,6 +143,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             switchAddAndCancelBtnVisibility(true, imageContainer)
                             imageContainer.overlay.isVisible = false
                             imageContainer.progressBar.isVisible = false
+                        } catch (ex: ServerErrorException) {
+                            Toast.makeText(requireContext(), SERVER_ERROR, Toast.LENGTH_LONG).show()
                         } catch (ex: Exception) {
                             Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
                             Log.e("error", ex.message.toString())
@@ -664,7 +666,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             throw BadTokenException(badTokenMsg)
                         }
                         500 -> {
-                            throw ServerErrorException(SERVER_ERROR)
+                            throw ServerErrorException()
                         }
                     }
 
@@ -764,7 +766,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             else -> {
                 val errorMsg = requireContext().getString(R.string.server_error_msg)
                 Log.d(ERROR, errorMsg)
-                throw ServerErrorException(errorMsg)
+                throw ServerErrorException()
             }
         }
     }

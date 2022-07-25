@@ -20,28 +20,36 @@ import androidx.transition.Slide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
+import mr.shtein.buddyandroidclient.repository.UserRepository
 import mr.shtein.buddyandroidclient.retrofit.Common
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import java.net.SocketTimeoutException
 
 class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
-    private var isRegistered: Boolean = false
     private lateinit var callbackForEmail: MailCallback
     private lateinit var fullEmailValidator: FullEmailValidator
     private lateinit var storage: SharedPreferences
+    private lateinit var coroutine: CoroutineScope
+    private val userRepository: UserRepository by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +64,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         exitSlide.duration = 300
         exitSlide.interpolator = DecelerateInterpolator()
         exitTransition = exitSlide
-
+        coroutine = CoroutineScope(Dispatchers.Main)
     }
 
     override fun onCreateView(
@@ -201,38 +209,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                         val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
                         progressBar.visibility = View.VISIBLE
 
-                        val retrofitService = Common.retrofitService
-                        retrofitService.registerUser(newUser)
-                            .enqueue(object : Callback<Boolean> {
-                                override fun onResponse(
-                                    call: Call<Boolean>,
-                                    response: Response<Boolean>
-                                ) {
-                                    if (response.body() == true) {
-                                        val bundle: Bundle = Bundle()
-                                        bundle.putBoolean("is_from_registration", true)
-                                        findNavController().navigate(
-                                            R.id.action_userRegistrationFragment_to_loginFragment,
-                                            bundle
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<Boolean>,
-                                    t: Throwable
-                                ) {
-                                    val serverErrorMsg = getString(R.string.server_error_msg)
-                                    progressBar.visibility = View.INVISIBLE
-                                    Toast.makeText(
-                                        requireContext(),
-                                        serverErrorMsg,
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            })
-
-
+                        signUpUser(newUser)
                     } else {
                         val invalidFieldMsg = Toast.makeText(
                             context,
@@ -248,20 +225,34 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             }
     }
 
+    private fun signUpUser(person: Person) {
+        coroutine.launch {
+            try {
+                userRepository.signUp(person)
+                val bundle: Bundle = Bundle()
+                bundle.putBoolean("is_from_registration", true)
+                findNavController().navigate(
+                    R.id.action_userRegistrationFragment_to_loginFragment,
+                    bundle
+                )
+            } catch (ex: IncorrectDataException) {
+                val exText = getString(R.string.bad_data_text)
+                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+            } catch (ex: ServerErrorException) {
+                val serverErrorMsg = getString(R.string.server_error_msg)
+                Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
+            } catch (ex: SocketTimeoutException) {
+                val noInternetMsg = getString(R.string.internet_failure_text)
+                Toast.makeText(requireContext(), noInternetMsg, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         regInfoModel.isCheckedEmail = false
         regInfoModel.isCheckedPassword = false
         regInfoModel.isCheckedRepeatPassword = false
-    }
-
-    private fun animateFrame(startValue: Int, endValue: Int, animatedElement: View) {
-        val animator: ValueAnimator = ObjectAnimator.ofObject(ArgbEvaluator(), startValue, endValue)
-        animator.duration = 250
-        animator.addUpdateListener {
-            animatedElement.setBackgroundColor(animator.animatedValue as Int)
-        }
-        animator.start()
     }
 
     private fun finalErrorsCheck(

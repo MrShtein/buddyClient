@@ -35,10 +35,12 @@ import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
+import mr.shtein.buddyandroidclient.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
+import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
@@ -67,6 +69,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var storage: SharedPreferences
     private lateinit var coroutine: CoroutineScope
+    private val animalRepository: AnimalRepository by inject()
     private val cancelTokenSourceForLocation = CancellationTokenSource()
 
 
@@ -175,16 +178,15 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         setInsetsListener(animalChoiceHorizontalScroll)
         setListeners()
         coroutine.launch {
+            val errorText = getString(R.string.server_error_msg)
             try {
                 showAnimals()
             } catch (ex: ConnectException) {
-                val exText = getString(R.string.server_error_msg)
-                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
-                val exText = getString(R.string.server_error_msg)
-                Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             } catch (ex: ServerErrorException) {
-                Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
             }
         }
         return view
@@ -225,7 +227,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         val isLocationPermissionGranted = checkLocationPermission()
         if (animalListViewModel.visibleAnimalList.isEmpty()) {
             animalDownloadProgress.visibility = View.VISIBLE
-            animalListViewModel.animalList = getAllAnimalsFromServer()
+            animalListViewModel.animalList = animalRepository.getAnimals()
             animalListViewModel.visibleAnimalList =
                 animalListViewModel.animalList.toMutableList()
             animalDownloadProgress.visibility = View.INVISIBLE
@@ -249,24 +251,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         return fineLocationPermission == PackageManager.PERMISSION_GRANTED
                 || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
     }
-
-    private suspend fun getAllAnimalsFromServer(): MutableList<Animal> =
-        withContext(Dispatchers.IO) {
-            val retrofit = Common.retrofitService
-            val result = retrofit.getAnimals()
-            when (result.code()) {
-                200 -> {
-                    return@withContext result.body() ?: mutableListOf()
-                }
-                500 -> {
-                    val exText = getString(R.string.server_error_msg)
-                    throw ServerErrorException(exText)
-                }
-                else -> {
-                    throw SocketTimeoutException()
-                }
-            }
-        }
 
     private fun showDistanceOrLocationIcon(isLocationPermissionGranted: Boolean) {
         if (isLocationPermissionGranted) {
@@ -458,7 +442,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     }
 
 
-    private suspend fun filterDogs(listForFilter: MutableList<Animal>): MutableList<Animal> =
+    private suspend fun filterDogs(listForFilter: List<Animal>): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val dogsList = mutableListOf<Animal>()
             listForFilter.forEach { animal ->
@@ -477,7 +461,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             return@withContext dogsList
         }
 
-    private suspend fun filterCats(listForFilter: MutableList<Animal>): MutableList<Animal> =
+    private suspend fun filterCats(listForFilter: List<Animal>): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val catsList = mutableListOf<Animal>()
             listForFilter.forEach { animal ->

@@ -90,11 +90,11 @@
     <string name="yes_btn">Дa</string>
     <string name="no_btn">Нет</string>
     <string name="user_settings_dialog_ok_btn">Ok</string>
-    <string name="add_kennel_fragment_kennels_btn_text">Ваши приюты</string>
-    <string name="add_kennel_fragment_volunteer_btn_text">Вы волонтер</string>
+    <string name="add_kennel_fragment_kennels_btn_text">Приюты</string>
+    <string name="add_kennel_fragment_volunteer_btn_text">Волонтеры</string>
     <string name="add_kennel_fragment_add_btn_text">Добавить приют</string>
     <string name="add_kennel_fragment_empty_kennels_text">К сожалению у Вас пока \n нет приютов</string>
-    <string name="add_kennel_fragment_empty_volunteers_text">К сожалению Вы пока не участвуете \n в волонтерской программе</string>
+    <string name="add_kennel_fragment_empty_volunteers_text">Хотите поучаствовать\n в волонтерской программе? \n Пишите на адрес - \n mr.shtein61@yandex.ru</string>
     <string name="kennel_settings_label">Регистрация приюта:</string>
     <string name="add_photo_to_kennel_description">Кнопка для установки фотографии для профиля приюта</string>
     <string name="organization_name_label_text">Название организации:</string>
@@ -168,6 +168,7 @@
     <string name="location_failure_text">К сожалению сейчас не получается узнать Ваше местоположение, попробуйте позже</string>
     <string name="socket_timeout_exception_text">К сожалению сейчас нет доступа к интернету, попробуйте позже</string>
     <string name="internet_failure_text">Что-то не так с сетью, попробуйте позже</string>
+    <string name="bad_data_text">Ничего не вышло, проверьте введенные данные</string>
     <string name="animal_row_distance_meter_text">%1$d м. от Вас</string>
     <string name="animal_row_distance_kilometer_text">%1$s км. от Вас</string>
     <string name="shelter">Приют</string>
