@@ -27,6 +27,7 @@ import mr.shtein.buddyandroidclient.model.LoginInfo
 import mr.shtein.buddyandroidclient.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
+import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.SocketTimeoutException
 
@@ -40,7 +41,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var isEmailChecked: Boolean? = null
     private var isPasswordChecked: Boolean? = null
     private lateinit var coroutine: CoroutineScope
-    private val userRepository = UserRepository()
+    private val userRepository: UserRepository by inject()
 
     override fun onStart() {
         super.onStart()

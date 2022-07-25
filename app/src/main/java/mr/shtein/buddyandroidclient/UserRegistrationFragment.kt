@@ -34,6 +34,7 @@ import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,7 +48,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private lateinit var fullEmailValidator: FullEmailValidator
     private lateinit var storage: SharedPreferences
     private lateinit var coroutine: CoroutineScope
-    private val userRepository: UserRepository = UserRepository()
+    private val userRepository: UserRepository by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

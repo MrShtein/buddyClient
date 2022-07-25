@@ -40,6 +40,7 @@ import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
+import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
@@ -68,7 +69,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var storage: SharedPreferences
     private lateinit var coroutine: CoroutineScope
-    private val animalRepository: AnimalRepository = AnimalRepository()
+    private val animalRepository: AnimalRepository by inject()
     private val cancelTokenSourceForLocation = CancellationTokenSource()
 
 
