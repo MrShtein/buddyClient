@@ -29,6 +29,7 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 
@@ -173,6 +174,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .show()
             } catch (ex: SocketTimeoutException) {
                 val exText = getString(R.string.internet_failure_text)
+                Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG)
+                    .show()
+            } catch (ex: ConnectException) {
                 Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG)
                     .show()
             }
