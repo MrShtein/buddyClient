@@ -35,7 +35,7 @@ import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
-import mr.shtein.buddyandroidclient.repository.AnimalRepository
+import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences

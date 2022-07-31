@@ -1,7 +1,7 @@
 package mr.shtein.buddyandroidclient.di.module
 
-import mr.shtein.buddyandroidclient.repository.AnimalRepository
-import mr.shtein.buddyandroidclient.repository.UserRepository
+import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.databinding.ResetPasswordFragmentBinding
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.repository.UserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import java.net.ConnectException

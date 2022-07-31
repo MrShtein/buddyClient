@@ -24,7 +24,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
-import mr.shtein.buddyandroidclient.repository.UserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject

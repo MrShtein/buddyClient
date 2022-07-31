@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.repository
+package mr.shtein.buddyandroidclient.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
