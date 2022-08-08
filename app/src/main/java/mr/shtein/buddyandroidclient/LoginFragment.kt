@@ -36,6 +36,7 @@ import java.net.SocketTimeoutException
 private const val LAST_FRAGMENT_KEY = "last_fragment"
 private const val RESET_REQUEST_KEY = "from_reset_password"
 private const val MSG_FROM_RESET_FRAGMENT_KEY = "message_for_login"
+private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -89,7 +90,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         val bundle: Bundle? = arguments
         val isFromRegistration =
-            bundle?.getBoolean(SharedPreferences.IS_FROM_REGISTRATION_KEY) ?: false
+            bundle?.getBoolean(IS_FROM_REGISTRATION_KEY) ?: false
         if (isFromRegistration) {
             Snackbar.make(view, R.string.snackbar_registration_text, Snackbar.LENGTH_LONG)
                 .setDuration(3000)
