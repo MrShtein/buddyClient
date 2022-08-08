@@ -8,12 +8,6 @@ import mr.shtein.buddyandroidclient.model.LoginResponse
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 
-interface UserRepository {
-    suspend fun resetPassword(email: String) : String?
-    suspend fun signIn(person: Person): LoginResponse
-    suspend fun signUp(person: Person)
-}
-
 class RetrofitUserRepository(private val retrofitService: RetrofitService): UserRepository {
 
     override suspend fun resetPassword(email: String) : String? = withContext(Dispatchers.IO) {

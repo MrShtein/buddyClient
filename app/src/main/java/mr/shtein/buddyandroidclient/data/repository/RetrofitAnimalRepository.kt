@@ -6,10 +6,6 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 
-interface AnimalRepository {
-    suspend fun getAnimals(animalTypeList: List<Int>): List<Animal>
-}
-
 class RetrofitAnimalRepository(private val retrofitService: RetrofitService) : AnimalRepository {
 
     override suspend fun getAnimals(animalTypeList: List<Int>): List<Animal> =
