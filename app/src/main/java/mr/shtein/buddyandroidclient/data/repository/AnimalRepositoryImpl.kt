@@ -12,8 +12,8 @@ class AnimalRepository {
 
     private val retrofit: RetrofitServices = Common.retrofitService
 
-    public suspend fun getAnimals() : List<Animal> = withContext(Dispatchers.IO) {
-        val result = retrofit.getAnimals()
+    public suspend fun getAnimals(animalTypeList) : List<Animal> = withContext(Dispatchers.IO) {
+        val result = retrofit.getAnimals(animalFilter)
         when (result.code()) {
             200 -> {
                 return@withContext result.body() ?: listOf()
