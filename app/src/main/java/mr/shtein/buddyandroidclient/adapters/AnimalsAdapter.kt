@@ -3,16 +3,18 @@ package mr.shtein.buddyandroidclient.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import mr.shtein.buddyandroidclient.OnLocationBtnClickListener
+import mr.shtein.buddyandroidclient.presentation.screen.OnLocationBtnClickListener
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.LocationState
+import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 
 class AnimalsAdapter(
     context: Context,
-    var animals: MutableList<Animal>,
+    var animals: List<Animal>,
     var onAnimalCardClickListener: OnAnimalCardClickListener,
     var onLocationBtnClickListener: OnLocationBtnClickListener
 ) : RecyclerView.Adapter<AnimalsViewHolder>() {

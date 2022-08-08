@@ -7,7 +7,7 @@
     android:background="@color/background_grey2"
     android:elevation="0dp"
     android:transitionGroup="true"
-    tools:context="mr.shtein.buddyandroidclient.AnimalsListFragment">
+    tools:context="mr.shtein.buddyandroidclient.presentation.screen.AnimalsListFragment">
 
     <ProgressBar
         android:id="@+id/animals_list_search_progress_bar"

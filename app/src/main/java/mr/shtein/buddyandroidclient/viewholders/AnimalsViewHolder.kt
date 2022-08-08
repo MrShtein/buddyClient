@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import mr.shtein.buddyandroidclient.BuildConfig
-import mr.shtein.buddyandroidclient.OnLocationBtnClickListener
+import mr.shtein.buddyandroidclient.presentation.screen.OnLocationBtnClickListener
 import mr.shtein.buddyandroidclient.ProtoAnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener

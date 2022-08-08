@@ -1,28 +1,22 @@
-package mr.shtein.buddyandroidclient
+package mr.shtein.buddyandroidclient.presentation.screen
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.Common
 import retrofit2.Response
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.widget.HorizontalScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -31,18 +25,18 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
+import mr.shtein.buddyandroidclient.BuddyApplication
+import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
-import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
+import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
+import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
+import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
+import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
-import mr.shtein.buddyandroidclient.viewmodels.AnimalListViewModel
-import org.koin.android.ext.android.inject
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 import kotlin.math.floor
 
 const val IS_FROM_CITY = "is_from_city"

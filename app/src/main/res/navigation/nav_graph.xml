@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalsListFragment"
-        android:name="mr.shtein.buddyandroidclient.AnimalsListFragment"
+        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalsListFragment"
         android:label="animals_list_fragment"
         tools:layout="@layout/animals_list_fragment">
         <action
