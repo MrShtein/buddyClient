@@ -6,21 +6,23 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.LoginResponse
 import mr.shtein.buddyandroidclient.model.Person
-import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
-import retrofit2.Response
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 
-class UserRepository {
+interface UserRepository {
+    suspend fun resetPassword(email: String) : String?
+    suspend fun signIn(person: Person): LoginResponse
+    suspend fun signUp(person: Person)
+}
 
-    private val retrofit: RetrofitServices = Common.retrofitService
+class RetrofitUserRepository(private val retrofitService: RetrofitService): UserRepository {
 
-    public suspend fun resetPassword(email: String) : String? = withContext(Dispatchers.IO) {
-        val result = retrofit.resetPassword(email)
+    override suspend fun resetPassword(email: String) : String? = withContext(Dispatchers.IO) {
+        val result = retrofitService.resetPassword(email)
         return@withContext result.body()
     }
 
-    public suspend fun signIn(person: Person): LoginResponse = withContext(Dispatchers.IO) {
-        val result = retrofit.loginUser(person)
+    override suspend fun signIn(person: Person): LoginResponse = withContext(Dispatchers.IO) {
+        val result = retrofitService.loginUser(person)
         when(result.code()) {
             200 -> {
                 return@withContext result.body() !!
@@ -34,8 +36,8 @@ class UserRepository {
         }
     }
 
-    public suspend fun signUp(person: Person) = withContext(Dispatchers.IO) {
-        val result = retrofit.registerUser(person)
+    override suspend fun signUp(person: Person) = withContext(Dispatchers.IO) {
+        val result = retrofitService.registerUser(person)
         when(result.code()) {
             201 -> {
                 return@withContext
@@ -46,6 +48,4 @@ class UserRepository {
             else -> throw ServerErrorException()
         }
     }
-
-
 }
