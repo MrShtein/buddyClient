@@ -1,17 +1,20 @@
 package mr.shtein.buddyandroidclient.utils
 
-import android.util.Log
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordEmptyFieldValidator(): EmptyFieldValidator() {
+class PasswordEmptyFieldValidator(): EmptyFieldValidator(), KoinComponent {
+
+    val retrofitService: RetrofitService by inject()
+
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
         private const val PASSWORD_IS_DIFFERENT_MSG: String = "Пароли не совпадают"
@@ -31,7 +34,6 @@ class PasswordEmptyFieldValidator(): EmptyFieldValidator() {
 
     fun assertIsValidOldPassword(password: String, personId: Long,
                                  token: String, oldPwdCallBack: PasswordCallBack) {
-        val retrofitService = Common.retrofitService
         var headerMap = hashMapOf<String, String>()
         headerMap["Authorization"] = token
         val passwordRequest = PasswordCheckRequest(password, personId)

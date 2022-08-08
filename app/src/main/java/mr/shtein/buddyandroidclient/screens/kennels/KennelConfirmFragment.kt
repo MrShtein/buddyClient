@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,7 +16,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +26,11 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
 import mr.shtein.buddyandroidclient.model.KennelRequest
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.koin.android.ext.android.inject
 import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
@@ -58,6 +57,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var progressBar: ProgressBar
     private lateinit var storage: SharedPreferences
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+    private val retrofitService: RetrofitService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,7 +160,6 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     }
 
     private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?): Response<Void> {
-        val retrofit = Common.retrofitService
         var requestFile: RequestBody? = null
         var body: MultipartBody.Part? = null
 

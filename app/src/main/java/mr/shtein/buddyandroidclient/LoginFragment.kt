@@ -24,7 +24,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
-import mr.shtein.buddyandroidclient.data.repository.UserRepository
+import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject
@@ -42,7 +42,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var isEmailChecked: Boolean? = null
     private var isPasswordChecked: Boolean? = null
     private lateinit var coroutine: CoroutineScope
-    private val userRepository: UserRepository by inject()
+    private val retrofitUserRepository: RetrofitUserRepository by inject()
 
     override fun onStart() {
         super.onStart()
@@ -123,7 +123,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         coroutine.launch {
             try {
-                val loginResult = userRepository.signIn(user)
+                val loginResult = retrofitUserRepository.signIn(user)
                 val loginInfo: LoginInfo = loginResult.loginInfo
 
                 sharedPropertyStore.writeString(SharedPreferences.USER_CITY_KEY, loginInfo.cityInfo)

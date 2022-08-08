@@ -21,7 +21,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
-import mr.shtein.buddyandroidclient.data.repository.UserRepository
+import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
@@ -38,7 +38,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private lateinit var fullEmailValidator: FullEmailValidator
     private lateinit var storage: SharedPreferences
     private lateinit var coroutine: CoroutineScope
-    private val userRepository: UserRepository by inject()
+    private val retrofitUserRepository: RetrofitUserRepository by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -218,7 +218,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private fun signUpUser(person: Person) {
         coroutine.launch {
             try {
-                userRepository.signUp(person)
+                retrofitUserRepository.signUp(person)
                 val bundle: Bundle = Bundle()
                 bundle.putBoolean("is_from_registration", true)
                 findNavController().navigate(

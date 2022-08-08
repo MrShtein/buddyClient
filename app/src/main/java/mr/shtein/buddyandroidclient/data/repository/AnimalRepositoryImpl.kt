@@ -4,29 +4,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
-import retrofit2.Response
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 
-class AnimalRepository {
+interface AnimalRepository {
+    suspend fun getAnimals(animalTypeList: List<Int>): List<Animal>
+}
 
-    private val retrofit: RetrofitServices = Common.retrofitService
+class RetrofitAnimalRepository(private val retrofitService: RetrofitService) : AnimalRepository {
 
-    public suspend fun getAnimals(animalTypeList) : List<Animal> = withContext(Dispatchers.IO) {
-        val result = retrofit.getAnimals(animalFilter)
-        when (result.code()) {
-            200 -> {
-                return@withContext result.body() ?: listOf()
-            }
-            500 -> {
-                throw ServerErrorException()
-            }
-            else -> {
-                return@withContext listOf()
+    override suspend fun getAnimals(animalTypeList: List<Int>): List<Animal> =
+        withContext(Dispatchers.IO) {
+            val result = retrofitService.getAnimals(animalTypeList)
+            when (result.code()) {
+                200 -> {
+                    return@withContext result.body() ?: listOf()
+                }
+                500 -> {
+                    throw ServerErrorException()
+                }
+                else -> {
+                    return@withContext listOf()
+                }
             }
         }
-    }
-
-    
-
 }

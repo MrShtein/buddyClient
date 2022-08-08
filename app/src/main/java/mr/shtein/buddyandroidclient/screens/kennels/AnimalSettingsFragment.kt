@@ -22,11 +22,12 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import org.koin.android.ext.android.inject
 import java.lang.Exception
 
 private const val ANIMAL_KEY = "animal_key"
@@ -53,6 +54,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private lateinit var photoCounter: TextView
     private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animal: Animal? = null
+    private val retrofitService: RetrofitService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -207,8 +209,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     }
 
     private suspend fun deleteAnimal(animalId: Long, token: String): Boolean = withContext(Dispatchers.IO) {
-            val retrofit = Common.retrofitService
-            val response = retrofit.deleteAnimal(token, animalId)
+            val response = retrofitService.deleteAnimal(token, animalId)
             val bundle = bundleOf(
                 RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
                 ANIMAL_KEY to animal?.id,

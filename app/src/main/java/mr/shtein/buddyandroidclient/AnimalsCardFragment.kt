@@ -10,16 +10,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.widget.CheckBox
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import mr.shtein.buddyandroidclient.retrofit.Common
-import mr.shtein.buddyandroidclient.retrofit.RetrofitServices
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
@@ -27,8 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.button.MaterialButton

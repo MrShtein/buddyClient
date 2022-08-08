@@ -41,9 +41,10 @@ import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -97,6 +98,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
+    private val retrofitService: RetrofitService by inject()
 
     private var motionLayout: MotionLayout? = null
 
@@ -376,7 +378,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             newPwd.text.toString()
         )
 
-        val retrofitService = Common.retrofitService
         val headerMap = hashMapOf<String, String>()
         token = storage.readString(SharedPreferences.TOKEN_KEY, "")
         headerMap["Authorization"] = token

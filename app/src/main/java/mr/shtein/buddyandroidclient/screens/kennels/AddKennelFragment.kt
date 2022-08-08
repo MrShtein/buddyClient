@@ -20,12 +20,13 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.buddyandroidclient.retrofit.Common
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.android.ext.android.inject
 
 private const val ANIMAL_LIST_ID = "animalsListFragment"
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -52,6 +53,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var kennelsList = mutableListOf<KennelPreview>()
     private var isReadyKennelsList = false
     private var volunteersList = mutableListOf<KennelPreview>()
+    private val retrofitService: RetrofitService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,8 +157,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     private suspend fun getKennels(personId: Long) = withContext(Dispatchers.IO) {
         val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
-        val retrofit = Common.retrofitService
-        val response = retrofit.getKennelsByPersonId(token, personId)
+        val response = retrofitService.getKennelsByPersonId(token, personId)
         if (response.isSuccessful) {
             val kennelResponsePreview = response.body()
             kennelResponsePreview?.forEach {
