@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.profile_graph -> {
                     val sharedPreferenceStore =
                         SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-                    val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+                    val token: String = sharedPreferenceStore.readString(SharedPreferences.USER_TOKEN_KEY, "")
                     if (token == "") {
                         BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
                         return@setOnItemSelectedListener false
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.kennel_graph -> {
                     val sharedPreferenceStore =
                         SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-                    val token: String = sharedPreferenceStore.readString(SharedPreferences.TOKEN_KEY, "")
+                    val token: String = sharedPreferenceStore.readString(SharedPreferences.USER_TOKEN_KEY, "")
                     if (token == "") {
                         BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
                         return@setOnItemSelectedListener false
@@ -168,7 +168,7 @@ fun Fragment.showBadTokenDialog() {
     val okBtn: Button? = dialog.findViewById(R.id.bad_token_dialog_ok_btn)
 
     okBtn?.setOnClickListener {
-        storage.writeString(SharedPreferences.TOKEN_KEY, "")
+        storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
     }
 }
 

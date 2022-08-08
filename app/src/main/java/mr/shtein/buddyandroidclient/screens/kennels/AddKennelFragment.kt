@@ -156,7 +156,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private suspend fun getKennels(personId: Long) = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         val response = retrofitService.getKennelsByPersonId(token, personId)
         if (response.isSuccessful) {
             val kennelResponsePreview = response.body()
@@ -189,7 +189,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         kennelRecycler =
             view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_list)
         kennelAdapter = KennelsAdapter(
-            storage.readString(SharedPreferences.TOKEN_KEY, ""),
+            storage.readString(SharedPreferences.USER_TOKEN_KEY, ""),
             kennelsList,
             object : KennelsAdapter.OnKennelItemClickListener {
                 override fun onClick(kennelItem: KennelPreview) {

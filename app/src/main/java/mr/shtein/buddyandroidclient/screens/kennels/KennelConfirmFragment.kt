@@ -165,7 +165,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
 
         val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         val headers = mutableMapOf<String, String>()
         headers["Authorization"] = token
 

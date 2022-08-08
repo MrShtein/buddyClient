@@ -110,7 +110,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
         val imageLoader = ImageLoader(host, endpoint, photoName)
-        token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         imageLoader.setPhotoToView(kennelAvatar, token)
 
         val uriForUserToken = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
@@ -251,7 +251,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
-            val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
             val response = retrofitService.getAnimalsByKennelIdAndAnimalType(
                 token, kennelId, animalType
             )

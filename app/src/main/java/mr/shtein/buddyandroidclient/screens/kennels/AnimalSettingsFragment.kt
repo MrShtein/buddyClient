@@ -155,7 +155,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
     private fun buildAndShowDeleteAnimalDialog() {
         val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.animal_delete_dialog)

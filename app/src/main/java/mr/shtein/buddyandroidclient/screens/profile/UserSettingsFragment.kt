@@ -327,7 +327,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     repeatedNewPwd.text.toString(),
                     newPwd
                 )
-                token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+                token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
                 passwordValidator.assertIsValidOldPassword(
                     oldPwd.text.toString(),
                     personId,
@@ -379,7 +379,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         )
 
         val headerMap = hashMapOf<String, String>()
-        token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         headerMap["Authorization"] = token
         retrofitService.upgradePersonInfo(headerMap, personRequest)
             .enqueue(object : Callback<PersonResponse> {
@@ -415,9 +415,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val genderForSave = getGender()
         storage.writeString(SharedPreferences.USER_GENDER_KEY, genderForSave)
         if (token != "") {
-            storage.writeString(SharedPreferences.TOKEN_KEY, token)
+            storage.writeString(SharedPreferences.USER_TOKEN_KEY, token)
 
-            Log.d("token", storage.readString(SharedPreferences.TOKEN_KEY, ""))
+            Log.d("token", storage.readString(SharedPreferences.USER_TOKEN_KEY, ""))
             Log.d("token", token)
         }
     }

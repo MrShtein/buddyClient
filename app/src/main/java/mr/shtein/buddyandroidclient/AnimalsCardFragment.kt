@@ -172,7 +172,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
             val host = BuildConfig.HOST
             val endpoint = resources.getString(R.string.kennel_avatar_endpoint)
-            val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
             val imageLoader = ImageLoader(host, endpoint, kennel.avatarUrl)
             imageLoader.setPhotoToView(avatar, token)
 

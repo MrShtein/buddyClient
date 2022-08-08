@@ -469,14 +469,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun getAnimalBreeds(animalType: Int): List<Breed> =
         withContext(Dispatchers.IO) {
             if (animalType != 0) {
-                val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+                val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
                 val response = retrofitService.getAnimalsBreed(token, animalType)
                 if (response.isSuccessful) {
                     return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
                 } else {
                     when (response.code()) {
                         403 -> {
-                            storage.writeString(SharedPreferences.TOKEN_KEY, "")
+                            storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
                             val msg = requireContext().resources.getString(R.string.bad_token_msg)
                             throw BadTokenException(msg)
                         }
@@ -492,7 +492,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
-            val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
             val response = retrofitService.getAnimalsCharacteristicByCharacteristicTypeId(
                 token, colorId
             )
@@ -501,7 +501,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             } else {
                 when (response.code()) {
                     403 -> {
-                        storage.writeString(SharedPreferences.TOKEN_KEY, "")
+                        storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
                         val msg = requireContext().resources.getString(R.string.bad_token_msg)
                         throw BadTokenException(msg)
                     }
@@ -513,12 +513,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
     private suspend fun addNewAnimal() = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         return@withContext retrofitService.addNewAnimal(token, animalDto)
     }
 
     private suspend fun updateAnimal() = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         return@withContext retrofitService.updateAnimal(token, animalDto)
     }
 
@@ -742,7 +742,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     }
 
     private suspend fun uploadImage(uri: Uri): String = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.TOKEN_KEY, "")
+        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
         val resolver = requireContext().contentResolver
         val imgInBytes = resolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
         val contentType = resolver.getType(uri) ?: "image/jpeg"

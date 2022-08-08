@@ -129,7 +129,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 sharedPropertyStore.writeString(SharedPreferences.USER_CITY_KEY, loginInfo.cityInfo)
                 sharedPropertyStore.writeString(
-                    SharedPreferences.TOKEN_KEY,
+                    SharedPreferences.USER_TOKEN_KEY,
                     "Bearer ${loginInfo.token}"
                 )
                 sharedPropertyStore.writeLong(SharedPreferences.USER_ID_KEY, loginInfo.id)
