@@ -61,23 +61,8 @@ class SharedPreferences(val context: Context, private val storageName: String) {
     }
 
     companion object {
-        const val USER_VOLUNTEERS_KEY = "user_volunteers"
-        const val USER_KENNELS_KEY = "user_kennels"
-        const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
-        const val PERSISTENT_STORAGE_NAME: String = "buddy_storage"
-        const val TOKEN_KEY = "token_key"
-        const val USER_ID_KEY = "id"
-        const val USER_LOGIN_KEY = "user_login"
-        const val USER_ROLE_KEY = "user_role"
-        const val IS_LOCKED_KEY = "is_locked"
-        const val USER_NAME_KEY = "user_name"
-        const val USER_SURNAME_KEY = "user_surname"
-        const val USER_PHONE_NUMBER_KEY = "user_phone_number"
-        const val USER_GENDER_KEY = "user_gender"
-        const val USER_CITY_KEY = "user_city"
-        const val USER_AVATAR_URI_KEY = "user_avatar_uri"
-        const val KENNEL_AVATAR_URI_KEY = "kennel_avatar_uri"
-        const val DATABASE_VERSION = "database_version"
-        const val DATABASE_NAME = "database_name"
+
+
+
     }
 }
