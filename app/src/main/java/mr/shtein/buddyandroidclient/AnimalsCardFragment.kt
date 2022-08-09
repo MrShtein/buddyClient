@@ -26,12 +26,16 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Kennel
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
@@ -55,7 +59,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
     private lateinit var callBtn: MaterialButton
-    private lateinit var storage: SharedPreferences
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
     private var animal: Animal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +76,6 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         setStatusBarColor(false)
         animal = arguments?.getParcelable("animal")
         val view = inflater.inflate(R.layout.animal_card_fragment, container, false)
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -172,7 +175,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
             val host = BuildConfig.HOST
             val endpoint = resources.getString(R.string.kennel_avatar_endpoint)
-            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+            val token = userPropertiesRepository.getUserToken()
             val imageLoader = ImageLoader(host, endpoint, kennel.avatarUrl)
             imageLoader.setPhotoToView(avatar, token)
 

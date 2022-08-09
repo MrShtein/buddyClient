@@ -18,9 +18,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.android.ext.android.inject
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val ANIMAL_LIST_LABEL = "animals_list_fragment"
@@ -30,6 +32,7 @@ private const val LAST_FRAGMENT_KEY = "last_fragment"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNav: BottomNavigationView
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +70,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.profile_graph -> {
-                    val sharedPreferenceStore =
-                        SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-                    val token: String = sharedPreferenceStore.readString(SharedPreferences.USER_TOKEN_KEY, "")
+                    val token: String = userPropertiesRepository.getUserToken()
                     if (token == "") {
                         BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
                         return@setOnItemSelectedListener false
@@ -91,9 +92,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.kennel_graph -> {
-                    val sharedPreferenceStore =
-                        SharedPreferences(this, SharedPreferences.PERSISTENT_STORAGE_NAME)
-                    val token: String = sharedPreferenceStore.readString(SharedPreferences.USER_TOKEN_KEY, "")
+                    val token: String = userPropertiesRepository.getUserToken()
                     if (token == "") {
                         BottomSheetDialogShower.createAndShowBottomSheetDialog(bottomNav, navController)
                         return@setOnItemSelectedListener false
@@ -134,18 +133,6 @@ class MainActivity : AppCompatActivity() {
                 } else -> false
             }
         }
-
-//        bottomNav.menu.findItem(R.id.profile_graph).setOnMenuItemClickListener {
-//
-//        }
-//
-//        bottomNav.menu.findItem(R.id.kennel_graph).setOnMenuItemClickListener {
-//
-//        }
-//
-//        bottomNav.menu.findItem(R.id.animals_feed_graph).setOnMenuItemClickListener {
-//
-//        }
     }
 
     private fun hideBottomNav() {
@@ -157,8 +144,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun Fragment.showBadTokenDialog() {
-    val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
+fun Fragment.showBadTokenDialog(userPropertiesRepository: UserPropertiesRepository) {
     val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
         .setView(R.layout.bad_token_dialog)
@@ -168,7 +154,7 @@ fun Fragment.showBadTokenDialog() {
     val okBtn: Button? = dialog.findViewById(R.id.bad_token_dialog_ok_btn)
 
     okBtn?.setOnClickListener {
-        storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
+        userPropertiesRepository.saveUserToken("")
     }
 }
 

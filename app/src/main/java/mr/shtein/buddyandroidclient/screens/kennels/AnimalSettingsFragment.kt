@@ -21,6 +21,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setStatusBarColor
@@ -55,6 +56,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animal: Animal? = null
     private val retrofitService: RetrofitService by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,8 +156,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     }
 
     private fun buildAndShowDeleteAnimalDialog() {
-        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.animal_delete_dialog)

@@ -26,18 +26,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.DatabasePropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.db.CityDbHelper
 import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.CityArrayAdapter
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-private const val MAG = "City"
 const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
 const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
-const val SPLASH_SCREEN_ID = "startFragment"
 const val IS_FROM_CITY = "is_from_city"
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
@@ -47,6 +50,8 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private lateinit var cityInputContainer: TextInputLayout
     private lateinit var textHint: TextView
     private val coroutine = CoroutineScope(Dispatchers.Main)
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,10 +107,8 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                 textHint.setText(R.string.city_choice_description_text_else_from_settings)
             }
             val cityChoiceItem = adapter.getItemAtPosition(position) as CityChoiceItem
-            val sharedPropertyWriter =
-                SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
             val cityForStorage = makeStringForCityStorage(cityChoiceItem)
-            sharedPropertyWriter.writeString(SharedPreferences.USER_CITY_KEY, cityForStorage)
+            userPropertiesRepository.saveUserCity(cityForStorage)
 
             when (navLabel) {
                 "UserSettingsFragment" -> {
@@ -169,9 +172,9 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
         withContext(Dispatchers.IO) {
             val context = requireContext()
             val db = CityDbHelper(context).readableDatabase
-            val storage = SharedPreferences(context, SharedPreferences.PERSISTENT_STORAGE_NAME)
+            val databaseName = databasePropertiesRepository.getDatabaseName()
             val cursor = db.query(
-                storage.readString(SharedPreferences.DATABASE_NAME, ""),
+                databaseName,
                 null, null, null,
                 null, null, null, null
             )

@@ -13,13 +13,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
     private var isInsetsWorked = false
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +59,11 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             }
             WindowInsetsCompat.CONSUMED
         }
-        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         view.postDelayed({
             isInsetsWorked = false
 
-            if (storage.readString(SharedPreferences.USER_CITY_KEY, "") == "") {
+            val city = userPropertiesRepository.getUserCity()
+            if (city == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
 

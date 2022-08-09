@@ -25,12 +25,14 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
 import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import kotlin.math.log
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -44,6 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var isPasswordChecked: Boolean? = null
     private lateinit var coroutine: CoroutineScope
     private val retrofitUserRepository: RetrofitUserRepository by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onStart() {
         super.onStart()
@@ -118,8 +121,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         user.email = email
         user.password = password
 
-        val sharedPropertyStore =
-            SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         val serverErrorMsg = getString(R.string.server_error_msg)
 
         coroutine.launch {
@@ -127,28 +128,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val loginResult = retrofitUserRepository.signIn(user)
                 val loginInfo: LoginInfo = loginResult.loginInfo
 
-                sharedPropertyStore.writeString(SharedPreferences.USER_CITY_KEY, loginInfo.cityInfo)
-                sharedPropertyStore.writeString(
-                    SharedPreferences.USER_TOKEN_KEY,
-                    "Bearer ${loginInfo.token}"
-                )
-                sharedPropertyStore.writeLong(SharedPreferences.USER_ID_KEY, loginInfo.id)
-                sharedPropertyStore.writeString(SharedPreferences.USER_LOGIN_KEY, loginInfo.login)
-                sharedPropertyStore.writeString(SharedPreferences.USER_ROLE_KEY, loginInfo.role)
-                sharedPropertyStore.writeBoolean(
-                    SharedPreferences.IS_LOCKED_KEY,
-                    loginInfo.isLocked
-                )
-                sharedPropertyStore.writeString(SharedPreferences.USER_NAME_KEY, loginInfo.name)
-                sharedPropertyStore.writeString(
-                    SharedPreferences.USER_SURNAME_KEY,
-                    loginInfo.surname
-                )
-                sharedPropertyStore.writeString(
-                    SharedPreferences.USER_PHONE_NUMBER_KEY,
-                    loginInfo.phone
-                )
-                sharedPropertyStore.writeString(SharedPreferences.USER_GENDER_KEY, loginInfo.gender)
+                userPropertiesRepository.saveUserCity(loginInfo.cityInfo)
+                userPropertiesRepository.saveUserToken("Bearer ${loginInfo.token}")
+                userPropertiesRepository.saveUserId(loginInfo.id)
+                userPropertiesRepository.saveUserLogin(loginInfo.login)
+                userPropertiesRepository.saveUserRole(loginInfo.role)
+                userPropertiesRepository.saveIsUserLocked(loginInfo.isLocked)
+                userPropertiesRepository.saveUserName(loginInfo.name)
+                userPropertiesRepository.saveUserSurname(loginInfo.surname)
+                userPropertiesRepository.saveUserPhoneNumber(loginInfo.phone)
+                userPropertiesRepository.saveUserGender(loginInfo.gender)
 
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.animalsListFragment, false)

@@ -28,12 +28,13 @@ import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.Exception
 import java.net.SocketTimeoutException
 
-class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment), KoinComponent {
+class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
     private lateinit var callbackForEmail: MailCallback

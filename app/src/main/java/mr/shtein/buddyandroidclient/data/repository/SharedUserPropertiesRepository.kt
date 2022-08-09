@@ -96,11 +96,11 @@ class SharedUserPropertiesRepository()  : UserPropertiesRepository, KoinComponen
         storage.writeString(USER_CITY_KEY, userCity)
     }
 
-    override fun getUserUriKey(): String {
+    override fun getUserUri(): String {
         return storage.readString(USER_AVATAR_URI_KEY, "")
     }
 
-    override fun saveUserUriKey(userUriKey: String) {
+    override fun saveUserUri(userUriKey: String) {
         storage.writeString(USER_AVATAR_URI_KEY, userUriKey)
     }
 

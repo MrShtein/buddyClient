@@ -19,6 +19,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
@@ -54,6 +55,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var isReadyKennelsList = false
     private var volunteersList = mutableListOf<KennelPreview>()
     private val retrofitService: RetrofitService by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +91,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         coroutineScope.launch {
-            val personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+            val personId = userPropertiesRepository.getUserId()
             getKennels(personId)
             initRecyclerView(view)
             if (kennelsList.size == 0) {
@@ -109,7 +111,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private fun initViews(view: View) {
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         kennelsBtn = view.findViewById(R.id.add_kennel_fragment_kennels_btn)
         volunteersBtn = view.findViewById(R.id.add_kennel_fragment_volunteers_btn)
         kennelsUnderscore = view.findViewById(R.id.add_kennel_fragment_kennel_underscore)
@@ -156,7 +157,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private suspend fun getKennels(personId: Long) = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
         val response = retrofitService.getKennelsByPersonId(token, personId)
         if (response.isSuccessful) {
             val kennelResponsePreview = response.body()
@@ -189,7 +190,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         kennelRecycler =
             view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_list)
         kennelAdapter = KennelsAdapter(
-            storage.readString(SharedPreferences.USER_TOKEN_KEY, ""),
+            userPropertiesRepository.getUserToken(),
             kennelsList,
             object : KennelsAdapter.OnKennelItemClickListener {
                 override fun onClick(kennelItem: KennelPreview) {

@@ -10,10 +10,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -25,7 +29,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private var personStatus: TextView? = null
     private var personSettingsBtn: ImageButton? = null
     private lateinit var exitBtn: MaterialButton
-    private lateinit var storage: SharedPreferences
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +51,10 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        storage = SharedPreferences(
-            requireContext(),
-            SharedPreferences.PERSISTENT_STORAGE_NAME
-        )
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
-        setImageToAvatar(storage)
+        setImageToAvatar()
         setTextToViews()
         setListeners()
     }
@@ -72,15 +72,14 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             findNavController().navigate(R.id.action_userProfileFragment_to_userSettingsFragment)
         }
         exitBtn.setOnClickListener {
-            storage.cleanAllData()
+            userPropertiesRepository.removeAll() //TODO Проверить нужно ли еще что-то стирать
             findNavController().navigate(R.id.action_userProfileFragment_to_cityChoiceFragment)
         }
     }
 
     private fun setTextToViews() {
-        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val name = storage.readString(SharedPreferences.USER_NAME_KEY, "")
-        val status = storage.readString(SharedPreferences.USER_ROLE_KEY, "")
+        val name = userPropertiesRepository.getUserName()
+        val status = userPropertiesRepository.getUserRole()
 
         personName?.text = name
         personStatus?.text =
@@ -92,8 +91,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             }
     }
 
-    private fun setImageToAvatar(storage: SharedPreferences) {
-        val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
+    private fun setImageToAvatar() {
+        val imageUri = userPropertiesRepository.getUserUri()
         if (imageUri == "") {
             personAvatarImg?.setImageResource(R.drawable.user_photo_placeholder)
         } else {

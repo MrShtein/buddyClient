@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.*
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Gender
@@ -29,11 +30,15 @@ import mr.shtein.buddyandroidclient.model.ImageContainer
 import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
+import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 private const val IMAGE_TYPE = "image/*"
@@ -111,7 +116,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private var animalColors: List<AnimalCharacteristic> = listOf()
     private var deletedImage: ImageContainer? = null
     private var isInsetsWorked = false
-    private val retrofitService by inject()
+    private val retrofitService: RetrofitService by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,7 +168,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         animalForChange = arguments?.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT)
         isFromAnimalSettings = arguments
             ?.getBoolean(FROM_SETTINGS_FRAGMENT_KEY, false) ?: false
@@ -176,7 +181,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             animalDto.animalTypeId = arguments?.getInt(ANIMAL_TYPE_ID_KEY) ?: 0
         }
 
-        animalDto.personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+        animalDto.personId = userPropertiesRepository.getUserId()
         initViews(view)
         setListeners(view)
 
@@ -469,14 +474,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun getAnimalBreeds(animalType: Int): List<Breed> =
         withContext(Dispatchers.IO) {
             if (animalType != 0) {
-                val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+                val token = userPropertiesRepository.getUserToken()
                 val response = retrofitService.getAnimalsBreed(token, animalType)
                 if (response.isSuccessful) {
                     return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
                 } else {
                     when (response.code()) {
                         403 -> {
-                            storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
+                            userPropertiesRepository.saveUserToken("")
                             val msg = requireContext().resources.getString(R.string.bad_token_msg)
                             throw BadTokenException(msg)
                         }
@@ -492,7 +497,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
-            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+            val token = userPropertiesRepository.getUserToken()
             val response = retrofitService.getAnimalsCharacteristicByCharacteristicTypeId(
                 token, colorId
             )
@@ -501,7 +506,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             } else {
                 when (response.code()) {
                     403 -> {
-                        storage.writeString(SharedPreferences.USER_TOKEN_KEY, "")
+                        userPropertiesRepository.saveUserToken("")
                         val msg = requireContext().resources.getString(R.string.bad_token_msg)
                         throw BadTokenException(msg)
                     }
@@ -513,12 +518,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
     private suspend fun addNewAnimal() = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
         return@withContext retrofitService.addNewAnimal(token, animalDto)
     }
 
     private suspend fun updateAnimal() = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
         return@withContext retrofitService.updateAnimal(token, animalDto)
     }
 
@@ -668,7 +673,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 } catch (ex: BadTokenException) {
                     dialog.dismiss()
                     Log.d("server", SERVER_ERROR)
-                    showBadTokenDialog()
+                    showBadTokenDialog(userPropertiesRepository)
                 } catch (ex: ServerErrorException) {
                     dialog.dismiss()
                     Log.d("server", SERVER_ERROR)
@@ -742,7 +747,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     }
 
     private suspend fun uploadImage(uri: Uri): String = withContext(Dispatchers.IO) {
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
         val resolver = requireContext().contentResolver
         val imgInBytes = resolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
         val contentType = resolver.getType(uri) ?: "image/jpeg"

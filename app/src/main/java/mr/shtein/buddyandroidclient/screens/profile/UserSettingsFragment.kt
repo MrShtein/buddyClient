@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
@@ -31,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
@@ -61,7 +61,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val NO_AUTHORIZE_TEXT = "Ошибка авторизации"
         const val MAIL_FAILURE_TEXT = "Нет интернета"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
-        const val DESTINATION_KEY = "destination_key"
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
@@ -90,7 +89,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var repeatedNewPwdContainer: TextInputLayout
     private lateinit var saveBtn: MaterialButton
     private lateinit var token: String
-    private lateinit var storage: SharedPreferences
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var emailCallBack: MailCallback
     private lateinit var dialog: AlertDialog
@@ -99,6 +97,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
     private val retrofitService: RetrofitService by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     private var motionLayout: MotionLayout? = null
 
@@ -123,15 +122,12 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     coroutineScope.launch {
                         copyFileToInternalStorage(uri)
                     }
-                    storage.writeString(SharedPreferences.USER_AVATAR_URI_KEY,
-                        "${requireContext().filesDir}/$PERSON_AVATAR_FILE_NAME")
+                    userPropertiesRepository
+                        .saveUserUri(
+                            "${requireContext().filesDir}/$PERSON_AVATAR_FILE_NAME"
+                        )
                 }
             }
-
-
-        //val inflater = LayoutInflater.from(requireContext())
-        // val userSettingsDialog = inflater.inflate(R.layout.user_settings_dialog, null)
-        //
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,8 +161,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         avatarImg = view.findViewById(R.id.user_settings_avatar_button)
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+        personId = userPropertiesRepository.getUserId()
 
 
         emailCallBack = object : MailCallback {
@@ -195,14 +190,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun setUserCurrentUserSettings() {
-        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        userName.setText(storage.readString(SharedPreferences.USER_NAME_KEY, ""))
-        userSurname.setText(storage.readString(SharedPreferences.USER_SURNAME_KEY, ""))
-        setGender(storage)
-        setCity(storage)
-        phoneNumber.setText(storage.readString(SharedPreferences.USER_PHONE_NUMBER_KEY, ""))
-        email.setText(storage.readString(SharedPreferences.USER_LOGIN_KEY, ""))
-        personId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+        userName.setText(userPropertiesRepository.getUserName())
+        userSurname.setText(userPropertiesRepository.getUserSurname())
+        setGender()
+        setCity()
+        phoneNumber.setText(userPropertiesRepository.getUserPhoneNumber())
+        email.setText(userPropertiesRepository.getUserLogin())
+        personId = userPropertiesRepository.getUserId()
         if (!isTextChange) {
             saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
         }
@@ -210,16 +204,16 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         setImageToAvatar()
     }
 
-    private fun setGender(sharedPref: SharedPreferences) {
-        val gender = sharedPref.readString(SharedPreferences.USER_GENDER_KEY, "")
+    private fun setGender() {
+        val gender = userPropertiesRepository.getUserGender()
         when (gender) {
             "Мужской" -> maleRadioBtn.isChecked = true
             "Женский" -> femaleRadioBtn.isChecked = true
         }
     }
 
-    private fun setCity(sharedPref: SharedPreferences) {
-        val cityInfo = sharedPref.readString(SharedPreferences.USER_CITY_KEY, "")
+    private fun setCity() {
+        val cityInfo = userPropertiesRepository.getUserCity()
         val (id, name, region) = cityInfo.split(",")
         val visibleCityInfo = "$name, $region"
         cityId = id.toLong()
@@ -243,13 +237,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         userSurname.addTextChangedListener(textWatcher)
 
         maleRadioBtn.setOnClickListener {
-                isTextChange = true
-                changeSaveBtnColor(isTextChange)
+            isTextChange = true
+            changeSaveBtnColor(isTextChange)
         }
 
         femaleRadioBtn.setOnClickListener {
-                isTextChange = true
-                changeSaveBtnColor(isTextChange)
+            isTextChange = true
+            changeSaveBtnColor(isTextChange)
         }
 
         cityContainer.viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -327,7 +321,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     repeatedNewPwd.text.toString(),
                     newPwd
                 )
-                token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+                token = userPropertiesRepository.getUserToken()
                 passwordValidator.assertIsValidOldPassword(
                     oldPwd.text.toString(),
                     personId,
@@ -365,7 +359,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun upgradePerson() {
 
 
-        var gender = getGender()
+        val gender = getGender()
 
         val personRequest = PersonRequest(
             personId,
@@ -379,7 +373,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         )
 
         val headerMap = hashMapOf<String, String>()
-        token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
         retrofitService.upgradePersonInfo(headerMap, personRequest)
             .enqueue(object : Callback<PersonResponse> {
@@ -408,17 +402,14 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun saveNewDataToStore(token: String) {
-        storage.writeString(SharedPreferences.USER_LOGIN_KEY, email.text.toString())
-        storage.writeString(SharedPreferences.USER_NAME_KEY, userName.text.toString())
-        storage.writeString(SharedPreferences.USER_SURNAME_KEY, userSurname.text.toString())
-        storage.writeString(SharedPreferences.USER_PHONE_NUMBER_KEY, phoneNumber.text.toString())
+        userPropertiesRepository.saveUserLogin(email.text.toString())
+        userPropertiesRepository.saveUserName(userName.text.toString())
+        userPropertiesRepository.saveUserSurname(userSurname.text.toString())
+        userPropertiesRepository.saveUserPhoneNumber(phoneNumber.text.toString())
         val genderForSave = getGender()
-        storage.writeString(SharedPreferences.USER_GENDER_KEY, genderForSave)
+        userPropertiesRepository.saveUserGender(genderForSave)
         if (token != "") {
-            storage.writeString(SharedPreferences.USER_TOKEN_KEY, token)
-
-            Log.d("token", storage.readString(SharedPreferences.USER_TOKEN_KEY, ""))
-            Log.d("token", token)
+            userPropertiesRepository.saveUserToken(token)
         }
     }
 
@@ -487,7 +478,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     }
 
     private fun setImageToAvatar() {
-        val imageUri = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
+        val imageUri = userPropertiesRepository.getUserUri()
         if (imageUri !== "") {
             avatarImg.setImageURI(Uri.parse(imageUri))
             avatarImg.scaleType = ImageView.ScaleType.CENTER_CROP

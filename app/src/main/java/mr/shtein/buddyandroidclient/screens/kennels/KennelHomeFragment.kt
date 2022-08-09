@@ -22,6 +22,7 @@ import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
@@ -57,12 +58,12 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var catCarousel: RecyclerView
     private lateinit var dogAdapter: DogPhotoAdapter
     private lateinit var catAdapter: CatPhotoAdapter
-    private lateinit var storage: SharedPreferences
     private lateinit var token: String
     private lateinit var dogsList: MutableList<Animal>
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
     private val retrofitService: RetrofitService by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +103,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         addCatsBtn = view.findViewById(R.id.kennel_home_add_cats_btn)
         catCarousel = view.findViewById(R.id.kennel_home_cat_carousel)
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
     }
 
     private fun setValuesToViews(kennelItem: KennelPreview) {
@@ -110,10 +110,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
         val imageLoader = ImageLoader(host, endpoint, photoName)
-        token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        token = userPropertiesRepository.getUserToken()
         imageLoader.setPhotoToView(kennelAvatar, token)
 
-        val uriForUserToken = storage.readString(SharedPreferences.USER_AVATAR_URI_KEY, "")
+        val uriForUserToken = userPropertiesRepository.getUserUri()
         if (uriForUserToken != "") {
             try {
                 Glide.with(this)
@@ -251,7 +251,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
-            val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+            val token = userPropertiesRepository.getUserToken()
             val response = retrofitService.getAnimalsByKennelIdAndAnimalType(
                 token, kennelId, animalType
             )
