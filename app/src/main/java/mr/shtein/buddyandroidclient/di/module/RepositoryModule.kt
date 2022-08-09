@@ -10,6 +10,6 @@ val repositoryModule: Module = module {
     single<UserRepository> { RetrofitUserRepository(get()) }
     single<LocationRepository> { RetrofitLocationRepository(get()) }
     single<UserPropertiesRepository> { SharedUserPropertiesRepository() }
-    single<KennelPropertiesRepository> { SharedKennelPropertiesRepository() }
-    single<DatabasePropertiesRepository> { SharedDatabasePropertiesRepository() }
+    factory<KennelPropertiesRepository> { SharedKennelPropertiesRepository() }
+    factory<DatabasePropertiesRepository> { SharedDatabasePropertiesRepository() }
 }
