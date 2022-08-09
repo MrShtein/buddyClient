@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
 import mr.shtein.buddyandroidclient.model.KennelRequest
@@ -55,9 +57,10 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var identificationNum: TextView
     private lateinit var saveBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
-    private lateinit var storage: SharedPreferences
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
     private val retrofitService: RetrofitService by inject()
+    private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +80,6 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     }
 
     private fun initViews(view: View) {
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
         avatarImg = view.findViewById(R.id.kennel_confirm_avatar)
         name = view.findViewById(R.id.kennel_confirm_name)
         phone = view.findViewById(R.id.kennel_confirm_phone)
@@ -133,7 +135,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                     val response = addNewKennel(avatarWrapper)
                     when (response.code()) {
                         201 -> {
-                            storage.writeString(SharedPreferences.USER_ROLE_KEY, ADMIN_ROLE_TXT)
+                            userPropertiesRepository.saveUserRole(ADMIN_ROLE_TXT)
                             avatarWrapper?.file?.delete()
                             showDialog(true)
                         }
@@ -163,13 +165,11 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         var requestFile: RequestBody? = null
         var body: MultipartBody.Part? = null
 
-
-        val storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
-        val token = storage.readString(SharedPreferences.USER_TOKEN_KEY, "")
+        val token = userPropertiesRepository.getUserToken()
         val headers = mutableMapOf<String, String>()
         headers["Authorization"] = token
 
-        settingsData.userId = storage.readLong(SharedPreferences.USER_ID_KEY, 0)
+        settingsData.userId = userPropertiesRepository.getUserId()
         val kennelSettings = Gson().toJson(settingsData)
         val requestBody = RequestBody.create(
             MultipartBody.FORM, kennelSettings
@@ -186,9 +186,9 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                 avatarWrapper.file.name,
                 requestFile
             )
-            retrofit.addNewKennel(headers, requestBody, body)
+            retrofitService.addNewKennel(headers, requestBody, body)
         } else {
-            retrofit.addNewKennel(headers, requestBody, null)
+            retrofitService.addNewKennel(headers, requestBody, null)
         }
 
 
@@ -240,7 +240,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
         okBtn?.setOnClickListener {
             dialog.dismiss()
-            storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+            kennelPropertiesRepository.saveKennelAvatarUri("")
             findNavController()
                 .navigate(
                     R.id.action_kennelConfirmFragment_to_addKennelFragment,

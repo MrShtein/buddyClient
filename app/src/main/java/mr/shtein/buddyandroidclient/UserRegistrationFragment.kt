@@ -22,23 +22,25 @@ import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
-import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.lang.Exception
 import java.net.SocketTimeoutException
 
-class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
+class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment), KoinComponent {
 
     private val regInfoModel: RegistrationInfoModel by activityViewModels()
     private lateinit var callbackForEmail: MailCallback
     private lateinit var fullEmailValidator: FullEmailValidator
-    private lateinit var storage: SharedPreferences
     private lateinit var coroutine: CoroutineScope
     private val retrofitUserRepository: RetrofitUserRepository by inject()
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +73,6 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        storage = SharedPreferences(requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME)
 
         val nameInputContainer: TextInputLayout =
             view.findViewById(R.id.registration_name_input_container)
@@ -188,7 +188,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                             nameValidator
                         )
                     if (container == null) {
-                        val cityInfo = storage.readString(SharedPreferences.USER_CITY_KEY, "")
+                        val cityInfo = userPropertiesRepository.getUserCity()
                         val newUser =
                             Person(
                                 emailInput.text.toString(),

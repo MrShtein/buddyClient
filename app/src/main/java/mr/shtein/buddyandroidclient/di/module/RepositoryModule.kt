@@ -9,7 +9,7 @@ val repositoryModule: Module = module {
     single<AnimalRepository> { RetrofitAnimalRepository(get()) }
     single<UserRepository> { RetrofitUserRepository(get()) }
     single<LocationRepository> { RetrofitLocationRepository(get()) }
-    single<SharedUserPropertiesRepository> { SharedUserPropertiesRepository() }
-    single<SharedKennelPropertiesRepository> { SharedKennelPropertiesRepository() }
-    single<SharedDatabasePropertiesRepository> { SharedDatabasePropertiesRepository() }
+    single<UserPropertiesRepository> { SharedUserPropertiesRepository() }
+    single<KennelPropertiesRepository> { SharedKennelPropertiesRepository() }
+    single<DatabasePropertiesRepository> { SharedDatabasePropertiesRepository() }
 }
