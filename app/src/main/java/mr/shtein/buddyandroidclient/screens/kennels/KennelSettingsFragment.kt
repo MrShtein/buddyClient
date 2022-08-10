@@ -3,7 +3,6 @@ package mr.shtein.buddyandroidclient.screens.kennels
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,10 +24,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
+import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
@@ -40,16 +42,13 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     companion object {
         const val CITY_REQUEST_KEY = "new_city_request"
-        const val CITY_BUNDLE_KEY = "new_city_bundle"
         private const val KENNEL_NAME_KEY = "isValidName"
         private const val PHONE_NUM_KEY = "isValidPhone"
         private const val EMAIL_KEY = "isValidEmail"
         private const val CITY_KEY = "isValidCity"
         private const val STREET_KEY = "isValidStreet"
         private const val HOUSE_KEY = "isValidHouseNum"
-        private const val BUILDING_KEY = "building_key"
         private const val IDENTIFICATION_NUM_KEY = "isValidIdentificationNum"
-        private const val AVATAR_URI_KEY = "avatar_uri"
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val KENNEL_AVATAR_FILE_NAME = "kennel_avt.jpeg"
 
@@ -79,11 +78,13 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private lateinit var getAvatarLauncher: ActivityResultLauncher<String>
     private var avatarUri: Uri? = null
     private var validationStoreForFields = KennelValidationStore()
-    private lateinit var storage: SharedPreferences
+    private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
 
     private var isFromCityChoice: Boolean = false
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private var cityId: Long = 0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +111,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     avatarImg.setImageURI(uri)
                     avatarUri = uri
                     copyFileToInternalStorage(uri)
-                    storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, newPathForAvt)
+                    kennelPropertiesRepository.saveKennelAvatarUri(newPathForAvt)
                 }
 
             }
@@ -127,9 +128,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     }
 
     private fun initViews(view: View) {
-        storage = SharedPreferences(
-            requireContext(), SharedPreferences.PERSISTENT_STORAGE_NAME
-        )
         avatarImg = view.findViewById(R.id.kennel_settings_avatar_img)
         photoBtn = view.findViewById(R.id.kennel_settings_photo_btn)
         avatarCancelBtn = view.findViewById(R.id.kennel_settings_cancel_avatar_btn)
@@ -175,7 +173,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         avatarCancelBtn.setOnClickListener {
-            storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+            kennelPropertiesRepository.saveKennelAvatarUri("")
             avatarImg.setImageDrawable(null)
             photoBtn.visibility = View.VISIBLE
             it.visibility = View.INVISIBLE
@@ -375,7 +373,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 identificationNumberInput.text.toString().toLong(),
                 ""
             )
-            storage.writeString(SharedPreferences.USER_ROLE_KEY, "")
+            userPropertiesRepository.saveUserRole("")
             val kennelRequestJson = Gson().toJson(kennelRequest)
             val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequestJson)
             findNavController()
@@ -403,7 +401,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     }
 
     private fun setAvatarImgIfExist() {
-        val avatarPath = storage.readString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+        val avatarPath = kennelPropertiesRepository.getKennelAvatarUri()
         if (avatarPath != "") {
             avatarImg.setImageURI(Uri.parse(avatarPath))
             photoBtn.visibility = View.INVISIBLE
@@ -421,6 +419,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     override fun onDestroy() {
         super.onDestroy()
-        storage.writeString(SharedPreferences.KENNEL_AVATAR_URI_KEY, "")
+        kennelPropertiesRepository.saveKennelAvatarUri("")
     }
 }
