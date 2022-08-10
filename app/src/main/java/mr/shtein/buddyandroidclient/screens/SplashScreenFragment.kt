@@ -19,6 +19,7 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 
 
 class SplashScreenFragment : Fragment(R.layout.start_fragment) {

@@ -3,6 +3,7 @@ package mr.shtein.buddyandroidclient.data.repository
 import android.content.Context
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import kotlin.math.log
@@ -22,7 +23,7 @@ const val USER_STORE_NAME = "userStore"
 
 class SharedUserPropertiesRepository()  : UserPropertiesRepository, KoinComponent {
 
-    private val storage: SharedPreferences by inject(qualifier =  named(USER_STORE_NAME))
+    private val storage: SharedPreferences by inject(named("userStore"))
 
     override fun getUserToken(): String {
         return storage.readString(USER_TOKEN_KEY, "")
