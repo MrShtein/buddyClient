@@ -26,6 +26,7 @@ import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
 import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject
@@ -45,7 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var isEmailChecked: Boolean? = null
     private var isPasswordChecked: Boolean? = null
     private lateinit var coroutine: CoroutineScope
-    private val retrofitUserRepository: RetrofitUserRepository by inject()
+    private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onStart() {

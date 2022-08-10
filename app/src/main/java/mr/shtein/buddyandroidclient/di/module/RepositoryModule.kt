@@ -1,9 +1,7 @@
 package mr.shtein.buddyandroidclient.di.module
 
 import mr.shtein.buddyandroidclient.data.repository.*
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.core.module.Module
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 

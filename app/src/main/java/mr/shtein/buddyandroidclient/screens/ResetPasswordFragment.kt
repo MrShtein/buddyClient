@@ -18,6 +18,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.databinding.ResetPasswordFragmentBinding
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import java.net.ConnectException
@@ -30,7 +31,7 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
 
     private var _binding: ResetPasswordFragmentBinding? = null
     private val binding get() = _binding!!
-    private val retrofitUserRepository: RetrofitUserRepository by inject()
+    private val retrofitUserRepository: UserRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

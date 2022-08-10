@@ -23,6 +23,7 @@ import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
@@ -40,7 +41,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private lateinit var callbackForEmail: MailCallback
     private lateinit var fullEmailValidator: FullEmailValidator
     private lateinit var coroutine: CoroutineScope
-    private val retrofitUserRepository: RetrofitUserRepository by inject()
+    private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
 
