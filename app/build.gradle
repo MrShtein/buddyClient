@@ -32,9 +32,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
 
-        buildConfigField "String", "USER_STORAGE_NAME", "user_storage"
-        buildConfigField "String", "KENNEL_STORAGE_NAME", "kennel_storage"
-        buildConfigField "String", "DATABASE_STORAGE_NAME", "database_storage"
+        buildConfigField "String", "USER_STORAGE_NAME", "\"user_storage\""
+        buildConfigField "String", "KENNEL_STORAGE_NAME", "\"kennel_storage\""
+        buildConfigField "String", "DATABASE_STORAGE_NAME", "\"database_storage\""
 
     }
 
