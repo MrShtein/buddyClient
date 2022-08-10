@@ -16,12 +16,12 @@ class SharedDatabasePropertiesRepository() : DatabasePropertiesRepository, KoinC
 
     private val storage: SharedPreferences by inject(qualifier = named(DATABASE_STORE_NAME))
 
-    override fun getDatabaseVersion(): String {
-        return storage.readString(DATABASE_VERSION, "")
+    override fun getDatabaseVersion(): Int {
+        return storage.readInt(DATABASE_VERSION, 0)
     }
 
-    override fun saveDatabaseVersion(databaseVersion: String) {
-        storage.writeString(DATABASE_VERSION, databaseVersion)
+    override fun saveDatabaseVersion(databaseVersion: Int) {
+        storage.writeInt(DATABASE_VERSION, databaseVersion)
     }
 
     override fun getDatabaseName(): String {

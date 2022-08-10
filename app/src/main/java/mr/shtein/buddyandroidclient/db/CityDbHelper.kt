@@ -3,7 +3,11 @@ package mr.shtein.buddyandroidclient.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import mr.shtein.buddyandroidclient.data.repository.DatabasePropertiesRepository
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import org.koin.core.Koin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.io.FileOutputStream
 
@@ -11,22 +15,18 @@ const val DATABASE_NAME = "buddy"
 const val DATABASE_VERSION = 1
 const val ASSETS_PATH = "databases"
 
-class CityDbHelper(val context: Context) : SQLiteOpenHelper(
+class CityDbHelper(val context: Context) : SQLiteOpenHelper (
     context, DATABASE_NAME, null, DATABASE_VERSION
-) {
-    private val storage = SharedPreferences(context, SharedPreferences.PERSISTENT_STORAGE_NAME)
+), KoinComponent {
+    private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
 
     private fun installDatabaseIsOutdated(): Boolean {
-        return storage.readInt(SharedPreferences.DATABASE_VERSION, 0) < DATABASE_VERSION
+        return databasePropertiesRepository.getDatabaseVersion() < DATABASE_VERSION
     }
 
     private fun writeDatabaseInfoInPreference() {
-        storage.writeInt(
-            SharedPreferences.DATABASE_VERSION, DATABASE_VERSION
-        )
-        storage.writeString(
-            SharedPreferences.DATABASE_NAME, DATABASE_NAME
-        )
+        databasePropertiesRepository.saveDatabaseVersion(DATABASE_VERSION)
+        databasePropertiesRepository.saveDatabaseName(DATABASE_NAME)
     }
 
     private fun installOrUpdateIfNecessary() {
