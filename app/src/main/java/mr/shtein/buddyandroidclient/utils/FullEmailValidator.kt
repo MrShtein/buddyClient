@@ -70,7 +70,7 @@ class FullEmailValidator (
     }
 
     private fun isEmailExists(emailCheckRequest: EmailCheckRequest, callback: MailCallback) {
-        emailService.isEmailExists(emailCheckRequest)
+        retrofitService.isEmailExists(emailCheckRequest)
             .enqueue(object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     val value: Boolean? = response.body()
