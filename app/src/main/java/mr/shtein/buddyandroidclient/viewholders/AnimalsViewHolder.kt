@@ -37,7 +37,7 @@ class AnimalsViewHolder(
     init {
         itemView.setOnClickListener(this)
         locationBtn.setOnClickListener {
-            onLocationBtnClickListener.onClickToLocationBtn()
+            onLocationBtnClickListener.clickToLocationBtn()
         }
     }
 
@@ -52,7 +52,7 @@ class AnimalsViewHolder(
         this.animalColor.text =
             currentContext.getString(R.string.animal_color, animal.characteristics["color"])
         setPrimaryPhoto(animal)
-        makeViewByState(animal?.locationState ?: LocationState.INIT_STATE, animal.distance)
+        makeViewByState(animal.locationState ?: LocationState.INIT_STATE, animal.distance)
     }
 
     fun bindDistanceText(distance: String) {

@@ -6,8 +6,8 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 
-class RetrofitLocationRepository(private val retrofitService: RetrofitService) :
-    LocationRepository {
+class RetrofitDistanceCounterRepository(private val retrofitService: RetrofitService) :
+    DistanceCounterRepository {
 
     override suspend fun getDistancesFromUser(
         token: String,

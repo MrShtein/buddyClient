@@ -56,6 +56,13 @@ class AnimalsAdapter(
         return animals.size
     }
 
+    fun updateAnimalList(newAnimalList: List<Animal>) {
+        val animalDiffUtil = AnimalDiffUtil(animals, newAnimalList)
+        val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
+        this.animals = newAnimalList.toList()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     private fun getItem(position: Int): Animal = animals[position]
 
 }

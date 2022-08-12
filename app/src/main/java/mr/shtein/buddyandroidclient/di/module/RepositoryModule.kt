@@ -8,7 +8,7 @@ import org.koin.dsl.module
 val repositoryModule: Module = module {
     single<AnimalRepository> { RetrofitAnimalRepository(get()) }
     single<UserRepository> { RetrofitUserRepository(get()) }
-    single<LocationRepository> { RetrofitLocationRepository(get()) }
+    single<DistanceCounterRepository> { RetrofitDistanceCounterRepository(get()) }
     single<UserPropertiesRepository> { SharedUserPropertiesRepository() }
     factory<KennelPropertiesRepository> { SharedKennelPropertiesRepository() }
     factory<DatabasePropertiesRepository> { SharedDatabasePropertiesRepository() }

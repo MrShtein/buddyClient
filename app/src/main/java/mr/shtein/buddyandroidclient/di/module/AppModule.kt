@@ -1,6 +1,9 @@
 package mr.shtein.buddyandroidclient.di.module
 
+import android.app.Activity
 import android.content.Context
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.gson.GsonBuilder
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
@@ -16,6 +19,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 val appModule: Module = module {
     single { provideRetrofit() }
     single { provideApiService(get()) }
+    single { provideFusedLocationClient(androidContext())}
+    single { CancellationTokenSource() }
     single(named("userStore")) { provideUserStore(androidContext()) }
     single(named("kennelStore")) { provideKennelStore(androidContext()) }
     single(named("databaseStore")) { provideDatabaseStore(androidContext()) }
@@ -45,3 +50,6 @@ private fun provideKennelStore(context: Context) =
 
 private fun provideDatabaseStore(context: Context) =
     SharedPreferences(context, BuildConfig.DATABASE_STORAGE_NAME)
+
+private fun provideFusedLocationClient(context: Context) =
+    LocationServices.getFusedLocationProviderClient(context)
