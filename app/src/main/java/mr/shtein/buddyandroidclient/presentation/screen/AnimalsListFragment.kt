@@ -155,6 +155,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun updateList(animalList: List<Animal>) {
         adapter.updateAnimalList(animalList)
+        binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
+        if (binding.animalsListSwipeLayout.isRefreshing) {
+            binding.animalsListSwipeLayout.isRefreshing = false
+        }
     }
 
     private fun initRecyclerView() {
@@ -223,6 +227,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
 
         binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
+            val isDogChecked = binding.animalsListDogChip.isChecked
+            animalListPresenter?.onAnimalShowCommand(isDogChecked, isCatChecked)
+        }
+
+        binding.animalsListSwipeLayout.setOnRefreshListener {
+            val isCatChecked = binding.animalsListCatChip.isChecked
             val isDogChecked = binding.animalsListDogChip.isChecked
             animalListPresenter?.onAnimalShowCommand(isDogChecked, isCatChecked)
         }
