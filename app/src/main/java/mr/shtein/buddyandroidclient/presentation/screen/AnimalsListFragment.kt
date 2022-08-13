@@ -154,6 +154,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         if (binding.animalsListSwipeLayout.isRefreshing) {
             binding.animalsListSwipeLayout.isRefreshing = false
         }
+        animalListPresenter.onUpdatedList(animalList)
     }
 
     private fun initRecyclerView() {

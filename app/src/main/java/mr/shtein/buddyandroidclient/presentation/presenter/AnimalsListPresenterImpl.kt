@@ -32,7 +32,7 @@ interface AnimalListPresenter {
     fun successLocation(token: String, coordinates: Coordinates)
     fun failureLocation()
     fun onClickToLocationBtn()
-
+    fun onUpdatedList(newAnimalList: List<Animal>)
 }
 
 class AnimalsListPresenterImpl(
@@ -46,9 +46,6 @@ class AnimalsListPresenterImpl(
     private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
-
-    private var isAfterFragmentCreated: Boolean = false
-
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
@@ -109,6 +106,10 @@ class AnimalsListPresenterImpl(
         }
     }
 
+    override fun onUpdatedList(newAnimalList: List<Animal>) {
+        animalList = newAnimalList
+    }
+
     override fun successLocation(token: String, coordinates: Coordinates) {
         coroutine.launch {
             try {
@@ -149,7 +150,6 @@ class AnimalsListPresenterImpl(
 
     override fun onDetachView() {
         animalListView = null
-        isAfterFragmentCreated = true
         coroutine.cancel()
     }
 
