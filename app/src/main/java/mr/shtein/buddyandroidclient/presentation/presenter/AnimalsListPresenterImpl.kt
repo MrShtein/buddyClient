@@ -69,6 +69,7 @@ class AnimalsListPresenterImpl(
                     locationState = LocationState.SEARCH_STATE
                     val updatedAnimalList: List<Animal> = changeLocationState(locationState)
                     animalListView?.updateList(updatedAnimalList)
+                    animalListView?.setAnimalCountText(updatedAnimalList.size)
                     val token: String = userPropertiesRepository.getUserToken()
                     val coordinates = locationService.getCurrentDistance()
                     successLocation(token, coordinates)
@@ -96,6 +97,7 @@ class AnimalsListPresenterImpl(
     override fun onClickToLocationBtn() {
         val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
         animalListView?.updateList(animalsWithNewState)
+        animalListView?.setAnimalCountText(animalList?.size!!)
         coroutine.launch {
             try {
                 val coordinates: Coordinates = locationService.getCurrentDistance()
@@ -116,6 +118,7 @@ class AnimalsListPresenterImpl(
                 animalList = listWithDistances
                 val listWithNewState: List<Animal> = changeLocationState(locationState)
                 animalListView?.updateList(listWithNewState)
+                animalListView?.setAnimalCountText(animalList?.size!!)
             } catch (ex: ConnectException) {
                 animalListView?.showError(R.string.internet_failure_text)
                 locationState = LocationState.BAD_RESULT_STATE
