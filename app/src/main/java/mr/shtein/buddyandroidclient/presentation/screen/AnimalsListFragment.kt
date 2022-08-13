@@ -149,12 +149,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     }
 
     override fun updateList(animalList: List<Animal>) {
-        adapter.updateAnimalList(animalList)
+        val previousListSize = adapter.updateAnimalList(animalList)
         binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
-        if (binding.animalsListSwipeLayout.isRefreshing) {
-            binding.animalsListSwipeLayout.isRefreshing = false
-        }
-        animalListPresenter.onUpdatedList(animalList)
+        binding.animalsListSwipeLayout.isRefreshing = false
+        animalListPresenter.onUpdatedList(animalList, previousListSize)
     }
 
     private fun initRecyclerView() {
