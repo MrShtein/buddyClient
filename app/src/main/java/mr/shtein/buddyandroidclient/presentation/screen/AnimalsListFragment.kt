@@ -93,8 +93,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onDestroy() {
         super.onDestroy()
-        val appContext = requireContext().applicationContext as BuddyApplication
-        appContext.animalListPresenter = animalListPresenter
         animalListPresenter?.onDetachView()
     }
 
