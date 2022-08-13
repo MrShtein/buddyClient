@@ -13,10 +13,11 @@ import mr.shtein.buddyandroidclient.model.Coordinates
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class LocationServiceInteractor() : LocationInteractor, KoinComponent {
+class LocationServiceInteractor(
+    private val fusedLocationClient: FusedLocationProviderClient,
+    private val cancelTokenSourceForLocation: CancellationTokenSource
+    ) : LocationInteractor {
 
-    private val fusedLocationClient: FusedLocationProviderClient by inject()
-    private val cancelTokenSourceForLocation: CancellationTokenSource by inject()
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun getCurrentDistance(): Coordinates = withContext(Dispatchers.IO) {

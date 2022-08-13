@@ -98,6 +98,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private var isTextChange = false
     private val retrofitService: RetrofitService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val passwordValidator: PasswordEmptyFieldValidator by inject()
 
     private var motionLayout: MotionLayout? = null
 
@@ -314,7 +315,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                     || repeatedNewPwd.text.toString() != ""
 
         if (isPasswordChange) {
-            val passwordValidator = PasswordEmptyFieldValidator()
             try {
                 passwordValidator.assertIsValidPassword(newPwd.text.toString())
                 passwordValidator.assertIsValidRepeatPassword(

@@ -11,9 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordEmptyFieldValidator(): EmptyFieldValidator(), KoinComponent {
-
-    val retrofitService: RetrofitService by inject()
+class PasswordEmptyFieldValidator(val retrofitService: RetrofitService): EmptyFieldValidator() {
 
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"

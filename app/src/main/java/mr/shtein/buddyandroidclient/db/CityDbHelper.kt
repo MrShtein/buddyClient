@@ -15,11 +15,12 @@ const val DATABASE_NAME = "buddy"
 const val DATABASE_VERSION = 1
 const val ASSETS_PATH = "databases"
 
-class CityDbHelper(val context: Context) : SQLiteOpenHelper (
+class CityDbHelper(
+    val context: Context,
+    private val databasePropertiesRepository: DatabasePropertiesRepository
+) : SQLiteOpenHelper (
     context, DATABASE_NAME, null, DATABASE_VERSION
-), KoinComponent {
-    private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
-
+) {
     private fun installDatabaseIsOutdated(): Boolean {
         return databasePropertiesRepository.getDatabaseVersion() < DATABASE_VERSION
     }

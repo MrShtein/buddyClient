@@ -26,9 +26,9 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
-import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.WorkFragment
+import org.koin.android.ext.android.inject
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
 private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
@@ -57,7 +57,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     private val binding get() = _binding!!
     private lateinit var adapter: AnimalsAdapter
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
-    private var animalListPresenter: AnimalListPresenter? = null
+    private val animalListPresenter: AnimalListPresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +77,14 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        animalListPresenter?.onAttachView(this)
+        animalListPresenter.onAttachView(this)
 
         setStatusBarColor(true)
         setInsetsListener(binding.animalChoiceChips)
         initRecyclerView()
         setListeners()
         binding.animalsListSearchProgressBar.visibility = View.VISIBLE
-        animalListPresenter?.onAnimalShowCommand(
+        animalListPresenter.onAnimalShowCommand(
             binding.animalsListDogChip.isChecked,
             binding.animalsListCatChip.isChecked
         )
@@ -93,16 +93,13 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onDestroy() {
         super.onDestroy()
-        animalListPresenter?.onDetachView()
+        animalListPresenter.onDetachView()
     }
 
     private fun initPresenter() {
         val appContext = requireContext().applicationContext as BuddyApplication
         if (appContext.animalListPresenter == null) {
-            animalListPresenter = AnimalsListPresenterImpl()
             appContext.animalListPresenter = animalListPresenter
-        } else {
-            animalListPresenter = appContext.animalListPresenter
         }
     }
 
@@ -114,7 +111,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             when {
                 (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
                         permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    animalListPresenter?.onClickToLocationBtn()
+                    animalListPresenter.onClickToLocationBtn()
                 }
                 else -> {
                     val failureText = getString(R.string.location_failure_text)
@@ -221,18 +218,18 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
         binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
             val isCatChecked = binding.animalsListCatChip.isChecked
-            animalListPresenter?.onAnimalShowCommand(isDogChecked, isCatChecked)
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
         }
 
         binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
             val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter?.onAnimalShowCommand(isDogChecked, isCatChecked)
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
         }
 
         binding.animalsListSwipeLayout.setOnRefreshListener {
             val isCatChecked = binding.animalsListCatChip.isChecked
             val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter?.onAnimalShowCommand(isDogChecked, isCatChecked)
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
         }
     }
 

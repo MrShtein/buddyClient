@@ -52,6 +52,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private val coroutine = CoroutineScope(Dispatchers.Main)
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
+    private val cityDbHelper: CityDbHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,7 +172,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private suspend fun getCitiesFromDb(): MutableList<CityChoiceItem> =
         withContext(Dispatchers.IO) {
             val context = requireContext()
-            val db = CityDbHelper(context).readableDatabase
+            val db = cityDbHelper.readableDatabase
             val databaseName = databasePropertiesRepository.getDatabaseName()
             val cursor = db.query(
                 databaseName,

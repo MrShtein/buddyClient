@@ -9,20 +9,22 @@ import org.koin.core.component.inject
 
 interface AnimalInteractor {
     suspend fun getAnimalsByFilter(animalFilter: List<Int>): List<Animal>
-    suspend fun getDistancesFromUser(token: String, coordinates: Coordinates) : HashMap<Int, Int>
+    suspend fun getDistancesFromUser(token: String, coordinates: Coordinates): HashMap<Int, Int>
 }
 
-class AnimalInteractorImpl() : AnimalInteractor, KoinComponent {
-
-    private val animalRepository: AnimalRepository by inject()
-    private val retrofitDistanceCounterRepository: DistanceCounterRepository by inject()
-
+class AnimalInteractorImpl(
+    private val animalRepository: AnimalRepository,
+    private val retrofitDistanceCounterRepository: DistanceCounterRepository
+) : AnimalInteractor {
 
     override suspend fun getAnimalsByFilter(animalFilter: List<Int>): List<Animal> {
         return animalRepository.getAnimals(animalFilter)
     }
 
-    override suspend fun getDistancesFromUser(token: String, coordinates: Coordinates) : HashMap<Int, Int> {
+    override suspend fun getDistancesFromUser(
+        token: String,
+        coordinates: Coordinates
+    ): HashMap<Int, Int> {
         return retrofitDistanceCounterRepository.getDistancesFromUser(token, coordinates)
     }
 }

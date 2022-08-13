@@ -2,11 +2,14 @@ package mr.shtein.buddyandroidclient.di.module
 
 import android.app.Activity
 import android.content.Context
+import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.gson.GsonBuilder
 import mr.shtein.buddyandroidclient.BuildConfig
+import mr.shtein.buddyandroidclient.db.CityDbHelper
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
@@ -21,6 +24,8 @@ val appModule: Module = module {
     single { provideApiService(get()) }
     single { provideFusedLocationClient(androidContext())}
     single { CancellationTokenSource() }
+    factory { CityDbHelper(androidContext(), get()) }
+    factory { PasswordEmptyFieldValidator(get()) }
     single(named("userStore")) { provideUserStore(androidContext()) }
     single(named("kennelStore")) { provideKennelStore(androidContext()) }
     single(named("databaseStore")) { provideDatabaseStore(androidContext()) }

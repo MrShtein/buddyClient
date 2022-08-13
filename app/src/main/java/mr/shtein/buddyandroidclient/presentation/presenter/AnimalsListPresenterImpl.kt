@@ -35,16 +35,18 @@ interface AnimalListPresenter {
 
 }
 
-class AnimalsListPresenterImpl() : AnimalListPresenter, KoinComponent {
-    private val animalInteractor: AnimalInteractor by inject()
+class AnimalsListPresenterImpl(
+    private val animalInteractor: AnimalInteractor,
+    private val locationService: LocationInteractor,
+    private val userPropertiesRepository: UserPropertiesRepository
+) : AnimalListPresenter {
 
     private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animalListView: AnimalListView? = null
     private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
-    private val locationService: LocationInteractor by inject()
-    private val userPropertiesRepository: UserPropertiesRepository by inject()
+
     private var isAfterFragmentCreated: Boolean = false
 
 

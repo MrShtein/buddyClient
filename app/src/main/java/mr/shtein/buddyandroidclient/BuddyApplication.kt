@@ -3,6 +3,7 @@ package mr.shtein.buddyandroidclient
 import android.app.Application
 import mr.shtein.buddyandroidclient.di.module.appModule
 import mr.shtein.buddyandroidclient.di.module.interactorModule
+import mr.shtein.buddyandroidclient.di.module.presenterModule
 import mr.shtein.buddyandroidclient.di.module.repositoryModule
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
 import org.koin.android.ext.koin.androidContext
@@ -18,7 +19,7 @@ class BuddyApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@BuddyApplication)
-            modules(appModule, repositoryModule, interactorModule)
+            modules(appModule, repositoryModule, interactorModule, presenterModule)
         }
     }
 

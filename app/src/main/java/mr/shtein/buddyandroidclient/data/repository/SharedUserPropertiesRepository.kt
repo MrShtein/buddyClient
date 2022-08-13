@@ -19,11 +19,9 @@ const val USER_GENDER_KEY = "user_gender"
 const val USER_CITY_KEY = "user_city"
 const val USER_AVATAR_URI_KEY = "user_avatar_uri"
 const val IS_LOCKED_KEY = "is_locked"
-const val USER_STORE_NAME = "userStore"
 
-class SharedUserPropertiesRepository()  : UserPropertiesRepository, KoinComponent {
 
-    private val storage: SharedPreferences by inject(named("userStore"))
+class SharedUserPropertiesRepository(private val storage: SharedPreferences)  : UserPropertiesRepository {
 
     override fun getUserToken(): String {
         return storage.readString(USER_TOKEN_KEY, "")

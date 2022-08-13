@@ -43,6 +43,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private lateinit var coroutine: CoroutineScope
     private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val passwordValidator: PasswordEmptyFieldValidator by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,7 +122,6 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
             }
         }
 
-        val passwordValidator = PasswordEmptyFieldValidator()
         val nameValidator = NameValidator(nameInput, nameInputContainer)
         fullEmailValidator = FullEmailValidator(
             EmailCheckRequest(emailInput.text.toString()), callbackForEmail, null
