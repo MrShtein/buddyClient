@@ -25,7 +25,7 @@ const val DOG_ID: Int = 1
 const val CAT_ID: Int = 2
 
 interface AnimalListPresenter {
-    fun onAnimalShowCommand(isDogChecked: Boolean, isCatChecked: Boolean)
+    fun onAnimalShowCommand(isDogChecked: Boolean, isCatChecked: Boolean, getFromNetwork: Boolean = true)
     fun onAttachView(view: AnimalListView)
     fun onDetachView()
     fun changeLocationState(state: LocationState): List<Animal>
@@ -52,11 +52,12 @@ class AnimalsListPresenterImpl(
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
-        isCatChecked: Boolean
+        isCatChecked: Boolean,
+        getFromNetwork: Boolean
     ) {
+        if (!getFromNetwork && animalList != null) {
             animalListView?.updateList(animalList!!)
             animalListView?.setAnimalCountText(animalList!!.size)
-            isAfterFragmentCreated = false
             return
         }
         val locationIsAllowed = animalListView?.checkLocationPermission()
