@@ -42,7 +42,6 @@ interface OnLocationBtnClickListener {
 }
 
 interface AnimalListView {
-    fun showAnimals(animalList: List<Animal>)
     fun updateList(animalList: List<Animal>)
     fun checkLocationPermission(): Boolean
     fun setAnimalCountText(animalsAmount: Int)
@@ -86,7 +85,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         binding.animalsListSearchProgressBar.visibility = View.VISIBLE
         animalListPresenter.onAnimalShowCommand(
             binding.animalsListDogChip.isChecked,
-            binding.animalsListCatChip.isChecked
+            binding.animalsListCatChip.isChecked,
+            false
         )
         return view
     }
@@ -166,11 +166,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             this@AnimalsListFragment
         )
         binding.animalList.adapter = adapter
-    }
-
-    override fun showAnimals(animalList: List<Animal>) {
-        adapter.updateAnimalList(animalList)
-        binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
     }
 
     override fun setAnimalCountText(animalsAmount: Int) {

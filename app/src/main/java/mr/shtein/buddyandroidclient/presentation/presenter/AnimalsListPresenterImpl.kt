@@ -54,8 +54,7 @@ class AnimalsListPresenterImpl(
         isDogChecked: Boolean,
         isCatChecked: Boolean
     ) {
-        if (isAfterFragmentCreated && animalList != null) {
-            animalListView?.showAnimals(animalList!!)
+            animalListView?.updateList(animalList!!)
             animalListView?.setAnimalCountText(animalList!!.size)
             isAfterFragmentCreated = false
             return
