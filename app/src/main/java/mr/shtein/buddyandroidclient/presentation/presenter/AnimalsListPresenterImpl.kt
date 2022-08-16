@@ -43,6 +43,7 @@ class AnimalsListPresenterImpl(
     private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
+    private var isUiMustUpdate = false
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
@@ -50,7 +51,12 @@ class AnimalsListPresenterImpl(
         getFromNetwork: Boolean
     ) {
         if (!getFromNetwork && animalList != null) {
+            pendingOrUpdateAnimalList(animalListView)
+            return
+        }
+        if (isUiMustUpdate) {
             animalListView?.updateList(animalList!!)
+            isUiMustUpdate = false
             return
         }
         val locationIsAllowed = animalListView?.checkLocationPermission()
@@ -60,16 +66,16 @@ class AnimalsListPresenterImpl(
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
                 if (locationIsAllowed == true) {
                     locationState = LocationState.SEARCH_STATE
-                    val updatedAnimalList: List<Animal> = changeLocationState(locationState)
-                    animalListView?.updateList(updatedAnimalList)
+                    animalList = changeLocationState(locationState)
+                    pendingOrUpdateAnimalList(animalListView)
                     val token: String = userPropertiesRepository.getUserToken()
                     val coordinates = locationService.getCurrentDistance()
                     successLocation(token, coordinates)
                     return@launch
                 }
                 animalList?.let {
-                    val updatedAnimalList: List<Animal> = changeLocationState(locationState)
-                    animalListView?.updateList(updatedAnimalList)
+                    animalList = changeLocationState(locationState)
+                    pendingOrUpdateAnimalList(animalListView)
                 }
 
             } catch (ex: ConnectException) {
@@ -85,8 +91,12 @@ class AnimalsListPresenterImpl(
 
     }
 
-    fun completeCommands(mes: (animalList: List<Animal>) -> Unit, animalList: List<Animal>) {
-        mes.invoke(animalList)
+    fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
+        if (animalListView == null) {
+            isUiMustUpdate = true
+        } else {
+            animalListView.updateList(animalList!!)
+        }
     }
 
     override fun onClickToLocationBtn() {
@@ -115,10 +125,8 @@ class AnimalsListPresenterImpl(
             try {
                 locationList = animalInteractor.getDistancesFromUser(token, coordinates)
                 locationState = LocationState.DISTANCE_VISIBLE_STATE
-                val listWithDistances: List<Animal> = setDistancesToAnimals(locationList!!)
-                animalList = listWithDistances
-                val listWithNewState: List<Animal> = changeLocationState(locationState)
-                animalListView?.updateList(listWithNewState)
+                animalList = setDistancesToAnimals(locationList!!)
+                animalList = changeLocationState(locationState)
             } catch (ex: ConnectException) {
                 animalListView?.showError(R.string.internet_failure_text)
                 locationState = LocationState.BAD_RESULT_STATE
@@ -133,14 +141,17 @@ class AnimalsListPresenterImpl(
                 changeLocationState(locationState)
             } catch (ex: Exception) {
                 ex.printStackTrace()
+            } finally {
+                pendingOrUpdateAnimalList(animalListView)
             }
         }
     }
 
     override fun failureLocation() {
         locationState = LocationState.BAD_RESULT_STATE
-        changeLocationState(locationState)
+        animalList = changeLocationState(locationState)
         animalListView?.showError(R.string.location_failure_text)
+        pendingOrUpdateAnimalList(animalListView)
     }
 
     override fun onAttachView(view: AnimalListView) {
