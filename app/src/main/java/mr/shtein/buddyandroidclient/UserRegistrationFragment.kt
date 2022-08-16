@@ -7,6 +7,8 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
@@ -179,40 +181,37 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
         view.findViewById<Button>(R.id.registration_kennel_name_fragment_button)
             .setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    view.windowInsetsController?.hide(WindowInsetsCompat.Type.ime())
-                    val container: TextInputLayout? =
-                        finalErrorsCheck(
-                            containers,
-                            view,
-                            fullEmailValidator,
-                            passwordValidator,
-                            nameValidator
+                val container: TextInputLayout? =
+                    finalErrorsCheck(
+                        containers,
+                        view,
+                        fullEmailValidator,
+                        passwordValidator,
+                        nameValidator
+                    )
+                if (container == null) {
+                    val cityInfo = userPropertiesRepository.getUserCity()
+                    val newUser =
+                        Person(
+                            emailInput.text.toString(),
+                            passwordInput.text.toString(),
+                            nameInput.text.toString(),
+                            cityInfo
                         )
-                    if (container == null) {
-                        val cityInfo = userPropertiesRepository.getUserCity()
-                        val newUser =
-                            Person(
-                                emailInput.text.toString(),
-                                passwordInput.text.toString(),
-                                nameInput.text.toString(),
-                                cityInfo
-                            )
-                        val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
-                        progressBar.visibility = View.VISIBLE
+                    val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
+                    progressBar.visibility = View.VISIBLE
 
-                        signUpUser(newUser)
-                    } else {
-                        val invalidFieldMsg = Toast.makeText(
-                            context,
-                            container.error,
-                            Toast.LENGTH_LONG
-                        )
-                        invalidFieldMsg.setGravity(Gravity.BOTTOM, 0, 0)
-                        invalidFieldMsg.show()
+                    signUpUser(newUser)
+                } else {
+                    val invalidFieldMsg = Toast.makeText(
+                        context,
+                        container.error,
+                        Toast.LENGTH_LONG
+                    )
+                    invalidFieldMsg.setGravity(Gravity.BOTTOM, 0, 0)
+                    invalidFieldMsg.show()
 
-                        container.clearFocus()
-                    }
+                    container.clearFocus()
                 }
             }
     }
