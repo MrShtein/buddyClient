@@ -26,18 +26,17 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
 private const val ANIMAL_KEY = "animal_key"
-private const val RESULT_LISTENER_KEY = "result_key"
+private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
 private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 private const val DELETE_ANIMAL_MSG = "Питомец успешно удален"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
-private const val FROM_ADD_ANIMAL_REQUEST_KEY = "key_from_add_animal"
 private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
+private const val RESULT_LISTENER_KEY = "result_key"
 
 class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     OnSnapPositionChangeListener {
@@ -61,7 +60,8 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setFragmentResultListener(RESULT_LISTENER_KEY) { requestKey, bundle ->
+        animal = arguments?.getParcelable(ANIMAL_KEY)
+        setFragmentResultListener(FROM_ADD_ANIMAL_REQUEST_KEY) { _, bundle ->
             animal = bundle.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT)
         }
 
@@ -78,11 +78,26 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        animal = arguments?.getParcelable(ANIMAL_KEY)
+
         setStatusBarColor(false)
         initViews(view)
         setDataToViews()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        animal?.let { animal ->
+            name.text = animal.name
+            breed.text = animal.breed
+            age.text = animal.getAge()
+            color.text = animal.characteristics["color"]
+            gender.text = animal.gender
+            description.text = animal.description
+            adapter.animalPhotos = animal.getImgUrls()
+            adapter.notifyDataSetChanged()
+        }
+
     }
 
     override fun onDestroy() {
