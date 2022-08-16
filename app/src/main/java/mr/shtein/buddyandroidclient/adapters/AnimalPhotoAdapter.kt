@@ -14,7 +14,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 
 class AnimalPhotoAdapter(
-    private var animalPhotos: List<String>,
+    var animalPhotos: List<String>,
 ) : RecyclerView.Adapter<AnimalPhotoAdapter.AnimalPhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalPhotoViewHolder {

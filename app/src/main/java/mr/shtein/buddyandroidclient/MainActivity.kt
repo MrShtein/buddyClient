@@ -1,9 +1,9 @@
 package mr.shtein.buddyandroidclient
 
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -21,7 +21,6 @@ import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
 import mr.shtein.buddyandroidclient.utils.WorkFragment
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
@@ -31,16 +30,14 @@ private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNav: BottomNavigationView
+    lateinit var bottomNav: BottomNavigationView
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.main_host_fragment) as NavHostFragment
@@ -142,7 +139,18 @@ class MainActivity : AppCompatActivity() {
     private fun showBottomNav() {
         bottomNav.visibility = View.VISIBLE
     }
+
+
 }
+
+fun Fragment.changeMarginBottom(view: View, mainActivity: MainActivity) {
+    val bottomNavHeight = mainActivity.bottomNav.height
+    val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.setMargins(0, 0, 0, bottomNavHeight)
+    view.layoutParams = layoutParams
+}
+
+
 
 fun Fragment.showBadTokenDialog(userPropertiesRepository: UserPropertiesRepository) {
     val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
@@ -160,7 +168,7 @@ fun Fragment.showBadTokenDialog(userPropertiesRepository: UserPropertiesReposito
 
 fun Fragment.setStatusBarColor(isBlack: Boolean) {
     val windowInsetsController =
-        ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+        WindowCompat.getInsetsController(requireActivity().window, requireActivity().window.decorView)
     windowInsetsController!!.isAppearanceLightStatusBars = isBlack
 }
 

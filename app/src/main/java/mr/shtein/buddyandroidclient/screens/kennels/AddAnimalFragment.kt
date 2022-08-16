@@ -45,21 +45,18 @@ private const val IMAGE_TYPE = "image/*"
 private const val NO_ANIMAL_TYPE_MSG = "Сначала необходимо выбрать питомца"
 private const val NO_PHOTO_ERROR = "Необходимо добавить хотя бы одну фотографию"
 private const val NO_AGE_ERROR = "Необходимо указать возраст питомца"
-private const val EMPTY_TYPE_ERROR = "Необходимо выбрать тип питомца"
 private const val EMPTY_NAME_ERROR = "Необходимо ввести имя питомца"
 private const val NOT_EXISTED_BREED_ERROR = "Необходимо выбрать породу из списка"
 private const val EMPTY_COLOR_ERROR = "Необходимо выбрать цвет питомца"
 private const val EMPTY_DESCRIPTION_ERROR = "Необходимо ввести описание питомца"
 private const val KENNEL_ID_KEY = "kennel_id"
 private const val SERVER_ERROR = "Что-то не так с сервером, попробуйте позже"
-private const val FILE_NOT_FOUND_EXCEPTION_MSG = "К сожалению, файл не найден"
 private const val COLOR_CHARACTERISTIC_ID = 1
-private const val PART_NAME_FOR_FILES = "files"
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 private const val ERROR = "error"
-private const val FROM_ADD_ANIMAL_REQUEST_KEY = "key_from_add_animal"
+private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
 
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
@@ -654,6 +651,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             val bundle = Bundle()
                             bundle.putParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT, updatedAnimal)
                             setFragmentResult(FROM_ADD_ANIMAL_REQUEST_KEY, bundle)
+                            findNavController().popBackStack()
                         }
                         201 -> {
                             spinner?.isVisible = false

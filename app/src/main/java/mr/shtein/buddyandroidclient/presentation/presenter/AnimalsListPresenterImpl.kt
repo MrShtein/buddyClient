@@ -2,7 +2,6 @@ package mr.shtein.buddyandroidclient.presentation.presenter
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
@@ -15,8 +14,6 @@ import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalListView
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
@@ -32,7 +29,7 @@ interface AnimalListPresenter {
     fun successLocation(token: String, coordinates: Coordinates)
     fun failureLocation()
     fun onClickToLocationBtn()
-
+    fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
 }
 
 class AnimalsListPresenterImpl(
@@ -46,9 +43,7 @@ class AnimalsListPresenterImpl(
     private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
-
-    private var isAfterFragmentCreated: Boolean = false
-
+    private var isUiMustUpdate = false
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
@@ -56,8 +51,12 @@ class AnimalsListPresenterImpl(
         getFromNetwork: Boolean
     ) {
         if (!getFromNetwork && animalList != null) {
+            pendingOrUpdateAnimalList(animalListView)
+            return
+        }
+        if (isUiMustUpdate) {
             animalListView?.updateList(animalList!!)
-            animalListView?.setAnimalCountText(animalList!!.size)
+            isUiMustUpdate = false
             return
         }
         val locationIsAllowed = animalListView?.checkLocationPermission()
@@ -67,18 +66,16 @@ class AnimalsListPresenterImpl(
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
                 if (locationIsAllowed == true) {
                     locationState = LocationState.SEARCH_STATE
-                    val updatedAnimalList: List<Animal> = changeLocationState(locationState)
-                    animalListView?.updateList(updatedAnimalList)
-                    animalListView?.setAnimalCountText(updatedAnimalList.size)
+                    animalList = changeLocationState(locationState)
+                    pendingOrUpdateAnimalList(animalListView)
                     val token: String = userPropertiesRepository.getUserToken()
                     val coordinates = locationService.getCurrentDistance()
                     successLocation(token, coordinates)
                     return@launch
                 }
                 animalList?.let {
-                    val updatedAnimalList: List<Animal> = changeLocationState(locationState)
-                    animalListView?.updateList(updatedAnimalList)
-                    animalListView?.setAnimalCountText(updatedAnimalList.size)
+                    animalList = changeLocationState(locationState)
+                    pendingOrUpdateAnimalList(animalListView)
                 }
 
             } catch (ex: ConnectException) {
@@ -94,10 +91,17 @@ class AnimalsListPresenterImpl(
 
     }
 
+    fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
+        if (animalListView == null) {
+            isUiMustUpdate = true
+        } else {
+            animalListView.updateList(animalList!!)
+        }
+    }
+
     override fun onClickToLocationBtn() {
         val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
         animalListView?.updateList(animalsWithNewState)
-        animalListView?.setAnimalCountText(animalList?.size!!)
         coroutine.launch {
             try {
                 val coordinates: Coordinates = locationService.getCurrentDistance()
@@ -109,16 +113,20 @@ class AnimalsListPresenterImpl(
         }
     }
 
+    override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
+        animalList = newAnimalList
+        if  (previousListSize != animalList?.size) {
+            animalListView?.setAnimalCountText(animalList?.size!!)
+        }
+    }
+
     override fun successLocation(token: String, coordinates: Coordinates) {
         coroutine.launch {
             try {
                 locationList = animalInteractor.getDistancesFromUser(token, coordinates)
                 locationState = LocationState.DISTANCE_VISIBLE_STATE
-                val listWithDistances: List<Animal> = setDistancesToAnimals(locationList!!)
-                animalList = listWithDistances
-                val listWithNewState: List<Animal> = changeLocationState(locationState)
-                animalListView?.updateList(listWithNewState)
-                animalListView?.setAnimalCountText(animalList?.size!!)
+                animalList = setDistancesToAnimals(locationList!!)
+                animalList = changeLocationState(locationState)
             } catch (ex: ConnectException) {
                 animalListView?.showError(R.string.internet_failure_text)
                 locationState = LocationState.BAD_RESULT_STATE
@@ -133,14 +141,17 @@ class AnimalsListPresenterImpl(
                 changeLocationState(locationState)
             } catch (ex: Exception) {
                 ex.printStackTrace()
+            } finally {
+                pendingOrUpdateAnimalList(animalListView)
             }
         }
     }
 
     override fun failureLocation() {
         locationState = LocationState.BAD_RESULT_STATE
-        changeLocationState(locationState)
+        animalList = changeLocationState(locationState)
         animalListView?.showError(R.string.location_failure_text)
+        pendingOrUpdateAnimalList(animalListView)
     }
 
     override fun onAttachView(view: AnimalListView) {
@@ -149,8 +160,6 @@ class AnimalsListPresenterImpl(
 
     override fun onDetachView() {
         animalListView = null
-        isAfterFragmentCreated = true
-        coroutine.cancel()
     }
 
     override fun changeLocationState(state: LocationState): List<Animal> {
