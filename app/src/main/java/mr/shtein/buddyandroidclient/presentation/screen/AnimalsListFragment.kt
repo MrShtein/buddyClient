@@ -21,12 +21,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.transition.MaterialSharedAxis
-import mr.shtein.buddyandroidclient.BuddyApplication
-import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
-import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.WorkFragment
 import org.koin.android.ext.android.inject
 
@@ -77,7 +75,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         animalListPresenter.onAttachView(this)
-
+        changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
         setStatusBarColor(true)
         setInsetsListener(binding.animalChoiceChips)
         initRecyclerView()
