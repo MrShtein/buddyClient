@@ -25,7 +25,7 @@ import mr.shtein.buddyandroidclient.retrofit.RetrofitService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
-import mr.shtein.buddyandroidclient.utils.WorkFragment
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
 
@@ -73,9 +73,9 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
             }
         }
-        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        if (workFragment != null) {
-            changeAnimationsWhenStartFragment(workFragment)
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (fragmentsListForAssigningAnimation != null) {
+            changeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         }
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.let {
@@ -216,9 +216,9 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             .getText(stringId)
     }
 
-    private fun changeAnimationsWhenStartFragment(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ANIMAL_LIST -> {
+    private fun changeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
         }

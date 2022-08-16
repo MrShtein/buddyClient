@@ -25,7 +25,7 @@ import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
-import mr.shtein.buddyandroidclient.utils.WorkFragment
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.inject
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -68,9 +68,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        if (workFragment != null) {
-            changeAnimationsWhenStartFragment(workFragment)
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? =
+            arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        if (fragmentsListForAssigningAnimation != null) {
+            changeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         }
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -135,14 +136,14 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
     }
 
-    private fun makeWorkFragment(destination: NavDestination): WorkFragment {
+    private fun makeWorkFragment(destination: NavDestination): FragmentsListForAssigningAnimation {
         return when (destination.label) {
-            ANIMAL_CARD_LABEL -> WorkFragment.ANIMAL_CARD
-            KENNEL_LABEL -> WorkFragment.ADD_KENNEL
-            USER_PROFILE_LABEL -> WorkFragment.USER_PROFILE
-            REGISTRATION_LABEL -> WorkFragment.REGISTRATION
-            LOGIN_LABEL -> WorkFragment.LOGIN
-            else -> WorkFragment.OTHER
+            ANIMAL_CARD_LABEL -> FragmentsListForAssigningAnimation.ANIMAL_CARD
+            KENNEL_LABEL -> FragmentsListForAssigningAnimation.ADD_KENNEL
+            USER_PROFILE_LABEL -> FragmentsListForAssigningAnimation.USER_PROFILE
+            REGISTRATION_LABEL -> FragmentsListForAssigningAnimation.REGISTRATION
+            LOGIN_LABEL -> FragmentsListForAssigningAnimation.LOGIN
+            else -> FragmentsListForAssigningAnimation.OTHER
         }
     }
 
@@ -228,7 +229,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
-        changeAnimationsWhenNavigate(WorkFragment.ANIMAL_CARD)
+        changeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
@@ -237,15 +238,15 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 
-    private fun changeAnimationsWhenStartFragment(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ADD_KENNEL -> {
+    private fun changeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ADD_KENNEL -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
-            WorkFragment.USER_PROFILE -> {
+            FragmentsListForAssigningAnimation.USER_PROFILE -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }
-            WorkFragment.LOGIN -> {
+            FragmentsListForAssigningAnimation.LOGIN -> {
                 val enterSlide = Slide()
                 enterSlide.slideEdge = Gravity.RIGHT
                 enterSlide.duration = 300
@@ -256,17 +257,17 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
     }
 
-    private fun changeAnimationsWhenNavigate(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ANIMAL_CARD -> {
+    private fun changeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ANIMAL_CARD -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
                 reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
             }
-            WorkFragment.ADD_KENNEL -> {
+            FragmentsListForAssigningAnimation.ADD_KENNEL -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
                 reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
-            WorkFragment.USER_PROFILE -> {
+            FragmentsListForAssigningAnimation.USER_PROFILE -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
                 reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }

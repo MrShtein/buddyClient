@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class WorkFragment : Parcelable {
+enum class FragmentsListForAssigningAnimation : Parcelable {
     ADD_KENNEL,
     ANIMAL_LIST,
     USER_PROFILE,
