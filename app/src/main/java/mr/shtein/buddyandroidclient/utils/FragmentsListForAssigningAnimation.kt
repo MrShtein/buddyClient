@@ -11,5 +11,7 @@ enum class FragmentsListForAssigningAnimation : Parcelable {
     ANIMAL_CARD,
     REGISTRATION,
     LOGIN,
+    START,
+    CITY_CHOICE,
     OTHER
 }
