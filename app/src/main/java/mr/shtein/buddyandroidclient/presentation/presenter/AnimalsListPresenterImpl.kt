@@ -13,7 +13,7 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
-import mr.shtein.buddyandroidclient.presentation.screen.AnimalListView
+import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -21,6 +21,11 @@ import kotlin.math.floor
 
 const val DOG_ID: Int = 1
 const val CAT_ID: Int = 2
+private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
+private const val KENNEL_LABEL = "AddKennelFragment"
+private const val USER_PROFILE_LABEL = "UserProfileFragment"
+private const val REGISTRATION_LABEL = "UserRegistrationFragment"
+private const val LOGIN_LABEL = "LoginFragment"
 
 interface AnimalListPresenter {
     fun onAnimalShowCommand(isDogChecked: Boolean, isCatChecked: Boolean, getFromNetwork: Boolean = true)
@@ -33,6 +38,9 @@ interface AnimalListPresenter {
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
 
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
+    fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
+    fun onSetupView()
+    fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
 }
 
 class AnimalsListPresenterImpl(
@@ -94,7 +102,7 @@ class AnimalsListPresenterImpl(
 
     }
 
-    fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
+    private fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
         if (animalListView == null) {
             isUiMustUpdate = true
         } else {
@@ -159,6 +167,7 @@ class AnimalsListPresenterImpl(
 
     override fun onAttachView(view: AnimalListView) {
         animalListView = view
+        animalListView?.setUpView()
     }
 
     override fun onDetachView() {
@@ -221,4 +230,41 @@ class AnimalsListPresenterImpl(
             }
         }
     }
+
+    override fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ADD_KENNEL -> {
+                animalListView?.setAnimationWhenUserComeFromAddKennel()
+            }
+            FragmentsListForAssigningAnimation.USER_PROFILE -> {
+                animalListView?.setAnimationWhenUserComeFromUserProfile()
+            }
+            FragmentsListForAssigningAnimation.LOGIN -> {
+                animalListView?.setAnimationWhenUserComeFromLogin()
+            }
+            FragmentsListForAssigningAnimation.CITY_CHOICE -> {
+                animalListView?.setAnimationWhenUserComeFromCity()
+            }
+            FragmentsListForAssigningAnimation.START -> {
+                animalListView?.setAnimationWhenUserComeFromSplash()
+            }
+        }
+    }
+
+    override fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation {
+        return when (destination) {
+            ANIMAL_CARD_LABEL -> FragmentsListForAssigningAnimation.ANIMAL_CARD
+            KENNEL_LABEL -> FragmentsListForAssigningAnimation.ADD_KENNEL
+            USER_PROFILE_LABEL -> FragmentsListForAssigningAnimation.USER_PROFILE
+            REGISTRATION_LABEL -> FragmentsListForAssigningAnimation.REGISTRATION
+            LOGIN_LABEL -> FragmentsListForAssigningAnimation.LOGIN
+            else -> FragmentsListForAssigningAnimation.OTHER
+        }
+    }
+
+    override fun onSetupView() {
+
+    }
+
+
 }
