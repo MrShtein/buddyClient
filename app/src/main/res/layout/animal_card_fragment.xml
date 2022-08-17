@@ -3,12 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:id="@+id/animal_card_constraint"
+        android:nestedScrollingEnabled="true"
         tools:context="mr.shtein.buddyandroidclient.AnimalsCardFragment">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -174,12 +177,14 @@
             app:layout_constraintStart_toStartOf="@id/animal_card_animal_name"
             app:layout_constraintTop_toBottomOf="@id/animal_card_bottom_divider"
             tools:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+         Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
          Lorem ipsum Lorem ipsum " />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/animal_card_kennel_top_divider"
             android:layout_width="0dp"
             android:layout_height="2dp"
+            app:dividerColor="@color/background_grey2"
             app:layout_constraintStart_toStartOf="@id/animal_card_description"
             app:layout_constraintEnd_toEndOf="@id/animal_card_description"
             app:layout_constraintTop_toBottomOf="@id/animal_card_description"
@@ -232,7 +237,8 @@
             app:icon="@drawable/email_icon"
             app:layout_constraintEnd_toStartOf="@id/animal_card_phone_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_avatar" />
+            app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_avatar"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_card_phone_btn"
@@ -245,7 +251,8 @@
             app:icon="@drawable/phone_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/animal_card_email_btn"
-            app:layout_constraintTop_toTopOf="@id/animal_card_email_btn" />
+            app:layout_constraintTop_toTopOf="@id/animal_card_email_btn"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

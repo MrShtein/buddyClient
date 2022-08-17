@@ -165,7 +165,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     }
 
     private fun setInsetsListener(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = insets.top
