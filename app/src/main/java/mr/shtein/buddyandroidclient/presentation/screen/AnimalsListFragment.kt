@@ -45,6 +45,11 @@ interface AnimalListView {
     fun setAnimalCountText(animalsAmount: Int)
     fun showError(errorRes: Int)
 
+    fun setAnimationWhenToAnimalCardNavigate()
+    fun setAnimationWhenToAddKennelNavigate()
+    fun setAnimationWhenToUserProfileNavigate()
+    fun setAnimationWhenToOtherFragmentNavigate()
+
 }
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener,
@@ -121,9 +126,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     }
 
     private fun initTransitAnimations() {
-        findNavController().addOnDestinationChangedListener { _, destination, _ ->
+        findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
+            val destination = navDestination.label.toString()
             val workFragment = makeWorkFragment(destination)
-            changeAnimationsWhenNavigate(workFragment)
+            animalListPresenter.onChangeAnimationsWhenNavigate(workFragment)
         }
         if (arguments != null) {
             enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
@@ -136,8 +142,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
     }
 
-    private fun makeWorkFragment(destination: NavDestination): FragmentsListForAssigningAnimation {
-        return when (destination.label) {
+    private fun makeWorkFragment(destination: String): FragmentsListForAssigningAnimation {
+        return when (destination) {
             ANIMAL_CARD_LABEL -> FragmentsListForAssigningAnimation.ANIMAL_CARD
             KENNEL_LABEL -> FragmentsListForAssigningAnimation.ADD_KENNEL
             USER_PROFILE_LABEL -> FragmentsListForAssigningAnimation.USER_PROFILE
@@ -229,7 +235,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
-        changeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
+        animalListPresenter.onChangeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
@@ -257,29 +263,30 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         }
     }
 
-    private fun changeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
-        when (fragmentsListForAssigningAnimation) {
-            FragmentsListForAssigningAnimation.ANIMAL_CARD -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-            }
-            FragmentsListForAssigningAnimation.ADD_KENNEL -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-            }
-            FragmentsListForAssigningAnimation.USER_PROFILE -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-            }
-            else -> {
-                val exitSlide = Slide()
-                exitSlide.slideEdge = Gravity.LEFT
-                exitSlide.duration = 300
-                exitSlide.interpolator = DecelerateInterpolator()
-                exitTransition = exitSlide
-            }
-        }
+    override fun setAnimationWhenToAnimalCardNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
     }
+
+    override fun setAnimationWhenToAddKennelNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+    }
+
+    override fun setAnimationWhenToUserProfileNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
+
+    override fun setAnimationWhenToOtherFragmentNavigate() {
+        val exitSlide = Slide()
+        exitSlide.slideEdge = Gravity.LEFT
+        exitSlide.duration = 300
+        exitSlide.interpolator = DecelerateInterpolator()
+        exitTransition = exitSlide
+    }
+
+
 }
 
 

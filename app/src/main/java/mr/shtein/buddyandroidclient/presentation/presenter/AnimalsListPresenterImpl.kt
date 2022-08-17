@@ -14,6 +14,7 @@ import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalListView
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
@@ -30,6 +31,8 @@ interface AnimalListPresenter {
     fun failureLocation()
     fun onClickToLocationBtn()
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
+
+    fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
 }
 
 class AnimalsListPresenterImpl(
@@ -200,5 +203,22 @@ class AnimalsListPresenterImpl(
             }
         }
         return newAnimalList
+    }
+
+    override fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ANIMAL_CARD -> {
+                animalListView?.setAnimationWhenToAnimalCardNavigate()
+            }
+            FragmentsListForAssigningAnimation.ADD_KENNEL -> {
+                animalListView?.setAnimationWhenToAddKennelNavigate()
+            }
+            FragmentsListForAssigningAnimation.USER_PROFILE -> {
+                animalListView?.setAnimationWhenToUserProfileNavigate()
+            }
+            else -> {
+                animalListView?.setAnimationWhenToOtherFragmentNavigate()
+            }
+        }
     }
 }
