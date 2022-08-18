@@ -36,9 +36,8 @@ interface OnLocationBtnClickListener {
 interface AnimalListView {
     fun updateList(animalList: List<Animal>)
     fun checkLocationPermission(): Boolean
-    fun setAnimalCountText(animalsAmount: Int)
-    fun showError(errorRes: Int)
 
+    fun setUpView()
     fun setAnimationWhenToAnimalCardNavigate()
     fun setAnimationWhenToAddKennelNavigate()
     fun setAnimationWhenToUserProfileNavigate()
@@ -46,12 +45,13 @@ interface AnimalListView {
     fun setAnimationWhenUserComeFromAddKennel()
     fun setAnimationWhenUserComeFromUserProfile()
     fun setAnimationWhenUserComeFromLogin()
-
-
-    fun setUpView()
-    fun setAnimationWhenUserComeFromCity()
     fun setAnimationWhenUserComeFromSplash()
+    fun setAnimationWhenUserComeFromCity()
+
     fun showAnimalSearchProgressBar()
+    fun showAnimalCountText(animalsAmount: Int)
+    fun showLocationFailureText(locationFailureText: Int)
+    fun showError(errorRes: Int)
     fun hideAnimalSearchProgressBar()
 }
 
@@ -116,7 +116,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         animalListPresenter.onUpdatedList(animalList, previousListSize)
     }
 
-    override fun setAnimalCountText(animalsAmount: Int) {
+    override fun showAnimalCountText(animalsAmount: Int) {
         binding.animalsListFoundAnimalCount.text = resources.getQuantityString(
             R.plurals.buddy_found_count,
             animalsAmount,
@@ -209,6 +209,11 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         exitTransition = exitSlide
     }
 
+    override fun showLocationFailureText(locationFailureText: Int) {
+        val failureText = getString(locationFailureText)
+        Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
+    }
+
     private fun initPresenter() {
         val appContext = requireContext().applicationContext as BuddyApplication
         if (appContext.animalListPresenter == null) {
@@ -217,20 +222,10 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     }
 
     private fun initLocationService() {
-
         locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
-            when {
-                (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                        permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    animalListPresenter.onClickToLocationBtn()
-                }
-                else -> {
-                    val failureText = getString(R.string.location_failure_text)
-                    Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
-                }
-            }
+            animalListPresenter.onClickToLocationBtn(permissions)
         }
     }
 
@@ -283,8 +278,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             animalListPresenter.onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation)
         }
     }
-
-
 
 
 }

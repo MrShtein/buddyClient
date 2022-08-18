@@ -34,7 +34,7 @@ interface AnimalListPresenter {
     fun changeLocationState(state: LocationState): List<Animal>
     fun successLocation(token: String, coordinates: Coordinates)
     fun failureLocation()
-    fun onClickToLocationBtn()
+    fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
 
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
@@ -115,24 +115,28 @@ class AnimalsListPresenterImpl(
         }
     }
 
-    override fun onClickToLocationBtn() {
-        val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
-        animalListView?.updateList(animalsWithNewState)
-        coroutine.launch {
-            try {
-                val coordinates: Coordinates = locationService.getCurrentDistance()
-                val token: String = userPropertiesRepository.getUserToken()
-                successLocation(token, coordinates)
-            } catch (ex: Exception) {
-                failureLocation()
+    override fun onClickToLocationBtn(permissions: Map<String, Boolean>) {
+        if (permissions.containsValue(true)) {
+            val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
+            animalListView?.updateList(animalsWithNewState)
+            coroutine.launch {
+                try {
+                    val coordinates: Coordinates = locationService.getCurrentDistance()
+                    val token: String = userPropertiesRepository.getUserToken()
+                    successLocation(token, coordinates)
+                } catch (ex: Exception) {
+                    failureLocation()
+                }
             }
+        } else {
+          animalListView?.showLocationFailureText(R.string.location_failure_text)
         }
     }
 
     override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
         animalList = newAnimalList
         if  (previousListSize != animalList?.size) {
-            animalListView?.setAnimalCountText(animalList?.size!!)
+            animalListView?.showAnimalCountText(animalList?.size!!)
         }
     }
 
