@@ -61,13 +61,16 @@ class AnimalsListPresenterImpl(
         isCatChecked: Boolean,
         getFromNetwork: Boolean
     ) {
+        animalListView?.showAnimalSearchProgressBar()
         if (!getFromNetwork && animalList != null) {
             pendingOrUpdateAnimalList(animalListView)
+            animalListView?.hideAnimalSearchProgressBar()
             return
         }
         if (isUiMustUpdate) {
             animalListView?.updateList(animalList!!)
             isUiMustUpdate = false
+            animalListView?.hideAnimalSearchProgressBar()
             return
         }
         val locationIsAllowed = animalListView?.checkLocationPermission()
@@ -97,6 +100,8 @@ class AnimalsListPresenterImpl(
                 animalListView?.showError(R.string.server_error_msg)
             } catch (ex: LocationServiceException) {
                 animalListView?.showError(R.string.server_error_msg) //TODO Add text
+            } finally {
+                animalListView?.hideAnimalSearchProgressBar()
             }
         }
 

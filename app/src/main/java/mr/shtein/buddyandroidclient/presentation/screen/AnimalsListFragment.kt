@@ -51,6 +51,8 @@ interface AnimalListView {
     fun setUpView()
     fun setAnimationWhenUserComeFromCity()
     fun setAnimationWhenUserComeFromSplash()
+    fun showAnimalSearchProgressBar()
+    fun hideAnimalSearchProgressBar()
 }
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener,
@@ -78,14 +80,20 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         val view = binding.root
         animalListPresenter.onAttachView(this)
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
-
-        binding.animalsListSearchProgressBar.visibility = View.VISIBLE
         animalListPresenter.onAnimalShowCommand(
             binding.animalsListDogChip.isChecked,
             binding.animalsListCatChip.isChecked,
             false
         )
         return view
+    }
+
+    override fun showAnimalSearchProgressBar() {
+        binding.animalsListSearchProgressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideAnimalSearchProgressBar() {
+        binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
     }
 
     override fun onDestroy() {
