@@ -2,31 +2,42 @@ package mr.shtein.buddyandroidclient.utils
 
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.utils.EmptyFieldValidator
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class EmptyFieldValidatorTest {
 
     val emptyFieldValidator: EmptyFieldValidator = EmptyFieldValidator()
+    val EMPTY_FIELD_MSG: String = "Данное поле не может быть пустым"
 
     @Test
     fun isValidValue() {
         val value = "abc"
         val result = emptyFieldValidator.validateValue(value)
-        Assert.assertTrue(result)
+        assertTrue(result)
     }
 
-    @Test(expected = EmptyFieldException::class)
+    @Test
     fun isNotValidEmptyField() {
-        val value = ""
-        val result = emptyFieldValidator.validateValue(value)
+        val exception: EmptyFieldException = Assertions.assertThrows(
+            EmptyFieldException::class.java
+        ) {
+            val value = ""
+            emptyFieldValidator.validateValue(value)
+        }
+        Assertions.assertEquals(EMPTY_FIELD_MSG, exception.message)
     }
 
-    @Test(expected = EmptyFieldException::class)
+    @Test
     fun isNotValidSpacesInText() {
-        val value = "     "
-        val result = emptyFieldValidator.validateValue(value)
+        val exception: EmptyFieldException = Assertions.assertThrows(
+            EmptyFieldException::class.java
+        ) {
+            val value = "    "
+            emptyFieldValidator.validateValue(value)
+        }
+        Assertions.assertEquals(EMPTY_FIELD_MSG, exception.message)
     }
 
 }
