@@ -88,6 +88,11 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         return view
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        animalListPresenter.onDetachView()
+    }
+
     override fun showAnimalSearchProgressBar() {
         binding.animalsListSearchProgressBar.visibility = View.VISIBLE
     }
@@ -96,53 +101,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        animalListPresenter.onDetachView()
-    }
-
     override fun setUpView() {
         changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
-        initTransitAnimations()
         initLocationService()
         setStatusBarColor(true)
-        setInsetsListener(binding.animalChoiceChips)
         initRecyclerView()
         setListeners()
-    }
-
-    private fun initPresenter() {
-        val appContext = requireContext().applicationContext as BuddyApplication
-        if (appContext.animalListPresenter == null) {
-            appContext.animalListPresenter = animalListPresenter
-        }
-    }
-
-    private fun initLocationService() {
-
-        locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                        permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    animalListPresenter.onClickToLocationBtn()
-                }
-                else -> {
-                    val failureText = getString(R.string.location_failure_text)
-                    Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
-    private fun initTransitAnimations() {
-        findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
-            val destination = navDestination.label.toString()
-            val fragmentsListForAssigningAnimation =
-                animalListPresenter.onGetListForAssigningAnimation(destination)
-            animalListPresenter.onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation)
-        }
     }
 
     override fun updateList(animalList: List<Animal>) {
@@ -152,35 +116,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         animalListPresenter.onUpdatedList(animalList, previousListSize)
     }
 
-    private fun initRecyclerView() {
-        binding.animalList.setHasFixedSize(true)
-        binding.animalList.layoutManager = LinearLayoutManager(context)
-        adapter = AnimalsAdapter(
-            requireContext(),
-            listOf(),
-            this@AnimalsListFragment,
-            this@AnimalsListFragment
-        )
-        binding.animalList.adapter = adapter
-    }
-
     override fun setAnimalCountText(animalsAmount: Int) {
         binding.animalsListFoundAnimalCount.text = resources.getQuantityString(
             R.plurals.buddy_found_count,
             animalsAmount,
             animalsAmount
         )
-    }
-
-    private fun setInsetsListener(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.top
-            }
-
-            WindowInsetsCompat.CONSUMED
-        }
     }
 
     override fun checkLocationPermission(): Boolean {
@@ -203,25 +144,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
-    }
-
-    private fun setListeners() {
-
-        binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
-        }
-
-        binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
-        }
-
-        binding.animalsListSwipeLayout.setOnRefreshListener {
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
-        }
     }
 
     override fun onAnimalCardClick(animal: Animal) {
@@ -286,6 +208,83 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         exitSlide.interpolator = DecelerateInterpolator()
         exitTransition = exitSlide
     }
+
+    private fun initPresenter() {
+        val appContext = requireContext().applicationContext as BuddyApplication
+        if (appContext.animalListPresenter == null) {
+            appContext.animalListPresenter = animalListPresenter
+        }
+    }
+
+    private fun initLocationService() {
+
+        locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                        permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
+                    animalListPresenter.onClickToLocationBtn()
+                }
+                else -> {
+                    val failureText = getString(R.string.location_failure_text)
+                    Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.animalList.setHasFixedSize(true)
+        binding.animalList.layoutManager = LinearLayoutManager(context)
+        adapter = AnimalsAdapter(
+            requireContext(),
+            listOf(),
+            this@AnimalsListFragment,
+            this@AnimalsListFragment
+        )
+        binding.animalList.adapter = adapter
+    }
+
+    private fun setInsetsListener(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
+    private fun setListeners() {
+
+        binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
+            val isCatChecked = binding.animalsListCatChip.isChecked
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        }
+
+        binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
+            val isDogChecked = binding.animalsListDogChip.isChecked
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        }
+
+        binding.animalsListSwipeLayout.setOnRefreshListener {
+            val isCatChecked = binding.animalsListCatChip.isChecked
+            val isDogChecked = binding.animalsListDogChip.isChecked
+            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        }
+
+        setInsetsListener(binding.animalChoiceChips)
+
+        findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
+            val destination = navDestination.label.toString()
+            val fragmentsListForAssigningAnimation =
+                animalListPresenter.onGetListForAssigningAnimation(destination)
+            animalListPresenter.onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation)
+        }
+    }
+
+
 
 
 }
