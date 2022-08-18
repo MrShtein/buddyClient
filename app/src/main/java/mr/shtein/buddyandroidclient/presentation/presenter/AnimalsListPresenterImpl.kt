@@ -28,12 +28,14 @@ private const val REGISTRATION_LABEL = "UserRegistrationFragment"
 private const val LOGIN_LABEL = "LoginFragment"
 
 interface AnimalListPresenter {
-    fun onAnimalShowCommand(isDogChecked: Boolean, isCatChecked: Boolean, getFromNetwork: Boolean = true)
+    fun onAnimalShowCommand(
+        isDogChecked: Boolean,
+        isCatChecked: Boolean,
+        getFromNetwork: Boolean = true
+    )
+
     fun onAttachView(view: AnimalListView)
     fun onDetachView()
-    fun changeLocationState(state: LocationState): List<Animal>
-    fun successLocation(token: String, coordinates: Coordinates)
-    fun failureLocation()
     fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
 
@@ -104,7 +106,6 @@ class AnimalsListPresenterImpl(
                 animalListView?.hideAnimalSearchProgressBar()
             }
         }
-
     }
 
     private fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
@@ -129,18 +130,18 @@ class AnimalsListPresenterImpl(
                 }
             }
         } else {
-          animalListView?.showLocationFailureText(R.string.location_failure_text)
+            animalListView?.showLocationFailureText(R.string.location_failure_text)
         }
     }
 
     override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
         animalList = newAnimalList
-        if  (previousListSize != animalList?.size) {
+        if (previousListSize != animalList?.size) {
             animalListView?.showAnimalCountText(animalList?.size!!)
         }
     }
 
-    override fun successLocation(token: String, coordinates: Coordinates) {
+    private fun successLocation(token: String, coordinates: Coordinates) {
         coroutine.launch {
             try {
                 locationList = animalInteractor.getDistancesFromUser(token, coordinates)
@@ -167,7 +168,7 @@ class AnimalsListPresenterImpl(
         }
     }
 
-    override fun failureLocation() {
+    private fun failureLocation() {
         locationState = LocationState.BAD_RESULT_STATE
         animalList = changeLocationState(locationState)
         animalListView?.showError(R.string.location_failure_text)
@@ -183,7 +184,7 @@ class AnimalsListPresenterImpl(
         animalListView = null
     }
 
-    override fun changeLocationState(state: LocationState): List<Animal> {
+    private fun changeLocationState(state: LocationState): List<Animal> {
         locationState = state
         val newAnimalList = mutableListOf<Animal>()
         animalList?.forEach { animal ->

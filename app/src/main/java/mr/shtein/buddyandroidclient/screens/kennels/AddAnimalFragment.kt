@@ -30,15 +30,13 @@ import mr.shtein.buddyandroidclient.model.ImageContainer
 import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
 private const val IMAGE_TYPE = "image/*"
@@ -113,7 +111,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private var animalColors: List<AnimalCharacteristic> = listOf()
     private var deletedImage: ImageContainer? = null
     private var isInsetsWorked = false
-    private val retrofitService: RetrofitService by inject()
+    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
 
@@ -472,7 +470,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         withContext(Dispatchers.IO) {
             if (animalType != 0) {
                 val token = userPropertiesRepository.getUserToken()
-                val response = retrofitService.getAnimalsBreed(token, animalType)
+                val response = networkService.getAnimalsBreed(token, animalType)
                 if (response.isSuccessful) {
                     return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
                 } else {
@@ -495,7 +493,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
             val token = userPropertiesRepository.getUserToken()
-            val response = retrofitService.getAnimalsCharacteristicByCharacteristicTypeId(
+            val response = networkService.getAnimalsCharacteristicByCharacteristicTypeId(
                 token, colorId
             )
             if (response.isSuccessful) {
@@ -516,12 +514,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private suspend fun addNewAnimal() = withContext(Dispatchers.IO) {
         val token = userPropertiesRepository.getUserToken()
-        return@withContext retrofitService.addNewAnimal(token, animalDto)
+        return@withContext networkService.addNewAnimal(token, animalDto)
     }
 
     private suspend fun updateAnimal() = withContext(Dispatchers.IO) {
         val token = userPropertiesRepository.getUserToken()
-        return@withContext retrofitService.updateAnimal(token, animalDto)
+        return@withContext networkService.updateAnimal(token, animalDto)
     }
 
     private fun validateForm(): Boolean {
@@ -750,7 +748,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         val imgInBytes = resolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
         val contentType = resolver.getType(uri) ?: "image/jpeg"
         val requestBody = RequestBody.create(MediaType.get(contentType), imgInBytes)
-        val result = retrofitService.addPhotoToTmpDir(token, requestBody)
+        val result = networkService.addPhotoToTmpDir(token, requestBody)
         when (result.code()) {
             201 -> {
                 return@withContext result.body() ?: ""

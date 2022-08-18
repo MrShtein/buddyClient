@@ -4,9 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Coordinates
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 
-class RetrofitDistanceCounterRepository(private val retrofitService: RetrofitService) :
+class NetworkDistanceCounterRepository(private val networkService: NetworkService) :
     DistanceCounterRepository {
 
     override suspend fun getDistancesFromUser(
@@ -14,7 +14,7 @@ class RetrofitDistanceCounterRepository(private val retrofitService: RetrofitSer
         coordinates: Coordinates
     ): HashMap<Int, Int> = withContext(Dispatchers.IO) {
         val result =
-            retrofitService.getAllDistances(token, coordinates.latitude, coordinates.longitude)
+            networkService.getAllDistances(token, coordinates.latitude, coordinates.longitude)
         when (result.code()) {
             200 -> {
                 return@withContext result.body() ?: hashMapOf()

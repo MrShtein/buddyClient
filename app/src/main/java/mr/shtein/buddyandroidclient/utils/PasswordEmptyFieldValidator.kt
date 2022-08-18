@@ -4,14 +4,12 @@ import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordEmptyFieldValidator(val retrofitService: RetrofitService): EmptyFieldValidator() {
+class PasswordEmptyFieldValidator(val networkService: NetworkService): EmptyFieldValidator() {
 
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
@@ -36,7 +34,7 @@ class PasswordEmptyFieldValidator(val retrofitService: RetrofitService): EmptyFi
         headerMap["Authorization"] = token
         val passwordRequest = PasswordCheckRequest(password, personId)
 
-        retrofitService.checkOldPassword(headerMap, passwordRequest)
+        networkService.checkOldPassword(headerMap, passwordRequest)
             .enqueue(object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     try {

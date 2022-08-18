@@ -23,7 +23,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
@@ -54,7 +54,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private lateinit var photoCounter: TextView
     private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animal: Animal? = null
-    private val retrofitService: RetrofitService by inject()
+    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -225,7 +225,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     }
 
     private suspend fun deleteAnimal(animalId: Long, token: String): Boolean = withContext(Dispatchers.IO) {
-            val response = retrofitService.deleteAnimal(token, animalId)
+            val response = networkService.deleteAnimal(token, animalId)
             val bundle = bundleOf(
                 RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
                 ANIMAL_KEY to animal?.id,

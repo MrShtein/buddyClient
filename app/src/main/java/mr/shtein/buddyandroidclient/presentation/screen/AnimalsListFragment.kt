@@ -278,8 +278,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             animalListPresenter.onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation)
         }
     }
-
-
 }
 
 

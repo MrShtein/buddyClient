@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitService {
+interface NetworkService {
     @GET("/api/v1/animal")
     suspend fun getAnimals(@Query("animal_type_id") animalTypeId : List<Int>) : Response<List<Animal>>
 

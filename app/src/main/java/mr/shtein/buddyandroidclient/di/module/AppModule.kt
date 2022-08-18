@@ -1,14 +1,12 @@
 package mr.shtein.buddyandroidclient.di.module
 
-import android.app.Activity
 import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.gson.GsonBuilder
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.db.CityDbHelper
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.koin.androidContext
@@ -44,8 +42,8 @@ private fun provideRetrofit(): Retrofit =
         )
         .build()
 
-private fun provideApiService(retrofit: Retrofit): RetrofitService =
-    retrofit.create(RetrofitService::class.java)
+private fun provideApiService(retrofit: Retrofit): NetworkService =
+    retrofit.create(NetworkService::class.java)
 
 private fun provideUserStore(context: Context) =
     SharedPreferences(context, BuildConfig.USER_STORAGE_NAME)
