@@ -1,16 +1,12 @@
 package mr.shtein.buddyandroidclient
 
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
@@ -23,17 +19,13 @@ import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
-import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.FullEmailValidator
 import mr.shtein.buddyandroidclient.utils.NameValidator
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.lang.Exception
 import java.net.SocketTimeoutException
 

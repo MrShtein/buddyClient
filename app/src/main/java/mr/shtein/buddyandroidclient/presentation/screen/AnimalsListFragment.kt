@@ -17,7 +17,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.transition.MaterialSharedAxis
@@ -25,15 +24,10 @@ import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
-import mr.shtein.buddyandroidclient.utils.WorkFragment
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.inject
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
-private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
-private const val KENNEL_LABEL = "AddKennelFragment"
-private const val USER_PROFILE_LABEL = "UserProfileFragment"
-private const val REGISTRATION_LABEL = "UserRegistrationFragment"
-private const val LOGIN_LABEL = "LoginFragment"
 
 interface OnLocationBtnClickListener {
     fun clickToLocationBtn()
@@ -42,9 +36,23 @@ interface OnLocationBtnClickListener {
 interface AnimalListView {
     fun updateList(animalList: List<Animal>)
     fun checkLocationPermission(): Boolean
-    fun setAnimalCountText(animalsAmount: Int)
-    fun showError(errorRes: Int)
 
+    fun setUpView()
+    fun setAnimationWhenToAnimalCardNavigate()
+    fun setAnimationWhenToAddKennelNavigate()
+    fun setAnimationWhenToUserProfileNavigate()
+    fun setAnimationWhenToOtherFragmentNavigate()
+    fun setAnimationWhenUserComeFromAddKennel()
+    fun setAnimationWhenUserComeFromUserProfile()
+    fun setAnimationWhenUserComeFromLogin()
+    fun setAnimationWhenUserComeFromSplash()
+    fun setAnimationWhenUserComeFromCity()
+
+    fun showAnimalSearchProgressBar()
+    fun showAnimalCountText(animalsAmount: Int)
+    fun showLocationFailureText(locationFailureText: Int)
+    fun showError(errorRes: Int)
+    fun hideAnimalSearchProgressBar()
 }
 
 class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener,
@@ -58,8 +66,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initTransitAnimations()
-        initLocationService()
         initPresenter()
     }
 
@@ -68,19 +74,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        if (workFragment != null) {
-            changeAnimationsWhenStartFragment(workFragment)
-        }
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? =
+            arguments?.getParcelable(LAST_FRAGMENT_KEY)
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         animalListPresenter.onAttachView(this)
-        changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
-        setStatusBarColor(true)
-        setInsetsListener(binding.animalChoiceChips)
-        initRecyclerView()
-        setListeners()
-        binding.animalsListSearchProgressBar.visibility = View.VISIBLE
+        animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(
             binding.animalsListDogChip.isChecked,
             binding.animalsListCatChip.isChecked,
@@ -94,56 +93,20 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         animalListPresenter.onDetachView()
     }
 
-    private fun initPresenter() {
-        val appContext = requireContext().applicationContext as BuddyApplication
-        if (appContext.animalListPresenter == null) {
-            appContext.animalListPresenter = animalListPresenter
-        }
+    override fun showAnimalSearchProgressBar() {
+        binding.animalsListSearchProgressBar.visibility = View.VISIBLE
     }
 
-    private fun initLocationService() {
-
-        locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                (permissions.containsKey(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                        permissions.containsKey(Manifest.permission.ACCESS_COARSE_LOCATION)) -> {
-                    animalListPresenter.onClickToLocationBtn()
-                }
-                else -> {
-                    val failureText = getString(R.string.location_failure_text)
-                    Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
+    override fun hideAnimalSearchProgressBar() {
+        binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
     }
 
-    private fun initTransitAnimations() {
-        findNavController().addOnDestinationChangedListener { _, destination, _ ->
-            val workFragment = makeWorkFragment(destination)
-            changeAnimationsWhenNavigate(workFragment)
-        }
-        if (arguments != null) {
-            enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-        } else {
-            val enterSlide = Slide()
-            enterSlide.slideEdge = Gravity.RIGHT
-            enterSlide.duration = 300
-            enterSlide.interpolator = DecelerateInterpolator()
-            enterTransition = enterSlide
-        }
-    }
-
-    private fun makeWorkFragment(destination: NavDestination): WorkFragment {
-        return when (destination.label) {
-            ANIMAL_CARD_LABEL -> WorkFragment.ANIMAL_CARD
-            KENNEL_LABEL -> WorkFragment.ADD_KENNEL
-            USER_PROFILE_LABEL -> WorkFragment.USER_PROFILE
-            REGISTRATION_LABEL -> WorkFragment.REGISTRATION
-            LOGIN_LABEL -> WorkFragment.LOGIN
-            else -> WorkFragment.OTHER
-        }
+    override fun setUpView() {
+        changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
+        initLocationService()
+        setStatusBarColor(true)
+        initRecyclerView()
+        setListeners()
     }
 
     override fun updateList(animalList: List<Animal>) {
@@ -153,35 +116,12 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         animalListPresenter.onUpdatedList(animalList, previousListSize)
     }
 
-    private fun initRecyclerView() {
-        binding.animalList.setHasFixedSize(true)
-        binding.animalList.layoutManager = LinearLayoutManager(context)
-        adapter = AnimalsAdapter(
-            requireContext(),
-            listOf(),
-            this@AnimalsListFragment,
-            this@AnimalsListFragment
-        )
-        binding.animalList.adapter = adapter
-    }
-
-    override fun setAnimalCountText(animalsAmount: Int) {
+    override fun showAnimalCountText(animalsAmount: Int) {
         binding.animalsListFoundAnimalCount.text = resources.getQuantityString(
             R.plurals.buddy_found_count,
             animalsAmount,
             animalsAmount
         )
-    }
-
-    private fun setInsetsListener(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.top
-            }
-
-            WindowInsetsCompat.CONSUMED
-        }
     }
 
     override fun checkLocationPermission(): Boolean {
@@ -206,6 +146,111 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         )
     }
 
+    override fun onAnimalCardClick(animal: Animal) {
+        val bundle = Bundle()
+        bundle.putParcelable("animal", animal)
+        animalListPresenter.onChangeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
+        findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
+    }
+
+    override fun showError(errorRes: Int) {
+        val errorText = getString(errorRes)
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
+    }
+
+    override fun setAnimationWhenUserComeFromAddKennel() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+    }
+
+    override fun setAnimationWhenUserComeFromUserProfile() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
+
+    override fun setAnimationWhenUserComeFromLogin() {
+        val enterSlide = Slide()
+        enterSlide.slideEdge = Gravity.RIGHT
+        enterSlide.duration = 300
+        enterSlide.interpolator = DecelerateInterpolator()
+        enterTransition = enterSlide
+    }
+
+    override fun setAnimationWhenUserComeFromCity() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
+
+    override fun setAnimationWhenUserComeFromSplash() {
+        val enterSlide = Slide()
+        enterSlide.slideEdge = Gravity.RIGHT
+        enterSlide.duration = 300
+        enterSlide.interpolator = DecelerateInterpolator()
+        enterTransition = enterSlide
+    }
+
+    override fun setAnimationWhenToAnimalCardNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
+
+    override fun setAnimationWhenToAddKennelNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+    }
+
+    override fun setAnimationWhenToUserProfileNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
+
+    override fun setAnimationWhenToOtherFragmentNavigate() {
+        val exitSlide = Slide()
+        exitSlide.slideEdge = Gravity.LEFT
+        exitSlide.duration = 300
+        exitSlide.interpolator = DecelerateInterpolator()
+        exitTransition = exitSlide
+    }
+
+    override fun showLocationFailureText(locationFailureText: Int) {
+        val failureText = getString(locationFailureText)
+        Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
+    }
+
+    private fun initPresenter() {
+        val appContext = requireContext().applicationContext as BuddyApplication
+        if (appContext.animalListPresenter == null) {
+            appContext.animalListPresenter = animalListPresenter
+        }
+    }
+
+    private fun initLocationService() {
+        locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            animalListPresenter.onClickToLocationBtn(permissions)
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.animalList.setHasFixedSize(true)
+        binding.animalList.layoutManager = LinearLayoutManager(context)
+        adapter = AnimalsAdapter(
+            requireContext(),
+            listOf(),
+            this@AnimalsListFragment,
+            this@AnimalsListFragment
+        )
+        binding.animalList.adapter = adapter
+    }
+
+    private fun setInsetsListener(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
     private fun setListeners() {
 
         binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
@@ -223,60 +268,14 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             val isDogChecked = binding.animalsListDogChip.isChecked
             animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
         }
-    }
 
-    override fun onAnimalCardClick(animal: Animal) {
-        val bundle = Bundle()
-        bundle.putParcelable("animal", animal)
-        changeAnimationsWhenNavigate(WorkFragment.ANIMAL_CARD)
-        findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
-    }
+        setInsetsListener(binding.animalChoiceChips)
 
-    override fun showError(errorRes: Int) {
-        val errorText = getString(errorRes)
-        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
-    }
-
-    private fun changeAnimationsWhenStartFragment(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ADD_KENNEL -> {
-                enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-            }
-            WorkFragment.USER_PROFILE -> {
-                enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-            }
-            WorkFragment.LOGIN -> {
-                val enterSlide = Slide()
-                enterSlide.slideEdge = Gravity.RIGHT
-                enterSlide.duration = 300
-                enterSlide.interpolator = DecelerateInterpolator()
-                enterTransition = enterSlide
-            }
-            else -> {}
-        }
-    }
-
-    private fun changeAnimationsWhenNavigate(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ANIMAL_CARD -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-            }
-            WorkFragment.ADD_KENNEL -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-            }
-            WorkFragment.USER_PROFILE -> {
-                exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
-                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-            }
-            else -> {
-                val exitSlide = Slide()
-                exitSlide.slideEdge = Gravity.LEFT
-                exitSlide.duration = 300
-                exitSlide.interpolator = DecelerateInterpolator()
-                exitTransition = exitSlide
-            }
+        findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
+            val destination = navDestination.label.toString()
+            val fragmentsListForAssigningAnimation =
+                animalListPresenter.onGetListForAssigningAnimation(destination)
+            animalListPresenter.onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation)
         }
     }
 }

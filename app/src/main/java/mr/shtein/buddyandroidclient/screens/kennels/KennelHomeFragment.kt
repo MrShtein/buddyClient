@@ -25,10 +25,9 @@ import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.ImageLoader
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
@@ -62,7 +61,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var dogsList: MutableList<Animal>
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
-    private val retrofitService: RetrofitService by inject()
+    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -252,7 +251,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val token = userPropertiesRepository.getUserToken()
-            val response = retrofitService.getAnimalsByKennelIdAndAnimalType(
+            val response = networkService.getAnimalsByKennelIdAndAnimalType(
                 token, kennelId, animalType
             )
             if (response.isSuccessful) {

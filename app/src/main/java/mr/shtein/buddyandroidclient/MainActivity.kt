@@ -20,7 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
-import mr.shtein.buddyandroidclient.utils.WorkFragment
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.inject
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                         when (navController.currentBackStackEntry?.destination?.label) {
                             ANIMAL_LIST_LABEL -> {
                                 val lastFragmentBundle = bundleOf()
-                                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ANIMAL_LIST)
+                                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, FragmentsListForAssigningAnimation.ANIMAL_LIST)
                                 navController.navigate(
                                     R.id.action_animalsListFragment_to_addKennelFragment, lastFragmentBundle
                                 )
@@ -113,14 +113,14 @@ class MainActivity : AppCompatActivity() {
                     when (navController.currentBackStackEntry?.destination?.label) {
                         ADD_KENNEL_LABEL -> {
                             val lastFragmentBundle = bundleOf()
-                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.ADD_KENNEL)
+                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, FragmentsListForAssigningAnimation.ADD_KENNEL)
                             navController.navigate(
                                 R.id.action_addKennelFragment_to_animalsListFragment, lastFragmentBundle
                             )
                         }
                         USER_PROFILE_LABEL  -> {
                             val lastFragmentBundle = bundleOf()
-                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.USER_PROFILE)
+                            lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, FragmentsListForAssigningAnimation.USER_PROFILE)
                             navController.navigate(
                                 R.id.action_userProfileFragment_to_animalsListFragment, lastFragmentBundle
                             )

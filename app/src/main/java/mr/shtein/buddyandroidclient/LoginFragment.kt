@@ -24,16 +24,13 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Person
 import mr.shtein.buddyandroidclient.model.LoginInfo
-import mr.shtein.buddyandroidclient.data.repository.RetrofitUserRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserRepository
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
-import mr.shtein.buddyandroidclient.utils.WorkFragment
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import kotlin.math.log
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -144,7 +141,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .setPopUpTo(R.id.animalsListFragment, false)
                     .build()
                 val lastFragmentBundle = bundleOf()
-                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, WorkFragment.LOGIN)
+                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, FragmentsListForAssigningAnimation.LOGIN)
                 findNavController().navigate(
                     R.id.action_loginFragment_to_animalsListFragment,
                     lastFragmentBundle,

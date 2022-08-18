@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.*
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -59,6 +62,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
     private lateinit var callBtn: MaterialButton
+    private lateinit var constraintLayout: ConstraintLayout
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private var animal: Animal? = null
 
@@ -77,13 +81,20 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         animal = arguments?.getParcelable("animal")
         val view = inflater.inflate(R.layout.animal_card_fragment, container, false)
 
-        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(0, 0, 0, insets.bottom + 200) //TODO Изменить при отключении BottomNavigationView
-            WindowInsetsCompat.CONSUMED
-        }
+
 
         initViews(view)
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
+            val dip = 40f
+            val extraPaddingForConstraint = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                resources.displayMetrics
+            )
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            constraintLayout.setPadding(0, 0, 0, insets.bottom + extraPaddingForConstraint.toInt())
+            WindowInsetsCompat.CONSUMED
+        }
         setValuesToView()
         setListeners()
         currentView = view
@@ -151,7 +162,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         avatar = view.findViewById(R.id.animal_card_kennel_avatar)
         writeBtn = view.findViewById(R.id.animal_card_email_btn)
         callBtn = view.findViewById(R.id.animal_card_phone_btn)
-
+        constraintLayout = view.findViewById(R.id.animal_card_constraint)
     }
 
     private fun setValuesToView() {

@@ -33,6 +33,7 @@ import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.CityArrayAdapter
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -41,7 +42,8 @@ import org.koin.core.component.inject
 const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
 const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
-const val IS_FROM_CITY = "is_from_city"
+private const val LAST_FRAGMENT_KEY = "last_fragment"
+
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
@@ -138,11 +140,17 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                     )
                 }
                 else -> {
-                    val bundle = bundleOf(IS_FROM_CITY to true)
+                    val bundle = bundleOf(
+                        LAST_FRAGMENT_KEY to FragmentsListForAssigningAnimation.CITY_CHOICE
+                    )
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.cityChoiceFragment, true)
                         .build()
-                    navController.navigate(R.id.action_cityChoiceFragment_to_animalsListFragment, bundle, navOptions)
+                    navController.navigate(
+                        R.id.action_cityChoiceFragment_to_animalsListFragment,
+                        bundle,
+                        navOptions
+                    )
                 }
             }
         }

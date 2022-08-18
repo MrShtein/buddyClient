@@ -41,7 +41,7 @@ import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import org.koin.android.ext.android.inject
@@ -96,7 +96,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
-    private val retrofitService: RetrofitService by inject()
+    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
 
@@ -375,7 +375,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val headerMap = hashMapOf<String, String>()
         token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
-        retrofitService.upgradePersonInfo(headerMap, personRequest)
+        networkService.upgradePersonInfo(headerMap, personRequest)
             .enqueue(object : Callback<PersonResponse> {
                 override fun onResponse(
                     call: Call<PersonResponse>,

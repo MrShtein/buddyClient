@@ -6,7 +6,7 @@ import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.Call
@@ -23,7 +23,7 @@ class FullEmailValidator (
         return assertIsValidEmail(email)
     }
 
-    val retrofitService: RetrofitService by inject()
+    val networkService: NetworkService by inject()
 
     companion object {
          const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
@@ -70,7 +70,7 @@ class FullEmailValidator (
     }
 
     private fun isEmailExists(emailCheckRequest: EmailCheckRequest, callback: MailCallback) {
-        retrofitService.isEmailExists(emailCheckRequest)
+        networkService.isEmailExists(emailCheckRequest)
             .enqueue(object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                     val value: Boolean? = response.body()

@@ -13,11 +13,8 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.utils.WorkFragment
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -41,8 +38,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val workFragment: WorkFragment? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
-        workFragment?.let {
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        fragmentsListForAssigningAnimation?.let {
             changeAnimations(it)
         }
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -100,9 +97,9 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         }
     }
 
-    private fun changeAnimations(workFragment: WorkFragment) {
-        when (workFragment) {
-            WorkFragment.ANIMAL_LIST -> {
+    private fun changeAnimations(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
+        when (fragmentsListForAssigningAnimation) {
+            FragmentsListForAssigningAnimation.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }
         }

@@ -10,9 +10,9 @@ const val KENNEL_STORE_NAME = "kennelStore"
 const val USER_STORE_NAME = "userStore"
 
 val repositoryModule: Module = module {
-    single<AnimalRepository> { RetrofitAnimalRepository(get()) }
-    single<UserRepository> { RetrofitUserRepository(get()) }
-    single<DistanceCounterRepository> { RetrofitDistanceCounterRepository(get()) }
+    single<AnimalRepository> { NetworkAnimalRepository(get()) }
+    single<UserRepository> { NetworkUserRepository(get()) }
+    single<DistanceCounterRepository> { NetworkDistanceCounterRepository(get()) }
     single<UserPropertiesRepository> {
         SharedUserPropertiesRepository(get(named(USER_STORE_NAME)))
     }

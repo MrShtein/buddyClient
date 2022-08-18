@@ -25,10 +25,9 @@ import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
 import mr.shtein.buddyandroidclient.model.KennelRequest
-import mr.shtein.buddyandroidclient.retrofit.RetrofitService
+import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -58,7 +57,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var saveBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-    private val retrofitService: RetrofitService by inject()
+    private val networkService: NetworkService by inject()
     private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
@@ -186,9 +185,9 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                 avatarWrapper.file.name,
                 requestFile
             )
-            retrofitService.addNewKennel(headers, requestBody, body)
+            networkService.addNewKennel(headers, requestBody, body)
         } else {
-            retrofitService.addNewKennel(headers, requestBody, null)
+            networkService.addNewKennel(headers, requestBody, null)
         }
 
 
