@@ -48,7 +48,7 @@
             android:layout_marginEnd="40dp" />
         <Constraint
             android:id="@+id/user_settings_dialog_ok_btn"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
