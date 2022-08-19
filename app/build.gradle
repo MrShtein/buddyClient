@@ -97,4 +97,5 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
 }
