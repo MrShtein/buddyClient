@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.screens
 
+import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.view.Gravity
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -121,6 +123,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                             IS_FROM_CITY_BUNDLE_KEY to true
                         )
                     )
+                    hideKeyboard()
                     navController.popBackStack()
                 }
                 "KennelSettingsFragment" -> {
@@ -130,10 +133,11 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                             IS_FROM_CITY_BUNDLE_KEY to true
                         )
                     )
+                    hideKeyboard()
                     navController.popBackStack()
                 }
                 "UserProfileFragment" -> {
-
+                    hideKeyboard()
                     navController.popBackStack(
                         R.id.animalsListFragment,
                         false
@@ -146,6 +150,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.cityChoiceFragment, true)
                         .build()
+                    hideKeyboard()
                     navController.navigate(
                         R.id.action_cityChoiceFragment_to_animalsListFragment,
                         bundle,
@@ -160,6 +165,12 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                 changeViewsStyle()
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun changeViewsStyle() {
