@@ -11,7 +11,7 @@ data class Animal  (
     val typeId: Int,
     val name: String,
     val gender: String,
-    val age: Int,
+    var age: Int,
     val description: String,
     val breed: String,
     val characteristics: Map<String, String>,
@@ -50,23 +50,6 @@ data class Animal  (
         }
         return photoList
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Animal
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
-
 }
 
 @Parcelize
