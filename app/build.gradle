@@ -3,8 +3,25 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
+if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("hms")) {
+    apply plugin: 'com.huawei.agconnect'
+} else {
+   // apply plugin: 'com.google.gms.google-services'
+}
 
 android {
+
+    flavorDimensions "services"
+    productFlavors {
+        huawei {
+            dimension 'services'
+            applicationIdSuffix '.huawei'
+        }
+        google {
+            dimension 'services'
+        }
+    }
+
     signingConfigs {
         release {
             Properties keystoreConfig = new Properties()
@@ -62,6 +79,18 @@ android {
             useJUnitPlatform()
         }
     }
+    sourceSets {
+        huawei {
+            java {
+                srcDirs 'src/huawei/java'
+            }
+        }
+        google {
+            java {
+                srcDirs 'src/google/java'
+            }
+        }
+    }
 }
 
 java  {
@@ -88,7 +117,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'ru.tinkoff.decoro:decoro:1.5.0'
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation "io.insert-koin:koin-android:3.2.0"
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     runtimeOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
@@ -98,4 +126,12 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
     testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
+
+    googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.0.300'
+    huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
+
+
+
 }
