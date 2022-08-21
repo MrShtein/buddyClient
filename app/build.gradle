@@ -3,10 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
-if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("hms")) {
+if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
     apply plugin: 'com.huawei.agconnect'
-} else {
-   // apply plugin: 'com.google.gms.google-services'
 }
 
 android {
@@ -63,7 +61,7 @@ android {
         }
 
         debug {
-            buildConfigField "String", "HOST", "\"http://10.0.2.2:8881\""
+            buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
         }
     }
     compileOptions {
@@ -129,9 +127,5 @@ dependencies {
 
     googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
 
-    huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.0.300'
     huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
-
-
-
 }
