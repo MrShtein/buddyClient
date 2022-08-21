@@ -3,8 +3,23 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
+if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
+    apply plugin: 'com.huawei.agconnect'
+}
 
 android {
+
+    flavorDimensions "services"
+    productFlavors {
+        huawei {
+            dimension 'services'
+            applicationIdSuffix '.huawei'
+        }
+        google {
+            dimension 'services'
+        }
+    }
+
     signingConfigs {
         release {
             Properties keystoreConfig = new Properties()
@@ -46,7 +61,7 @@ android {
         }
 
         debug {
-            buildConfigField "String", "HOST", "\"http://10.0.2.2:8881\""
+            buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
         }
     }
     compileOptions {
@@ -60,6 +75,18 @@ android {
     testOptions {
         unitTests.all {
             useJUnitPlatform()
+        }
+    }
+    sourceSets {
+        huawei {
+            java {
+                srcDirs 'src/huawei/java'
+            }
+        }
+        google {
+            java {
+                srcDirs 'src/google/java'
+            }
         }
     }
 }
@@ -88,7 +115,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'ru.tinkoff.decoro:decoro:1.5.0'
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation "io.insert-koin:koin-android:3.2.0"
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     runtimeOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
@@ -98,4 +124,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
     testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
+
+    googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
 }
