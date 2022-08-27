@@ -79,8 +79,8 @@ class AnimalListPresenterTest {
         val isDogChecked = true
         val isCatChecked = true
         val getFromNetwork = false
-        animalListPresenter.animalList = this.animalList
         animalListPresenter.onAttachView(animalListView)
+
 
         animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
         verify(animalListView, times(1)).showAnimalSearchProgressBar()

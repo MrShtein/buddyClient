@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
+import android.content.pm.PackageManager
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
@@ -41,6 +42,7 @@ interface AnimalListPresenter {
     fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
     fun onSetupView()
     fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
+    fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int)
 }
 
 class AnimalsListPresenterImpl(
@@ -56,7 +58,8 @@ class AnimalsListPresenterImpl(
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
     private var isUiMustUpdate = false
-    private var locationIsAllowed: Boolean? = false
+    private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
+    private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
@@ -64,7 +67,7 @@ class AnimalsListPresenterImpl(
         getFromNetwork: Boolean
     ) {
         animalListView?.showAnimalSearchProgressBar()
-        if (!getFromNetwork && animalList != null) {
+        if (!getFromNetwork && animalList != null) { // в случае если пользователь нажал на фильтр animalList != null, но нам необходимы данные из сети!!!
             pendingOrUpdateAnimalList(animalListView)
             animalListView?.hideAnimalSearchProgressBar()
             return
@@ -75,12 +78,13 @@ class AnimalsListPresenterImpl(
             animalListView?.hideAnimalSearchProgressBar()
             return
         }
-        val locationIsAllowed = animalListView?.checkLocationPermission()
         coroutine.launch {
             try {
                 val animalFilter: AnimalFilter = makeAnimalFilter(isDogChecked, isCatChecked)
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
-                if (locationIsAllowed == true) {
+                if (fineLocationPermission == PackageManager.PERMISSION_GRANTED
+                    || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
+                ) {
                     locationState = LocationState.SEARCH_STATE
                     animalList = changeLocationState(locationState)
                     pendingOrUpdateAnimalList(animalListView)
@@ -271,6 +275,12 @@ class AnimalsListPresenterImpl(
             LOGIN_LABEL -> FragmentsListForAssigningAnimation.LOGIN
             else -> FragmentsListForAssigningAnimation.OTHER
         }
+    }
+
+    override fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int) {
+        this.fineLocationPermission = fineLocationPermission
+        this.coarseLocationPermission = coarseLocationPermission
+
     }
 
     override fun onSetupView() {
