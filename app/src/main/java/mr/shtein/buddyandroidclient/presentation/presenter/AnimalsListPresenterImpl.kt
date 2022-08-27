@@ -52,7 +52,7 @@ class AnimalsListPresenterImpl(
 
     private val coroutine: CoroutineScope = CoroutineScope(mainDispatchers)
     private var animalListView: AnimalListView? = null
-    private var animalList: List<Animal>? = null
+    var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
     private var isUiMustUpdate = false
@@ -258,6 +258,7 @@ class AnimalsListPresenterImpl(
             FragmentsListForAssigningAnimation.START -> {
                 animalListView?.setAnimationWhenUserComeFromSplash()
             }
+            else -> {}
         }
     }
 
@@ -275,6 +276,4 @@ class AnimalsListPresenterImpl(
     override fun onSetupView() {
 
     }
-
-
 }

@@ -123,6 +123,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
 
     googleImplementation 'com.google.android.gms:play-services-location:19.0.1'

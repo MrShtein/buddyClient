@@ -221,6 +221,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             FragmentsListForAssigningAnimation.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
             }
+            else -> {}
         }
     }
 }

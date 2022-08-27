@@ -102,6 +102,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             FragmentsListForAssigningAnimation.ANIMAL_LIST -> {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
             }
+            else -> {}
         }
     }
 
