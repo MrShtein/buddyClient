@@ -15,21 +15,17 @@ import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.Kennel
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalListView
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.koin.java.KoinJavaComponent.get
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito
 import org.mockito.internal.verification.VerificationModeFactory.times
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnimalListPresenterTest {
 
     private lateinit var animalList: List<Animal>
@@ -41,6 +37,7 @@ class AnimalListPresenterTest {
     private lateinit var testDispatcher: TestDispatcher
     private lateinit var animalListPresenter: AnimalsListPresenterImpl
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeAll
     fun initValues() {
         faker = Faker()
@@ -75,17 +72,22 @@ class AnimalListPresenterTest {
     }
 
     @Test
-    fun `should go to the first if condition and update animal list`() {
+
+    fun `should go to the first if condition and update animal list`() = runTest(testDispatcher.scheduler) {
         val isDogChecked = true
         val isCatChecked = true
-        val getFromNetwork = false
+        val getFromNetworkNegative = false
+        val getFromNetworkPositive = true
         animalListPresenter.onAttachView(animalListView)
+        Mockito.`when`(animalInteractor.getAnimalsByFilter(anyList<Int>())).thenReturn(animalList)
+        animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetworkPositive)
 
+        advanceUntilIdle()
 
-        animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
-        verify(animalListView, times(1)).showAnimalSearchProgressBar()
-        verify(animalListView, times(1)).updateList(animalList)
-        verify(animalListView, times(1)).hideAnimalSearchProgressBar()
+        animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetworkNegative)
+        verify(animalListView, times(2)).showAnimalSearchProgressBar()
+        verify(animalListView, times(2)).updateList(animalListPresenter.animalList!!)
+        verify(animalListView, times(2)).hideAnimalSearchProgressBar()
     }
 
     @Test
@@ -97,7 +99,7 @@ class AnimalListPresenterTest {
 
         animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
 
-        Assertions.assertEquals(animalListPresenter.isUiMustUpdate, true)
+       // Assertions.assertEquals(animalListPresenter.isUiMustUpdate, true)
     }
 
     @Test
@@ -106,13 +108,13 @@ class AnimalListPresenterTest {
         val isCatChecked = true
         val getFromNetwork = true
         animalListPresenter.animalList = this.animalList
-        animalListPresenter.isUiMustUpdate = true
+       // animalListPresenter.isUiMustUpdate = true
 
         animalListPresenter.onAttachView(animalListView)
         animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
         verify(animalListView, times(1))
             .updateList(animalListPresenter.animalList!!)
-        Assertions.assertEquals(animalListPresenter.isUiMustUpdate, false)
+        //Assertions.assertEquals(animalListPresenter.isUiMustUpdate, false)
         verify(animalListView, times(1))
             .updateList(animalListPresenter.animalList!!)
     }
@@ -125,7 +127,7 @@ class AnimalListPresenterTest {
         val getFromNetwork = true
 
         animalListPresenter.onAttachView(animalListView)
-        Mockito.`when`(animalListView.checkLocationPermission()).thenReturn(false)
+        //Mockito.`when`(animalListView.checkLocationPermission()).thenReturn(false)
         Mockito.`when`(animalInteractor.getAnimalsByFilter(listOf(1, 2))).thenReturn(animalList)
         animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
 
@@ -146,7 +148,7 @@ class AnimalListPresenterTest {
         animalListPresenter.onAttachView(animalListView)
 
         Mockito.`when`(animalInteractor.getAnimalsByFilter(listOf(1, 2))).thenReturn(animalList)
-        Mockito.`when`(animalListView.checkLocationPermission()).thenReturn(true)
+        //Mockito.`when`(animalListView.checkLocationPermission()).thenReturn(true)
         Mockito.`when`(userPropertiesRepository.getUserToken()).thenReturn(token)
         Mockito.`when`(locationService.getCurrentDistance()).thenReturn(coordinates)
         Mockito.`when`(animalInteractor.getDistancesFromUser(token, coordinates)).thenReturn(hashMapOf(1 to 5500, 2 to 300))
