@@ -35,7 +35,6 @@ interface OnLocationBtnClickListener {
 
 interface AnimalListView {
     fun updateList(animalList: List<Animal>)
-    fun checkLocationPermission(): Boolean
 
     fun setUpView()
     fun setAnimationWhenToAnimalCardNavigate()
@@ -124,19 +123,6 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         )
     }
 
-    override fun checkLocationPermission(): Boolean {
-        val fineLocationPermission = ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-        val coarseLocationPermission = ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-        return fineLocationPermission == PackageManager.PERMISSION_GRANTED
-                || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
-    }
-
     override fun clickToLocationBtn() {
         locationPermissionRequest.launch(
             arrayOf(
@@ -217,7 +203,16 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
     private fun initPresenter() {
         val appContext = requireContext().applicationContext as BuddyApplication
         if (appContext.animalListPresenter == null) {
+            val fineLocationPermission = ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            val coarseLocationPermission = ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
             appContext.animalListPresenter = animalListPresenter
+            animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission)
         }
     }
 
