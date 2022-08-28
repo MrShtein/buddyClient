@@ -25,6 +25,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnimalListPresenterTest {
 
@@ -72,7 +73,6 @@ class AnimalListPresenterTest {
     }
 
     @Test
-
     fun `should go to the first if condition and update animal list`() = runTest(testDispatcher.scheduler) {
         val isDogChecked = true
         val isCatChecked = true
@@ -89,17 +89,21 @@ class AnimalListPresenterTest {
         verify(animalListView, times(2)).updateList(animalListPresenter.animalList!!)
         verify(animalListView, times(2)).hideAnimalSearchProgressBar()
     }
-
     @Test
-    fun `should go to the first if condition and make idUiMustUpdate to true`() {
+    fun `should go to the second if condition and make idUiMustUpdate to true`() = runTest(testDispatcher.scheduler){
         val isDogChecked = true
         val isCatChecked = true
         val getFromNetwork = false
-        animalListPresenter.animalList = this.animalList
+
+        Mockito.`when`(animalInteractor.getAnimalsByFilter(anyList<Int>())).thenReturn(animalList)
 
         animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
-
-       // Assertions.assertEquals(animalListPresenter.isUiMustUpdate, true)
+        advanceUntilIdle()
+        verify(animalListView, times(0)).updateList(animalListPresenter.animalList!!)
+        animalListPresenter.onAttachView(animalListView)
+        animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked, getFromNetwork)
+        verify(animalListView, times(1)).updateList(animalListPresenter.animalList!!)
+        verify(animalListView, times(1)).hideAnimalSearchProgressBar()
     }
 
     @Test
