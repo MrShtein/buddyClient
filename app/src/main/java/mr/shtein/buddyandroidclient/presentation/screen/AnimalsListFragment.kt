@@ -1,13 +1,11 @@
 package mr.shtein.buddyandroidclient.presentation.screen
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.model.Animal
@@ -20,51 +18,68 @@ import androidx.core.view.*
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.transition.MaterialSharedAxis
+import moxy.MvpAppCompatFragment
+import moxy.MvpView
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.alias.OneExecution
 import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
-import mr.shtein.buddyandroidclient.presentation.presenter.AnimalListPresenter
+import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
-import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.get
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 interface OnLocationBtnClickListener {
     fun clickToLocationBtn()
 }
-
-interface AnimalListView {
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface AnimalListView : MvpView {
     fun updateList(animalList: List<Animal>)
 
-    fun setUpView()
     fun setAnimationWhenToAnimalCardNavigate()
     fun setAnimationWhenToAddKennelNavigate()
     fun setAnimationWhenToUserProfileNavigate()
     fun setAnimationWhenToOtherFragmentNavigate()
+
     fun setAnimationWhenUserComeFromAddKennel()
     fun setAnimationWhenUserComeFromUserProfile()
     fun setAnimationWhenUserComeFromLogin()
     fun setAnimationWhenUserComeFromSplash()
     fun setAnimationWhenUserComeFromCity()
 
-    fun showAnimalSearchProgressBar()
+    fun toggleAnimalSearchProgressBar(isVisible: Boolean)
+
     fun showAnimalCountText(animalsAmount: Int)
+    @OneExecution
     fun showLocationFailureText(locationFailureText: Int)
+    @OneExecution
     fun showError(errorRes: Int)
-    fun hideAnimalSearchProgressBar()
 }
 
-class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtnClickListener,
-    AnimalListView {
+class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
+    OnLocationBtnClickListener, AnimalListView {
 
     private var _binding: AnimalsListFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: AnimalsAdapter
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
-    private val animalListPresenter: AnimalListPresenter by inject()
+
+    @InjectPresenter
+    lateinit var animalListPresenter: AnimalsListPresenterImpl
+
+    @ProvidePresenter
+    fun providePresenter(): AnimalsListPresenterImpl {
+        return get()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initLocationService()
         initPresenter()
     }
 
@@ -77,7 +92,7 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
             arguments?.getParcelable(LAST_FRAGMENT_KEY)
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        animalListPresenter.onAttachView(this)
+        setUpView()
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(
             binding.animalsListDogChip.isChecked,
@@ -87,25 +102,8 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         return view
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        animalListPresenter.onDetachView()
-    }
-
-    override fun showAnimalSearchProgressBar() {
-        binding.animalsListSearchProgressBar.visibility = View.VISIBLE
-    }
-
-    override fun hideAnimalSearchProgressBar() {
-        binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
-    }
-
-    override fun setUpView() {
-        changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
-        initLocationService()
-        setStatusBarColor(true)
-        initRecyclerView()
-        setListeners()
+    override fun toggleAnimalSearchProgressBar(isVisible: Boolean) {
+        binding.animalsListSearchProgressBar.isVisible = isVisible
     }
 
     override fun updateList(animalList: List<Animal>) {
@@ -200,20 +198,23 @@ class AnimalsListFragment : Fragment(), OnAnimalCardClickListener, OnLocationBtn
         Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
     }
 
+    private fun setUpView() {
+        changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
+        setStatusBarColor(true)
+        initRecyclerView()
+        setListeners()
+    }
+
     private fun initPresenter() {
-        val appContext = requireContext().applicationContext as BuddyApplication
-        if (appContext.animalListPresenter == null) {
-            val fineLocationPermission = ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            val coarseLocationPermission = ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-            appContext.animalListPresenter = animalListPresenter
-            animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission)
-        }
+        val fineLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val coarseLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission)
     }
 
     private fun initLocationService() {
