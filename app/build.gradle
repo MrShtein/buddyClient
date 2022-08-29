@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
     apply plugin: 'com.huawei.agconnect'
@@ -125,6 +126,10 @@ dependencies {
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
+    implementation "com.github.moxy-community:moxy:2.2.2"
+    implementation "com.github.moxy-community:moxy-app-compat:2.2.2"
+    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
+    implementation "com.github.moxy-community:moxy-material:2.2.2"
 
     googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
 

@@ -2,6 +2,8 @@ package mr.shtein.buddyandroidclient.presentation.presenter
 
 import android.content.pm.PackageManager
 import kotlinx.coroutines.*
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
@@ -26,38 +28,33 @@ private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val REGISTRATION_LABEL = "UserRegistrationFragment"
 private const val LOGIN_LABEL = "LoginFragment"
 
+
 interface AnimalListPresenter {
     fun onAnimalShowCommand(
         isDogChecked: Boolean,
         isCatChecked: Boolean,
         getFromNetwork: Boolean = true
     )
-
-    fun onAttachView(view: AnimalListView)
-    fun onDetachView()
     fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
-
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
     fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
-    fun onSetupView()
     fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
     fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int)
 }
 
+@InjectViewState
 class AnimalsListPresenterImpl(
     private val animalInteractor: AnimalInteractor,
     private val locationService: LocationInteractor,
     private val userPropertiesRepository: UserPropertiesRepository,
     private val mainDispatchers: CoroutineDispatcher = Dispatchers.Main
-) : AnimalListPresenter {
+) : MvpPresenter<AnimalListView>(), AnimalListPresenter {
 
-    private val coroutine: CoroutineScope = CoroutineScope(mainDispatchers)
-    private var animalListView: AnimalListView? = null
-    var animalList: List<Animal>? = null
+    private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
+    private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
-    private var isUiMustUpdate = false
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
 
@@ -66,16 +63,10 @@ class AnimalsListPresenterImpl(
         isCatChecked: Boolean,
         getFromNetwork: Boolean
     ) {
-        animalListView?.showAnimalSearchProgressBar()
+        viewState.toggleAnimalSearchProgressBar(isVisible = true)
         if (!getFromNetwork && animalList != null) { // в случае если пользователь нажал на фильтр animalList != null, но нам необходимы данные из сети!!!
-            pendingOrUpdateAnimalList(animalListView)
-            animalListView?.hideAnimalSearchProgressBar()
-            return
-        }
-        if (isUiMustUpdate) {
-            animalListView?.updateList(animalList!!)
-            isUiMustUpdate = false
-            animalListView?.hideAnimalSearchProgressBar()
+            viewState.updateList(animalList!!)
+            viewState.toggleAnimalSearchProgressBar(isVisible = false)
             return
         }
         coroutine.launch {
@@ -87,7 +78,7 @@ class AnimalsListPresenterImpl(
                 ) {
                     locationState = LocationState.SEARCH_STATE
                     animalList = changeLocationState(locationState)
-                    pendingOrUpdateAnimalList(animalListView)
+                    viewState.updateList(animalList!!)
                     val token: String = userPropertiesRepository.getUserToken()
                     val coordinates = locationService.getCurrentDistance()
                     successLocation(token, coordinates)
@@ -95,35 +86,27 @@ class AnimalsListPresenterImpl(
                 }
                 animalList?.let {
                     animalList = changeLocationState(locationState)
-                    pendingOrUpdateAnimalList(animalListView)
+                    viewState.updateList(animalList!!)
                 }
 
             } catch (ex: ConnectException) {
-                animalListView?.showError(R.string.internet_failure_text)
+                viewState.showError(R.string.internet_failure_text)
             } catch (ex: SocketTimeoutException) {
-                animalListView?.showError(R.string.internet_failure_text)
+                viewState.showError(R.string.internet_failure_text)
             } catch (ex: ServerErrorException) {
-                animalListView?.showError(R.string.server_error_msg)
+                viewState.showError(R.string.server_error_msg)
             } catch (ex: LocationServiceException) {
-                animalListView?.showError(R.string.server_error_msg) //TODO Add text
+                viewState.showError(R.string.server_error_msg) //TODO Add text
             } finally {
-                animalListView?.hideAnimalSearchProgressBar()
+                viewState.toggleAnimalSearchProgressBar(isVisible = false)
             }
-        }
-    }
-
-    private fun pendingOrUpdateAnimalList(animalListView: AnimalListView?) {
-        if (animalListView == null) {
-            isUiMustUpdate = true
-        } else {
-            animalListView.updateList(animalList!!)
         }
     }
 
     override fun onClickToLocationBtn(permissions: Map<String, Boolean>) {
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
-            animalListView?.updateList(animalsWithNewState)
+            viewState.updateList(animalsWithNewState)
             coroutine.launch {
                 try {
                     val coordinates: Coordinates = locationService.getCurrentDistance()
@@ -134,14 +117,14 @@ class AnimalsListPresenterImpl(
                 }
             }
         } else {
-            animalListView?.showLocationFailureText(R.string.location_failure_text)
+            viewState.showLocationFailureText(R.string.location_failure_text)
         }
     }
 
     override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
         animalList = newAnimalList
         if (previousListSize != animalList?.size) {
-            animalListView?.showAnimalCountText(animalList?.size!!)
+            viewState.showAnimalCountText(animalList?.size!!)
         }
     }
 
@@ -153,21 +136,21 @@ class AnimalsListPresenterImpl(
                 animalList = setDistancesToAnimals(locationList!!)
                 animalList = changeLocationState(locationState)
             } catch (ex: ConnectException) {
-                animalListView?.showError(R.string.internet_failure_text)
+                viewState.showError(R.string.internet_failure_text)
                 locationState = LocationState.BAD_RESULT_STATE
                 changeLocationState(locationState)
             } catch (ex: SocketTimeoutException) {
-                animalListView?.showError(R.string.internet_failure_text)
+                viewState.showError(R.string.internet_failure_text)
                 locationState = LocationState.BAD_RESULT_STATE
                 changeLocationState(locationState)
             } catch (ex: ServerErrorException) {
-                animalListView?.showError(R.string.server_error_msg)
+                viewState.showError(R.string.server_error_msg)
                 locationState = LocationState.BAD_RESULT_STATE
                 changeLocationState(locationState)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             } finally {
-                pendingOrUpdateAnimalList(animalListView)
+                viewState.updateList(animalList!!)
             }
         }
     }
@@ -175,17 +158,8 @@ class AnimalsListPresenterImpl(
     private fun failureLocation() {
         locationState = LocationState.BAD_RESULT_STATE
         animalList = changeLocationState(locationState)
-        animalListView?.showError(R.string.location_failure_text)
-        pendingOrUpdateAnimalList(animalListView)
-    }
-
-    override fun onAttachView(view: AnimalListView) {
-        animalListView = view
-        animalListView?.setUpView()
-    }
-
-    override fun onDetachView() {
-        animalListView = null
+        viewState.showError(R.string.location_failure_text)
+        viewState.updateList(animalList!!)
     }
 
     private fun changeLocationState(state: LocationState): List<Animal> {
@@ -231,16 +205,16 @@ class AnimalsListPresenterImpl(
     override fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {
         when (fragmentsListForAssigningAnimation) {
             FragmentsListForAssigningAnimation.ANIMAL_CARD -> {
-                animalListView?.setAnimationWhenToAnimalCardNavigate()
+                viewState.setAnimationWhenToAnimalCardNavigate()
             }
             FragmentsListForAssigningAnimation.ADD_KENNEL -> {
-                animalListView?.setAnimationWhenToAddKennelNavigate()
+                viewState.setAnimationWhenToAddKennelNavigate()
             }
             FragmentsListForAssigningAnimation.USER_PROFILE -> {
-                animalListView?.setAnimationWhenToUserProfileNavigate()
+                viewState.setAnimationWhenToUserProfileNavigate()
             }
             else -> {
-                animalListView?.setAnimationWhenToOtherFragmentNavigate()
+                viewState.setAnimationWhenToOtherFragmentNavigate()
             }
         }
     }
@@ -248,19 +222,19 @@ class AnimalsListPresenterImpl(
     override fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?) {
         when (fragmentsListForAssigningAnimation) {
             FragmentsListForAssigningAnimation.ADD_KENNEL -> {
-                animalListView?.setAnimationWhenUserComeFromAddKennel()
+                viewState.setAnimationWhenUserComeFromAddKennel()
             }
             FragmentsListForAssigningAnimation.USER_PROFILE -> {
-                animalListView?.setAnimationWhenUserComeFromUserProfile()
+                viewState.setAnimationWhenUserComeFromUserProfile()
             }
             FragmentsListForAssigningAnimation.LOGIN -> {
-                animalListView?.setAnimationWhenUserComeFromLogin()
+                viewState.setAnimationWhenUserComeFromLogin()
             }
             FragmentsListForAssigningAnimation.CITY_CHOICE -> {
-                animalListView?.setAnimationWhenUserComeFromCity()
+                viewState.setAnimationWhenUserComeFromCity()
             }
             FragmentsListForAssigningAnimation.START -> {
-                animalListView?.setAnimationWhenUserComeFromSplash()
+                viewState.setAnimationWhenUserComeFromSplash()
             }
             else -> {}
         }
@@ -280,10 +254,5 @@ class AnimalsListPresenterImpl(
     override fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int) {
         this.fineLocationPermission = fineLocationPermission
         this.coarseLocationPermission = coarseLocationPermission
-
-    }
-
-    override fun onSetupView() {
-
     }
 }
