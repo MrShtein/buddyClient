@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
 }
 if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
     apply plugin: 'com.huawei.agconnect'
@@ -132,6 +134,9 @@ dependencies {
     implementation "com.github.moxy-community:moxy-material:2.2.2"
 
     googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
+    googleImplementation platform('com.google.firebase:firebase-bom:30.3.2')
+    googleImplementation 'com.google.firebase:firebase-crashlytics'
+    googleImplementation 'com.google.firebase:firebase-analytics'
 
     huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
 }
