@@ -3,11 +3,13 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
-    id 'com.google.firebase.crashlytics'
-    id 'com.google.gms.google-services'
+
 }
 if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
     apply plugin: 'com.huawei.agconnect'
+} else {
+    apply plugin: 'com.google.firebase.crashlytics'
+    apply plugin: 'com.google.gms.google-services'
 }
 
 android {
@@ -139,4 +141,6 @@ dependencies {
     googleImplementation 'com.google.firebase:firebase-analytics'
 
     huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
+    huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
+    huaweiImplementation 'com.huawei.agconnect:agconnect-crash:1.7.1.300'
 }
