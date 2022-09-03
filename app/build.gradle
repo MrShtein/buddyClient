@@ -66,7 +66,7 @@ android {
         }
 
         debug {
-            buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
+            buildConfigField "String", "HOST", "\"http://10.0.2.2:8881\""
         }
     }
     compileOptions {
@@ -134,6 +134,7 @@ dependencies {
     implementation "com.github.moxy-community:moxy-app-compat:2.2.2"
     kapt "com.github.moxy-community:moxy-compiler:2.2.2"
     implementation "com.github.moxy-community:moxy-material:2.2.2"
+    implementation "com.github.moxy-community:moxy-ktx:2.2.2"
 
     googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
     googleImplementation platform('com.google.firebase:firebase-bom:30.3.2')
