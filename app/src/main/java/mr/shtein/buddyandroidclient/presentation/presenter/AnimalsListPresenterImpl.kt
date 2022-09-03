@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import moxy.presenterScope
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
@@ -35,6 +36,7 @@ interface AnimalListPresenter {
         isCatChecked: Boolean,
         getFromNetwork: Boolean = true
     )
+
     fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
@@ -51,7 +53,6 @@ class AnimalsListPresenterImpl(
     private val mainDispatchers: CoroutineDispatcher = Dispatchers.Main
 ) : MvpPresenter<AnimalListView>(), AnimalListPresenter {
 
-    private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animalList: List<Animal>? = null
     private var locationList: HashMap<Int, Int>? = null
     private var locationState: LocationState = LocationState.INIT_STATE
@@ -69,7 +70,7 @@ class AnimalsListPresenterImpl(
             viewState.toggleAnimalSearchProgressBar(isVisible = false)
             return
         }
-        coroutine.launch {
+        presenterScope.launch {
             try {
                 val animalFilter: AnimalFilter = makeAnimalFilter(isDogChecked, isCatChecked)
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
@@ -82,13 +83,12 @@ class AnimalsListPresenterImpl(
                     val token: String = userPropertiesRepository.getUserToken()
                     val coordinates = locationService.getCurrentDistance()
                     successLocation(token, coordinates)
-                    return@launch
+                } else {
+                    animalList?.let {
+                        animalList = changeLocationState(locationState)
+                        viewState.updateList(animalList!!)
+                    }
                 }
-                animalList?.let {
-                    animalList = changeLocationState(locationState)
-                    viewState.updateList(animalList!!)
-                }
-
             } catch (ex: ConnectException) {
                 viewState.showError(R.string.internet_failure_text)
             } catch (ex: SocketTimeoutException) {
@@ -99,6 +99,7 @@ class AnimalsListPresenterImpl(
                 viewState.showError(R.string.server_error_msg) //TODO Add text
             } finally {
                 viewState.toggleAnimalSearchProgressBar(isVisible = false)
+                if (locationState == LocationState.SEARCH_STATE) failureLocation()
             }
         }
     }
@@ -107,7 +108,7 @@ class AnimalsListPresenterImpl(
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
             viewState.updateList(animalsWithNewState)
-            coroutine.launch {
+            presenterScope.launch {
                 try {
                     val coordinates: Coordinates = locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
@@ -128,31 +129,12 @@ class AnimalsListPresenterImpl(
         }
     }
 
-    private fun successLocation(token: String, coordinates: Coordinates) {
-        coroutine.launch {
-            try {
-                locationList = animalInteractor.getDistancesFromUser(token, coordinates)
-                locationState = LocationState.DISTANCE_VISIBLE_STATE
-                animalList = setDistancesToAnimals(locationList!!)
-                animalList = changeLocationState(locationState)
-            } catch (ex: ConnectException) {
-                viewState.showError(R.string.internet_failure_text)
-                locationState = LocationState.BAD_RESULT_STATE
-                changeLocationState(locationState)
-            } catch (ex: SocketTimeoutException) {
-                viewState.showError(R.string.internet_failure_text)
-                locationState = LocationState.BAD_RESULT_STATE
-                changeLocationState(locationState)
-            } catch (ex: ServerErrorException) {
-                viewState.showError(R.string.server_error_msg)
-                locationState = LocationState.BAD_RESULT_STATE
-                changeLocationState(locationState)
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            } finally {
-                viewState.updateList(animalList!!)
-            }
-        }
+    private suspend fun successLocation(token: String, coordinates: Coordinates) {
+        locationList = animalInteractor.getDistancesFromUser(token, coordinates)
+        locationState = LocationState.DISTANCE_VISIBLE_STATE
+        animalList = setDistancesToAnimals(locationList!!)
+        animalList = changeLocationState(locationState)
+        viewState.updateList(animalList!!)
     }
 
     private fun failureLocation() {
@@ -207,12 +189,15 @@ class AnimalsListPresenterImpl(
             FragmentsListForAssigningAnimation.ANIMAL_CARD -> {
                 viewState.setAnimationWhenToAnimalCardNavigate()
             }
+
             FragmentsListForAssigningAnimation.ADD_KENNEL -> {
                 viewState.setAnimationWhenToAddKennelNavigate()
             }
+
             FragmentsListForAssigningAnimation.USER_PROFILE -> {
                 viewState.setAnimationWhenToUserProfileNavigate()
             }
+
             else -> {
                 viewState.setAnimationWhenToOtherFragmentNavigate()
             }
@@ -224,18 +209,23 @@ class AnimalsListPresenterImpl(
             FragmentsListForAssigningAnimation.ADD_KENNEL -> {
                 viewState.setAnimationWhenUserComeFromAddKennel()
             }
+
             FragmentsListForAssigningAnimation.USER_PROFILE -> {
                 viewState.setAnimationWhenUserComeFromUserProfile()
             }
+
             FragmentsListForAssigningAnimation.LOGIN -> {
                 viewState.setAnimationWhenUserComeFromLogin()
             }
+
             FragmentsListForAssigningAnimation.CITY_CHOICE -> {
                 viewState.setAnimationWhenUserComeFromCity()
             }
+
             FragmentsListForAssigningAnimation.START -> {
                 viewState.setAnimationWhenUserComeFromSplash()
             }
+
             else -> {}
         }
     }
