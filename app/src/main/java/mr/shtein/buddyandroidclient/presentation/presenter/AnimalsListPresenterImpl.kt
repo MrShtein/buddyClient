@@ -4,7 +4,6 @@ import android.content.pm.PackageManager
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
-import moxy.presenterScope
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
@@ -19,6 +18,7 @@ import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import kotlin.jvm.Throws
 import kotlin.math.floor
 
 const val DOG_ID: Int = 1
@@ -58,6 +58,7 @@ class AnimalsListPresenterImpl(
     private var locationState: LocationState = LocationState.INIT_STATE
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
+    private var couroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
         isDogChecked: Boolean,
@@ -70,7 +71,7 @@ class AnimalsListPresenterImpl(
             viewState.toggleAnimalSearchProgressBar(isVisible = false)
             return
         }
-        presenterScope.launch {
+        couroutineScope.launch {
             try {
                 val animalFilter: AnimalFilter = makeAnimalFilter(isDogChecked, isCatChecked)
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
@@ -96,7 +97,7 @@ class AnimalsListPresenterImpl(
             } catch (ex: ServerErrorException) {
                 viewState.showError(R.string.server_error_msg)
             } catch (ex: LocationServiceException) {
-                viewState.showError(R.string.server_error_msg) //TODO Add text
+                viewState.showError(R.string.location_failure_text)
             } finally {
                 viewState.toggleAnimalSearchProgressBar(isVisible = false)
                 if (locationState == LocationState.SEARCH_STATE) failureLocation()
@@ -108,12 +109,12 @@ class AnimalsListPresenterImpl(
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
             viewState.updateList(animalsWithNewState)
-            presenterScope.launch {
+            couroutineScope.launch {
                 try {
                     val coordinates: Coordinates = locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
                     successLocation(token, coordinates)
-                } catch (ex: Exception) {
+                } catch (ex: Exception)  {
                     failureLocation()
                 }
             }
