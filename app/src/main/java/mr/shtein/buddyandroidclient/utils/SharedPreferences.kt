@@ -53,7 +53,7 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         return sharedPref.getBoolean(prefName, pref)
     }
 
-    fun readStringSet(prefName: String, pref: Set<String>): MutableSet<String>? {
+    fun readStringSet(prefName: String, pref: Set<String>?): MutableSet<String>? {
         return sharedPref.getStringSet(prefName, pref)
     }
 
