@@ -97,10 +97,8 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             arguments?.getParcelable(LAST_FRAGMENT_KEY)
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        val animalFilter =
-            arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
         setUpView()
-        
+
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(
             animalFilter,
@@ -221,7 +219,9 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission)
+        val animalFilter =
+            arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
+        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission, animalFilter)
     }
 
     private fun initLocationService() {
