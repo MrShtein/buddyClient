@@ -18,8 +18,7 @@ private const val GENDER_KEY = "gender"
 
 class NetworkAnimalRepository(private val networkService: NetworkService) : AnimalRepository {
 
-    override suspend fun getAnimals(filter: AnimalFilter): List<Animal> =
-        withContext(Dispatchers.IO) {
+    override suspend fun getAnimals(filter: AnimalFilter): List<Animal>  {
             val minAge = getMinAge(filter.minAge)
             val maxAge = getMaxAge(filter.maxAge)
             val result = networkService.getAnimals(
@@ -33,13 +32,13 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
             )
             when (result.code()) {
                 200 -> {
-                    return@withContext result.body() ?: listOf()
+                    return result.body() ?: listOf()
                 }
                 500 -> {
                     throw ServerErrorException()
                 }
                 else -> {
-                    return@withContext listOf()
+                    return listOf()
                 }
             }
         }
