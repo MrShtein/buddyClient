@@ -1,5 +1,7 @@
 package mr.shtein.buddyandroidclient.data.repository
 
+import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
+
 interface FilterPropertiesRepository {
     fun getAnimalTypeId(): List<Int>?
     fun saveAnimalTypeId(animalTypeId: List<Int>)

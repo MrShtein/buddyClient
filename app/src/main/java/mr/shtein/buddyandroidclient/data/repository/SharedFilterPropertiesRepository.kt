@@ -6,9 +6,9 @@ const val ANIMAL_TYPE_KEY = "animal_type"
 const val CITY_KEY = "city"
 const val BREED_KEY = "breed"
 const val CHARACTERISTIC_KEY = "characteristic"
-const val GENDER_KEY = "gender"
-const val MIN_AGE_KEY = "min_age"
-const val MAX_AGE_KEY = "max_age"
+private const val GENDER_KEY = "gender"
+private const val MIN_AGE_KEY = "min_age"
+private const val MAX_AGE_KEY = "max_age"
 const val NO_AGE_FILTER_VALUE = -1
 
 class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :

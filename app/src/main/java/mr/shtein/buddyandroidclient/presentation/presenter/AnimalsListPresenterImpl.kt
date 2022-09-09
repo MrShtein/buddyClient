@@ -32,8 +32,7 @@ private const val LOGIN_LABEL = "LoginFragment"
 
 interface AnimalListPresenter {
     fun onAnimalShowCommand(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean,
+        animalFilter: AnimalFilter,
         getFromNetwork: Boolean = true
     )
 
@@ -61,8 +60,7 @@ class AnimalsListPresenterImpl(
     private var couroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean,
+        animalFilter: AnimalFilter,
         getFromNetwork: Boolean
     ) {
         viewState.toggleAnimalSearchProgressBar(isVisible = true)
@@ -73,8 +71,7 @@ class AnimalsListPresenterImpl(
         }
         couroutineScope.launch {
             try {
-                val animalFilter: AnimalFilter = makeAnimalFilter(isDogChecked, isCatChecked)
-                animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
+                animalList = animalInteractor.getAnimalsByFilter(animalFilter)
                 if (fineLocationPermission == PackageManager.PERMISSION_GRANTED
                     || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -154,16 +151,6 @@ class AnimalsListPresenterImpl(
             newAnimalList.add(newAnimal)
         }
         return newAnimalList.toList()
-    }
-
-    private fun makeAnimalFilter(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean
-    ): AnimalFilter {
-        val listForFilter: MutableList<Int> = mutableListOf()
-        if (isDogChecked) listForFilter.add(DOG_ID)
-        if (isCatChecked) listForFilter.add(CAT_ID)
-        return AnimalFilter(listForFilter.toList())
     }
 
     private fun setDistancesToAnimals(distances: HashMap<Int, Int>): List<Animal> {

@@ -28,15 +28,18 @@ import moxy.viewstate.strategy.alias.OneExecution
 import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
+import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
+const val ANIMAL_FILTER_KEY = "animal_filter"
 
 interface OnLocationBtnClickListener {
     fun clickToLocationBtn()
 }
+
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface AnimalListView : MvpView {
     fun updateList(animalList: List<Animal>)
@@ -55,8 +58,10 @@ interface AnimalListView : MvpView {
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
 
     fun showAnimalCountText(animalsAmount: Int)
+
     @OneExecution
     fun showLocationFailureText(locationFailureText: Int)
+
     @OneExecution
     fun showError(errorRes: Int)
 }
@@ -92,11 +97,13 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             arguments?.getParcelable(LAST_FRAGMENT_KEY)
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+        val animalFilter =
+            arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
         setUpView()
+        
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(
-            binding.animalsListDogChip.isChecked,
-            binding.animalsListCatChip.isChecked,
+            animalFilter,
             false
         )
         return view
