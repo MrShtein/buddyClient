@@ -31,17 +31,13 @@ private const val LOGIN_LABEL = "LoginFragment"
 
 
 interface AnimalListPresenter {
-    fun onAnimalShowCommand(
-        animalFilter: AnimalFilter,
-        getFromNetwork: Boolean = true
-    )
-
+    fun onAnimalShowCommand(getFromNetwork: Boolean = true)
     fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
     fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
     fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
-    fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int)
+    fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int, animalFilter: AnimalFilter)
 }
 
 @InjectViewState
@@ -57,10 +53,10 @@ class AnimalsListPresenterImpl(
     private var locationState: LocationState = LocationState.INIT_STATE
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
+    private lateinit var animalFilter: AnimalFilter
     private var couroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
-        animalFilter: AnimalFilter,
         getFromNetwork: Boolean
     ) {
         viewState.toggleAnimalSearchProgressBar(isVisible = true)
@@ -111,7 +107,7 @@ class AnimalsListPresenterImpl(
                     val coordinates: Coordinates = locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
                     successLocation(token, coordinates)
-                } catch (ex: Exception)  {
+                } catch (ex: Exception) {
                     failureLocation()
                 }
             }
@@ -229,8 +225,13 @@ class AnimalsListPresenterImpl(
         }
     }
 
-    override fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int) {
+    override fun onInit(
+        fineLocationPermission: Int,
+        coarseLocationPermission: Int,
+        animalFilter: AnimalFilter
+    ) {
         this.fineLocationPermission = fineLocationPermission
         this.coarseLocationPermission = coarseLocationPermission
+        this.animalFilter = animalFilter
     }
 }
