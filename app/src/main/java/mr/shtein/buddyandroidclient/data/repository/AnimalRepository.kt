@@ -1,7 +1,8 @@
 package mr.shtein.buddyandroidclient.data.repository
 
 import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 
 interface AnimalRepository {
-    suspend fun getAnimals(animalTypeList: List<Int>): List<Animal>
+    suspend fun getAnimals(filter: AnimalFilter): List<Animal>
 }

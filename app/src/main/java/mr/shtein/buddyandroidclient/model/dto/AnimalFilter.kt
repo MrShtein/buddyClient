@@ -5,11 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AnimalFilter(
-    val animalTypeId: List<Int>?,
-    val cityId: List<Int>?,
-    val breedId: List<Int>?,
-    val characteristicId: List<Int>?,
-    val genderId: List<Int>?,
-    val minAge: Int,
-    val maxAge: Int
+    val animalTypeId: List<Int>? = null,
+    val cityId: List<Int>? = null,
+    val breedId: List<Int>? = null,
+    val characteristicId: List<Int>? = null,
+    val genderId: List<Int>? = null,
+    val minAge: Int = -1,
+    val maxAge: Int = -1
 ) : Parcelable
