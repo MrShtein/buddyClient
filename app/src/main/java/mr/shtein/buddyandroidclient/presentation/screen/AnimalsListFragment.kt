@@ -100,10 +100,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         setUpView()
 
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
-        animalListPresenter.onAnimalShowCommand(
-            animalFilter,
-            false
-        )
+        animalListPresenter.onAnimalShowCommand(false)
         return view
     }
 
