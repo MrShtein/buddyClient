@@ -6,6 +6,7 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
 import mr.shtein.buddyandroidclient.exceptions.validate.LocationServiceException
@@ -37,12 +38,21 @@ interface AnimalListPresenter {
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
     fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
     fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
-    fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int, animalFilter: AnimalFilter)
+    fun onInit(
+        fineLocationPermission: Int,
+        coarseLocationPermission: Int,
+        animalFilter: AnimalFilter
+    )
+
+    fun onDogChipClicked(dogChecked: Boolean)
+    fun onCatChipClicked(catChecked: Boolean)
+    fun onChipsReadyToToggle()
 }
 
 @InjectViewState
 class AnimalsListPresenterImpl(
     private val animalInteractor: AnimalInteractor,
+    private val filterInteractor: AnimalFilterInteractor,
     private val locationService: LocationInteractor,
     private val userPropertiesRepository: UserPropertiesRepository,
     private val mainDispatchers: CoroutineDispatcher = Dispatchers.Main
@@ -115,6 +125,8 @@ class AnimalsListPresenterImpl(
             viewState.showLocationFailureText(R.string.location_failure_text)
         }
     }
+
+
 
     override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
         animalList = newAnimalList
@@ -233,5 +245,52 @@ class AnimalsListPresenterImpl(
         this.fineLocationPermission = fineLocationPermission
         this.coarseLocationPermission = coarseLocationPermission
         this.animalFilter = animalFilter
+    }
+
+    override fun onDogChipClicked(dogChecked: Boolean) {
+        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        if (dogChecked) {
+            animalTypeId.add(DOG_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+            animalTypeList.add(DOG_ID)
+            filterInteractor.saveAnimalTypeId(animalTypeList)
+        } else {
+            animalTypeId.remove(DOG_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+            animalTypeList.remove(DOG_ID)
+            filterInteractor.saveAnimalTypeId(animalTypeList)
+        }
+    }
+
+    override fun onCatChipClicked(catChecked: Boolean) {
+        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        if (catChecked) {
+            animalTypeId.add(CAT_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+            animalTypeList.add(CAT_ID)
+            filterInteractor.saveAnimalTypeId(animalTypeList)
+        } else {
+            animalTypeId.remove(CAT_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+            animalTypeList.remove(CAT_ID)
+            filterInteractor.saveAnimalTypeId(animalTypeList)
+        }
+    }
+
+    override fun onChipsReadyToToggle() {
+        val animalTypeIdList = animalFilter.animalTypeId
+        animalTypeIdList?.let {
+            if (it.contains(DOG_ID)) viewState.toggleDogChip(isChecked = true)
+            if (it.contains(CAT_ID)) viewState.toggleCatChip(isChecked = true)
+        }
+
     }
 }

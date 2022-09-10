@@ -6,6 +6,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val presenterModule: Module = module {
-    factory<AnimalsListPresenterImpl> { AnimalsListPresenterImpl(get(), get(), get()) }
+    factory<AnimalsListPresenterImpl> { AnimalsListPresenterImpl(get(), get(), get(), get()) }
 }
 
