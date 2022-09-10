@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
+import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
 import moxy.MvpView
@@ -56,6 +57,8 @@ interface AnimalListView : MvpView {
     fun setAnimationWhenUserComeFromCity()
 
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
+    fun toggleDogChip(isChecked: Boolean)
+    fun toggleCatChip(isChecked: Boolean)
 
     fun showAnimalCountText(animalsAmount: Int)
 
@@ -99,6 +102,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         val view = binding.root
         setUpView()
 
+        animalListPresenter.onChipsReadyToToggle()
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(false)
         return view
@@ -106,6 +110,14 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
 
     override fun toggleAnimalSearchProgressBar(isVisible: Boolean) {
         binding.animalsListSearchProgressBar.isVisible = isVisible
+    }
+
+    override fun toggleDogChip(isChecked: Boolean) {
+        binding.animalsListDogChip.isChecked = isChecked
+    }
+
+    override fun toggleCatChip(isChecked: Boolean) {
+        binding.animalsListCatChip.isChecked = isChecked
     }
 
     override fun updateList(animalList: List<Animal>) {
@@ -253,20 +265,20 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
 
     private fun setListeners() {
 
-        binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        binding.animalsListDogChip.setOnClickListener {
+            val isDogChecked = (it as Chip).isChecked
+            animalListPresenter.onDogChipClicked(isDogChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
-        binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        binding.animalsListCatChip.setOnClickListener {
+            val isCatChecked = (it as Chip).isChecked
+            animalListPresenter.onCatChipClicked(isCatChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
         binding.animalsListSwipeLayout.setOnRefreshListener {
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
         setInsetsListener(binding.animalChoiceChips)

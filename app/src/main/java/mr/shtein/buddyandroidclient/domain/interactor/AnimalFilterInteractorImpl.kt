@@ -8,7 +8,7 @@ class AnimalFilterInteractorImpl(
 ) : AnimalFilterInteractor {
 
     override fun makeAnimalFilter(): AnimalFilter {
-        val animalTypeIdList: List<Int>? = animalFilterPropertiesRepository.getAnimalTypeId()
+        val animalTypeIdList: MutableList<Int>? = animalFilterPropertiesRepository.getAnimalTypeId()
         val cityIdList: List<Int>? = animalFilterPropertiesRepository.getCityId()
         val breedIdList: List<Int>? = animalFilterPropertiesRepository.getBreedId()
         val characteristicIdList: List<Int>? =
@@ -28,7 +28,11 @@ class AnimalFilterInteractorImpl(
         )
     }
 
-    override fun saveAnimalTypeId(animalTypeId: List<Int>) {
+    override fun getAnimalTypeId(): MutableList<Int>? {
+       return animalFilterPropertiesRepository.getAnimalTypeId()
+    }
+
+    override fun saveAnimalTypeId(animalTypeId: MutableList<Int>) {
         animalFilterPropertiesRepository.saveAnimalTypeId(animalTypeId)
     }
 

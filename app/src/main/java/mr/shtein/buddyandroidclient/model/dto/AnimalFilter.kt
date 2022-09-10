@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AnimalFilter(
-    val animalTypeId: List<Int>? = null,
+    var animalTypeId: MutableList<Int>? = null,
     val cityId: List<Int>? = null,
     val breedId: List<Int>? = null,
     val characteristicId: List<Int>? = null,

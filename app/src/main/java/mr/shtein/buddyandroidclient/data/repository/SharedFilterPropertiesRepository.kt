@@ -13,16 +13,16 @@ const val NO_AGE_FILTER_VALUE = -1
 
 class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
     FilterPropertiesRepository {
-    override fun getAnimalTypeId(): List<Int>? {
+    override fun getAnimalTypeId(): MutableList<Int>? {
         val animalTypeSet = storage.readStringSet(ANIMAL_TYPE_KEY, null)
         return animalTypeSet
             ?.map {
                 it.toInt()
             }
-            ?.toList()
+            ?.toMutableList()
     }
 
-    override fun saveAnimalTypeId(animalTypeId: List<Int>) {
+    override fun saveAnimalTypeId(animalTypeId: MutableList<Int>) {
         val animalTypeIdSet = animalTypeId
             .map {
                 it.toString()

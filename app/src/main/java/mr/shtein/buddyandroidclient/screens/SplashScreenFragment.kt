@@ -76,7 +76,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
                 val bundle = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
-                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment)
+                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment, bundle)
             }
         }, 3000)
 
