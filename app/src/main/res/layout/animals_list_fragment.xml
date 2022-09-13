@@ -73,6 +73,16 @@
 
     </HorizontalScrollView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/animals_list_filter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.IconButton"
+        app:icon="@drawable/animal_filter"
+        app:layout_constraintTop_toTopOf="@id/animal_choice_scroll_chips"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="15dp"/>
+
     <TextView
         android:id="@+id/animals_list_found_animal_count"
         android:layout_width="wrap_content"

@@ -16,6 +16,7 @@
     <color name="grey4">#CCCCCC</color>
     <color name="blue1">#007AE9</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
+    <color name="graphite5">#455B66</color>
 
     <color name="input_unfocused">#8CFFFFFF</color>
     <color name="black_20">#33000000</color>

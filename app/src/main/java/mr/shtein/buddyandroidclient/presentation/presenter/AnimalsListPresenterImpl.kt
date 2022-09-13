@@ -293,4 +293,8 @@ class AnimalsListPresenterImpl(
         }
 
     }
+
+    fun onFilterBtnClicked() {
+        viewState.navigateToAnimalFilter(animalFilter)
+    }
 }

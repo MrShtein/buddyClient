@@ -35,7 +35,7 @@ import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
-const val ANIMAL_FILTER_KEY = "animal_filter"
+private const val ANIMAL_FILTER_KEY = "animal_filter"
 
 interface OnLocationBtnClickListener {
     fun clickToLocationBtn()
@@ -61,6 +61,9 @@ interface AnimalListView : MvpView {
     fun toggleCatChip(isChecked: Boolean)
 
     fun showAnimalCountText(animalsAmount: Int)
+
+    @OneExecution
+    fun navigateToAnimalFilter(animalFilter: AnimalFilter)
 
     @OneExecution
     fun showLocationFailureText(locationFailureText: Int)
@@ -212,6 +215,12 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
     }
 
+    override fun navigateToAnimalFilter(animalFilter: AnimalFilter) {
+        val bundle = Bundle()
+        bundle.putParcelable(ANIMAL_FILTER_KEY, animalFilter)
+        findNavController().navigate(R.id.action_animalsListFragment_to_animalFilterFragment, bundle)
+    }
+
     private fun setUpView() {
         changeMarginBottom(binding.animalsListSwipeLayout, requireActivity() as MainActivity)
         setStatusBarColor(true)
@@ -263,6 +272,10 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         }
     }
 
+    private fun onFilterBtnClick() {
+        animalListPresenter.onFilterBtnClicked()
+    }
+
     private fun setListeners() {
 
         binding.animalsListDogChip.setOnClickListener {
@@ -281,7 +294,12 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
+        binding.animalsListFilterBtn.setOnClickListener {
+            animalListPresenter.onFilterBtnClicked()
+        }
+
         setInsetsListener(binding.animalChoiceChips)
+        setInsetsListener(binding.animalsListFilterBtn)
 
         findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
             val destination = navDestination.label.toString()
