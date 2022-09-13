@@ -99,6 +99,9 @@
         <action
             android:id="@+id/action_animalsListFragment_to_addKennelFragment"
             app:destination="@id/addKennelFragment" />
+        <action
+            android:id="@+id/action_animalsListFragment_to_animalFilterFragment"
+            app:destination="@id/animalFilterFragment" />
     </fragment>
     <fragment
         android:id="@+id/userSettingsFragment"
@@ -194,4 +197,13 @@
         android:name="mr.shtein.buddyandroidclient.screens.ResetPasswordFragment"
         android:label="ResetPasswordFragment"
         tools:layout="@layout/reset_password_fragment"/>
+    <fragment
+        android:id="@+id/animalFilterFragment"
+        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterFragment"
+        android:label="AnimalFilterFragment"
+        tools:layout="@layout/animal_filter_fragment">
+        <action
+            android:id="@+id/action_animalFilterFragment_to_animalsListFragment"
+            app:destination="@id/animalsListFragment" />
+    </fragment>
 </navigation>

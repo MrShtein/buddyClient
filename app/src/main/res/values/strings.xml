@@ -182,6 +182,7 @@
     <string name="admin_email">mr.shtein61@yandex.ru</string>
     <string name="email_subject">Сброс пароля</string>
     <string name="reset_password_btn">Сбросить пароль</string>
+    <string name="animal_filter_label_text">Фильтр</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>

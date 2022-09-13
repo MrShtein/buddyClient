@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/animal_filter_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_filter_label_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/cian5"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/animal_filter_city_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/animal_filter_city_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/animal_filter_animal_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_city_input_container"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+        app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/animal_filter_animal_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/animal_filter_breed_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_input_container"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+        app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/animal_filter_breed_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/animal_filter_color_input_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_input_container"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+        app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/animal_filter_color_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/animal_filter_age_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_age_label"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_color_input_container"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        />
+    
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/animal_filter_age_slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="35.0"
+        android:stepSize="1.0"
+        app:values="@array/age_filter_values"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_age_label"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_age_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/animal_filter_gender_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gender_label"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_age_label"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_age_slider"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <RadioGroup
+        android:id="@+id/animal_filter_gender_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_gender_label"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_gender_label"
+        >
+
+        <RadioButton
+            android:id="@+id/add_animal_male_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/graphite5"
+            android:text="@string/male_letter"
+            android:textSize="20sp"
+            android:textColor="@color/graphite5"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="1dp"/>
+
+        <RadioButton
+            android:id="@+id/add_animal_female_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/cian5"
+            android:text="@string/female_letter"
+            android:textSize="20sp"
+            android:textColor="@color/graphite5"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="1dp"/>
+    </RadioGroup>
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/animal_filter_find_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+        app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
+        app:layout_constraintTop_toBottomOf="@id/animal_filter_gender_group"
+        android:layout_marginTop="40dp"
+        android:text="Найдено ... животных"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
