@@ -55,6 +55,7 @@ interface AnimalListView : MvpView {
     fun setAnimationWhenUserComeFromLogin()
     fun setAnimationWhenUserComeFromSplash()
     fun setAnimationWhenUserComeFromCity()
+    fun setAnimationWhenToAnimalFilterNavigate()
 
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
     fun toggleDogChip(isChecked: Boolean)
@@ -150,7 +151,6 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
-        animalListPresenter.onChangeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
@@ -200,6 +200,11 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     override fun setAnimationWhenToUserProfileNavigate() {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
+
+    override fun setAnimationWhenToAnimalFilterNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
     }
 
     override fun setAnimationWhenToOtherFragmentNavigate() {

@@ -29,6 +29,7 @@ private const val KENNEL_LABEL = "AddKennelFragment"
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val REGISTRATION_LABEL = "UserRegistrationFragment"
 private const val LOGIN_LABEL = "LoginFragment"
+private const val ANIMAL_FILTER_LABEL = "AnimalFilterFragment"
 
 
 interface AnimalListPresenter {
@@ -126,8 +127,6 @@ class AnimalsListPresenterImpl(
         }
     }
 
-
-
     override fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int) {
         animalList = newAnimalList
         if (previousListSize != animalList?.size) {
@@ -194,6 +193,10 @@ class AnimalsListPresenterImpl(
                 viewState.setAnimationWhenToUserProfileNavigate()
             }
 
+            FragmentsListForAssigningAnimation.ANIMAL_FILTER -> {
+                viewState.setAnimationWhenToAnimalFilterNavigate()
+            }
+
             else -> {
                 viewState.setAnimationWhenToOtherFragmentNavigate()
             }
@@ -233,6 +236,7 @@ class AnimalsListPresenterImpl(
             USER_PROFILE_LABEL -> FragmentsListForAssigningAnimation.USER_PROFILE
             REGISTRATION_LABEL -> FragmentsListForAssigningAnimation.REGISTRATION
             LOGIN_LABEL -> FragmentsListForAssigningAnimation.LOGIN
+            ANIMAL_FILTER_LABEL -> FragmentsListForAssigningAnimation.ANIMAL_FILTER
             else -> FragmentsListForAssigningAnimation.OTHER
         }
     }
