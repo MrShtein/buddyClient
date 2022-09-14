@@ -12,6 +12,7 @@ class AnimalFilterPresenter() : MvpPresenter<AnimalFilterView>() {
 
     fun onInitView(animalFilter: AnimalFilter) {
         this.animalFilter = animalFilter
+        viewState.setUpTransitions()
     }
 
 }
