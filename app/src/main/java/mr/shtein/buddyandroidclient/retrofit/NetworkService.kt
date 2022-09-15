@@ -78,7 +78,7 @@ interface NetworkService {
     ): Response<MutableList<Animal>>
 
     @GET("/api/v1/animal/type")
-    suspend fun getAnimalsType(): Response<List<AnimalType>>
+    suspend fun getAnimalsTypes(): Response<List<AnimalType>>
 
     @GET("/api/v1/animal/{animal_type}/breed")
     suspend fun getAnimalsBreed(
