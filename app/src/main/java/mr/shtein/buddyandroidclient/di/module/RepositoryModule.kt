@@ -14,6 +14,7 @@ val repositoryModule: Module = module {
     single<AnimalRepository> { NetworkAnimalRepository(get()) }
     single<AnimalTypeRepository> { NetworkAnimalTypeRepository(get()) }
     single<AnimalBreedRepository> { NetworkAnimalBreedRepository(get()) }
+    single<AnimalCharacteristicsRepository> { NetworkAnimalCharacteristicsRepository(get()) }
     single<UserRepository> { NetworkUserRepository(get()) }
     single<DistanceCounterRepository> { NetworkDistanceCounterRepository(get()) }
     single<UserPropertiesRepository> {
