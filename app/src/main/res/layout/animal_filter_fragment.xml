@@ -54,6 +54,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/animal_filter_breed_input_container"
+        style="@style/textInputContainerForAutocomplete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_input_container"
@@ -61,10 +62,10 @@
         app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
         android:layout_marginTop="20dp">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
             android:id="@+id/animal_filter_breed_input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

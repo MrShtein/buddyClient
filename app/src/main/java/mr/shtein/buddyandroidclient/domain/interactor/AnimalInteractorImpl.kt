@@ -7,10 +7,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Coordinates
-import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
-import mr.shtein.buddyandroidclient.model.dto.AnimalType
-import mr.shtein.buddyandroidclient.model.dto.Breed
+import mr.shtein.buddyandroidclient.model.dto.*
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.jvm.Throws
@@ -22,14 +19,14 @@ interface AnimalInteractor {
     suspend fun getAnimalsByFilter(animalFilter: AnimalFilter): List<Animal>
     suspend fun getDistancesFromUser(token: String, coordinates: Coordinates): HashMap<Int, Int>
     suspend fun getAnimalTypes(): List<AnimalType>
-    suspend fun getAnimalBreeds(animalTypeId: Int): List<Breed>
+    suspend fun getAnimalBreeds(animalTypeId: Int): List<FilterAutocompleteItem>
     suspend fun getAnimalCharacteristics(characteristicId: Int): List<AnimalCharacteristic>
 }
 
 class AnimalInteractorImpl(
     private val animalRepository: AnimalRepository,
     private val animalBreedRepository: AnimalBreedRepository,
-    private val sharedUserPropertiesRepository: SharedUserPropertiesRepository,
+    private val sharedUserPropertiesRepository: UserPropertiesRepository,
     private val animalCharacteristicsRepository: AnimalCharacteristicsRepository,
     private val retrofitDistanceCounterRepository: DistanceCounterRepository,
     private val animalTypeRepository: AnimalTypeRepository
@@ -50,16 +47,18 @@ class AnimalInteractorImpl(
         return animalTypeRepository.getAnimalTypes()
     }
 
-    override suspend fun getAnimalBreeds(animalTypeId: Int): List<Breed> {
+    override suspend fun getAnimalBreeds(animalTypeId: Int): List<FilterAutocompleteItem> {
         val token = getUserToken()
-        return animalBreedRepository.getAnimalBreeds(token = token, animalTypeId = animalTypeId)
+        val animalBreeds =
+            animalBreedRepository.getAnimalBreeds(token = token, animalTypeId = animalTypeId)
+        return mapBreedsToFilterBreeds(breeds = animalBreeds)
     }
 
     override suspend fun getAnimalCharacteristics(characteristicId: Int): List<AnimalCharacteristic> {
         val token = getUserToken()
-        return when(characteristicId) {
+        return when (characteristicId) {
             COLOR_ID -> {
-               animalCharacteristicsRepository.getAnimalColors(token)
+                animalCharacteristicsRepository.getAnimalColors(token)
             }
             else -> {
                 throw IncorrectDataException()
@@ -69,5 +68,17 @@ class AnimalInteractorImpl(
 
     private fun getUserToken(): String {
         return sharedUserPropertiesRepository.getUserToken()
+    }
+
+    private fun mapBreedsToFilterBreeds(breeds: List<Breed>): List<FilterAutocompleteItem> {
+        return breeds
+            .map {
+                FilterAutocompleteItem(
+                    it.id,
+                    it.name,
+                    false
+                )
+            }
+            .toList()
     }
 }
