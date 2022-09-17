@@ -58,7 +58,9 @@ interface AnimalListView : MvpView {
     fun setAnimationWhenToAnimalFilterNavigate()
 
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
+    @OneExecution
     fun toggleDogChip(isChecked: Boolean)
+    @OneExecution
     fun toggleCatChip(isChecked: Boolean)
 
     fun showAnimalCountText(animalsAmount: Int)
