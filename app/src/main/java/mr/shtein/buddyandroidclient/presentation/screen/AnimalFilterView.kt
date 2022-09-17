@@ -1,9 +1,13 @@
 package mr.shtein.buddyandroidclient.presentation.screen
 
 import moxy.MvpView
-import moxy.viewstate.strategy.alias.OneExecution
+import moxy.viewstate.strategy.alias.AddToEndSingle
+import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
 
 interface AnimalFilterView : MvpView {
-    @OneExecution
-    fun setUpTransitions()
+
+    @AddToEndSingle
+    fun setUpView()
+    @AddToEndSingle
+    fun initAdapters(animalBreeds: List<FilterAutocompleteItem>)
 }
