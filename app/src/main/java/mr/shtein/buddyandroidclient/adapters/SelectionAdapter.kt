@@ -20,22 +20,23 @@ class SelectionAdapter(
 ) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        if (convertView == null) {
+        var currentView = convertView
+        if (currentView == null) {
             val inflater = LayoutInflater.from(context)
-            val currentConvertView = inflater.inflate(R.layout.filter_selection_row, parent, false)
-            val currentBreed: FilterAutocompleteItem = getItem(position) as FilterAutocompleteItem
-
-            val label = currentConvertView
-                .findViewById<AppCompatTextView>(R.id.filter_selection_label)
-            val img = currentConvertView
-                .findViewById<AppCompatImageView>(R.id.filter_selection_confirm_icon)
-
-            label.text = currentBreed.name
-            if (currentBreed.isSelected) {
-                img.visibility = View.VISIBLE
-            }
-            return currentConvertView
+            currentView = inflater.inflate(R.layout.filter_selection_row, parent, false)
         }
-        return convertView
+
+        val currentBreed: FilterAutocompleteItem = getItem(position) as FilterAutocompleteItem
+
+        val label = currentView
+            ?.findViewById<AppCompatTextView>(R.id.filter_selection_label)
+        val img = currentView
+            ?.findViewById<AppCompatImageView>(R.id.filter_selection_confirm_icon)
+
+        label?.text = currentBreed.name
+        if (currentBreed.isSelected) {
+            img?.visibility = View.VISIBLE
+        }
+        return currentView!!
     }
 }
