@@ -165,7 +165,7 @@
             android:id="@+id/kennel_settings_city_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/kennel_settings_city_label"
+            android:text="@string/city_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_email_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_bottom_divider"

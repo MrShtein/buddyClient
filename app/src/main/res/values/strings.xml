@@ -100,7 +100,7 @@
     <string name="organization_name_label_text">Название организации:</string>
     <string name="kennel_settings_phone_number_label">Телефон организации:</string>
     <string name="kennel_settings_address_label">Адрес:</string>
-    <string name="kennel_settings_city_label">Город:</string>
+    <string name="city_label">Город:</string>
     <string name="kennel_settings_identification_number_label">ИНН:</string>
     <string name="kennel_settings_name_hint">Папа Кот</string>
     <string name="kennel_settings_phone_number_hint">+7(928)555-55-55</string>
@@ -183,6 +183,7 @@
     <string name="email_subject">Сброс пароля</string>
     <string name="reset_password_btn">Сбросить пароль</string>
     <string name="animal_filter_label_text">Фильтр</string>
+    <string name="animal_types_label">Типы животных:</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>

@@ -51,6 +51,14 @@
         <item name="cornerSize">10dp</item>
     </style>
 
+    <style name="shapeAppearanceForFilterChips" parent="mySt">
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="shapeAppearanceForInputTextInputStyle" parent="mySt">
         <item name="cornerFamilyBottomRight">rounded</item>
         <item name="cornerFamilyBottomLeft">rounded</item>
@@ -130,5 +138,6 @@
     <style name="cursorColorForInputs">
         <item name="colorPrimary">@color/cian5</item>
     </style>
-    
+
+
 </resources>
