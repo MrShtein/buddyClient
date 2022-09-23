@@ -10,7 +10,8 @@
     <color name="black_0">#00000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="cian5">#1998A7</color>
-    <color name="cian5_12">#1F1998A7</color>
+    <color name="cian5_15">#261998A7</color>
+
     <color name="background_grey2">#EEEEEE</color>
     <color name="grey3">#999999</color>
     <color name="grey4">#CCCCCC</color>
@@ -21,6 +22,7 @@
     <color name="input_unfocused">#8CFFFFFF</color>
     <color name="black_20">#33000000</color>
     <color name="black_10">#1A000000</color>
+    <color name="black_15">#26000000</color>
     <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="choice_color">#FF5858</color>
