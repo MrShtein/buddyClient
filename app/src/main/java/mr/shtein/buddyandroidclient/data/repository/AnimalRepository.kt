@@ -5,4 +5,5 @@ import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 
 interface AnimalRepository {
     suspend fun getAnimals(filter: AnimalFilter): List<Animal>
+    suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int
 }

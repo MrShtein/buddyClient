@@ -18,30 +18,55 @@ private const val GENDER_KEY = "gender"
 
 class NetworkAnimalRepository(private val networkService: NetworkService) : AnimalRepository {
 
-    override suspend fun getAnimals(filter: AnimalFilter): List<Animal>  {
-            val minAge = getMinAge(filter.minAge)
-            val maxAge = getMaxAge(filter.maxAge)
-            val result = networkService.getAnimals(
-                animalTypeId = filter.animalTypeId,
-                cityId = filter.cityId,
-                breedId = filter.breedId,
-                genderId = filter.genderId,
-                characteristicId = filter.characteristicId,
-                minAge = minAge,
-                maxAge = maxAge
-            )
-            when (result.code()) {
-                200 -> {
-                    return result.body() ?: listOf()
-                }
-                500 -> {
-                    throw ServerErrorException()
-                }
-                else -> {
-                    return listOf()
-                }
+    override suspend fun getAnimals(filter: AnimalFilter): List<Animal> {
+        val minAge = getMinAge(filter.minAge)
+        val maxAge = getMaxAge(filter.maxAge)
+        val result = networkService.getAnimals(
+            animalTypeId = filter.animalTypeId,
+            cityId = filter.cityId,
+            breedId = filter.breedId,
+            genderId = filter.genderId,
+            characteristicId = filter.characteristicId,
+            minAge = minAge,
+            maxAge = maxAge
+        )
+        return when (result.code()) {
+            200 -> {
+                result.body() ?: listOf()
+            }
+            500 -> {
+                throw ServerErrorException()
+            }
+            else -> {
+                listOf()
             }
         }
+    }
+
+    override suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int {
+        val minAge = getMinAge(animalFilter.minAge)
+        val maxAge = getMaxAge(animalFilter.maxAge)
+        val result = networkService.getAnimalsCountByFilter(
+            animalTypeId = animalFilter.animalTypeId,
+            cityId = animalFilter.cityId,
+            breedId = animalFilter.breedId,
+            genderId = animalFilter.genderId,
+            characteristicId = animalFilter.characteristicId,
+            minAge = minAge,
+            maxAge = maxAge
+        )
+        return when (result.code()) {
+            200 -> {
+                result.body() ?: 0
+            }
+            500 -> {
+                throw ServerErrorException()
+            }
+            else -> {
+                0
+            }
+        }
+    }
 
     private fun getMinAge(minAge: Int): Int? {
         return if (minAge == -1) {

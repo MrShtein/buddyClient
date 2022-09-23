@@ -26,6 +26,17 @@ interface NetworkService {
         @Query("max_age") maxAge: Int?
     ): Response<List<Animal>>
 
+    @GET("/api/v1/animal/count")
+    suspend fun getAnimalsCountByFilter(
+        @Query("type_id") animalTypeId: List<Int>?,
+        @Query("city_id") cityId: List<Int>?,
+        @Query("breed_id") breedId: List<Int>?,
+        @Query("gender") genderId: List<Int>?,
+        @Query("characteristic_id") characteristicId: List<Int>?,
+        @Query("min_age") minAge: Int?,
+        @Query("max_age") maxAge: Int?
+    ): Response<Int>
+
     @GET("api/v1/animal/{id}")
     fun getAnimalById(@Path("id") id: Long): Call<Animal>
 
