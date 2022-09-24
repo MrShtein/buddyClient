@@ -31,13 +31,13 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(ANIMAL_TYPE_KEY, animalTypeIdSet)
     }
 
-    override fun getCityId(): List<Int>? {
+    override fun getCityId(): MutableList<Int>? {
         val cityIdSet = storage.readStringSet(CITY_KEY, null)
         return cityIdSet
             ?.map {
                 it.toInt()
             }
-            ?.toList()
+            ?.toMutableList()
     }
 
     override fun saveCityId(cityId: List<Int>) {
@@ -49,13 +49,13 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(CITY_KEY, cityIdSet)
     }
 
-    override fun getBreedId(): List<Int>? {
+    override fun getBreedId(): MutableList<Int>? {
         val breedIdSet = storage.readStringSet(BREED_KEY, null)
         return breedIdSet
             ?.map {
                 it.toInt()
             }
-            ?.toList()
+            ?.toMutableList()
     }
 
     override fun saveBreedId(breedId: List<Int>) {
@@ -67,13 +67,13 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(BREED_KEY, breedIdSet)
     }
 
-    override fun getCharacteristicId(): List<Int>? {
+    override fun getCharacteristicId(): MutableList<Int>? {
         val characteristicIddSet = storage.readStringSet(CHARACTERISTIC_KEY, null)
         return characteristicIddSet
             ?.map {
                 it.toInt()
             }
-            ?.toList()
+            ?.toMutableList()
     }
 
     override fun saveCharacteristicId(characteristicId: List<Int>) {
@@ -85,13 +85,13 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(CHARACTERISTIC_KEY, characteristicIdSet)
     }
 
-    override fun getGenderId(): List<Int>? {
+    override fun getGenderId(): MutableList<Int>? {
         val genderIdSet = storage.readStringSet(GENDER_KEY, null)
         return genderIdSet
             ?.map {
                 it.toInt()
             }
-            ?.toList()
+            ?.toMutableList()
     }
 
     override fun saveGenderId(genderId: List<Int>) {
