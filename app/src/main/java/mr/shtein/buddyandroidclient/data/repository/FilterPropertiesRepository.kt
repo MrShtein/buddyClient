@@ -6,16 +6,16 @@ interface FilterPropertiesRepository {
     fun getAnimalTypeId(): MutableList<Int>?
     fun saveAnimalTypeId(animalTypeId: MutableList<Int>)
 
-    fun getCityId(): List<Int>?
+    fun getCityId(): MutableList<Int>?
     fun saveCityId(cityId: List<Int>)
 
-    fun getBreedId(): List<Int>?
+    fun getBreedId(): MutableList<Int>?
     fun saveBreedId(breedId: List<Int>)
 
-    fun getCharacteristicId(): List<Int>?
+    fun getCharacteristicId(): MutableList<Int>?
     fun saveCharacteristicId(characteristicId: List<Int>)
 
-    fun getGenderId(): List<Int>?
+    fun getGenderId(): MutableList<Int>?
     fun saveGenderId(genderId: List<Int>)
 
     fun getMinAge(): Int

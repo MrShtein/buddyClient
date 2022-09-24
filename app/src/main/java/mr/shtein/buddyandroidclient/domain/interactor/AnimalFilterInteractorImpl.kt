@@ -9,11 +9,11 @@ class AnimalFilterInteractorImpl(
 
     override fun makeAnimalFilter(): AnimalFilter {
         val animalTypeIdList: MutableList<Int>? = animalFilterPropertiesRepository.getAnimalTypeId()
-        val cityIdList: List<Int>? = animalFilterPropertiesRepository.getCityId()
-        val breedIdList: List<Int>? = animalFilterPropertiesRepository.getBreedId()
-        val characteristicIdList: List<Int>? =
+        val cityIdList: MutableList<Int>? = animalFilterPropertiesRepository.getCityId()
+        val breedIdList: MutableList<Int>? = animalFilterPropertiesRepository.getBreedId()
+        val characteristicIdList: MutableList<Int>? =
             animalFilterPropertiesRepository.getCharacteristicId()
-        val genderIdList: List<Int>? = animalFilterPropertiesRepository.getGenderId()
+        val genderIdList: MutableList<Int>? = animalFilterPropertiesRepository.getGenderId()
         val minAge: Int = animalFilterPropertiesRepository.getMinAge()
         val maxAge: Int = animalFilterPropertiesRepository.getMaxAge()
 
