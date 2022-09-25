@@ -17,6 +17,7 @@ val repositoryModule: Module = module {
     single<AnimalCharacteristicsRepository> { NetworkAnimalCharacteristicsRepository(get()) }
     single<UserRepository> { NetworkUserRepository(get()) }
     single<DistanceCounterRepository> { NetworkDistanceCounterRepository(get()) }
+    single<CityRepository> { LocalDbCityRepository(get(), get()) }
     single<UserPropertiesRepository> {
         SharedUserPropertiesRepository(get(named(USER_STORE_NAME)))
     }
