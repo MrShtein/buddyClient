@@ -4,12 +4,21 @@ import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 
 interface AnimalFilterInteractor {
 
-    fun getAnimalTypeId(): MutableList<Int>?
-    fun saveAnimalTypeId(animalTypeId: MutableList<Int>)
-    fun saveCityId(cityId: List<Int>)
-    fun saveBreedId(breedId: List<Int>)
-    fun saveCharacteristicId(characteristicId: List<Int>)
-    fun saveGenderId(genderId: List<Int>)
+    fun getAnimalTypeIdList(): MutableList<Int>
+    fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>)
+
+    fun getCityIdList(): MutableList<Int>
+    fun saveCityIdList(cityId: MutableList<Int>)
+
+    fun getBreedIdList(): MutableList<Int>
+    fun saveBreedIdList(breedId: MutableList<Int>)
+
+    fun getCharacteristicIdList(): MutableList<Int>
+    fun saveCharacteristicIdList(characteristicId: MutableList<Int>)
+
+    fun getGenderIdList(): MutableList<Int>
+    fun saveGenderIdList(genderId: MutableList<Int>)
+
     fun saveMinAge(minAge: Int)
     fun saveMaxAge(maxAge: Int)
     fun makeAnimalFilter(): AnimalFilter
