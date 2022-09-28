@@ -1,22 +1,20 @@
 package mr.shtein.buddyandroidclient.data.repository
 
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
-
 interface FilterPropertiesRepository {
-    fun getAnimalTypeId(): MutableList<Int>?
-    fun saveAnimalTypeId(animalTypeId: MutableList<Int>)
+    fun getAnimalTypeIdList(): MutableList<Int>
+    fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>)
 
-    fun getCityId(): MutableList<Int>?
-    fun saveCityId(cityId: List<Int>)
+    fun getCityIdList(): MutableList<Int>
+    fun saveCityIdList(cityId: List<Int>)
 
-    fun getBreedId(): MutableList<Int>?
-    fun saveBreedId(breedId: List<Int>)
+    fun getBreedIdList(): MutableList<Int>
+    fun saveBreedIdList(breedId: List<Int>)
 
-    fun getCharacteristicId(): MutableList<Int>?
-    fun saveCharacteristicId(characteristicId: List<Int>)
+    fun getCharacteristicIdList(): MutableList<Int>
+    fun saveCharacteristicIdList(characteristicId: List<Int>)
 
-    fun getGenderId(): MutableList<Int>?
-    fun saveGenderId(genderId: List<Int>)
+    fun getGenderIdList(): MutableList<Int>
+    fun saveGenderIdList(genderId: List<Int>)
 
     fun getMinAge(): Int
     fun saveMinAge(minAge: Int)
