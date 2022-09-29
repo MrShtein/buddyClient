@@ -204,10 +204,19 @@
     <plurals name="animal_found_count">
         <item quantity="zero">%d животных</item>
         <item quantity="one">%d животное</item>
-        <item quantity="two">%d питомцых</item>
-        <item quantity="few">%d животного</item>
+        <item quantity="two">%d животных</item>
+        <item quantity="few">%d животных</item>
         <item quantity="many">%d животных</item>
         <item quantity="other">%d животных</item>
+    </plurals>
+
+    <plurals name="filter_btn_animal_count">
+        <item quantity="zero">Найдено %d животных</item>
+        <item quantity="one">Найдено %d животное</item>
+        <item quantity="two">Найдено %d животных</item>
+        <item quantity="few">Найдено %d животных</item>
+        <item quantity="many">Найдено %d животных</item>
+        <item quantity="other">Найдено %d животных</item>
     </plurals>
 
 </resources>
