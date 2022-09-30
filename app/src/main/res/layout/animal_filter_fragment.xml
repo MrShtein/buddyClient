@@ -51,6 +51,7 @@
                 android:id="@+id/animal_filter_city_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:completionThreshold="1"
                 android:popupBackground="@drawable/drop_down_background"
                 />
 
@@ -83,6 +84,7 @@
                 android:id="@+id/animal_filter_animal_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:completionThreshold="1"
                 android:popupBackground="@drawable/drop_down_background"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,6 +118,7 @@
                 android:id="@+id/animal_filter_breed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:popupBackground="@color/white"
                 />
 
@@ -148,6 +151,7 @@
                 android:id="@+id/animal_filter_color_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:completionThreshold="1"
                 android:popupBackground="@drawable/drop_down_background"/>
 
         </com.google.android.material.textfield.TextInputLayout>
