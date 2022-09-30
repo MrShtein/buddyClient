@@ -204,6 +204,8 @@
         tools:layout="@layout/animal_filter_fragment">
         <action
             android:id="@+id/action_animalFilterFragment_to_animalsListFragment"
+            app:popUpTo="@id/animalsListFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/animalsListFragment" />
     </fragment>
 </navigation>

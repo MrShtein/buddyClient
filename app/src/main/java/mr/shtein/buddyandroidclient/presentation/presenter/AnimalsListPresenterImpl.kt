@@ -19,11 +19,10 @@ import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import kotlin.jvm.Throws
 import kotlin.math.floor
 
-const val DOG_ID: Int = 1
-const val CAT_ID: Int = 2
+private const val DOG_ID: Int = 1
+private const val CAT_ID: Int = 2
 private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
 private const val KENNEL_LABEL = "AddKennelFragment"
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
@@ -65,7 +64,7 @@ class AnimalsListPresenterImpl(
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private lateinit var animalFilter: AnimalFilter
-    private var couroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
+    private var coroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
         getFromNetwork: Boolean
@@ -76,7 +75,7 @@ class AnimalsListPresenterImpl(
             viewState.toggleAnimalSearchProgressBar(isVisible = false)
             return
         }
-        couroutineScope.launch {
+        coroutineScope.launch {
             try {
                 animalList = animalInteractor.getAnimalsByFilter(animalFilter)
                 if (fineLocationPermission == PackageManager.PERMISSION_GRANTED
@@ -113,7 +112,7 @@ class AnimalsListPresenterImpl(
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
             viewState.updateList(animalsWithNewState)
-            couroutineScope.launch {
+            coroutineScope.launch {
                 try {
                     val coordinates: Coordinates = locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
@@ -257,16 +256,16 @@ class AnimalsListPresenterImpl(
             animalTypeId.add(DOG_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
             animalTypeList.add(DOG_ID)
-            filterInteractor.saveAnimalTypeId(animalTypeList)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(DOG_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
             animalTypeList.remove(DOG_ID)
-            filterInteractor.saveAnimalTypeId(animalTypeList)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
         }
     }
 
@@ -276,16 +275,16 @@ class AnimalsListPresenterImpl(
             animalTypeId.add(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
             animalTypeList.add(CAT_ID)
-            filterInteractor.saveAnimalTypeId(animalTypeList)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeId() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
             animalTypeList.remove(CAT_ID)
-            filterInteractor.saveAnimalTypeId(animalTypeList)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
         }
     }
 
