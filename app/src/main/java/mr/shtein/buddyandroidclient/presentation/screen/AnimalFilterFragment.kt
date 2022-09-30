@@ -67,7 +67,6 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     ) {
         breedsAdapter = SelectionAdapter(requireContext(), animalBreeds)
         binding.animalFilterBreedInput.setAdapter(breedsAdapter)
-        binding.animalFilterBreedInput.threshold = 1
         binding.animalFilterBreedInput.setDropDownBackgroundResource(R.color.white)
 
     }
