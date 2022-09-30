@@ -1,12 +1,9 @@
 package mr.shtein.buddyandroidclient.data.repository
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
-import kotlin.math.min
 
 const val ANIMAL_TYPE_ID_KEY = "type_id"
 const val CITY_ID_KEY = "city_id"
@@ -26,7 +23,7 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
             cityId = filter.cityId,
             breedId = filter.breedId,
             genderId = filter.genderId,
-            characteristicId = filter.characteristicId,
+            characteristicId = filter.colorId,
             minAge = minAge,
             maxAge = maxAge
         )
@@ -51,7 +48,7 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
             cityId = animalFilter.cityId,
             breedId = animalFilter.breedId,
             genderId = animalFilter.genderId,
-            characteristicId = animalFilter.characteristicId,
+            characteristicId = animalFilter.colorId,
             minAge = minAge,
             maxAge = maxAge
         )

@@ -90,7 +90,7 @@ class AnimalFilterPresenter(
                 if (colors == null) {
                     colors = animalInteractor.getAnimalCharacteristics(COLOR_ID)
                     colors?.map { item ->
-                        animalFilter.characteristicId?.forEach {
+                        animalFilter.colorId?.forEach {
                             if (it == item.id) item.isSelected = true
                             colorsForChips.add(item)
                         }

@@ -13,8 +13,8 @@ interface AnimalFilterInteractor {
     fun getBreedIdList(): MutableList<Int>
     fun saveBreedIdList(breedId: MutableList<Int>)
 
-    fun getCharacteristicIdList(): MutableList<Int>
-    fun saveCharacteristicIdList(characteristicId: MutableList<Int>)
+    fun getColorIdIdList(): MutableList<Int>
+    fun saveColorIdList(colorIdList: MutableList<Int>)
 
     fun getGenderIdList(): MutableList<Int>
     fun saveGenderIdList(genderId: MutableList<Int>)

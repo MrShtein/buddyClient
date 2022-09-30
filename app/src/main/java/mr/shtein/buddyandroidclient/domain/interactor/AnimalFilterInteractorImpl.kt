@@ -12,7 +12,7 @@ class AnimalFilterInteractorImpl(
         val cityIdList: MutableList<Int> = animalFilterPropertiesRepository.getCityIdList()
         val breedIdList: MutableList<Int> = animalFilterPropertiesRepository.getBreedIdList()
         val characteristicIdList: MutableList<Int> =
-            animalFilterPropertiesRepository.getCharacteristicIdList()
+            animalFilterPropertiesRepository.getColorIdList()
         val genderIdList: MutableList<Int> = animalFilterPropertiesRepository.getGenderIdList()
         val minAge: Int = animalFilterPropertiesRepository.getMinAge()
         val maxAge: Int = animalFilterPropertiesRepository.getMaxAge()
@@ -21,7 +21,7 @@ class AnimalFilterInteractorImpl(
             animalTypeId = animalTypeIdList,
             cityId = cityIdList,
             breedId = breedIdList,
-            characteristicId = characteristicIdList,
+            colorId = characteristicIdList,
             genderId = genderIdList,
             minAge = minAge,
             maxAge = maxAge
@@ -52,12 +52,12 @@ class AnimalFilterInteractorImpl(
         animalFilterPropertiesRepository.saveBreedIdList(breedId)
     }
 
-    override fun getCharacteristicIdList(): MutableList<Int> {
-        return animalFilterPropertiesRepository.getCharacteristicIdList()
+    override fun getColorIdIdList(): MutableList<Int> {
+        return animalFilterPropertiesRepository.getColorIdList()
     }
 
-    override fun saveCharacteristicIdList(characteristicId: MutableList<Int>) {
-        animalFilterPropertiesRepository.saveCharacteristicIdList(characteristicId)
+    override fun saveColorIdList(colorIdList: MutableList<Int>) {
+        animalFilterPropertiesRepository.saveColorIdList(colorIdList)
     }
 
     override fun getGenderIdList(): MutableList<Int> {
