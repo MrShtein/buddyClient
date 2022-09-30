@@ -10,8 +10,8 @@ interface FilterPropertiesRepository {
     fun getBreedIdList(): MutableList<Int>
     fun saveBreedIdList(breedId: List<Int>)
 
-    fun getCharacteristicIdList(): MutableList<Int>
-    fun saveCharacteristicIdList(characteristicId: List<Int>)
+    fun getColorIdList(): MutableList<Int>
+    fun saveColorIdList(colorId: List<Int>)
 
     fun getGenderIdList(): MutableList<Int>
     fun saveGenderIdList(genderId: List<Int>)

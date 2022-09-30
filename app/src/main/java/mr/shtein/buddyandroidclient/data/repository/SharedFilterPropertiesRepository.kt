@@ -5,7 +5,7 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 const val ANIMAL_TYPE_KEY = "animal_type"
 const val CITY_KEY = "city"
 const val BREED_KEY = "breed"
-const val CHARACTERISTIC_KEY = "characteristic"
+const val COLOR_KEY = "color"
 private const val GENDER_KEY = "gender"
 private const val MIN_AGE_KEY = "min_age"
 private const val MAX_AGE_KEY = "max_age"
@@ -67,8 +67,8 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(BREED_KEY, breedIdSet)
     }
 
-    override fun getCharacteristicIdList(): MutableList<Int> {
-        val characteristicIddSet = storage.readStringSet(CHARACTERISTIC_KEY, null)
+    override fun getColorIdList(): MutableList<Int> {
+        val characteristicIddSet = storage.readStringSet(COLOR_KEY, null)
         return characteristicIddSet
             ?.map {
                 it.toInt()
@@ -76,13 +76,13 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
             ?.toMutableList() ?: mutableListOf()
     }
 
-    override fun saveCharacteristicIdList(characteristicId: List<Int>) {
-        val characteristicIdSet = characteristicId
+    override fun saveColorIdList(colorId: List<Int>) {
+        val characteristicIdSet = colorId
             .map {
                 it.toString()
             }
             .toSet()
-        storage.writeStringSet(CHARACTERISTIC_KEY, characteristicIdSet)
+        storage.writeStringSet(COLOR_KEY, characteristicIdSet)
     }
 
     override fun getGenderIdList(): MutableList<Int> {
@@ -100,7 +100,7 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
                 it.toString()
             }
             .toSet()
-        storage.writeStringSet(CHARACTERISTIC_KEY, genderIdSet)
+        storage.writeStringSet(COLOR_KEY, genderIdSet)
     }
 
     override fun getMinAge(): Int {
