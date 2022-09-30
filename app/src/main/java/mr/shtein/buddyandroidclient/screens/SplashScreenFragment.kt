@@ -14,18 +14,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.FilterPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 
 const val ANIMAL_FILTER_KEY = "animal_filter"
+private const val DOG_TYPE_KEY = 1
+private const val CAT_TYPE_KEY = 2
+
 
 class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
@@ -72,9 +70,15 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             isInsetsWorked = false
 
             val city = userPropertiesRepository.getUserCity()
+            val animalTypeFilter =
             if (city == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
+                if (animalFilter.animalTypeId == null) {
+                    val animalTypes = mutableListOf(DOG_TYPE_KEY, CAT_TYPE_KEY)
+                    animalFilterInteractor.saveAnimalTypeIdList(animalTypes)
+                    animalFilter.animalTypeId = animalTypes
+                }
                 val bundle = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
                 findNavController().navigate(R.id.action_startFragment_to_animalsListFragment, bundle)
             }
