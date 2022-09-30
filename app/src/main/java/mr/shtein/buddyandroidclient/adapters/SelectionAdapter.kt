@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +21,8 @@ class SelectionAdapter(
 ) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var currentView = convertView
-        if (currentView == null) {
-            val inflater = LayoutInflater.from(context)
-            currentView = inflater.inflate(R.layout.filter_selection_row, parent, false)
-        }
+        val inflater = LayoutInflater.from(context)
+        val currentView = inflater.inflate(R.layout.filter_selection_row, parent, false)
 
         val currentBreed: FilterAutocompleteItem = getItem(position) as FilterAutocompleteItem
 
