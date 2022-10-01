@@ -25,7 +25,7 @@
     <color name="black_15">#26000000</color>
     <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="choice_color">#FF5858</color>
+    <color name="choice_color">#F04438</color>
     <color name="dialog_primary_color">#E1EEf3</color>
     <color name="dialog_clarification_text_color">#494547</color>
     <color name="cian4">#1BBDD4</color>
