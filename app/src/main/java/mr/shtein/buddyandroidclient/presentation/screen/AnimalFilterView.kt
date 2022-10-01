@@ -33,15 +33,21 @@ interface AnimalFilterView : MvpView {
     @OneExecution
     fun deleteBreedChip(chip: Chip)
 
-    @OneExecution
+    @AddToEndSingle
     fun updateBreedList(breeds: List<FilterAutocompleteItem>?)
 
     @AddToEndSingle
     fun setListeners()
 
-    @OneExecution
+    @AddToEndSingle
     fun updateBtnValue(animalAfterFilteredCount: Int)
 
     @OneExecution
     fun closeKeyboard()
+
+    @OneExecution
+    fun deleteColorChip(chip: Chip)
+
+    @AddToEndSingle
+    fun updateColorList(colors: List<FilterAutocompleteItem>?)
 }
