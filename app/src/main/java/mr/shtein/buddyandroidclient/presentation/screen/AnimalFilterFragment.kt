@@ -2,7 +2,6 @@ package mr.shtein.buddyandroidclient.presentation.screen
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import moxy.presenter.ProvidePresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.SelectionAdapter
 import mr.shtein.buddyandroidclient.databinding.AnimalFilterFragmentBinding
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalFilterPresenter
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
@@ -30,6 +28,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     private var _binding: AnimalFilterFragmentBinding? = null
     private lateinit var breedsAdapter: SelectionAdapter
+    private lateinit var colorsAdapter: SelectionAdapter
     private val binding get() = _binding!!
     var count = 0
 
@@ -69,6 +68,10 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         binding.animalFilterBreedInput.setAdapter(breedsAdapter)
         binding.animalFilterBreedInput.setDropDownBackgroundResource(R.color.white)
 
+        colorsAdapter = SelectionAdapter(requireContext(), animalColors)
+        binding.animalFilterColorInput.setAdapter(colorsAdapter)
+        binding.animalFilterColorInput.setDropDownBackgroundResource(R.color.white)
+
     }
 
     override fun closeKeyboard() {
@@ -77,7 +80,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     }
 
     override fun showBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>) {
-        val breedChips: List<Chip> = makeChips(breedsForChips)
+        val breedChips: List<Chip> = makeBreedChips(breedsForChips)
         breedChips.forEach {
             binding.animalFilterBreedChipsContainer.addView(it)
         }
@@ -85,7 +88,10 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
 
     override fun showColorChips(colorsForChips: MutableList<FilterAutocompleteItem>) {
-
+        val colorChips: List<Chip> = makeColorChips(colorsForChips)
+        colorChips.forEach {
+            binding.animalFilterColorChipsContainer.addView(it)
+        }
     }
 
     override fun showAnimalTypeChips(animalTypesForChips: MutableList<FilterAutocompleteItem>) {
@@ -108,6 +114,19 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
                 binding.animalFilterBreedChipsContainer.addView(chip)
             }
             binding.animalFilterBreedInput.setText("")
+        }
+
+        binding.animalFilterColorInput.setOnItemClickListener { parent, view, position, id ->
+
+            val adapter = binding.animalFilterColorInput.adapter as SelectionAdapter
+            val filterColor = adapter.getItem(position)
+            animalFilterPresenter.onColorFilterItemClick(filterColor!!)
+            filterColor.isSelected = true
+            filterColor.let {
+                val chip = makeColorChip(it.name, it.id)
+                binding.animalFilterColorChipsContainer.addView(chip)
+            }
+            binding.animalFilterColorInput.setText("")
         }
 
         binding.animalFilterFindBtn.setOnClickListener {
@@ -139,7 +158,18 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.notifyDataSetChanged()
     }
 
-    private fun makeChips(breedsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+    override fun deleteColorChip(chip: Chip) {
+        binding.animalFilterColorChipsContainer.removeView(chip)
+    }
+
+    override fun updateColorList(colors: List<FilterAutocompleteItem>?) {
+        val adapter = binding.animalFilterColorInput.adapter as SelectionAdapter
+        adapter.clear()
+        adapter.addAll(colors!!)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun makeBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
         return breedsForChips
             .map {
                 makeBreedChip(it.name, it.id)
@@ -147,16 +177,38 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
             .toList()
     }
 
+    private fun makeColorChips(colorsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+        return colorsForChips
+            .map {
+                makeColorChip(it.name, it.id)
+            }
+            .toList()
+    }
+
     private fun makeBreedChip(text: String, itemId: Int): Chip {
         val chip = layoutInflater.inflate(
             R.layout.filter_item_chip   ,
-            binding.animalFilterGenderGroup,
+            binding.animalFilterBreedChipsContainer,
             false
         ) as Chip
         chip.text = text
         chip.tag = itemId
         chip.setOnClickListener {
             animalFilterPresenter.onBreedChipCloseBtnClicked(it as Chip)
+        }
+        return chip
+    }
+
+    private fun makeColorChip(text: String, itemId: Int): Chip {
+        val chip = layoutInflater.inflate(
+            R.layout.filter_item_chip   ,
+            binding.animalFilterColorChipsContainer,
+            false
+        ) as Chip
+        chip.text = text
+        chip.tag = itemId
+        chip.setOnClickListener {
+            animalFilterPresenter.onColorChipCloseBtnClicked(it as Chip)
         }
         return chip
     }

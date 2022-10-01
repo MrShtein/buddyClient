@@ -29,10 +29,14 @@ class AnimalFilterPresenter(
     private var breeds: List<FilterAutocompleteItem>? = null
     private var colors: List<FilterAutocompleteItem>? = null
     private var types: List<FilterAutocompleteItem>? = null
+    private lateinit var colorsForChips: MutableList<FilterAutocompleteItem>
+    private lateinit var breedsForChips: MutableList<FilterAutocompleteItem>
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         animalFilter = animalFilterInteractor.makeAnimalFilter()
+        colorsForChips = mutableListOf()
+        breedsForChips = mutableListOf()
         setUpView()
     }
 
@@ -63,7 +67,6 @@ class AnimalFilterPresenter(
             }
 
             val breedJob = launch {
-                val breedsForChips: MutableList<FilterAutocompleteItem> = mutableListOf()
                 if (breeds == null) {
                     breeds =
                         animalInteractor.getAnimalBreeds(animalFilter.animalTypeId?.toList()!!)
@@ -86,13 +89,14 @@ class AnimalFilterPresenter(
                 viewState.showBreedChips(breedsForChips)
             }
             val colorJob = launch {
-                val colorsForChips: MutableList<FilterAutocompleteItem> = mutableListOf()
                 if (colors == null) {
                     colors = animalInteractor.getAnimalCharacteristics(COLOR_ID)
                     colors?.map { item ->
                         animalFilter.colorId?.forEach {
-                            if (it == item.id) item.isSelected = true
-                            colorsForChips.add(item)
+                            if (it == item.id) {
+                                item.isSelected = true
+                                colorsForChips.add(item)
+                            }
                         }
                     }
                 } else {
@@ -143,6 +147,7 @@ class AnimalFilterPresenter(
         }
         breed?.isSelected = false
         animalFilter.breedId?.remove(breed?.id)
+        breedsForChips.remove(breed)
         scope.launch {
             val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
             viewState.updateBtnValue(animalCount)
@@ -155,15 +160,53 @@ class AnimalFilterPresenter(
         viewState.closeKeyboard()
     }
 
+    fun onColorChipCloseBtnClicked(chip: Chip) {
+        val colorId: Int = chip.tag as Int
+        val color = colors?.first {
+            colorId == it.id
+        }
+        color?.isSelected = false
+        animalFilter.colorId?.remove(color?.id)
+        colorsForChips.remove(color)
+        scope.launch {
+            val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalCount)
+            val storeColorList = animalFilterInteractor.getColorIdIdList()
+            storeColorList.remove(color?.id)
+            animalFilterInteractor.saveColorIdList(storeColorList)
+        }
+        viewState.deleteColorChip(chip)
+        viewState.updateColorList(colors)
+        viewState.closeKeyboard()
+    }
+
 
     fun onBreedFilterItemClick(filterBreed: FilterAutocompleteItem) {
         val storeBreedIdList = animalFilterInteractor.getBreedIdList()
         storeBreedIdList.add(filterBreed.id)
+        breedsForChips.add(filterBreed)
         animalFilterInteractor.saveBreedIdList(storeBreedIdList)
         if (animalFilter.breedId != null) {
             animalFilter.breedId!!.add(filterBreed.id)
         } else {
             animalFilter.breedId = mutableListOf(filterBreed.id)
+        }
+        scope.launch {
+            val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalAfterFilteredCount)
+        }
+        viewState.closeKeyboard()
+    }
+
+    fun onColorFilterItemClick(filterColor: FilterAutocompleteItem) {
+        val storeColorIdList = animalFilterInteractor.getColorIdIdList()
+        storeColorIdList.add(filterColor.id)
+        colorsForChips.add(filterColor)
+        animalFilterInteractor.saveColorIdList(storeColorIdList)
+        if (animalFilter.colorId != null) {
+            animalFilter.colorId?.add(filterColor.id)
+        } else {
+            animalFilter.colorId = mutableListOf(filterColor.id)
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
