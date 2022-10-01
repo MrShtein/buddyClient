@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_city_chips_container">
 
-            <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_city_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -80,7 +80,7 @@
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_chips_container">
 
-            <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_animal_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -147,7 +147,7 @@
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_color_chips_container">
 
-            <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_color_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
