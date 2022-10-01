@@ -6,9 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
-import mr.shtein.buddyandroidclient.model.Animal
+import android.view.ViewTreeObserver
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -16,7 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
@@ -27,12 +28,15 @@ import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import moxy.viewstate.strategy.alias.OneExecution
 import mr.shtein.buddyandroidclient.*
+import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
+import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
+
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
 private const val ANIMAL_FILTER_KEY = "animal_filter"
@@ -58,8 +62,10 @@ interface AnimalListView : MvpView {
     fun setAnimationWhenToAnimalFilterNavigate()
 
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
+
     @OneExecution
     fun toggleDogChip(isChecked: Boolean)
+
     @OneExecution
     fun toggleCatChip(isChecked: Boolean)
 
@@ -73,6 +79,9 @@ interface AnimalListView : MvpView {
 
     @OneExecution
     fun showError(errorRes: Int)
+
+    @OneExecution
+    fun showFilterBadge(filterItemsCount: Int)
 }
 
 class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
@@ -108,10 +117,23 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         val view = binding.root
         setUpView()
 
-        animalListPresenter.onChipsReadyToToggle()
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         animalListPresenter.onAnimalShowCommand(false)
+        animalListPresenter.onChipsReadyToToggle()
         return view
+    }
+
+    override fun showFilterBadge(filterItemsCount: Int) {
+        binding.animalsListFilterBtn.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val badgeDrawable =
+                    BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
+                badgeDrawable.number = filterItemsCount
+                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.animalsListFilterBtn)
+                binding.animalsListFilterBtn.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
     }
 
     override fun toggleAnimalSearchProgressBar(isVisible: Boolean) {
@@ -225,7 +247,10 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     override fun navigateToAnimalFilter(animalFilter: AnimalFilter) {
         val bundle = Bundle()
         bundle.putParcelable(ANIMAL_FILTER_KEY, animalFilter)
-        findNavController().navigate(R.id.action_animalsListFragment_to_animalFilterFragment, bundle)
+        findNavController().navigate(
+            R.id.action_animalsListFragment_to_animalFilterFragment,
+            bundle
+        )
     }
 
     private fun setUpView() {

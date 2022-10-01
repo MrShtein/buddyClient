@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
 import android.content.pm.PackageManager
+import android.util.Log
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -69,6 +70,9 @@ class AnimalsListPresenterImpl(
     override fun onAnimalShowCommand(
         getFromNetwork: Boolean
     ) {
+        animalFilter = filterInteractor.makeAnimalFilter()
+        val filterItemsCount: Int = calculateFilterNumbers(animalFilter)
+        if (filterItemsCount > 0) viewState.showFilterBadge(filterItemsCount)
         viewState.toggleAnimalSearchProgressBar(isVisible = true)
         if (!getFromNetwork && animalList != null) { // в случае если пользователь нажал на фильтр animalList != null, но нам необходимы данные из сети!!!
             viewState.updateList(animalList!!)
@@ -107,6 +111,8 @@ class AnimalsListPresenterImpl(
             }
         }
     }
+
+
 
     override fun onClickToLocationBtn(permissions: Map<String, Boolean>) {
         if (permissions.containsValue(true)) {
@@ -300,4 +306,16 @@ class AnimalsListPresenterImpl(
     fun onFilterBtnClicked() {
         viewState.navigateToAnimalFilter(animalFilter)
     }
+
+    private fun calculateFilterNumbers(animalFilter: AnimalFilter): Int {
+        var count = 0
+        if ((animalFilter.animalTypeId?.size ?: 0) > 0) count++
+        if ((animalFilter.cityId?.size ?: 0) > 0) count++
+        if ((animalFilter.breedId?.size ?: 0) > 0) count++
+        if ((animalFilter.colorId?.size ?: 0) > 0) count++
+        if ((animalFilter.genderId?.size ?: 0) > 0) count++
+        if (animalFilter.minAge > -1 || animalFilter.maxAge > -1) count++
+        return count
+    }
+
 }

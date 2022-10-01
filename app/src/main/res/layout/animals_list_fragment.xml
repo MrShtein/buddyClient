@@ -75,13 +75,16 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/animals_list_filter_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:iconGravity="textStart"
+        android:layout_marginEnd="30dp"
+        android:padding="5dp"
         app:icon="@drawable/animal_filter"
-        app:layout_constraintTop_toTopOf="@id/animal_choice_scroll_chips"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="15dp"/>
+        app:layout_constraintTop_toTopOf="@id/animal_choice_scroll_chips"
+        app:layout_constraintBottom_toBottomOf="@id/animal_choice_scroll_chips"/>
 
     <TextView
         android:id="@+id/animals_list_found_animal_count"
