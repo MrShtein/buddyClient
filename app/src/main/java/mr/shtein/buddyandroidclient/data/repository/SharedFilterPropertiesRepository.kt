@@ -108,7 +108,7 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
     }
 
     override fun saveMinAge(minAge: Int) {
-        storage.writeInt(MIN_AGE_KEY, -1)
+        storage.writeInt(MIN_AGE_KEY, minAge)
     }
 
     override fun getMaxAge(): Int {
@@ -116,7 +116,7 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
     }
 
     override fun saveMaxAge(maxAge: Int) {
-        storage.writeInt(MAX_AGE_KEY, -1)
+        storage.writeInt(MAX_AGE_KEY, maxAge)
     }
 
     override fun removeAll() {
