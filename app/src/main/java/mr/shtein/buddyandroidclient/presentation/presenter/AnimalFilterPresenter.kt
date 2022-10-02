@@ -14,6 +14,10 @@ import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
 private const val DOG_ID = 1
 private const val CAT_ID = 2
 private const val COLOR_ID = 1
+private const val MIN_AGE_VALUE = 0
+private const val MAX_AGE_VALUE = 35
+private const val AGE_STORAGE_EMPTY_VALUE = -1
+private const val MONTHS_IN_YEAR = 12
 
 @InjectViewState
 class AnimalFilterPresenter(
@@ -297,6 +301,26 @@ class AnimalFilterPresenter(
             viewState.updateBtnValue(animalAfterFilteredCount)
         }
         viewState.closeKeyboard()
+    }
+
+    fun onAgeSliderValueChange(valueFrom: Int, valueTo: Int) {
+        if (valueFrom == MIN_AGE_VALUE && valueTo == MAX_AGE_VALUE) {
+            animalFilterInteractor.saveMinAge(AGE_STORAGE_EMPTY_VALUE)
+            animalFilterInteractor.saveMaxAge(AGE_STORAGE_EMPTY_VALUE)
+            animalFilter.minAge = AGE_STORAGE_EMPTY_VALUE
+            animalFilter.maxAge = AGE_STORAGE_EMPTY_VALUE
+        } else {
+            val valueFromInMonths = valueFrom * MONTHS_IN_YEAR
+            val valueToInMonths = valueTo * MONTHS_IN_YEAR
+            animalFilterInteractor.saveMinAge(valueFromInMonths)
+            animalFilterInteractor.saveMaxAge(valueToInMonths)
+            animalFilter.minAge = valueFromInMonths
+            animalFilter.maxAge = valueToInMonths
+        }
+        scope.launch {
+            val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalAfterFilteredCount)
+        }
     }
 
     private fun mapCitiesToFilterItem(
