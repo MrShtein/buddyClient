@@ -27,8 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_label"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_input_container"
+            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
             >
 
@@ -62,15 +62,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_city_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_input_container"
+            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
             >
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/animal_filter_animal_input_container"
+            android:id="@+id/animal_filter_animal_type_input_container"
             style="@style/textInputContainerForFilterAutocomplete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_chips_container">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/animal_filter_animal_input"
+                android:id="@+id/animal_filter_animal_type_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:completionThreshold="1"
@@ -93,9 +93,9 @@
             android:id="@+id/animal_filter_breed_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_input_container"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
             >
 
@@ -129,8 +129,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_input_container"
+            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
             >
 

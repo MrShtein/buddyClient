@@ -15,7 +15,7 @@ interface AnimalFilterView : MvpView {
     fun initAdapters(
         animalBreeds: List<FilterAutocompleteItem>,
         animalColors: List<FilterAutocompleteItem>,
-        animalType: List<FilterAutocompleteItem>,
+        animalTypes: List<FilterAutocompleteItem>,
         animalCities: List<FilterAutocompleteItem>
     )
 
@@ -57,4 +57,10 @@ interface AnimalFilterView : MvpView {
 
     @AddToEndSingle
     fun updateCityList(cities: List<FilterAutocompleteItem>?)
+
+    @OneExecution
+    fun deleteAnimalTypeChip(chip: Chip)
+
+    @AddToEndSingle
+    fun updateAnimalTypeList(types: List<FilterAutocompleteItem>?)
 }
