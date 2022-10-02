@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
+import android.util.Log
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.*
 import moxy.InjectViewState
@@ -31,12 +32,15 @@ class AnimalFilterPresenter(
     private var types: List<FilterAutocompleteItem>? = null
     private lateinit var colorsForChips: MutableList<FilterAutocompleteItem>
     private lateinit var breedsForChips: MutableList<FilterAutocompleteItem>
+    private lateinit var citiesForChips: MutableList<FilterAutocompleteItem>
+
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         animalFilter = animalFilterInteractor.makeAnimalFilter()
         colorsForChips = mutableListOf()
         breedsForChips = mutableListOf()
+        citiesForChips = mutableListOf()
         setUpView()
     }
 
@@ -44,7 +48,6 @@ class AnimalFilterPresenter(
         viewState.setUpTransitions()
         scope.launch {
             val cityJob = launch {
-                val citiesForChips: MutableList<FilterAutocompleteItem> = mutableListOf()
                 if (cities == null) {
                     val citiesList = cityRepository.getCities()
                     cities = mapCitiesToFilterItem(citiesList)
@@ -134,7 +137,7 @@ class AnimalFilterPresenter(
             breedJob.join()
             colorJob.join()
             typeJob.join()
-            viewState.initAdapters(breeds!!, colors!!, types!!)
+            viewState.initAdapters(breeds!!, colors!!, types!!, cities!!)
             viewState.setListeners()
 
         }
@@ -156,7 +159,7 @@ class AnimalFilterPresenter(
             animalFilterInteractor.saveBreedIdList(storeBreedList)
         }
         viewState.deleteBreedChip(chip)
-        viewState.updateBreedList(breeds)
+        viewState.updateBreedList(breeds?.toList())
         viewState.closeKeyboard()
     }
 
@@ -176,10 +179,29 @@ class AnimalFilterPresenter(
             animalFilterInteractor.saveColorIdList(storeColorList)
         }
         viewState.deleteColorChip(chip)
-        viewState.updateColorList(colors)
+        viewState.updateColorList(colors?.toList())
         viewState.closeKeyboard()
     }
 
+    fun onCityChipCloseBtnClicked(chip: Chip) {
+        val cityId: Int = chip.tag as Int
+        val city = cities?.first {
+            cityId == it.id
+        }
+        city?.isSelected = false
+        animalFilter.cityId?.remove(city?.id)
+        citiesForChips.remove(city)
+        scope.launch {
+            val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalCount)
+            val storeCityList = animalFilterInteractor.getCityIdList()
+            storeCityList.remove(city?.id)
+            animalFilterInteractor.saveCityIdList(storeCityList)
+        }
+        viewState.deleteCityChip(chip)
+        viewState.updateCityList(cities?.toList())
+        viewState.closeKeyboard()
+    }
 
     fun onBreedFilterItemClick(filterBreed: FilterAutocompleteItem) {
         val storeBreedIdList = animalFilterInteractor.getBreedIdList()
@@ -207,6 +229,23 @@ class AnimalFilterPresenter(
             animalFilter.colorId?.add(filterColor.id)
         } else {
             animalFilter.colorId = mutableListOf(filterColor.id)
+        }
+        scope.launch {
+            val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalAfterFilteredCount)
+        }
+        viewState.closeKeyboard()
+    }
+
+    fun onCityFilterItemClick(filterCity: FilterAutocompleteItem) {
+        val storeCityIdList = animalFilterInteractor.getCityIdList()
+        storeCityIdList.add(filterCity.id)
+        citiesForChips.add(filterCity)
+        animalFilterInteractor.saveCityIdList(storeCityIdList)
+        if (animalFilter.cityId != null) {
+            animalFilter.cityId?.add(filterCity.id)
+        } else {
+            animalFilter.cityId = mutableListOf(filterCity.id)
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)

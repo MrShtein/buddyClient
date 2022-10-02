@@ -2,6 +2,7 @@ package mr.shtein.buddyandroidclient.presentation.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     private var _binding: AnimalFilterFragmentBinding? = null
     private lateinit var breedsAdapter: SelectionAdapter
     private lateinit var colorsAdapter: SelectionAdapter
+    private lateinit var citiesAdapter: SelectionAdapter
     private val binding get() = _binding!!
     var count = 0
 
@@ -62,7 +64,8 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     override fun initAdapters(
         animalBreeds: List<FilterAutocompleteItem>,
         animalColors: List<FilterAutocompleteItem>,
-        animalType: List<FilterAutocompleteItem>
+        animalType: List<FilterAutocompleteItem>,
+        animalCities: List<FilterAutocompleteItem>
     ) {
         breedsAdapter = SelectionAdapter(requireContext(), animalBreeds)
         binding.animalFilterBreedInput.setAdapter(breedsAdapter)
@@ -71,6 +74,10 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         colorsAdapter = SelectionAdapter(requireContext(), animalColors)
         binding.animalFilterColorInput.setAdapter(colorsAdapter)
         binding.animalFilterColorInput.setDropDownBackgroundResource(R.color.white)
+
+        citiesAdapter = SelectionAdapter(requireContext(), animalCities)
+        binding.animalFilterCityInput.setAdapter(citiesAdapter)
+        binding.animalFilterCityInput.setDropDownBackgroundResource(R.color.white)
 
     }
 
@@ -99,7 +106,10 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     }
 
     override fun showCityChips(citiesForChips: MutableList<FilterAutocompleteItem>) {
-
+        val citiesChips: List<Chip> = makeCityChips(citiesForChips)
+        citiesChips.forEach {
+            binding.animalFilterCityChipsContainer.addView(it)
+        }
     }
 
     override fun setListeners() {
@@ -127,6 +137,19 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
                 binding.animalFilterColorChipsContainer.addView(chip)
             }
             binding.animalFilterColorInput.setText("")
+        }
+
+        binding.animalFilterCityInput.setOnItemClickListener { parent, view, position, id ->
+
+            val adapter = binding.animalFilterCityInput.adapter as SelectionAdapter
+            val filterCity = adapter.getItem(position)
+            animalFilterPresenter.onCityFilterItemClick(filterCity!!)
+            filterCity.isSelected = true
+            filterCity.let {
+                val chip = makeCityChip(it.name, it.id)
+                binding.animalFilterCityChipsContainer.addView(chip)
+            }
+            binding.animalFilterCityInput.setText("")
         }
 
         binding.animalFilterFindBtn.setOnClickListener {
@@ -169,6 +192,17 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.notifyDataSetChanged()
     }
 
+    override fun deleteCityChip(chip: Chip) {
+        binding.animalFilterCityChipsContainer.removeView(chip)
+    }
+
+    override fun updateCityList(cities: List<FilterAutocompleteItem>?) {
+        val adapter = binding.animalFilterCityInput.adapter as SelectionAdapter
+        adapter.clear()
+        adapter.addAll(cities!!)
+        adapter.notifyDataSetChanged()
+    }
+
     private fun makeBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
         return breedsForChips
             .map {
@@ -181,6 +215,14 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         return colorsForChips
             .map {
                 makeColorChip(it.name, it.id)
+            }
+            .toList()
+    }
+
+    private fun makeCityChips(citiesForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+        return citiesForChips
+            .map {
+                makeCityChip(it.name, it.id)
             }
             .toList()
     }
@@ -209,6 +251,20 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         chip.tag = itemId
         chip.setOnClickListener {
             animalFilterPresenter.onColorChipCloseBtnClicked(it as Chip)
+        }
+        return chip
+    }
+
+    private fun makeCityChip(text: String, itemId: Int): Chip {
+        val chip = layoutInflater.inflate(
+            R.layout.filter_item_chip   ,
+            binding.animalFilterCityChipsContainer,
+            false
+        ) as Chip
+        chip.text = text
+        chip.tag = itemId
+        chip.setOnClickListener {
+            animalFilterPresenter.onCityChipCloseBtnClicked(it as Chip)
         }
         return chip
     }
