@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.google.android.material.slider.RangeSlider
+import com.google.android.material.slider.Slider.OnSliderTouchListener
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -86,7 +88,8 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     }
 
     override fun closeKeyboard() {
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
@@ -180,6 +183,22 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
                 bundle
             )
         }
+
+        binding.animalFilterAgeSlider.addOnSliderTouchListener(object :
+            RangeSlider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: RangeSlider) {
+            }
+
+            override fun onStopTrackingTouch(slider: RangeSlider) {
+                val values = slider.values
+                val valueFrom = slider.values[0].toInt()
+                val valueTo = slider.values[1].toInt()
+                animalFilterPresenter.onAgeSliderValueChange(
+                    valueFrom = valueFrom,
+                    valueTo = valueTo
+                )
+            }
+        })
     }
 
     override fun updateBtnValue(animalAfterFilteredCount: Int) {
@@ -268,7 +287,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     private fun makeBreedChip(text: String, itemId: Int): Chip {
         val chip = layoutInflater.inflate(
-            R.layout.filter_item_chip   ,
+            R.layout.filter_item_chip,
             binding.animalFilterBreedChipsContainer,
             false
         ) as Chip
@@ -282,7 +301,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     private fun makeColorChip(text: String, itemId: Int): Chip {
         val chip = layoutInflater.inflate(
-            R.layout.filter_item_chip   ,
+            R.layout.filter_item_chip,
             binding.animalFilterColorChipsContainer,
             false
         ) as Chip
@@ -296,7 +315,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     private fun makeCityChip(text: String, itemId: Int): Chip {
         val chip = layoutInflater.inflate(
-            R.layout.filter_item_chip   ,
+            R.layout.filter_item_chip,
             binding.animalFilterCityChipsContainer,
             false
         ) as Chip
@@ -310,7 +329,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     private fun makeAnimalTypeChip(text: String, itemId: Int): Chip {
         val chip = layoutInflater.inflate(
-            R.layout.filter_item_chip   ,
+            R.layout.filter_item_chip,
             binding.animalFilterAnimalTypeChipsContainer,
             false
         ) as Chip
