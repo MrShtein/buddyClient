@@ -33,15 +33,20 @@ class AnimalFilterPresenter(
     private lateinit var colorsForChips: MutableList<FilterAutocompleteItem>
     private lateinit var breedsForChips: MutableList<FilterAutocompleteItem>
     private lateinit var citiesForChips: MutableList<FilterAutocompleteItem>
-
+    private lateinit var typesForChips: MutableList<FilterAutocompleteItem>
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         animalFilter = animalFilterInteractor.makeAnimalFilter()
+        initChipItemsContainers()
+        setUpView()
+    }
+
+    private fun initChipItemsContainers() {
         colorsForChips = mutableListOf()
         breedsForChips = mutableListOf()
         citiesForChips = mutableListOf()
-        setUpView()
+        typesForChips = mutableListOf()
     }
 
     private fun setUpView() {
@@ -117,8 +122,10 @@ class AnimalFilterPresenter(
                     types = animalInteractor.getAnimalTypes()
                     types?.map { item ->
                         animalFilter.animalTypeId?.forEach {
-                            if (it == item.id) item.isSelected = true
-                            animalTypesForChips.add(item)
+                            if (it == item.id) {
+                                item.isSelected = true
+                                animalTypesForChips.add(item)
+                            }
                         }
                     }
                 } else {
@@ -134,6 +141,7 @@ class AnimalFilterPresenter(
                 val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
                 viewState.updateBtnValue(animalCount)
             }
+            cityJob.join()
             breedJob.join()
             colorJob.join()
             typeJob.join()
@@ -203,6 +211,26 @@ class AnimalFilterPresenter(
         viewState.closeKeyboard()
     }
 
+    fun onAnimalTypeChipCloseBtnClicked(chip: Chip) {
+        val animalTypeId: Int = chip.tag as Int
+        val animalType = types?.first {
+            animalTypeId == it.id
+        }
+        animalType?.isSelected = false
+        animalFilter.animalTypeId?.remove(animalType?.id)
+        typesForChips.remove(animalType)
+        scope.launch {
+            val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalCount)
+            val storeAnimalTypeList = animalFilterInteractor.getAnimalTypeIdList()
+            storeAnimalTypeList.remove(animalType?.id)
+            animalFilterInteractor.saveAnimalTypeIdList(storeAnimalTypeList)
+        }
+        viewState.deleteAnimalTypeChip(chip)
+        viewState.updateAnimalTypeList(types?.toList())
+        viewState.closeKeyboard()
+    }
+
     fun onBreedFilterItemClick(filterBreed: FilterAutocompleteItem) {
         val storeBreedIdList = animalFilterInteractor.getBreedIdList()
         storeBreedIdList.add(filterBreed.id)
@@ -246,6 +274,23 @@ class AnimalFilterPresenter(
             animalFilter.cityId?.add(filterCity.id)
         } else {
             animalFilter.cityId = mutableListOf(filterCity.id)
+        }
+        scope.launch {
+            val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalAfterFilteredCount)
+        }
+        viewState.closeKeyboard()
+    }
+
+    fun onAnimalTypeFilterItemClick(filterCity: FilterAutocompleteItem) {
+        val storeAnimalTypeIdList = animalFilterInteractor.getAnimalTypeIdList()
+        storeAnimalTypeIdList.add(filterCity.id)
+        typesForChips.add(filterCity)
+        animalFilterInteractor.saveAnimalTypeIdList(storeAnimalTypeIdList)
+        if (animalFilter.animalTypeId != null) {
+            animalFilter.animalTypeId?.add(filterCity.id)
+        } else {
+            animalFilter.animalTypeId = mutableListOf(filterCity.id)
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
