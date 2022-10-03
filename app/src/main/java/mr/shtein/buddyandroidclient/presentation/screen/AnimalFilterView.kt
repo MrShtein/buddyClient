@@ -63,4 +63,7 @@ interface AnimalFilterView : MvpView {
 
     @AddToEndSingle
     fun updateAnimalTypeList(types: List<FilterAutocompleteItem>?)
+
+    @AddToEndSingle
+    fun showMinMaxAge(minAge: Int, maxAge: Int)
 }

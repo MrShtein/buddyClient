@@ -122,6 +122,11 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         }
     }
 
+    override fun showMinMaxAge(minAge: Int, maxAge: Int) {
+        binding.animalFilterAgeSlider.values = listOf(minAge.toFloat(), maxAge.toFloat())
+
+    }
+
     override fun setListeners() {
         binding.animalFilterBreedInput.setOnItemClickListener { parent, view, position, id ->
 

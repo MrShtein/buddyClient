@@ -72,8 +72,16 @@ class AnimalFilterInteractorImpl(
         animalFilterPropertiesRepository.saveMinAge(minAge)
     }
 
+    override fun getMinAge(): Int {
+        return animalFilterPropertiesRepository.getMinAge()
+    }
+
     override fun saveMaxAge(maxAge: Int) {
         animalFilterPropertiesRepository.saveMaxAge(maxAge)
+    }
+
+    override fun getMaxAge(): Int {
+        return animalFilterPropertiesRepository.getMaxAge()
     }
 
     override fun removeAllData() {

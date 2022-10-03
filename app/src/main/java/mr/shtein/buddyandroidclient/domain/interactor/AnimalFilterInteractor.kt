@@ -20,7 +20,11 @@ interface AnimalFilterInteractor {
     fun saveGenderIdList(genderId: MutableList<Int>)
 
     fun saveMinAge(minAge: Int)
+    fun getMinAge(): Int
+
     fun saveMaxAge(maxAge: Int)
+    fun getMaxAge(): Int
+
     fun makeAnimalFilter(): AnimalFilter
     fun removeAllData(): Unit
 
