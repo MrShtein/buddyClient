@@ -203,6 +203,18 @@
             app:layout_constraintTop_toBottomOf="@id/animal_filter_gender_label">
 
             <RadioButton
+                android:id="@+id/add_animal_any_gender_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="1dp"
+                android:text="@string/any_gender_label"
+                android:textColor="@color/graphite5"
+                android:textSize="20sp"
+                app:buttonTint="@color/gender_radio_button_color" />
+
+            <RadioButton
                 android:id="@+id/add_animal_male_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -225,6 +237,8 @@
                 android:textColor="@color/graphite5"
                 android:textSize="20sp"
                 app:buttonTint="@color/gender_radio_button_color" />
+
+
         </RadioGroup>
 
         <com.google.android.material.button.MaterialButton

@@ -184,6 +184,7 @@
     <string name="reset_password_btn">Сбросить пароль</string>
     <string name="animal_filter_label_text">Фильтр</string>
     <string name="animal_types_label">Типы животных:</string>
+    <string name="any_gender_label">Любой</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>
