@@ -20,7 +20,7 @@ interface NetworkService {
         @Query("type_id") animalTypeId: List<Int>?,
         @Query("city_id") cityId: List<Int>?,
         @Query("breed_id") breedId: List<Int>?,
-        @Query("gender") genderId: List<Int>?,
+        @Query("gender") genderId: Int?,
         @Query("characteristic_id") characteristicId: List<Int>?,
         @Query("min_age") minAge: Int?,
         @Query("max_age") maxAge: Int?
@@ -31,7 +31,7 @@ interface NetworkService {
         @Query("type_id") animalTypeId: List<Int>?,
         @Query("city_id") cityId: List<Int>?,
         @Query("breed_id") breedId: List<Int>?,
-        @Query("gender") genderId: List<Int>?,
+        @Query("gender") genderId: Int?,
         @Query("characteristic_id") characteristicId: List<Int>?,
         @Query("min_age") minAge: Int?,
         @Query("max_age") maxAge: Int?

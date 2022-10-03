@@ -85,22 +85,12 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(COLOR_KEY, characteristicIdSet)
     }
 
-    override fun getGenderIdList(): MutableList<Int> {
-        val genderIdSet = storage.readStringSet(GENDER_KEY, null)
-        return genderIdSet
-            ?.map {
-                it.toInt()
-            }
-            ?.toMutableList() ?: mutableListOf()
+    override fun getGenderId(): Int {
+        return storage.readInt(GENDER_KEY, -1)
     }
 
-    override fun saveGenderIdList(genderId: List<Int>) {
-        val genderIdSet = genderId
-            .map {
-                it.toString()
-            }
-            .toSet()
-        storage.writeStringSet(COLOR_KEY, genderIdSet)
+    override fun saveGenderIdList(genderId: Int) {
+        storage.writeInt(GENDER_KEY, genderId)
     }
 
     override fun getMinAge(): Int {

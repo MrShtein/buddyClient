@@ -18,11 +18,12 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
     override suspend fun getAnimals(filter: AnimalFilter): List<Animal> {
         val minAge = getMinAge(filter.minAge)
         val maxAge = getMaxAge(filter.maxAge)
+        val gender = getGenderId(filter.genderId)
         val result = networkService.getAnimals(
             animalTypeId = filter.animalTypeId,
             cityId = filter.cityId,
             breedId = filter.breedId,
-            genderId = filter.genderId,
+            genderId = gender,
             characteristicId = filter.colorId,
             minAge = minAge,
             maxAge = maxAge
@@ -43,11 +44,12 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
     override suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int {
         val minAge = getMinAge(animalFilter.minAge)
         val maxAge = getMaxAge(animalFilter.maxAge)
+        val gender = getGenderId(animalFilter.genderId)
         val result = networkService.getAnimalsCountByFilter(
             animalTypeId = animalFilter.animalTypeId,
             cityId = animalFilter.cityId,
             breedId = animalFilter.breedId,
-            genderId = animalFilter.genderId,
+            genderId = gender,
             characteristicId = animalFilter.colorId,
             minAge = minAge,
             maxAge = maxAge
@@ -78,6 +80,14 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
             null
         } else {
             maxAge
+        }
+    }
+
+    private fun getGenderId(genderId: Int): Int? {
+        return if (genderId == -1) {
+            null
+        } else {
+            genderId
         }
     }
 }
