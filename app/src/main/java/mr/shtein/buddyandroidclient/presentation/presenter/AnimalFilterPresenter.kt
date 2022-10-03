@@ -144,6 +144,13 @@ class AnimalFilterPresenter(
             launch {
                 val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
                 viewState.updateBtnValue(animalCount)
+                val minAge = animalFilterInteractor.getMinAge()
+                val maxAge = animalFilterInteractor.getMaxAge()
+                if  (minAge != AGE_STORAGE_EMPTY_VALUE && maxAge != AGE_STORAGE_EMPTY_VALUE) {
+                    val minAgeInMonth = minAge / MONTHS_IN_YEAR
+                    val maxAgeInMonth = maxAge / MONTHS_IN_YEAR
+                    viewState.showMinMaxAge(minAge = minAgeInMonth, maxAge = maxAgeInMonth)
+                }
             }
             cityJob.join()
             breedJob.join()
@@ -151,7 +158,6 @@ class AnimalFilterPresenter(
             typeJob.join()
             viewState.initAdapters(breeds!!, colors!!, types!!, cities!!)
             viewState.setListeners()
-
         }
     }
 
