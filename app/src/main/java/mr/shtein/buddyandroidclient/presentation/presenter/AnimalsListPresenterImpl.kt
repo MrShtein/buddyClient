@@ -313,7 +313,7 @@ class AnimalsListPresenterImpl(
         if ((animalFilter.cityId?.size ?: 0) > 0) count++
         if ((animalFilter.breedId?.size ?: 0) > 0) count++
         if ((animalFilter.colorId?.size ?: 0) > 0) count++
-        if ((animalFilter.genderId?.size ?: 0) > 0) count++
+        if (animalFilter.genderId > -1) count++
         if (animalFilter.minAge > -1 || animalFilter.maxAge > -1) count++
         return count
     }

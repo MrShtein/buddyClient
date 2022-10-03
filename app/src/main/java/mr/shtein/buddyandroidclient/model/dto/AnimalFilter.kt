@@ -9,7 +9,7 @@ data class AnimalFilter(
     var cityId: MutableList<Int>? = null,
     var breedId: MutableList<Int>? = null,
     var colorId: MutableList<Int>? = null,
-    var genderId: MutableList<Int>? = null,
+    var genderId: Int = -1,
     var minAge: Int = -1,
     var maxAge: Int = -1
 ) : Parcelable

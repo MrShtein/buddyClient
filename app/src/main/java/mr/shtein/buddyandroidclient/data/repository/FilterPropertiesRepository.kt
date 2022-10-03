@@ -13,8 +13,8 @@ interface FilterPropertiesRepository {
     fun getColorIdList(): MutableList<Int>
     fun saveColorIdList(colorId: List<Int>)
 
-    fun getGenderIdList(): MutableList<Int>
-    fun saveGenderIdList(genderId: List<Int>)
+    fun getGenderId(): Int
+    fun saveGenderIdList(genderId: Int)
 
     fun getMinAge(): Int
     fun saveMinAge(minAge: Int)
