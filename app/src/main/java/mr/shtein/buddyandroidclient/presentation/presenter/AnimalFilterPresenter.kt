@@ -1,22 +1,22 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
-import android.util.Log
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.CityRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.model.dto.*
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
 
-private const val DOG_ID = 1
-private const val CAT_ID = 2
+private const val MALE_ID = 1
+private const val FEMALE_ID = 2
 private const val COLOR_ID = 1
 private const val MIN_AGE_VALUE = 0
 private const val MAX_AGE_VALUE = 35
-private const val AGE_STORAGE_EMPTY_VALUE = -1
+private const val EMPTY_VALUE = -1
 private const val MONTHS_IN_YEAR = 12
 
 @InjectViewState
@@ -144,13 +144,27 @@ class AnimalFilterPresenter(
             launch {
                 val animalCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
                 viewState.updateBtnValue(animalCount)
+
                 val minAge = animalFilterInteractor.getMinAge()
                 val maxAge = animalFilterInteractor.getMaxAge()
-                if  (minAge != AGE_STORAGE_EMPTY_VALUE && maxAge != AGE_STORAGE_EMPTY_VALUE) {
+                if  (minAge != EMPTY_VALUE && maxAge != EMPTY_VALUE) {
                     val minAgeInMonth = minAge / MONTHS_IN_YEAR
                     val maxAgeInMonth = maxAge / MONTHS_IN_YEAR
                     viewState.showMinMaxAge(minAge = minAgeInMonth, maxAge = maxAgeInMonth)
                 }
+
+                when(animalFilterInteractor.getGenderId()) {
+                    MALE_ID -> {
+                        viewState.showMaleGender()
+                    }
+                    FEMALE_ID -> {
+                        viewState.showFemaleGender()
+                    }
+                    else -> {
+                        viewState.showAnyGender()
+                    }
+                }
+
             }
             cityJob.join()
             breedJob.join()
@@ -311,10 +325,10 @@ class AnimalFilterPresenter(
 
     fun onAgeSliderValueChange(valueFrom: Int, valueTo: Int) {
         if (valueFrom == MIN_AGE_VALUE && valueTo == MAX_AGE_VALUE) {
-            animalFilterInteractor.saveMinAge(AGE_STORAGE_EMPTY_VALUE)
-            animalFilterInteractor.saveMaxAge(AGE_STORAGE_EMPTY_VALUE)
-            animalFilter.minAge = AGE_STORAGE_EMPTY_VALUE
-            animalFilter.maxAge = AGE_STORAGE_EMPTY_VALUE
+            animalFilterInteractor.saveMinAge(EMPTY_VALUE)
+            animalFilterInteractor.saveMaxAge(EMPTY_VALUE)
+            animalFilter.minAge = EMPTY_VALUE
+            animalFilter.maxAge = EMPTY_VALUE
         } else {
             val valueFromInMonths = valueFrom * MONTHS_IN_YEAR
             val valueToInMonths = valueTo * MONTHS_IN_YEAR
@@ -322,6 +336,30 @@ class AnimalFilterPresenter(
             animalFilterInteractor.saveMaxAge(valueToInMonths)
             animalFilter.minAge = valueFromInMonths
             animalFilter.maxAge = valueToInMonths
+        }
+        scope.launch {
+            val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateBtnValue(animalAfterFilteredCount)
+        }
+    }
+
+    fun onGenderChange(checkedId: Int) {
+        when(checkedId) {
+            R.id.animal_filter_male_button -> {
+                animalFilter.genderId = MALE_ID
+                animalFilterInteractor.saveGenderId(MALE_ID)
+                viewState.showMaleGender()
+            }
+            R.id.animal_filter_female_button -> {
+                animalFilter.genderId = FEMALE_ID
+                animalFilterInteractor.saveGenderId(FEMALE_ID)
+                viewState.showFemaleGender()
+            }
+            else -> {
+                animalFilter.genderId = EMPTY_VALUE
+                animalFilterInteractor.saveGenderId(EMPTY_VALUE)
+                viewState.showAnyGender()
+            }
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)

@@ -124,7 +124,18 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     override fun showMinMaxAge(minAge: Int, maxAge: Int) {
         binding.animalFilterAgeSlider.values = listOf(minAge.toFloat(), maxAge.toFloat())
+    }
 
+    override fun showMaleGender() {
+        binding.animalFilterMaleButton.isChecked = true
+    }
+
+    override fun showFemaleGender() {
+        binding.animalFilterFemaleButton.isChecked = true
+    }
+
+    override fun showAnyGender() {
+        binding.animalFilterAnyGenderButton.isChecked = true
     }
 
     override fun setListeners() {
@@ -204,6 +215,10 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
                 )
             }
         })
+
+        binding.animalFilterGenderGroup.setOnCheckedChangeListener { _, checkedId ->
+           animalFilterPresenter.onGenderChange(checkedId)
+        }
     }
 
     override fun updateBtnValue(animalAfterFilteredCount: Int) {

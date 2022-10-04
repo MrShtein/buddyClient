@@ -17,7 +17,7 @@ interface AnimalFilterInteractor {
     fun saveColorIdList(colorIdList: MutableList<Int>)
 
     fun getGenderId(): Int
-    fun saveGenderIdList(genderId: Int)
+    fun saveGenderId(genderId: Int)
 
     fun saveMinAge(minAge: Int)
     fun getMinAge(): Int

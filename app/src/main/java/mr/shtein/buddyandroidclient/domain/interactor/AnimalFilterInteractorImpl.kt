@@ -64,7 +64,7 @@ class AnimalFilterInteractorImpl(
         return animalFilterPropertiesRepository.getGenderId()
     }
 
-    override fun saveGenderIdList(genderId: Int) {
+    override fun saveGenderId(genderId: Int) {
         animalFilterPropertiesRepository.saveGenderIdList(genderId)
     }
 
