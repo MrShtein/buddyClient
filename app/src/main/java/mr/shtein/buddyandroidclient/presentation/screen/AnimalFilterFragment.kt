@@ -20,6 +20,7 @@ import mr.shtein.buddyandroidclient.adapters.SelectionAdapter
 import mr.shtein.buddyandroidclient.databinding.AnimalFilterFragmentBinding
 import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalFilterPresenter
+import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
 
@@ -54,6 +55,9 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         savedInstanceState: Bundle?
     ): View {
         _binding = AnimalFilterFragmentBinding.inflate(inflater, container, false)
+        setInsetsListenerForPadding(
+            view = binding.animalFilterConstraintLayout, left = false, top = true, right = false, bottom = true
+        )
         return binding.root
     }
 
