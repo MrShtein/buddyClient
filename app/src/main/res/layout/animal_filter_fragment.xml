@@ -25,18 +25,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/animal_filter_city_chips_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_label"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
-            android:layout_marginTop="10dp"
-            >
-
-        </com.google.android.material.chip.ChipGroup>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/animal_filter_city_input_container"
             style="@style/textInputContainerForFilterAutocomplete"
@@ -46,22 +34,24 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:hint="@string/city_label"
+            android:dropDownHeight="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_city_chips_container">
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_label">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_city_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:completionThreshold="1"
+                android:dropDownHeight="wrap_content"
                 android:popupBackground="@drawable/drop_down_background"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/animal_filter_animal_type_chips_container"
+            android:id="@+id/animal_filter_city_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_city_input_container"
@@ -81,19 +71,19 @@
             android:hint="@string/animal_types_label"
             app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_chips_container">
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_city_chips_container">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_animal_type_input"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:completionThreshold="1"
                 android:popupBackground="@drawable/drop_down_background"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/animal_filter_breed_chips_container"
+            android:id="@+id/animal_filter_animal_type_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_input_container"
@@ -115,7 +105,7 @@
             app:endIconCheckable="true"
             app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_chips_container">
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_chips_container">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_breed_input"
@@ -128,7 +118,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/animal_filter_color_chips_container"
+            android:id="@+id/animal_filter_breed_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_input_container"
@@ -148,16 +138,28 @@
             android:hint="@string/animal_color_label"
             app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_chips_container">
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_chips_container">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/animal_filter_color_input"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:completionThreshold="1"
                 android:popupBackground="@drawable/drop_down_background"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/animal_filter_color_chips_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_input_container"
+            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
+            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
+            android:layout_marginTop="10dp"
+            >
+
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/animal_filter_age_label"
@@ -170,7 +172,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_input_container" />
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_chips_container" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/animal_filter_age_slider"
