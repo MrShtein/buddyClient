@@ -80,8 +80,9 @@ interface AnimalListView : MvpView {
     @OneExecution
     fun showError(errorRes: Int)
 
-    @OneExecution
-    fun showFilterBadge(filterItemsCount: Int)
+    fun showFilterBadge(filterItemsCount: Int, badge: BadgeDrawable)
+
+    fun hideFilterBadge(badge: BadgeDrawable)
 }
 
 class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
@@ -123,17 +124,19 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         return view
     }
 
-    override fun showFilterBadge(filterItemsCount: Int) {
+    override fun showFilterBadge(filterItemsCount: Int, badge: BadgeDrawable) {
         binding.animalsListFilterBtn.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                val badgeDrawable =
-                    BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
-                badgeDrawable.number = filterItemsCount
-                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.animalsListFilterBtn)
+                badge.number = filterItemsCount
+                BadgeUtils.attachBadgeDrawable(badge, binding.animalsListFilterBtn)
                 binding.animalsListFilterBtn.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+    }
+
+    override fun hideFilterBadge(badge: BadgeDrawable) {
+        BadgeUtils.detachBadgeDrawable(badge, binding.animalsListFilterBtn)
     }
 
     override fun toggleAnimalSearchProgressBar(isVisible: Boolean) {
@@ -269,9 +272,10 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
+        val badge = BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
         val animalFilter =
             arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
-        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission, animalFilter)
+        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission, animalFilter, badge)
     }
 
     private fun initLocationService() {

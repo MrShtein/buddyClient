@@ -2,6 +2,7 @@ package mr.shtein.buddyandroidclient.presentation.presenter
 
 import android.content.pm.PackageManager
 import android.util.Log
+import com.google.android.material.badge.BadgeDrawable
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -42,7 +43,8 @@ interface AnimalListPresenter {
     fun onInit(
         fineLocationPermission: Int,
         coarseLocationPermission: Int,
-        animalFilter: AnimalFilter
+        animalFilter: AnimalFilter,
+        badge: BadgeDrawable
     )
 
     fun onDogChipClicked(dogChecked: Boolean)
@@ -64,6 +66,7 @@ class AnimalsListPresenterImpl(
     private var locationState: LocationState = LocationState.INIT_STATE
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
+    private lateinit var badge: BadgeDrawable
     private lateinit var animalFilter: AnimalFilter
     private var coroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
@@ -72,7 +75,8 @@ class AnimalsListPresenterImpl(
     ) {
         animalFilter = filterInteractor.makeAnimalFilter()
         val filterItemsCount: Int = calculateFilterNumbers(animalFilter)
-        if (filterItemsCount > 0) viewState.showFilterBadge(filterItemsCount)
+        if (filterItemsCount > 0) viewState.showFilterBadge(filterItemsCount, badge)
+        if (filterItemsCount == 0) viewState.hideFilterBadge(badge)
         viewState.toggleAnimalSearchProgressBar(isVisible = true)
         if (!getFromNetwork && animalList != null) { // в случае если пользователь нажал на фильтр animalList != null, но нам необходимы данные из сети!!!
             viewState.updateList(animalList!!)
@@ -249,11 +253,13 @@ class AnimalsListPresenterImpl(
     override fun onInit(
         fineLocationPermission: Int,
         coarseLocationPermission: Int,
-        animalFilter: AnimalFilter
+        animalFilter: AnimalFilter,
+        badge: BadgeDrawable
     ) {
         this.fineLocationPermission = fineLocationPermission
         this.coarseLocationPermission = coarseLocationPermission
         this.animalFilter = animalFilter
+        this.badge = badge
     }
 
     override fun onDogChipClicked(dogChecked: Boolean) {
@@ -272,6 +278,7 @@ class AnimalsListPresenterImpl(
                 filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
             animalTypeList.remove(DOG_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
+
         }
     }
 
