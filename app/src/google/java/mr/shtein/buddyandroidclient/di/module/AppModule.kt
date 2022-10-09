@@ -27,6 +27,7 @@ val appModule: Module = module {
     single(named("userStore")) { provideUserStore(androidContext()) }
     single(named("kennelStore")) { provideKennelStore(androidContext()) }
     single(named("databaseStore")) { provideDatabaseStore(androidContext()) }
+    single(named("filterStore")) { provideFilterStore(androidContext()) }
 }
 
 private fun provideRetrofit(): Retrofit =
@@ -53,6 +54,9 @@ private fun provideKennelStore(context: Context) =
 
 private fun provideDatabaseStore(context: Context) =
     SharedPreferences(context, BuildConfig.DATABASE_STORAGE_NAME)
+
+private fun provideFilterStore(context: Context) =
+    SharedPreferences(context, BuildConfig.FILTER_STORAGE_NAME)
 
 private fun provideFusedLocationClient(context: Context) =
     LocationServices.getFusedLocationProviderClient(context)

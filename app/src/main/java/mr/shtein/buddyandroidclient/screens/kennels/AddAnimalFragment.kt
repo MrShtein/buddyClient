@@ -469,8 +469,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun getAnimalBreeds(animalType: Int): List<Breed> =
         withContext(Dispatchers.IO) {
             if (animalType != 0) {
-                val token = userPropertiesRepository.getUserToken()
-                val response = networkService.getAnimalsBreed(token, animalType)
+                val response = networkService.getAnimalsBreed(animalType)
                 if (response.isSuccessful) {
                     return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
                 } else {

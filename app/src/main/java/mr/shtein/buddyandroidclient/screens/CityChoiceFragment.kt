@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.data.repository.CityRepository
 import mr.shtein.buddyandroidclient.data.repository.DatabasePropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.db.CityDbHelper
@@ -57,6 +58,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
     private val cityDbHelper: CityDbHelper by inject()
+    private val localDbCityRepository: CityRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +91,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
         initViews(view)
         setListeners()
         coroutine.launch {
-            val cities = getCitiesFromDb()
+            val cities = localDbCityRepository.getCities()
             adapter = CityArrayAdapter(requireContext(), cities)
             cityInputText.setAdapter(adapter)
         }
@@ -185,35 +187,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     }
 
     private suspend fun makeCityArrayAdapter() {
-        val citiesList = getCitiesFromDb()
-    }
-
-    private suspend fun getCitiesFromDb(): MutableList<CityChoiceItem> =
-        withContext(Dispatchers.IO) {
-            val context = requireContext()
-            val db = cityDbHelper.readableDatabase
-            val databaseName = databasePropertiesRepository.getDatabaseName()
-            val cursor = db.query(
-                databaseName,
-                null, null, null,
-                null, null, null, null
-            )
-            return@withContext makeCityChoiceItemsFromCursor(cursor)
-        }
-
-    private fun makeCityChoiceItemsFromCursor(cursor: Cursor): MutableList<CityChoiceItem> {
-        val cityChoiceItemsList = arrayListOf<CityChoiceItem>()
-        with(cursor) {
-            while (moveToNext()) {
-                val cityChoiceItem = CityChoiceItem(
-                    getInt(getColumnIndexOrThrow("id")),
-                    getString(getColumnIndexOrThrow("city_name")),
-                    getString(getColumnIndexOrThrow("region_name"))
-                )
-                cityChoiceItemsList.add(cityChoiceItem)
-            }
-        }
-        return cityChoiceItemsList
+        val citiesList = localDbCityRepository.getCities()
     }
 
     private fun makeStringForCityStorage(city: CityChoiceItem): String {

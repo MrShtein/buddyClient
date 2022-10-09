@@ -6,9 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
-import mr.shtein.buddyandroidclient.model.Animal
+import android.view.ViewTreeObserver
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -16,7 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
 import moxy.MvpView
@@ -26,17 +28,23 @@ import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import moxy.viewstate.strategy.alias.OneExecution
 import mr.shtein.buddyandroidclient.*
+import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
+import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
 
+
 private const val LAST_FRAGMENT_KEY = "last_fragment"
+private const val ANIMAL_FILTER_KEY = "animal_filter"
 
 interface OnLocationBtnClickListener {
     fun clickToLocationBtn()
 }
+
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface AnimalListView : MvpView {
     fun updateList(animalList: List<Animal>)
@@ -51,14 +59,30 @@ interface AnimalListView : MvpView {
     fun setAnimationWhenUserComeFromLogin()
     fun setAnimationWhenUserComeFromSplash()
     fun setAnimationWhenUserComeFromCity()
+    fun setAnimationWhenToAnimalFilterNavigate()
 
     fun toggleAnimalSearchProgressBar(isVisible: Boolean)
 
+    @OneExecution
+    fun toggleDogChip(isChecked: Boolean)
+
+    @OneExecution
+    fun toggleCatChip(isChecked: Boolean)
+
     fun showAnimalCountText(animalsAmount: Int)
+
+    @OneExecution
+    fun navigateToAnimalFilter(animalFilter: AnimalFilter)
+
     @OneExecution
     fun showLocationFailureText(locationFailureText: Int)
+
     @OneExecution
     fun showError(errorRes: Int)
+
+    fun showFilterBadge(filterItemsCount: Int, badge: BadgeDrawable)
+
+    fun hideFilterBadge(badge: BadgeDrawable)
 }
 
 class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
@@ -93,17 +117,38 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         _binding = AnimalsListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         setUpView()
+
         animalListPresenter.onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
-        animalListPresenter.onAnimalShowCommand(
-            binding.animalsListDogChip.isChecked,
-            binding.animalsListCatChip.isChecked,
-            false
-        )
+        animalListPresenter.onAnimalShowCommand(false)
+        animalListPresenter.onChipsReadyToToggle()
         return view
+    }
+
+    override fun showFilterBadge(filterItemsCount: Int, badge: BadgeDrawable) {
+        binding.animalsListFilterBtn.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                badge.number = filterItemsCount
+                BadgeUtils.attachBadgeDrawable(badge, binding.animalsListFilterBtn)
+                binding.animalsListFilterBtn.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
+    }
+
+    override fun hideFilterBadge(badge: BadgeDrawable) {
+        BadgeUtils.detachBadgeDrawable(badge, binding.animalsListFilterBtn)
     }
 
     override fun toggleAnimalSearchProgressBar(isVisible: Boolean) {
         binding.animalsListSearchProgressBar.isVisible = isVisible
+    }
+
+    override fun toggleDogChip(isChecked: Boolean) {
+        binding.animalsListDogChip.isChecked = isChecked
+    }
+
+    override fun toggleCatChip(isChecked: Boolean) {
+        binding.animalsListCatChip.isChecked = isChecked
     }
 
     override fun updateList(animalList: List<Animal>) {
@@ -133,7 +178,6 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     override fun onAnimalCardClick(animal: Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
-        animalListPresenter.onChangeAnimationsWhenNavigate(FragmentsListForAssigningAnimation.ANIMAL_CARD)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
     }
 
@@ -185,6 +229,11 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
 
+    override fun setAnimationWhenToAnimalFilterNavigate() {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+    }
+
     override fun setAnimationWhenToOtherFragmentNavigate() {
         val exitSlide = Slide()
         exitSlide.slideEdge = Gravity.LEFT
@@ -196,6 +245,15 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     override fun showLocationFailureText(locationFailureText: Int) {
         val failureText = getString(locationFailureText)
         Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
+    }
+
+    override fun navigateToAnimalFilter(animalFilter: AnimalFilter) {
+        val bundle = Bundle()
+        bundle.putParcelable(ANIMAL_FILTER_KEY, animalFilter)
+        findNavController().navigate(
+            R.id.action_animalsListFragment_to_animalFilterFragment,
+            bundle
+        )
     }
 
     private fun setUpView() {
@@ -214,7 +272,10 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission)
+        val badge = BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
+        val animalFilter =
+            arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
+        animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission, animalFilter, badge)
     }
 
     private fun initLocationService() {
@@ -247,25 +308,34 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         }
     }
 
+    private fun onFilterBtnClick() {
+        animalListPresenter.onFilterBtnClicked()
+    }
+
     private fun setListeners() {
 
-        binding.animalsListDogChip.setOnCheckedChangeListener { _, isDogChecked ->
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        binding.animalsListDogChip.setOnClickListener {
+            val isDogChecked = (it as Chip).isChecked
+            animalListPresenter.onDogChipClicked(isDogChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
-        binding.animalsListCatChip.setOnCheckedChangeListener { _, isCatChecked ->
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+        binding.animalsListCatChip.setOnClickListener {
+            val isCatChecked = (it as Chip).isChecked
+            animalListPresenter.onCatChipClicked(isCatChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
         }
 
         binding.animalsListSwipeLayout.setOnRefreshListener {
-            val isCatChecked = binding.animalsListCatChip.isChecked
-            val isDogChecked = binding.animalsListDogChip.isChecked
-            animalListPresenter.onAnimalShowCommand(isDogChecked, isCatChecked)
+            animalListPresenter.onAnimalShowCommand(getFromNetwork = true)
+        }
+
+        binding.animalsListFilterBtn.setOnClickListener {
+            animalListPresenter.onFilterBtnClicked()
         }
 
         setInsetsListener(binding.animalChoiceChips)
+        setInsetsListener(binding.animalsListFilterBtn)
 
         findNavController().addOnDestinationChangedListener { _, navDestination, _ ->
             val destination = navDestination.label.toString()

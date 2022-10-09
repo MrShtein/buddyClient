@@ -16,7 +16,26 @@ import retrofit2.http.*
 
 interface NetworkService {
     @GET("/api/v1/animal")
-    suspend fun getAnimals(@Query("animal_type_id") animalTypeId : List<Int>) : Response<List<Animal>>
+    suspend fun getAnimals(
+        @Query("type_id") animalTypeId: List<Int>?,
+        @Query("city_id") cityId: List<Int>?,
+        @Query("breed_id") breedId: List<Int>?,
+        @Query("gender") genderId: Int?,
+        @Query("characteristic_id") characteristicId: List<Int>?,
+        @Query("min_age") minAge: Int?,
+        @Query("max_age") maxAge: Int?
+    ): Response<List<Animal>>
+
+    @GET("/api/v1/animal/count")
+    suspend fun getAnimalsCountByFilter(
+        @Query("type_id") animalTypeId: List<Int>?,
+        @Query("city_id") cityId: List<Int>?,
+        @Query("breed_id") breedId: List<Int>?,
+        @Query("gender") genderId: Int?,
+        @Query("characteristic_id") characteristicId: List<Int>?,
+        @Query("min_age") minAge: Int?,
+        @Query("max_age") maxAge: Int?
+    ): Response<Int>
 
     @GET("api/v1/animal/{id}")
     fun getAnimalById(@Path("id") id: Long): Call<Animal>
@@ -70,11 +89,10 @@ interface NetworkService {
     ): Response<MutableList<Animal>>
 
     @GET("/api/v1/animal/type")
-    suspend fun getAnimalsType(): Response<List<AnimalType>>
+    suspend fun getAnimalsTypes(): Response<List<AnimalType>>
 
     @GET("/api/v1/animal/{animal_type}/breed")
     suspend fun getAnimalsBreed(
-        @Header("Authorization") token: String,
         @Path("animal_type") animalType: Int
     ): Response<List<Breed>>
 
@@ -114,7 +132,6 @@ interface NetworkService {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double
     ): Response<HashMap<Int, Int>>
-
 
 
 }

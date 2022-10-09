@@ -53,6 +53,17 @@ class SharedPreferences(val context: Context, private val storageName: String) {
         return sharedPref.getBoolean(prefName, pref)
     }
 
+    fun readStringSet(prefName: String, pref: Set<String>?): MutableSet<String>? {
+        return sharedPref.getStringSet(prefName, pref)
+    }
+
+    fun writeStringSet(prefName: String, pref: Set<String>) {
+        with(sharedPref.edit()) {
+            putStringSet(prefName, pref)
+            apply()
+        }
+    }
+
     fun cleanAllData() {
         sharedPref
             .edit()
