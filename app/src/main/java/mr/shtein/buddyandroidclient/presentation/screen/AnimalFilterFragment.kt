@@ -1,16 +1,26 @@
 package mr.shtein.buddyandroidclient.presentation.screen
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.SpannedString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.core.os.bundleOf
+import androidx.core.text.bold
+import androidx.core.text.color
+import androidx.core.text.toSpanned
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieProperty.COLOR
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.RangeSlider
-import com.google.android.material.slider.Slider.OnSliderTouchListener
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -23,6 +33,7 @@ import mr.shtein.buddyandroidclient.presentation.presenter.AnimalFilterPresenter
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
+import kotlin.math.max
 
 private const val ANIMAL_FILTER_KEY = "animal_filter"
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -126,7 +137,9 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         }
     }
 
-    override fun showMinMaxAge(minAge: Int, maxAge: Int) {
+    override fun setMinMaxAge(minAge: Int, maxAge: Int) {
+        val text = makeStringForAgeLabel(minAge = minAge, maxAge = maxAge)
+        binding.animalFilterAgeLabel.text = text
         binding.animalFilterAgeSlider.values = listOf(minAge.toFloat(), maxAge.toFloat())
     }
 
@@ -140,6 +153,11 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
 
     override fun showAnyGender() {
         binding.animalFilterAnyGenderButton.isChecked = true
+    }
+
+    override fun updateMinMaxAge(minAge: Int, maxAge: Int) {
+        val text = makeStringForAgeLabel(minAge = minAge, maxAge = maxAge)
+        binding.animalFilterAgeLabel.text = text
     }
 
     override fun setListeners() {
@@ -210,7 +228,6 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
             }
 
             override fun onStopTrackingTouch(slider: RangeSlider) {
-                val values = slider.values
                 val valueFrom = slider.values[0].toInt()
                 val valueTo = slider.values[1].toInt()
                 animalFilterPresenter.onAgeSliderValueChange(
@@ -364,4 +381,24 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         }
         return chip
     }
+
+    private fun makeStringForAgeLabel(minAge: Int, maxAge: Int): Spanned {
+        val ageText = getString(R.string.age_text)
+        val fromText = getString(R.string.from_text)
+        val untilText = getString(R.string.until_text)
+        val minMaxAgeNumColor = Color.parseColor(getString(R.color.cian5))
+        val spannableBuilder = SpannableStringBuilder()
+        spannableBuilder
+            .bold { append(ageText) }
+            .append(" ")
+            .append(fromText)
+            .append(" ")
+            .color(minMaxAgeNumColor) { append(minAge.toString()) }
+            .append(" ")
+            .append(untilText)
+            .append(" ")
+            .color(minMaxAgeNumColor) { append(maxAge.toString()) }
+        return spannableBuilder.toSpanned()
+    }
+
 }
