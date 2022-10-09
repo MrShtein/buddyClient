@@ -51,6 +51,14 @@
         <item name="cornerSize">10dp</item>
     </style>
 
+    <style name="shapeAppearanceForFilterChips" parent="mySt">
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="shapeAppearanceForInputTextInputStyle" parent="mySt">
         <item name="cornerFamilyBottomRight">rounded</item>
         <item name="cornerFamilyBottomLeft">rounded</item>
@@ -87,7 +95,28 @@
         <item name="boxStrokeColor">@color/cian5</item>
         <item name="boxStrokeWidthFocused">1dp</item>
         <item name="hintTextColor">@color/grey3</item>
+    </style>
+
+    <style name="textInputContainerForFilterAutocomplete" parent="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/transparent</item>
+        <item name="colorControlActivated">@color/black</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="boxStrokeColor">@color/cian5</item>
+        <item name="hintTextColor">@color/grey3</item>
         <item name="android:textColorHint">@color/grey3</item>
+        <item name="endIconDrawable">@drawable/expand_less_more</item>
+        <item name="endIconTint">@color/grey3</item>
+    </style>
+
+    <style name="materialLargeBtn" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="rippleColor">@color/white</item>
+        <item name="cornerRadius">5dp</item>
     </style>
 
     <style name="changeEditTextPadding" parent="ThemeOverlay.Material3.TextInputEditText">
@@ -109,5 +138,6 @@
     <style name="cursorColorForInputs">
         <item name="colorPrimary">@color/cian5</item>
     </style>
-    
+
+
 </resources>

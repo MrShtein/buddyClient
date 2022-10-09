@@ -1,11 +1,14 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
 import android.content.pm.PackageManager
+import android.util.Log
+import com.google.android.material.badge.BadgeDrawable
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
 import mr.shtein.buddyandroidclient.exceptions.validate.LocationServiceException
@@ -18,36 +21,41 @@ import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import kotlin.jvm.Throws
 import kotlin.math.floor
 
-const val DOG_ID: Int = 1
-const val CAT_ID: Int = 2
+private const val DOG_ID: Int = 1
+private const val CAT_ID: Int = 2
 private const val ANIMAL_CARD_LABEL = "AnimalsCardFragment"
 private const val KENNEL_LABEL = "AddKennelFragment"
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val REGISTRATION_LABEL = "UserRegistrationFragment"
 private const val LOGIN_LABEL = "LoginFragment"
+private const val ANIMAL_FILTER_LABEL = "AnimalFilterFragment"
 
 
 interface AnimalListPresenter {
-    fun onAnimalShowCommand(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean,
-        getFromNetwork: Boolean = true
-    )
-
+    fun onAnimalShowCommand(getFromNetwork: Boolean = true)
     fun onClickToLocationBtn(permissions: Map<String, Boolean>)
     fun onUpdatedList(newAnimalList: List<Animal>, previousListSize: Int)
     fun onChangeAnimationsWhenNavigate(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation)
     fun onChangeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation?)
     fun onGetListForAssigningAnimation(destination: String): FragmentsListForAssigningAnimation
-    fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int)
+    fun onInit(
+        fineLocationPermission: Int,
+        coarseLocationPermission: Int,
+        animalFilter: AnimalFilter,
+        badge: BadgeDrawable
+    )
+
+    fun onDogChipClicked(dogChecked: Boolean)
+    fun onCatChipClicked(catChecked: Boolean)
+    fun onChipsReadyToToggle()
 }
 
 @InjectViewState
 class AnimalsListPresenterImpl(
     private val animalInteractor: AnimalInteractor,
+    private val filterInteractor: AnimalFilterInteractor,
     private val locationService: LocationInteractor,
     private val userPropertiesRepository: UserPropertiesRepository,
     private val mainDispatchers: CoroutineDispatcher = Dispatchers.Main
@@ -58,23 +66,26 @@ class AnimalsListPresenterImpl(
     private var locationState: LocationState = LocationState.INIT_STATE
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
-    private var couroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
+    private lateinit var badge: BadgeDrawable
+    private lateinit var animalFilter: AnimalFilter
+    private var coroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean,
         getFromNetwork: Boolean
     ) {
+        animalFilter = filterInteractor.makeAnimalFilter()
+        val filterItemsCount: Int = calculateFilterNumbers(animalFilter)
+        if (filterItemsCount > 0) viewState.showFilterBadge(filterItemsCount, badge)
+        if (filterItemsCount == 0) viewState.hideFilterBadge(badge)
         viewState.toggleAnimalSearchProgressBar(isVisible = true)
         if (!getFromNetwork && animalList != null) { // в случае если пользователь нажал на фильтр animalList != null, но нам необходимы данные из сети!!!
             viewState.updateList(animalList!!)
             viewState.toggleAnimalSearchProgressBar(isVisible = false)
             return
         }
-        couroutineScope.launch {
+        coroutineScope.launch {
             try {
-                val animalFilter: AnimalFilter = makeAnimalFilter(isDogChecked, isCatChecked)
-                animalList = animalInteractor.getAnimalsByFilter(animalFilter.animalTypeId)
+                animalList = animalInteractor.getAnimalsByFilter(animalFilter)
                 if (fineLocationPermission == PackageManager.PERMISSION_GRANTED
                     || coarseLocationPermission == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -105,16 +116,18 @@ class AnimalsListPresenterImpl(
         }
     }
 
+
+
     override fun onClickToLocationBtn(permissions: Map<String, Boolean>) {
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
             viewState.updateList(animalsWithNewState)
-            couroutineScope.launch {
+            coroutineScope.launch {
                 try {
                     val coordinates: Coordinates = locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
                     successLocation(token, coordinates)
-                } catch (ex: Exception)  {
+                } catch (ex: Exception) {
                     failureLocation()
                 }
             }
@@ -156,16 +169,6 @@ class AnimalsListPresenterImpl(
         return newAnimalList.toList()
     }
 
-    private fun makeAnimalFilter(
-        isDogChecked: Boolean,
-        isCatChecked: Boolean
-    ): AnimalFilter {
-        val listForFilter: MutableList<Int> = mutableListOf()
-        if (isDogChecked) listForFilter.add(DOG_ID)
-        if (isCatChecked) listForFilter.add(CAT_ID)
-        return AnimalFilter(listForFilter.toList())
-    }
-
     private fun setDistancesToAnimals(distances: HashMap<Int, Int>): List<Animal> {
         val newAnimalList = mutableListOf<Animal>()
         animalList?.forEach { animal ->
@@ -197,6 +200,10 @@ class AnimalsListPresenterImpl(
 
             FragmentsListForAssigningAnimation.USER_PROFILE -> {
                 viewState.setAnimationWhenToUserProfileNavigate()
+            }
+
+            FragmentsListForAssigningAnimation.ANIMAL_FILTER -> {
+                viewState.setAnimationWhenToAnimalFilterNavigate()
             }
 
             else -> {
@@ -238,12 +245,84 @@ class AnimalsListPresenterImpl(
             USER_PROFILE_LABEL -> FragmentsListForAssigningAnimation.USER_PROFILE
             REGISTRATION_LABEL -> FragmentsListForAssigningAnimation.REGISTRATION
             LOGIN_LABEL -> FragmentsListForAssigningAnimation.LOGIN
+            ANIMAL_FILTER_LABEL -> FragmentsListForAssigningAnimation.ANIMAL_FILTER
             else -> FragmentsListForAssigningAnimation.OTHER
         }
     }
 
-    override fun onInit(fineLocationPermission: Int, coarseLocationPermission: Int) {
+    override fun onInit(
+        fineLocationPermission: Int,
+        coarseLocationPermission: Int,
+        animalFilter: AnimalFilter,
+        badge: BadgeDrawable
+    ) {
         this.fineLocationPermission = fineLocationPermission
         this.coarseLocationPermission = coarseLocationPermission
+        this.animalFilter = animalFilter
+        this.badge = badge
     }
+
+    override fun onDogChipClicked(dogChecked: Boolean) {
+        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        if (dogChecked) {
+            animalTypeId.add(DOG_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+            animalTypeList.add(DOG_ID)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
+        } else {
+            animalTypeId.remove(DOG_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+            animalTypeList.remove(DOG_ID)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
+
+        }
+    }
+
+    override fun onCatChipClicked(catChecked: Boolean) {
+        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        if (catChecked) {
+            animalTypeId.add(CAT_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+            animalTypeList.add(CAT_ID)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
+        } else {
+            animalTypeId.remove(CAT_ID)
+            animalFilter.animalTypeId = animalTypeId
+            val animalTypeList: MutableList<Int> =
+                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+            animalTypeList.remove(CAT_ID)
+            filterInteractor.saveAnimalTypeIdList(animalTypeList)
+        }
+    }
+
+    override fun onChipsReadyToToggle() {
+        val animalTypeIdList = animalFilter.animalTypeId
+        animalTypeIdList?.let {
+            if (it.contains(DOG_ID)) viewState.toggleDogChip(isChecked = true)
+            if (it.contains(CAT_ID)) viewState.toggleCatChip(isChecked = true)
+        }
+
+    }
+
+    fun onFilterBtnClicked() {
+        viewState.navigateToAnimalFilter(animalFilter)
+    }
+
+    private fun calculateFilterNumbers(animalFilter: AnimalFilter): Int {
+        var count = 0
+        if ((animalFilter.animalTypeId?.size ?: 0) > 0) count++
+        if ((animalFilter.cityId?.size ?: 0) > 0) count++
+        if ((animalFilter.breedId?.size ?: 0) > 0) count++
+        if ((animalFilter.colorId?.size ?: 0) > 0) count++
+        if (animalFilter.genderId > -1) count++
+        if (animalFilter.minAge > -1 || animalFilter.maxAge > -1) count++
+        return count
+    }
+
 }

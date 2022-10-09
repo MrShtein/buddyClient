@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="horizontal"
+    >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/filter_selection_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/black"
+        android:layout_marginStart="15dp"
+        tools:text="Крокодилы"
+        />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/filter_selection_confirm_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selection_confirm"
+        android:visibility="invisible"
+        android:layout_marginEnd="15dp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
