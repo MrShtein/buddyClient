@@ -305,7 +305,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/animal_age_label"
+            android:text="@string/age_text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_bottom_image_divider"
             app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_image_divider" />
