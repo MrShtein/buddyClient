@@ -51,8 +51,14 @@ class AnimalInteractorImpl(
 
     override suspend fun getAnimalBreeds(animalTypeList: List<Int>): List<FilterAutocompleteItem> {
         val allBreeds = mutableListOf<Breed>()
-        animalTypeList.forEach {
+        val currentList = animalTypeList.toMutableList()
+        if (currentList.isEmpty()) {
+            currentList.add(DOG_ID)
+            currentList.add(CAT_ID)
+        }
+        currentList.forEach {
             val animalBreeds =
+                animalBreedRepository.getAnimalBreeds(animalTypeId = it)
             allBreeds.addAll(animalBreeds)
         }
         return mapBreedsToFilterBreeds(breeds = allBreeds)
@@ -106,6 +112,11 @@ class AnimalInteractorImpl(
                 FilterAutocompleteItem(id = it.id, name = it.name, isSelected = false)
             }
             .toList()
+    }
+
+    companion object {
+        private val DOG_ID = 1
+        private val CAT_ID = 2
     }
 
 }
