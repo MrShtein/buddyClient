@@ -81,7 +81,7 @@ class AnimalFilterPresenter(
             val breedJob = launch {
                 if (breeds == null) {
                     breeds =
-                        animalInteractor.getAnimalBreeds(animalFilter.animalTypeId?.toList()!!)
+                        animalInteractor.getAnimalBreeds(animalFilter.animalTypeId!!)
                     breeds?.map { item ->
                         animalFilter.breedId?.forEach {
                             if (it == item.id) {
@@ -306,15 +306,15 @@ class AnimalFilterPresenter(
         viewState.closeKeyboard()
     }
 
-    fun onAnimalTypeFilterItemClick(filterCity: FilterAutocompleteItem) {
+    fun onAnimalTypeFilterItemClick(filterAnimalType: FilterAutocompleteItem) {
         val storeAnimalTypeIdList = animalFilterInteractor.getAnimalTypeIdList()
-        storeAnimalTypeIdList.add(filterCity.id)
-        typesForChips.add(filterCity)
+        storeAnimalTypeIdList.add(filterAnimalType.id)
+        typesForChips.add(filterAnimalType)
         animalFilterInteractor.saveAnimalTypeIdList(storeAnimalTypeIdList)
         if (animalFilter.animalTypeId != null) {
-            animalFilter.animalTypeId?.add(filterCity.id)
+            animalFilter.animalTypeId?.add(filterAnimalType.id)
         } else {
-            animalFilter.animalTypeId = mutableListOf(filterCity.id)
+            animalFilter.animalTypeId = mutableListOf(filterAnimalType.id)
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
