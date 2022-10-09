@@ -167,10 +167,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
-            android:text="@string/animal_age_label"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_color_chips_container" />
 
@@ -183,7 +181,6 @@
             android:stepSize="1.0"
             android:valueFrom="0.0"
             android:valueTo="35.0"
-            app:labelBehavior="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/animal_filter_age_label"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_age_label"

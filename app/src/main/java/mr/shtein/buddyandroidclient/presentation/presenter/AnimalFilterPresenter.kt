@@ -150,7 +150,9 @@ class AnimalFilterPresenter(
                 if  (minAge != EMPTY_VALUE && maxAge != EMPTY_VALUE) {
                     val minAgeInMonth = minAge / MONTHS_IN_YEAR
                     val maxAgeInMonth = maxAge / MONTHS_IN_YEAR
-                    viewState.showMinMaxAge(minAge = minAgeInMonth, maxAge = maxAgeInMonth)
+                    viewState.setMinMaxAge(minAge = minAgeInMonth, maxAge = maxAgeInMonth)
+                } else {
+                    viewState.setMinMaxAge(minAge = MIN_AGE_VALUE, maxAge = MAX_AGE_VALUE)
                 }
 
                 when(animalFilterInteractor.getGenderId()) {
@@ -339,6 +341,7 @@ class AnimalFilterPresenter(
         }
         scope.launch {
             val animalAfterFilteredCount = animalInteractor.getAnimalsCountByFilter(animalFilter)
+            viewState.updateMinMaxAge(minAge = valueFrom, maxAge = valueTo)
             viewState.updateBtnValue(animalAfterFilteredCount)
         }
     }
@@ -370,6 +373,7 @@ class AnimalFilterPresenter(
     private fun mapCitiesToFilterItem(
         citiesList: MutableList<CityChoiceItem>
     ): List<FilterAutocompleteItem> {
+        CoroutineExceptionHandler
         return citiesList
             .map {
                 FilterAutocompleteItem(
