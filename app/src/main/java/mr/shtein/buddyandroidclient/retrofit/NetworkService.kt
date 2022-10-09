@@ -93,7 +93,6 @@ interface NetworkService {
 
     @GET("/api/v1/animal/{animal_type}/breed")
     suspend fun getAnimalsBreed(
-        @Header("Authorization") token: String,
         @Path("animal_type") animalType: Int
     ): Response<List<Breed>>
 

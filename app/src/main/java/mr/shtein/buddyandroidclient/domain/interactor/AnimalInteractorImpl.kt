@@ -50,11 +50,9 @@ class AnimalInteractorImpl(
     }
 
     override suspend fun getAnimalBreeds(animalTypeList: List<Int>): List<FilterAutocompleteItem> {
-        val token = getUserToken()
         val allBreeds = mutableListOf<Breed>()
         animalTypeList.forEach {
             val animalBreeds =
-                animalBreedRepository.getAnimalBreeds(token = token, animalTypeId = it)
             allBreeds.addAll(animalBreeds)
         }
         return mapBreedsToFilterBreeds(breeds = allBreeds)

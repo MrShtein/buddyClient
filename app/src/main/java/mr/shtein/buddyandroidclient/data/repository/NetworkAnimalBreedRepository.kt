@@ -13,9 +13,9 @@ private const val SERVER_ERROR = "Что-то не так с сервером, �
 class NetworkAnimalBreedRepository(
     val networkService: NetworkService
 ) : AnimalBreedRepository {
-    override suspend fun getAnimalBreeds(token: String, animalTypeId: Int): List<Breed> =
+    override suspend fun getAnimalBreeds(animalTypeId: Int): List<Breed> =
         withContext(Dispatchers.IO) {
-            val result = networkService.getAnimalsBreed(token = token, animalType = animalTypeId)
+            val result = networkService.getAnimalsBreed(animalType = animalTypeId)
             return@withContext when(result.code()) {
                 200 -> {
                     result.body() ?: throw EmptyBodyException(SERVER_ERROR)
