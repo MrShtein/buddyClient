@@ -136,7 +136,9 @@
     <string name="add_animal_fourth_img_description">Четвертая картинка с животным</string>
     <string name="add_animal_add_btn_description">Кнопка для добавления новой фотографии</string>
     <string name="add_animal_cancel_image_btn_description">Кнопка для удаления фотографии животного</string>
-    <string name="animal_age_label">Возраст:</string>
+    <string name="age_text">Возраст:</string>
+    <string name="from_text">от</string>
+    <string name="until_text">до</string>
     <string name="year">Год</string>
     <string name="month">Месяц</string>
     <string name="nickname_text">Кличка:</string>
