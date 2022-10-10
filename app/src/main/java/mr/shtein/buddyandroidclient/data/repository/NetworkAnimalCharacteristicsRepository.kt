@@ -14,10 +14,10 @@ private const val SERVER_ERROR = "Что-то не так с сервером, �
 class NetworkAnimalCharacteristicsRepository(
     val networkService: NetworkService
 ) : AnimalCharacteristicsRepository {
-    override suspend fun getAnimalColors(token: String): List<AnimalCharacteristic> =
+    override suspend fun getAnimalColors(): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
             val result = networkService.getAnimalsCharacteristicByCharacteristicTypeId(
-                token = token, characteristicId = COLOR_ID
+                characteristicId = COLOR_ID
             )
             return@withContext when(result.code()) {
                 200 -> {

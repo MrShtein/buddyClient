@@ -492,9 +492,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
             val token = userPropertiesRepository.getUserToken()
-            val response = networkService.getAnimalsCharacteristicByCharacteristicTypeId(
-                token, colorId
-            )
+            val response = networkService.getAnimalsCharacteristicByCharacteristicTypeId(colorId)
             if (response.isSuccessful) {
                 return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
             } else {

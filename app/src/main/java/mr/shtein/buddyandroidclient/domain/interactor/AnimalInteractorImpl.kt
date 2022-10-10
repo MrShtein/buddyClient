@@ -65,10 +65,9 @@ class AnimalInteractorImpl(
     }
 
     override suspend fun getAnimalCharacteristics(characteristicId: Int): List<FilterAutocompleteItem> {
-        val token = getUserToken()
         return when (characteristicId) {
             COLOR_ID -> {
-                val animalColors = animalCharacteristicsRepository.getAnimalColors(token)
+                val animalColors = animalCharacteristicsRepository.getAnimalColors()
                 mapCharacteristicToFilterItem(animalColors)
             }
             else -> {
