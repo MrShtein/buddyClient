@@ -98,7 +98,6 @@ interface NetworkService {
 
     @GET("/api/v1/animal/characteristic/{characteristic_id}")
     suspend fun getAnimalsCharacteristicByCharacteristicTypeId(
-        @Header("Authorization") token: String,
         @Path("characteristic_id") characteristicId: Int
     ): Response<List<AnimalCharacteristic>>
 
