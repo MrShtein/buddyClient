@@ -187,6 +187,7 @@
     <string name="animal_filter_label_text">Фильтр</string>
     <string name="animal_types_label">Типы животных:</string>
     <string name="any_gender_label">Любой</string>
+    <string name="find_zero_animals_text">Найдено 0 животных</string>
     <plurals name="buddy_found_count">
         <item quantity="zero">Найдено %d питомцев</item>
         <item quantity="one">Найден %d питомец</item>

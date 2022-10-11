@@ -250,6 +250,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:text="@string/find_zero_animals_text"
             app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_gender_group" />
