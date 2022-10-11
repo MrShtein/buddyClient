@@ -79,4 +79,13 @@ interface AnimalFilterView : MvpView {
 
     @AddToEndSingle
     fun showAnyGender()
+
+    @OneExecution
+    fun showNetworkErrorMsg()
+
+    @OneExecution
+    fun showServerErrorMsg()
+
+    @OneExecution
+    fun showTokenErrorMsg()
 }
