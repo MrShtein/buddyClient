@@ -6,10 +6,17 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.CityRepository
+import mr.shtein.buddyandroidclient.data.repository.SharedUserPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
+import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.dto.*
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
+import java.net.ConnectException
+import java.net.SocketException
+import java.net.SocketTimeoutException
 
 private const val MALE_ID = 1
 private const val FEMALE_ID = 2
@@ -24,6 +31,7 @@ class AnimalFilterPresenter(
     private val animalInteractor: AnimalInteractor,
     private val cityRepository: CityRepository,
     private val animalFilterInteractor: AnimalFilterInteractor,
+    private val userPropertiesRepository: UserPropertiesRepository,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
 
 ) : MvpPresenter<AnimalFilterView>() {
@@ -55,7 +63,26 @@ class AnimalFilterPresenter(
 
     private fun setUpView() {
         viewState.setUpTransitions()
-        scope.launch {
+        viewState.setListeners()
+        val handler = CoroutineExceptionHandler { _, exception ->
+            when (exception) {
+                is SocketTimeoutException -> {
+                    viewState.showNetworkErrorMsg()
+                }
+                is ConnectException -> {
+                    viewState.showNetworkErrorMsg()
+                }
+                is ServerErrorException -> {
+                    viewState.showServerErrorMsg()
+                }
+                is BadTokenException -> {
+                    resetToken()
+                    viewState.showTokenErrorMsg()
+                }
+                else -> {}
+            }
+        }
+        scope.launch(handler) {
             val cityJob = launch {
                 if (cities == null) {
                     val citiesList = cityRepository.getCities()
@@ -147,7 +174,7 @@ class AnimalFilterPresenter(
 
                 val minAge = animalFilterInteractor.getMinAge()
                 val maxAge = animalFilterInteractor.getMaxAge()
-                if  (minAge != EMPTY_VALUE && maxAge != EMPTY_VALUE) {
+                if (minAge != EMPTY_VALUE && maxAge != EMPTY_VALUE) {
                     val minAgeInMonth = minAge / MONTHS_IN_YEAR
                     val maxAgeInMonth = maxAge / MONTHS_IN_YEAR
                     viewState.setMinMaxAge(minAge = minAgeInMonth, maxAge = maxAgeInMonth)
@@ -155,7 +182,7 @@ class AnimalFilterPresenter(
                     viewState.setMinMaxAge(minAge = MIN_AGE_VALUE, maxAge = MAX_AGE_VALUE)
                 }
 
-                when(animalFilterInteractor.getGenderId()) {
+                when (animalFilterInteractor.getGenderId()) {
                     MALE_ID -> {
                         viewState.showMaleGender()
                     }
@@ -173,8 +200,11 @@ class AnimalFilterPresenter(
             colorJob.join()
             typeJob.join()
             viewState.initAdapters(breeds!!, colors!!, types!!, cities!!)
-            viewState.setListeners()
         }
+    }
+
+    private fun resetToken() {
+        userPropertiesRepository.removeAll()
     }
 
     fun onBreedChipCloseBtnClicked(chip: Chip) {
@@ -347,7 +377,7 @@ class AnimalFilterPresenter(
     }
 
     fun onGenderChange(checkedId: Int) {
-        when(checkedId) {
+        when (checkedId) {
             R.id.animal_filter_male_button -> {
                 animalFilter.genderId = MALE_ID
                 animalFilterInteractor.saveGenderId(MALE_ID)

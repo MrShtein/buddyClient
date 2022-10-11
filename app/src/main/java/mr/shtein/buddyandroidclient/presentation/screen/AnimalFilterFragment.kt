@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.core.os.bundleOf
@@ -292,6 +293,21 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.clear()
         adapter.addAll(types!!)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun showNetworkErrorMsg() {
+        val networkErrorMsg = getString(R.string.internet_failure_text)
+        Toast.makeText(requireContext(), networkErrorMsg, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showServerErrorMsg() {
+        val serverErrorMsg = getString(R.string.server_error_msg)
+        Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showTokenErrorMsg() {
+        val tokenErrorMsg = getString(R.string.bad_token_msg)
+        Toast.makeText(requireContext(), tokenErrorMsg, Toast.LENGTH_LONG).show()
     }
 
     private fun makeBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
