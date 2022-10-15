@@ -669,8 +669,9 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                     showBadTokenDialog(userPropertiesRepository)
                 } catch (ex: ServerErrorException) {
                     dialog.dismiss()
+                    val message = getString(R.string.server_error_msg)
                     Log.d("server", SERVER_ERROR)
-                    Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 }
             }
         }
