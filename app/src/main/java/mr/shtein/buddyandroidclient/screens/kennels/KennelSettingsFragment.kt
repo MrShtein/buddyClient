@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -120,7 +121,8 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
+        val layout: ConstraintLayout = view.findViewById(R.id.kennel_settings_constraint_layout)
+        setInsetsListenerForPadding(layout, left = false, top = true, right = false, bottom = true)
         initViews(view)
         initMaskForPhone(phoneNumberInput)
         setListeners()
