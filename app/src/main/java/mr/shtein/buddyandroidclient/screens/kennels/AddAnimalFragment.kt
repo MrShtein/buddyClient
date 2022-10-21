@@ -1,8 +1,12 @@
 package mr.shtein.buddyandroidclient.screens.kennels
 
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,6 +41,8 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 
 private const val IMAGE_TYPE = "image/*"
@@ -55,6 +61,7 @@ private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 private const val ERROR = "error"
 private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
+private const val IMAGE_CONTENT_TYPE = "image/webp"
 
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
@@ -131,14 +138,18 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                     val imgUri: Uri = uriList[indexForUriList]
                     val imageContainer = imageContainerList[i]
                     if (imageContainer.imageView.drawable != null) continue
-                    imageContainer.imageView.setImageURI(imgUri)
                     imageContainer.uri = imgUri
 
                     coroutineScope.launch {
                         try {
                             imageContainer.overlay.isVisible = true
                             imageContainer.progressBar.isVisible = true
-                            imageContainer.url = uploadImage(imgUri)
+                            val resolver = requireContext().contentResolver
+                            val imgInBytes = resolver.openInputStream(imgUri)?.readBytes() ?: byteArrayOf()
+                            val compressedImgInBytes = compressImage(imgInBytes)
+                            val imgInBitmap = BitmapFactory.decodeByteArray(compressedImgInBytes,0,compressedImgInBytes.size)
+                            imageContainer.url = uploadImage(compressedImgInBytes)
+                            imageContainer.imageView.setImageBitmap(imgInBitmap)
                             animalDto.photoNamesForCreate.add(imageContainer.url ?: "")
                             switchAddAndCancelBtnVisibility(true, imageContainer)
                             imageContainer.overlay.isVisible = false
@@ -740,12 +751,9 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
     }
 
-    private suspend fun uploadImage(uri: Uri): String = withContext(Dispatchers.IO) {
+    private suspend fun uploadImage(imageInBytes: ByteArray): String = withContext(Dispatchers.IO) {
         val token = userPropertiesRepository.getUserToken()
-        val resolver = requireContext().contentResolver
-        val imgInBytes = resolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
-        val contentType = resolver.getType(uri) ?: "image/jpeg"
-        val requestBody = RequestBody.create(MediaType.get(contentType), imgInBytes)
+        val requestBody = RequestBody.create(MediaType.get(IMAGE_CONTENT_TYPE), imageInBytes)
         val result = networkService.addPhotoToTmpDir(token, requestBody)
         when (result.code()) {
             201 -> {
@@ -762,6 +770,72 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 throw ServerErrorException()
             }
         }
+    }
+
+    private suspend fun compressImage(imageInByte: ByteArray): ByteArray =
+        withContext(Dispatchers.Default) {
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(imageInByte, 0, imageInByte.size)
+            val scaledBitmap = getScaledDownBitmap(bitmap, 1920, false)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                scaledBitmap?.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, byteArrayOutputStream)
+            } else {
+                scaledBitmap?.compress(Bitmap.CompressFormat.WEBP, 90, byteArrayOutputStream)
+            }
+            bitmap.recycle()
+            return@withContext byteArrayOutputStream.toByteArray()
+        }
+
+    private fun getScaledDownBitmap(
+        bitmap: Bitmap,
+        threshold: Int,
+        isNecessaryToKeepOrig: Boolean
+    ): Bitmap? {
+        val width = bitmap.width
+        val height = bitmap.height
+        var newWidth = width
+        var newHeight = height
+        if (width > height && width > threshold) {
+            newWidth = threshold
+            newHeight = (height * newWidth.toFloat() / width).toInt()
+        }
+        if (width > height && width <= threshold) {
+            return bitmap
+        }
+        if (width < height && height > threshold) {
+            newHeight = threshold
+            newWidth = (width * newHeight.toFloat() / height).toInt()
+        }
+        if (width < height && height <= threshold) {
+            return bitmap
+        }
+        if (width == height && width > threshold) {
+            newWidth = threshold
+            newHeight = newWidth
+        }
+        return if (width == height && width <= threshold) {
+            bitmap
+        } else getResizedBitmap(bitmap, newWidth, newHeight, isNecessaryToKeepOrig)
+    }
+
+    private fun getResizedBitmap(
+        bm: Bitmap,
+        newWidth: Int,
+        newHeight: Int,
+        isNecessaryToKeepOrig: Boolean
+    ): Bitmap? {
+        val width = bm.width
+        val height = bm.height
+        val scaleWidth = newWidth.toFloat() / width
+        val scaleHeight = newHeight.toFloat() / height
+        val matrix = Matrix()
+        matrix.postScale(scaleWidth, scaleHeight)
+
+        val resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
+        if (!isNecessaryToKeepOrig) {
+            bm.recycle()
+        }
+        return resizedBitmap
     }
 }
 
