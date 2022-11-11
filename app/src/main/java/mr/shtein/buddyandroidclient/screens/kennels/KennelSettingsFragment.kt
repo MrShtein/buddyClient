@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.model.KennelRequest
+import mr.shtein.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*

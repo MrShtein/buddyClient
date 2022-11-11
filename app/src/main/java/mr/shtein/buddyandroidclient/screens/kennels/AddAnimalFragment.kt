@@ -31,9 +31,9 @@ import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Gender
 import mr.shtein.buddyandroidclient.model.ImageContainer
-import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
-import mr.shtein.buddyandroidclient.model.dto.Breed
-import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
+import mr.shtein.model.AnimalCharacteristic
+import mr.shtein.model.Breed
+import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
@@ -41,7 +41,6 @@ import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 

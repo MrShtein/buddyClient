@@ -1,12 +1,12 @@
 package mr.shtein.buddyandroidclient.retrofit
 
 import mr.shtein.buddyandroidclient.model.*
-import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
-import mr.shtein.buddyandroidclient.model.dto.AnimalType
-import mr.shtein.buddyandroidclient.model.dto.Breed
-import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
-import mr.shtein.buddyandroidclient.model.response.CitiesResponse
-import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
+import mr.shtein.model.AnimalCharacteristic
+import mr.shtein.model.AnimalType
+import mr.shtein.model.Breed
+import mr.shtein.model.AddOrUpdateAnimal
+import mr.shtein.model.CitiesResponse
+import mr.shtein.model.KennelPreviewResponse
 import mr.shtein.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

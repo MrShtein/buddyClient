@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.model.dto
+package mr.shtein.model
 
 data class AnimalCharacteristic(
     val id: Int,

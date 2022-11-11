@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.model.response
+package mr.shtein.model
 
 data class KennelPreviewResponse(
     val kennelId: Int,

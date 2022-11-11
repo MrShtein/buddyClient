@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.model.KennelPreview
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 
 class KennelsAdapter(

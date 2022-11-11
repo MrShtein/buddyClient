@@ -1,18 +1,14 @@
 package mr.shtein.buddyandroidclient.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
-import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
+import mr.shtein.model.FilterAutocompleteItem
 
 class SelectionAdapter(
     context: Context, items: List<FilterAutocompleteItem>
