@@ -1,6 +1,6 @@
 package mr.shtein.buddyandroidclient.domain.interactor
 
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 
 interface AnimalFilterInteractor {
 

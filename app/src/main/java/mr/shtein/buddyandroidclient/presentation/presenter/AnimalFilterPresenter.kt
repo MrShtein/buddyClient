@@ -11,7 +11,7 @@ import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.dto.*
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.FilterAutocompleteItem

@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.model.dto
+package mr.shtein.buddyandroidclient.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

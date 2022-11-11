@@ -6,8 +6,8 @@ import mr.shtein.buddyandroidclient.data.repository.*
 import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.model.Coordinates
-import mr.shtein.buddyandroidclient.model.dto.*
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.AnimalType
 import mr.shtein.model.Breed

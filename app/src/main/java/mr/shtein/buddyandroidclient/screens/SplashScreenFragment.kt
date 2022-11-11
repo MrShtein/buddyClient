@@ -16,7 +16,7 @@ import androidx.transition.Slide
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import org.koin.android.ext.android.inject
 
