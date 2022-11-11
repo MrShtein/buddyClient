@@ -1,3 +1,3 @@
-package mr.shtein.buddyandroidclient.model
+package mr.shtein.model
 
 data class AnimalChoiceItem(val animalName: String, val isChecked: Boolean)

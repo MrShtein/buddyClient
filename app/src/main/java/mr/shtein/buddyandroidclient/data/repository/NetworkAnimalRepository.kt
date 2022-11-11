@@ -3,7 +3,7 @@ package mr.shtein.buddyandroidclient.data.repository
 import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 
 class NetworkAnimalRepository(

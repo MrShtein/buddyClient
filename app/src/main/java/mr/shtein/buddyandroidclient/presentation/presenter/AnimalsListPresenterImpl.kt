@@ -1,7 +1,6 @@
 package mr.shtein.buddyandroidclient.presentation.presenter
 
 import android.content.pm.PackageManager
-import android.util.Log
 import com.google.android.material.badge.BadgeDrawable
 import kotlinx.coroutines.*
 import moxy.InjectViewState
@@ -16,7 +15,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Coordinates
 import mr.shtein.buddyandroidclient.model.LocationState
-import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
+import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import java.net.ConnectException
