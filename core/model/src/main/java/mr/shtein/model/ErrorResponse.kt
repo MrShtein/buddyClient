@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.model
+package mr.shtein.model
 
 data class ErrorResponse(
     val message: String
