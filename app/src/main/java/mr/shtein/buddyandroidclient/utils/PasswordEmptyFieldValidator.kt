@@ -2,7 +2,7 @@ package mr.shtein.buddyandroidclient.utils
 
 import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.exceptions.validate.*
-import mr.shtein.buddyandroidclient.model.PasswordCheckRequest
+import mr.shtein.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import retrofit2.Call

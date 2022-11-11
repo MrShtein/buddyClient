@@ -5,7 +5,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.exceptions.validate.*
-import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -14,9 +14,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FullEmailValidator (
-   val emailCheckRequest: EmailCheckRequest,
-   val emailCallback: MailCallback,
-   val dialog: AlertDialog?
+    val emailCheckRequest: EmailCheckRequest,
+    val emailCallback: MailCallback,
+    val dialog: AlertDialog?
     ): Validator, KoinComponent, EmptyFieldValidator() {
 
     override fun validateValue(email: String): Boolean {

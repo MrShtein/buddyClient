@@ -6,9 +6,10 @@ import mr.shtein.buddyandroidclient.model.dto.AnimalType
 import mr.shtein.buddyandroidclient.model.dto.Breed
 import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
-import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
+import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
 import mr.shtein.model.AnimalDTO
+import mr.shtein.model.PasswordCheckRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
