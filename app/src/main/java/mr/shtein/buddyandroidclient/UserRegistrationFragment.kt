@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.exceptions.validate.*
-import mr.shtein.buddyandroidclient.model.Person
+import mr.shtein.model.Person
 import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository

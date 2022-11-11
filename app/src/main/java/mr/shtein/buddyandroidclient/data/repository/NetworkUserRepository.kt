@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.LoginResponse
-import mr.shtein.buddyandroidclient.model.Person
+import mr.shtein.model.LoginResponse
+import mr.shtein.model.Person
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 
 class NetworkUserRepository(private val networkService: NetworkService): UserRepository {

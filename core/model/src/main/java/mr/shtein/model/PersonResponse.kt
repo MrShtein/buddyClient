@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.model
+package mr.shtein.model
 
 data class PersonResponse(
     val isUpgrade: Boolean,
