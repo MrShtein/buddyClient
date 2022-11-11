@@ -8,6 +8,7 @@ import mr.shtein.buddyandroidclient.model.dto.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.model.response.CitiesResponse
 import mr.shtein.buddyandroidclient.model.response.EmailCheckRequest
 import mr.shtein.buddyandroidclient.model.response.KennelPreviewResponse
+import mr.shtein.model.AnimalDTO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -24,7 +25,7 @@ interface NetworkService {
         @Query("characteristic_id") characteristicId: List<Int>?,
         @Query("min_age") minAge: Int?,
         @Query("max_age") maxAge: Int?
-    ): Response<List<Animal>>
+    ): Response<List<AnimalDTO>>
 
     @GET("/api/v1/animal/count")
     suspend fun getAnimalsCountByFilter(
@@ -38,7 +39,7 @@ interface NetworkService {
     ): Response<Int>
 
     @GET("api/v1/animal/{id}")
-    fun getAnimalById(@Path("id") id: Long): Call<Animal>
+    fun getAnimalById(@Path("id") id: Long): Call<AnimalDTO>
 
     @POST("/api/v1/email/exists")
     fun isEmailExists(@Body emailCheckRequest: EmailCheckRequest): Call<Boolean>
@@ -86,7 +87,7 @@ interface NetworkService {
         @Header("Authorization") token: String,
         @Path("kennel_id") kennelId: Int,
         @Path("animal_type") animalType: String
-    ): Response<MutableList<Animal>>
+    ): Response<MutableList<AnimalDTO>>
 
     @GET("/api/v1/animal/type")
     suspend fun getAnimalsTypes(): Response<List<AnimalType>>
@@ -111,7 +112,7 @@ interface NetworkService {
     suspend fun updateAnimal(
         @Header("Authorization") token: String,
         @Body addOrUpdateAnimalRequest: AddOrUpdateAnimal
-    ): Response<Animal>
+    ): Response<AnimalDTO>
 
     @POST("/api/v1/animal/photo")
     suspend fun addPhotoToTmpDir(

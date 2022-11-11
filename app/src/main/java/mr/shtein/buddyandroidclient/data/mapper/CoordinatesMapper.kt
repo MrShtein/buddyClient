@@ -1,0 +1,22 @@
+package mr.shtein.buddyandroidclient.data.mapper
+
+import mr.shtein.buddyandroidclient.model.Coordinates
+import mr.shtein.model.CoordinatesDTO
+
+class CoordinatesMapper {
+
+    fun transformToDTO(coordinates: Coordinates): CoordinatesDTO {
+        return CoordinatesDTO(
+            latitude = coordinates.latitude,
+            longitude = coordinates.longitude
+        )
+    }
+
+    fun transformFromDTO(coordinatesDTO: CoordinatesDTO): Coordinates {
+        return Coordinates(
+            latitude = coordinatesDTO.latitude,
+            longitude = coordinatesDTO.longitude
+        )
+    }
+
+}

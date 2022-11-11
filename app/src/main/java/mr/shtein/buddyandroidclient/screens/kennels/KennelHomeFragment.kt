@@ -22,12 +22,14 @@ import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
+import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.ImageLoader
+import mr.shtein.model.AnimalDTO
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
@@ -63,6 +65,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val animalMapper: AnimalMapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -255,7 +258,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 token, kennelId, animalType
             )
             if (response.isSuccessful) {
-                response.body() ?: mutableListOf()
+                val animalDTOList: List<AnimalDTO> = response.body() ?: mutableListOf()
+                return@withContext animalMapper
+                    .transformFromDTOList(animalDTOList = animalDTOList)
+                    .toMutableList()
             } else {
                 when (response.code()) {
                     403 -> goToLogin()
