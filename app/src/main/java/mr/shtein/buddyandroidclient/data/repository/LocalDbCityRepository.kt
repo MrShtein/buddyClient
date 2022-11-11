@@ -4,7 +4,7 @@ import android.database.Cursor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.db.CityDbHelper
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
+import mr.shtein.model.CityChoiceItem
 
 class LocalDbCityRepository(
     val cityDbHelper: CityDbHelper,

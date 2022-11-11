@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyBodyException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.dto.AnimalCharacteristic
+import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 
 private const val COLOR_ID = 1

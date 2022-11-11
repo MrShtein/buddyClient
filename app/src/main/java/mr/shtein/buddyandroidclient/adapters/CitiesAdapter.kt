@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
+import mr.shtein.model.CityChoiceItem
 
 class CitiesAdapter(
     var cityChoiceItems: List<CityChoiceItem>,

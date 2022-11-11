@@ -2,10 +2,9 @@ package mr.shtein.buddyandroidclient.presentation.screen
 
 import com.google.android.material.chip.Chip
 import moxy.MvpView
-import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.OneExecution
-import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
+import mr.shtein.model.FilterAutocompleteItem
 
 interface AnimalFilterView : MvpView {
 

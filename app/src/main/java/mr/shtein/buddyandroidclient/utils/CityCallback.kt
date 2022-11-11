@@ -1,7 +1,7 @@
 package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
+import mr.shtein.model.CityChoiceItem
 
 class CityCallback(
     private val oldList: List<CityChoiceItem>,

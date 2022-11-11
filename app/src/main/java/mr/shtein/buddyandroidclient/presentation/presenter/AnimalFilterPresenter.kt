@@ -6,7 +6,6 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.CityRepository
-import mr.shtein.buddyandroidclient.data.repository.SharedUserPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
@@ -14,8 +13,9 @@ import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.dto.*
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
+import mr.shtein.model.CityChoiceItem
+import mr.shtein.model.FilterAutocompleteItem
 import java.net.ConnectException
-import java.net.SocketException
 import java.net.SocketTimeoutException
 
 private const val MALE_ID = 1

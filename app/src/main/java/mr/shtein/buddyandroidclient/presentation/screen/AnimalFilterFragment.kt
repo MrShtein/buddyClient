@@ -3,23 +3,18 @@ package mr.shtein.buddyandroidclient.presentation.screen
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.SpannedString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.graphics.green
-import androidx.core.graphics.red
 import androidx.core.os.bundleOf
 import androidx.core.text.bold
 import androidx.core.text.color
 import androidx.core.text.toSpanned
 import androidx.navigation.fragment.findNavController
-import com.airbnb.lottie.LottieProperty.COLOR
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.transition.MaterialSharedAxis
@@ -29,12 +24,11 @@ import moxy.presenter.ProvidePresenter
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.SelectionAdapter
 import mr.shtein.buddyandroidclient.databinding.AnimalFilterFragmentBinding
-import mr.shtein.buddyandroidclient.model.dto.FilterAutocompleteItem
+import mr.shtein.model.FilterAutocompleteItem
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalFilterPresenter
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import org.koin.android.ext.android.get
-import kotlin.math.max
 
 private const val ANIMAL_FILTER_KEY = "animal_filter"
 private const val LAST_FRAGMENT_KEY = "last_fragment"

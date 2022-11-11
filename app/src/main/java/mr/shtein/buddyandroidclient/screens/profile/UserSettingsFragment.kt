@@ -37,7 +37,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentExce
 import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
 import mr.shtein.model.PersonRequest
 import mr.shtein.model.PersonResponse
-import mr.shtein.buddyandroidclient.model.dto.CityChoiceItem
+import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack

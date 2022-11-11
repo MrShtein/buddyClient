@@ -1,6 +1,4 @@
-package mr.shtein.buddyandroidclient.model.dto
-
-import mr.shtein.buddyandroidclient.model.Gender
+package mr.shtein.model
 
 data class AddOrUpdateAnimal(
     var animalId: Long = 0,
