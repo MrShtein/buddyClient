@@ -11,7 +11,7 @@ const val USER_STORE_NAME = "userStore"
 const val FILTER_STORE_NAME = "filterStore"
 
 val repositoryModule: Module = module {
-    single<AnimalRepository> { NetworkAnimalRepository(get()) }
+    single<AnimalRepository> { NetworkAnimalRepository(get(), get()) }
     single<AnimalTypeRepository> { NetworkAnimalTypeRepository(get()) }
     single<AnimalBreedRepository> { NetworkAnimalBreedRepository(get()) }
     single<AnimalCharacteristicsRepository> { NetworkAnimalCharacteristicsRepository(get()) }

@@ -1,19 +1,15 @@
 package mr.shtein.buddyandroidclient.data.repository
 
+import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.dto.AnimalFilter
 import mr.shtein.buddyandroidclient.retrofit.NetworkService
 
-const val ANIMAL_TYPE_ID_KEY = "type_id"
-const val CITY_ID_KEY = "city_id"
-const val BREED_ID_KEY = "breed_id"
-const val CHARACTERISTIC_ID_KEY = "characteristic_id"
-private const val MIN_AGE_KEY = "min_age"
-private const val MAX_AGE_KEY = "max_age"
-private const val GENDER_KEY = "gender"
-
-class NetworkAnimalRepository(private val networkService: NetworkService) : AnimalRepository {
+class NetworkAnimalRepository(
+    private val networkService: NetworkService,
+    private val animalMapper: AnimalMapper
+    ) : AnimalRepository {
 
     override suspend fun getAnimals(filter: AnimalFilter): List<Animal> {
         val minAge = getMinAge(filter.minAge)
@@ -30,7 +26,8 @@ class NetworkAnimalRepository(private val networkService: NetworkService) : Anim
         )
         return when (result.code()) {
             200 -> {
-                result.body() ?: listOf()
+                val animalDTOList = result.body() ?: listOf()
+                return animalMapper.transformFromDTOList(animalDTOList = animalDTOList)
             }
             500 -> {
                 throw ServerErrorException()

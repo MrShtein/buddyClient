@@ -145,4 +145,6 @@ dependencies {
     huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
     huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
     huaweiImplementation 'com.huawei.agconnect:agconnect-crash:1.7.1.300'
+
+    implementation project(path: ':core:model')
 }
