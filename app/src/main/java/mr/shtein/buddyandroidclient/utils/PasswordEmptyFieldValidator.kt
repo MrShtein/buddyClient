@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordEmptyFieldValidator(val networkService: mNetworkService): EmptyFieldValidator() {
+class PasswordEmptyFieldValidator(val networkService: NetworkService): EmptyFieldValidator() {
 
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
