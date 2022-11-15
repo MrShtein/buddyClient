@@ -26,7 +26,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
-import mr.shtein.model.KennelRequest
+import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -70,8 +70,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments ?: bundleOf()
-        settingsData = Gson()
-            .fromJson(bundle.getString(SETTINGS_DATA_KEY), KennelRequest::class.java)
+        settingsData = bundle.getParcelable(SETTINGS_DATA_KEY)!!
 
         initViews(view)
         setViews()

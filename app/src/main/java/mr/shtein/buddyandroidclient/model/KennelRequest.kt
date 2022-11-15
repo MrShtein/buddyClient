@@ -1,5 +1,9 @@
-package mr.shtein.model
+package mr.shtein.buddyandroidclient.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class KennelRequest(
     var userId: Long = 0,
     var kennelAvtUri: String = "",
@@ -12,4 +16,4 @@ data class KennelRequest(
     var kennelBuildingNum: String = "",
     var kennelIdentifyNum: Long = 0,
     var role: String
-)
+): Parcelable
