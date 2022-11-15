@@ -20,7 +20,7 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.model.KennelPreview
+import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
@@ -194,9 +194,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             kennelsList,
             object : KennelsAdapter.OnKennelItemClickListener {
                 override fun onClick(kennelItem: KennelPreview) {
-                    val gson = Gson()
-                    val kennelItemJson = gson.toJson(kennelItem)
-                    val bundle = bundleOf(KENNEL_ITEM_BUNDLE_KEY to kennelItemJson)
+                    val bundle = bundleOf(KENNEL_ITEM_BUNDLE_KEY to kennelItem)
                     findNavController().navigate(
                         R.id.action_addKennelFragment_to_kennelHomeFragment,
                         bundle
