@@ -1,6 +1,5 @@
-package mr.shtein.buddyandroidclient.retrofit
+package mr.shtein.network
 
-import mr.shtein.buddyandroidclient.model.*
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.AnimalType
 import mr.shtein.model.Breed

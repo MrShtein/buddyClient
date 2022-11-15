@@ -34,7 +34,7 @@ import mr.shtein.buddyandroidclient.model.ImageContainer
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.Breed
 import mr.shtein.model.AddOrUpdateAnimal
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences

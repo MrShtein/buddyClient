@@ -41,7 +41,7 @@ import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import org.koin.android.ext.android.inject

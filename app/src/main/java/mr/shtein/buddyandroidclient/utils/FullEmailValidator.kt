@@ -6,7 +6,7 @@ import com.google.android.material.textfield.TextInputLayout
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.EmailCheckRequest
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.Call
