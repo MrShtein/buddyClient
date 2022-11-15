@@ -25,7 +25,7 @@ import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
 import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.model.KennelPreview
+import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.ImageLoader
@@ -82,8 +82,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(false)
-        val kennelItemJson: String = arguments?.get(KENNEL_ITEM_BUNDLE_KEY) as String
-        val kennelItem: KennelPreview = Gson().fromJson(kennelItemJson, KennelPreview::class.java)
+        val kennelItem: KennelPreview = arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)!!
 
         initViews(view)
         setValuesToViews(kennelItem)
