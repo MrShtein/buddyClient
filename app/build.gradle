@@ -145,8 +145,7 @@ dependencies {
     huaweiImplementation 'com.huawei.agconnect:agconnect-crash:1.7.1.300'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.10'
 
     implementation project(path: ':core:network')
     implementation project(path: ':core:model')

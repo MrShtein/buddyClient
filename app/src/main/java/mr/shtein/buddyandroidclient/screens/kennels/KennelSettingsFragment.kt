@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.model.KennelRequest
+import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
@@ -376,8 +376,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 ""
             )
             userPropertiesRepository.saveUserRole("")
-            val kennelRequestJson = Gson().toJson(kennelRequest)
-            val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequestJson)
+            val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequest)
             findNavController()
                 .navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment, bundle)
         }
