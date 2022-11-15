@@ -21,7 +21,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.model.KennelPreview
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil

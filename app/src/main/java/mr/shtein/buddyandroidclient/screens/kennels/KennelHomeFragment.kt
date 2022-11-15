@@ -26,7 +26,7 @@ import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.model.KennelPreview
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.model.AnimalDTO

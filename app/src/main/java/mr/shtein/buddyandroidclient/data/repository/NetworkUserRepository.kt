@@ -6,7 +6,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.model.LoginResponse
 import mr.shtein.model.Person
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 
 class NetworkUserRepository(private val networkService: NetworkService): UserRepository {
 

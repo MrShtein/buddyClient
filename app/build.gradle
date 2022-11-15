@@ -115,9 +115,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:4.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
     implementation 'ru.tinkoff.decoro:decoro:1.5.0'
@@ -146,5 +144,11 @@ dependencies {
     huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
     huaweiImplementation 'com.huawei.agconnect:agconnect-crash:1.7.1.300'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    implementation project(path: ':core:network')
     implementation project(path: ':core:model')
+
 }

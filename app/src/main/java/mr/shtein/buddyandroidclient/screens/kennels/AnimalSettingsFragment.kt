@@ -23,7 +23,7 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener

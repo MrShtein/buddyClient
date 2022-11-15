@@ -4,12 +4,12 @@ import com.google.android.material.textfield.TextInputEditText
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PasswordEmptyFieldValidator(val networkService: NetworkService): EmptyFieldValidator() {
+class PasswordEmptyFieldValidator(val networkService: mNetworkService): EmptyFieldValidator() {
 
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"

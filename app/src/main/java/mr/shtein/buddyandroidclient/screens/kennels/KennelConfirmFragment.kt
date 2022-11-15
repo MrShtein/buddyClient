@@ -27,7 +27,7 @@ import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
 import mr.shtein.model.KennelRequest
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

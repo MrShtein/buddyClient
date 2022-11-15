@@ -6,7 +6,7 @@ import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyBodyException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.model.Breed
-import mr.shtein.buddyandroidclient.retrofit.NetworkService
+import mr.shtein.network.NetworkService
 
 private const val SERVER_ERROR = "Что-то не так с сервером, попробуйте позже"
 
