@@ -11,12 +11,15 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
+import mr.shtein.network.ImageLoader
+import mr.shtein.network.NetworkImageLoader
 
 class AnimalsAdapter(
     context: Context,
     var animals: List<Animal>,
     var onAnimalCardClickListener: OnAnimalCardClickListener,
-    var onLocationBtnClickListener: OnLocationBtnClickListener
+    var onLocationBtnClickListener: OnLocationBtnClickListener,
+    private val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<AnimalsViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -25,7 +28,8 @@ class AnimalsAdapter(
         return AnimalsViewHolder(
             inflater.inflate(R.layout.animal_row, parent, false),
             onAnimalCardClickListener,
-            onLocationBtnClickListener
+            onLocationBtnClickListener,
+            networkImageLoader
         )
     }
 

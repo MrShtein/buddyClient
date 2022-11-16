@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
-import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.buddyandroidclient.utils.ImageLoader
+import mr.shtein.network.ImageLoader
 
 class KennelsAdapter(
-    private val token: String,
     var kennels: List<KennelPreview>,
-    var kennelTouchCallback: OnKennelItemClickListener
+    var kennelTouchCallback: OnKennelItemClickListener,
+    private val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<KennelsAdapter.KennelsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KennelsViewHolder {
@@ -51,12 +50,15 @@ class KennelsAdapter(
         }
 
         fun bind(kennelPreviewItem: KennelPreview) {
-            val host = BuildConfig.HOST
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
-            val imageLoader = ImageLoader(host, endpoint, photoName)
-            val placeHolder = itemView.context.getDrawable(R.drawable.user_photo_placeholder)
-            imageLoader.setPhotoToView(avatar,token, placeHolder)
+            val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
+            networkImageLoader.setPhotoToView(
+                avatar,
+                endpoint,
+                photoName,
+                dogPlaceholder!!
+            )
 
             kennelName.text = kennelPreviewItem.name
             volunteers.text = makeVolunteersText(kennelPreviewItem.volunteersAmount)

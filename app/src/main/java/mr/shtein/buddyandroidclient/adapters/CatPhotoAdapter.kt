@@ -5,18 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.utils.ImageLoader
+import mr.shtein.network.ImageLoader
 
 class CatPhotoAdapter(
     private val animalsList: List<Animal>,
     val token: String,
-    private val animalTouchCallback: OnAnimalItemClickListener
+    private val animalTouchCallback: OnAnimalItemClickListener,
+    private val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<CatPhotoAdapter.AnimalInKennelViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalInKennelViewHolder {
@@ -54,10 +52,14 @@ class CatPhotoAdapter(
             val animalAvatarUrl = animalCard.imgUrl.find {
                 it.primary
             }
-            val host = BuildConfig.HOST
             val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
-            val imageLoader = ImageLoader(host, endpoint, animalAvatarUrl?.url!!)
-            imageLoader.setPhotoToView(avatar)
+            val catPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
+            networkImageLoader.setPhotoToView(
+                avatar,
+                endpoint,
+                animalAvatarUrl?.url!!,
+                catPlaceholder!!
+            )
         }
 
 

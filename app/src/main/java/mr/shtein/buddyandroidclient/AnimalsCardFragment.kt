@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.*
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -32,13 +31,10 @@ import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.Kennel
-import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
 class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
@@ -64,6 +60,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var callBtn: MaterialButton
     private lateinit var constraintLayout: ConstraintLayout
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkImageLoader: ImageLoader by inject()
     private var animal: Animal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,7 +138,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 
         animal?.let { animal ->
             val imgUrls = animal.getImgUrls()
-            adapter = AnimalPhotoAdapter(imgUrls)
+            adapter = AnimalPhotoAdapter(imgUrls, networkImageLoader)
             adapter.notifyDataSetChanged()
             animalRecyclerView.adapter = adapter
         }
@@ -184,11 +181,15 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             kennelName.text = kennel.name
             address.text = kennel.address
 
-            val host = BuildConfig.HOST
             val endpoint = resources.getString(R.string.kennel_avatar_endpoint)
-            val token = userPropertiesRepository.getUserToken()
-            val imageLoader = ImageLoader(host, endpoint, kennel.avatarUrl)
-            imageLoader.setPhotoToView(avatar, token)
+
+            val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)!!
+            networkImageLoader.setPhotoToView(
+                avatar,
+                endpoint,
+                kennel.avatarUrl,
+                dogPlaceholder
+            )
 
         }
     }

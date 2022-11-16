@@ -35,9 +35,9 @@ import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.Breed
 import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.network.NetworkService
-import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.network.ImageLoader
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
@@ -119,6 +119,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private var isInsetsWorked = false
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkImageLoader: ImageLoader by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -501,7 +502,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
         withContext(Dispatchers.IO) {
-            val token = userPropertiesRepository.getUserToken()
             val response = networkService.getAnimalsCharacteristicByCharacteristicTypeId(colorId)
             if (response.isSuccessful) {
                 return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
@@ -699,10 +699,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 currentContainer.url = currentImgUrl
                 animalDto.photoNamesForCreate.add(currentImgUrl)
                 switchAddAndCancelBtnVisibility(true, currentContainer)
-                val host = BuildConfig.HOST
                 val endpoint = resources.getString(R.string.animal_photo_endpoint)
-                val imageLoader = ImageLoader(host, endpoint, currentImgUrl)
-                imageLoader.setPhotoToView(currentContainer.imageView)
+                val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)!!
+                networkImageLoader.setPhotoToView(
+                    currentContainer.imageView,
+                    endpoint,
+                    currentImgUrl,
+                    dogPlaceholder
+                )
             }
 
             yearsSlider.value = (animal.age / 12).toFloat()

@@ -12,13 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
-import com.google.gson.Gson
 import kotlinx.coroutines.*
-import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
@@ -28,8 +25,8 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.utils.ImageLoader
 import mr.shtein.model.AnimalDTO
+import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
@@ -64,6 +61,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
     private val networkService: NetworkService by inject()
+    private val networkImageLoader: ImageLoader by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val animalMapper: AnimalMapper by inject()
 
@@ -107,26 +105,24 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     }
 
     private fun setValuesToViews(kennelItem: KennelPreview) {
-        val host = BuildConfig.HOST
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
-        val imageLoader = ImageLoader(host, endpoint, photoName)
+        val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)
         token = userPropertiesRepository.getUserToken()
-        imageLoader.setPhotoToView(kennelAvatar, token)
+        networkImageLoader.setPhotoToView(
+            kennelAvatar,
+            endpoint,
+            photoName,
+            dogPlaceholder!!
+        )
 
         val uriForUserToken = userPropertiesRepository.getUserUri()
-        if (uriForUserToken != "") {
-            try {
-                Glide.with(this)
-                    .load(uriForUserToken)
-                    .into(personAvatar)
-            } catch (ex: Exception) {
-                Log.e("error", "Не удалось загрузить аватарку пользователя")
-                personAvatar.visibility = View.INVISIBLE
-            }
-        } else {
-            personAvatar.visibility = View.INVISIBLE
-        }
+        val personAvatarPlaceholder = context?.getDrawable(R.drawable.light_person_placeholder)
+        networkImageLoader.setPhotoToView(
+            personAvatar,
+            uriForUserToken,
+            personAvatarPlaceholder!!
+        )
 
         kennelName.text = kennelItem.name
         volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
@@ -157,7 +153,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                                     bundle
                                 )
                         }
-                    })
+                    },
+                    networkImageLoader
+                )
                 dogCarousel.adapter = dogAdapter
                 dogCarousel.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -180,7 +178,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                                     bundle
                                 )
                         }
-                    })
+                    },
+                    networkImageLoader
+                )
                 catCarousel.adapter = catAdapter
                 catCarousel.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

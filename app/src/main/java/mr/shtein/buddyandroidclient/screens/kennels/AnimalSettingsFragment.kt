@@ -27,6 +27,7 @@ import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
@@ -56,6 +57,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private var animal: Animal? = null
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkImageLoader: ImageLoader by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,7 +132,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
         val animalPhotoInString = animal?.imgUrl?.map {
             it.url
         }
-        adapter = AnimalPhotoAdapter(animalPhotoInString ?: listOf())
+        adapter = AnimalPhotoAdapter(animalPhotoInString ?: listOf(), networkImageLoader)
         photoRecyclerView.adapter = adapter
 
         photoCounter.text =
