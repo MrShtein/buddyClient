@@ -13,12 +13,14 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.LocationState
-import mr.shtein.buddyandroidclient.utils.ImageLoader
+import mr.shtein.network.ImageLoader
+import mr.shtein.network.NetworkImageLoader
 
 class AnimalsViewHolder(
     private val itemView: View,
     var onAnimalCardClickListener: OnAnimalCardClickListener,
-    var onLocationBtnClickListener: OnLocationBtnClickListener
+    var onLocationBtnClickListener: OnLocationBtnClickListener,
+    private val networkImageLoader: ImageLoader
 ) :
     ProtoAnimalsViewHolder(itemView), View.OnClickListener {
 
@@ -102,9 +104,13 @@ class AnimalsViewHolder(
     private fun setPrimaryPhoto(animal: Animal) {
         val primaryUrl = animal.imgUrl.filter { it.primary }
         val url: String = primaryUrl[0].url
-        val host = BuildConfig.HOST
         val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
-        val imageLoader = ImageLoader(host, endpoint, url)
-        imageLoader.setPhotoToView(animalImage)
+        val dogPlaceholder = animalImage.context.getDrawable(R.drawable.light_dog_placeholder)!!
+        networkImageLoader.setPhotoToView(
+            animalImage,
+            endpoint,
+            url,
+            dogPlaceholder
+        )
     }
 }

@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.utils.ImageLoader
+import mr.shtein.network.ImageLoader
+import mr.shtein.network.NetworkImageLoader
 
 class AnimalPhotoAdapter(
     var animalPhotos: List<String>,
+    val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<AnimalPhotoAdapter.AnimalPhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalPhotoViewHolder {
@@ -38,15 +37,19 @@ class AnimalPhotoAdapter(
         return animalPhotos.size
     }
 
-    inner class AnimalPhotoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)    {
+    inner class AnimalPhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val animalImage: ImageView = itemView.findViewById(R.id.animal_big_photo_row_img)
 
         fun bind(url: String) {
-            val host = BuildConfig.HOST
             val endpoint = itemView.context.resources.getString(R.string.animal_photo_endpoint)
-            val imageLoader = ImageLoader(host, endpoint, url)
-            imageLoader.setPhotoToView(animalImage)
+            val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)!!
+            networkImageLoader.setPhotoToView(
+                animalImage,
+                endpoint,
+                url,
+                dogPlaceholder
+            )
         }
     }
 }

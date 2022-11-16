@@ -27,6 +27,7 @@ import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 
 private const val ANIMAL_LIST_ID = "animalsListFragment"
@@ -56,6 +57,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var volunteersList = mutableListOf<KennelPreview>()
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkImageLoader: ImageLoader by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,7 +192,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         kennelRecycler =
             view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_list)
         kennelAdapter = KennelsAdapter(
-            userPropertiesRepository.getUserToken(),
             kennelsList,
             object : KennelsAdapter.OnKennelItemClickListener {
                 override fun onClick(kennelItem: KennelPreview) {
@@ -200,7 +201,8 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                         bundle
                     )
                 }
-            }
+            },
+            networkImageLoader
         )
         kennelRecycler.adapter = kennelAdapter
         kennelRecycler.layoutManager = LinearLayoutManager(

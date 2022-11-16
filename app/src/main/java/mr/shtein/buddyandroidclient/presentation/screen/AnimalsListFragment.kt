@@ -35,7 +35,9 @@ import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -92,6 +94,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     private val binding get() = _binding!!
     private lateinit var adapter: AnimalsAdapter
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
+    private val networkImageLoader: ImageLoader by inject()
 
     @InjectPresenter
     lateinit var animalListPresenter: AnimalsListPresenterImpl
@@ -293,7 +296,8 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             requireContext(),
             listOf(),
             this@AnimalsListFragment,
-            this@AnimalsListFragment
+            this@AnimalsListFragment,
+            networkImageLoader
         )
         binding.animalList.adapter = adapter
     }
