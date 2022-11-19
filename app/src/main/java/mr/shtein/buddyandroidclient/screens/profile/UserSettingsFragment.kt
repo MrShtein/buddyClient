@@ -411,7 +411,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val genderForSave = getGender()
         userPropertiesRepository.saveUserGender(genderForSave)
         if (token != "") {
-            userPropertiesRepository.saveUserToken(token)
+            val newToken = "Bearer $token"
+            userPropertiesRepository.saveUserToken(newToken)
         }
     }
 
