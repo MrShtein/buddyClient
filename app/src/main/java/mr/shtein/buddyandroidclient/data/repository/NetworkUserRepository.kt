@@ -4,9 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.model.EmailCheckRequest
-import mr.shtein.model.LoginResponse
-import mr.shtein.model.Person
+import mr.shtein.model.*
 import mr.shtein.network.NetworkService
 
 class NetworkUserRepository(private val networkService: NetworkService) : UserRepository {
@@ -39,6 +37,19 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
             }
             400 -> {
                 throw IncorrectDataException()
+            }
+            else -> throw ServerErrorException()
+        }
+    }
+
+    override suspend fun updatePersonInfo(
+        header: HashMap<String, String>,
+        personRequest: PersonRequest
+    ): PersonResponse = withContext(Dispatchers.IO) {
+        val result = networkService.updatePersonInfo(headers = header, person = personRequest)
+        when(result.code()) {
+            200 -> {
+                return@withContext result.body()!!
             }
             else -> throw ServerErrorException()
         }

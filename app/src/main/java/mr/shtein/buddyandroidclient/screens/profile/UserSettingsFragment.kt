@@ -32,27 +32,21 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.data.repository.UserRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
-import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
-import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
+import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.PersonRequest
-import mr.shtein.model.PersonResponse
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.EmailCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import org.koin.android.ext.android.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import java.io.File
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import kotlin.properties.Delegates
 
 
@@ -61,6 +55,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     companion object {
         const val NO_AUTHORIZE_TEXT = "Ошибка авторизации"
         const val MAIL_FAILURE_TEXT = "Что-то не так с сетью, попробуйте позже"
+        const val UNEXPECTED_ERROR = "Неизвестная ошибка"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
@@ -97,7 +92,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
-    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
     private val networkUserRepository: UserRepository by inject()
@@ -181,15 +175,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
             override fun onFailure() {
                 dialog.dismiss()
-                Toast.makeText(requireContext(), MAIL_FAILURE_TEXT, Toast.LENGTH_LONG).show()
+                showError(MAIL_FAILURE_TEXT)
             }
 
             override fun onNoAuthorize() {
                 dialog.dismiss()
-                Toast.makeText(requireContext(), NO_AUTHORIZE_TEXT, Toast.LENGTH_LONG).show()
+                showError(NO_AUTHORIZE_TEXT)
             }
         }
 
+    }
+
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 
     private fun setUserCurrentUserSettings() {
@@ -306,7 +304,13 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun emailCheck() {
         val emailForCheck = email.text.toString()
         val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
-        val emailValidator = FullEmailValidator(emailCheckRequest, emailCallBack, dialog, coroutineScope, networkUserRepository)
+        val emailValidator = FullEmailValidator(
+            emailCheckRequest,
+            emailCallBack,
+            dialog,
+            coroutineScope,
+            networkUserRepository
+        )
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
@@ -377,30 +381,29 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val headerMap = hashMapOf<String, String>()
         token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
-        networkService.upgradePersonInfo(headerMap, personRequest)
-            .enqueue(object : Callback<PersonResponse> {
-                override fun onResponse(
-                    call: Call<PersonResponse>,
-                    response: Response<PersonResponse>
-                ) {
-                    val personResponse: PersonResponse? = response.body()
-                    if (personResponse?.isUpgrade == true) {
-                        saveNewDataToStore(personResponse.newToken)
-                        motionLayout?.transitionToEnd()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            response.body()?.error?.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+        val serverErrorText = context?.getString(R.string.server_error_msg) ?: UNEXPECTED_ERROR
+        val noNetworkErrorText = context?.getString(R.string.internet_failure_text)
+            ?: UNEXPECTED_ERROR
+        coroutineScope.launch {
+            try {
+                val updatedPerson = networkUserRepository.updatePersonInfo(
+                    header = headerMap,
+                    personRequest = personRequest
+                )
+                if (updatedPerson.isUpgrade) {
+                    saveNewDataToStore(updatedPerson.newToken)
+                    motionLayout?.transitionToEnd()
+                } else {
+                    showError(serverErrorText)
                 }
-
-                override fun onFailure(call: Call<PersonResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Скорее всего нет сети", Toast.LENGTH_LONG)
-                        .show()
-                }
-            })
+            } catch (error: ServerErrorException) {
+                showError(serverErrorText)
+            } catch (error: ConnectException) {
+                showError(noNetworkErrorText)
+            } catch (error: SocketTimeoutException) {
+                showError(noNetworkErrorText)
+            }
+        }
     }
 
     private fun saveNewDataToStore(token: String) {
@@ -432,11 +435,11 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         }
 
         override fun onFailure() {
-            Toast.makeText(requireContext(), "Ошибка в сети", Toast.LENGTH_LONG).show()
+            showError("Ошибка в сети")
         }
 
         override fun onNoAuthorize() {
-            Toast.makeText(requireContext(), "Нет авторизации", Toast.LENGTH_LONG).show()
+            showError("Нет авторизации")
         }
     }
 
