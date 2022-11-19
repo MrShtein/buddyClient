@@ -37,6 +37,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private lateinit var coroutine: CoroutineScope
     private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkUserRepository: UserRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
 
 
@@ -118,7 +119,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 
         val nameValidator = NameValidator(nameInput, nameInputContainer)
         fullEmailValidator = FullEmailValidator(
-            EmailCheckRequest(emailInput.text.toString()), callbackForEmail, null
+            EmailCheckRequest(emailInput.text.toString()), callbackForEmail, null, coroutine, networkUserRepository
         )
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
@@ -139,7 +140,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         emailInput.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val emailCheckRequest = EmailCheckRequest(emailInput.text.toString())
-                fullEmailValidator = FullEmailValidator(emailCheckRequest, callbackForEmail, null)
+                fullEmailValidator =
+                    FullEmailValidator(emailCheckRequest, callbackForEmail, null, coroutine, networkUserRepository)
                 fullEmailValidator.emailChecker(emailInput, emailInputContainer)
                 regInfoModel.isCheckedEmail = true
             } else if (hasFocus && emailInputContainer.isErrorEnabled) {

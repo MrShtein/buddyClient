@@ -40,7 +40,7 @@ interface NetworkService {
     fun getAnimalById(@Path("id") id: Long): Call<AnimalDTO>
 
     @POST("/api/v1/email/exists")
-    fun isEmailExists(@Body emailCheckRequest: EmailCheckRequest): Call<Boolean>
+    suspend fun isEmailExists(@Body emailCheckRequest: EmailCheckRequest): Response<Boolean>
 
     @POST("/api/v1/auth/registration")
     suspend fun registerUser(@Body person: Person): Response<Void>
