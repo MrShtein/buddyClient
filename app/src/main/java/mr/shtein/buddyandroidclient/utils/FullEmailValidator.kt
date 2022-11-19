@@ -3,6 +3,10 @@ package mr.shtein.buddyandroidclient.utils
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import mr.shtein.buddyandroidclient.data.repository.NetworkUserRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.EmailCheckRequest
@@ -12,25 +16,26 @@ import org.koin.core.component.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
-class FullEmailValidator (
+class FullEmailValidator(
     val emailCheckRequest: EmailCheckRequest,
     val emailCallback: MailCallback,
-    val dialog: AlertDialog?
-    ): Validator, KoinComponent, EmptyFieldValidator() {
+    val dialog: AlertDialog?,
+    val coroutineScope: CoroutineScope,
+    val networkUserRepository: UserRepository
+) : Validator, KoinComponent, EmptyFieldValidator() {
 
     override fun validateValue(email: String): Boolean {
         return assertIsValidEmail(email)
     }
 
-    val networkService: NetworkService by inject()
-
     companion object {
-         const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
-         const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
-         const val NO_INTERNET_MSG = "К сожалению интернет не работает"
-         const val NO_AUTHORIZE_MSG = "Ошибка авторизации"
-
+        const val INVALID_EMAIL_MSG: String = "Вы ввели некорректный email"
+        const val EXISTED_EMAIL_MSG: String = "Пользователь с таким email уже существует"
+        const val NO_INTERNET_MSG = "К сожалению интернет не работает"
+        const val NO_AUTHORIZE_MSG = "Ошибка авторизации"
 
         fun assertIsValidEmail(value: String): Boolean {
             val regexForEmail: Regex =
@@ -42,53 +47,43 @@ class FullEmailValidator (
     }
 
     fun emailChecker(input: TextInputEditText, inputContainer: TextInputLayout) {
-        try {
-            val value = input.text.toString()
-            assertIsNotEmptyField(value)
-            assertIsValidEmail(value)
-            isEmailExists(emailCheckRequest, emailCallback)
-        } catch (error: EmptyFieldException) {
-            dialog?.dismiss()
-            inputContainer.error = error.message
-        } catch (error: IllegalEmailException) {
-            dialog?.dismiss()
-            inputContainer.error = error.message
-        } catch (error: ExistedEmailException) {
-            dialog?.dismiss()
-            inputContainer.error = error.message
-        } catch (error: TooShortLengthException) {
-            dialog?.dismiss()
-            inputContainer.error = error.message
+        coroutineScope.launch {
+            try {
+                val value = input.text.toString()
+                assertIsNotEmptyField(value)
+                assertIsValidEmail(value)
+                isEmailExists(emailCheckRequest)
+            } catch (error: EmptyFieldException) {
+                dialog?.dismiss()
+                inputContainer.error = error.message
+            } catch (error: IllegalEmailException) {
+                dialog?.dismiss()
+                inputContainer.error = error.message
+            } catch (error: ExistedEmailException) {
+                dialog?.dismiss()
+                inputContainer.error = error.message
+            } catch (error: TooShortLengthException) {
+                dialog?.dismiss()
+                inputContainer.error = error.message
+            } catch (error: ServerErrorException) {
+                emailCallback.onFailure()
+            } catch (error: ConnectException) {
+                emailCallback.onFailure()
+            } catch (error: SocketTimeoutException) {
+                emailCallback.onFailure()
+            }
         }
     }
-
-
 
     private fun assertIsEmailAlreadyExists(value: Boolean): Boolean {
         if (value) throw ExistedEmailException(EXISTED_EMAIL_MSG)
         return false
     }
 
-    private fun isEmailExists(emailCheckRequest: EmailCheckRequest, callback: MailCallback) {
-        networkService.isEmailExists(emailCheckRequest)
-            .enqueue(object : Callback<Boolean> {
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                    val value: Boolean? = response.body()
-                    try {
-                        if  (response.raw().code() == 403) throw NoAuthorizationException("Вы не авторизованы") //TODO Решить вопрос с обработкой этой ошибки
-                        assertIsEmailAlreadyExists(value ?: false)
-                        callback.onSuccess()
-                    } catch (error: ExistedEmailException) {
-                        callback.onFail(error)
-                    } catch (error: NoAuthorizationException) {
-                        callback.onNoAuthorize()
-                    }
-
-                }
-                override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    callback.onFailure()
-                }
-            })
+    private suspend fun isEmailExists(emailCheckRequest: EmailCheckRequest) {
+        val result = networkUserRepository.isEmailExist(emailCheckRequest)
+        assertIsEmailAlreadyExists(result)
+        emailCallback.onSuccess()
     }
 
 

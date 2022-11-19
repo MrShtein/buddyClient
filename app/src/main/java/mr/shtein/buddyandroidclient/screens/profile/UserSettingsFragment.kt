@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
 import mr.shtein.buddyandroidclient.exceptions.validate.OldPasswordsIsNotValidException
 import mr.shtein.buddyandroidclient.exceptions.validate.PasswordsIsDifferentException
@@ -59,7 +60,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     companion object {
         const val NO_AUTHORIZE_TEXT = "Ошибка авторизации"
-        const val MAIL_FAILURE_TEXT = "Нет интернета"
+        const val MAIL_FAILURE_TEXT = "Что-то не так с сетью, попробуйте позже"
         const val IS_PERSON_WITH_EMAIL_EXIST = "Пользователь с таким email уже существует"
         const val CITY_REQUEST_KEY = "new_city_request"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
@@ -99,6 +100,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
+    private val networkUserRepository: UserRepository by inject()
 
     private var motionLayout: MotionLayout? = null
 
@@ -304,7 +306,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private fun emailCheck() {
         val emailForCheck = email.text.toString()
         val emailCheckRequest = EmailCheckRequest(emailForCheck, personId)
-        val emailValidator = FullEmailValidator(emailCheckRequest, emailCallBack, dialog)
+        val emailValidator = FullEmailValidator(emailCheckRequest, emailCallBack, dialog, coroutineScope, networkUserRepository)
         emailValidator.emailChecker(email, emailContainer) //TODO Изменить логику валидации
     }
 
