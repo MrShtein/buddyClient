@@ -52,10 +52,10 @@ interface NetworkService {
     suspend fun resetPassword(@Body email: String): Response<String>
 
     @POST("/api/v1/user")
-    fun upgradePersonInfo(
+    suspend fun updatePersonInfo(
         @HeaderMap headers: Map<String, String>,
         @Body person: PersonRequest
-    ): Call<PersonResponse>
+    ): Response<PersonResponse>
 
     @POST("/api/v1/auth/password/check")
     fun checkOldPassword(
