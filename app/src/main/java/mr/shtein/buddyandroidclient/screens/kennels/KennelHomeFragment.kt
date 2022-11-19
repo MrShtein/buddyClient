@@ -20,15 +20,18 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
 import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
+import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 import java.lang.Exception
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
 private const val KENNEL_ID_KEY = "kennel_id"
@@ -60,8 +63,8 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var dogsList: MutableList<Animal>
     private lateinit var catsList: MutableList<Animal>
     private val coroutine = CoroutineScope(Dispatchers.Main + Job())
-    private val networkService: NetworkService by inject()
     private val networkImageLoader: ImageLoader by inject()
+    private val networkAnimalRepository: AnimalRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val animalMapper: AnimalMapper by inject()
 
@@ -192,8 +195,15 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 dogsAmount.text = getAnimalCountText(dogsList.size)
 
 
-            } catch (ex: Exception) {
-                Log.e("error", "Что-то пошло не так")
+            } catch (ex: ConnectException) {
+                val errorText = requireContext().getString(R.string.internet_failure_text)
+                showError(errorText = errorText)
+            } catch (ex: SocketTimeoutException) {
+                val errorText = requireContext().getString(R.string.internet_failure_text)
+                showError(errorText = errorText)
+            } catch (ex: ServerErrorException) {
+                val errorText = requireContext().getString(R.string.server_error_msg)
+                showError(errorText = errorText)
             }
         }
     }
@@ -253,21 +263,13 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
         withContext(Dispatchers.IO) {
             val token = userPropertiesRepository.getUserToken()
-            val response = networkService.getAnimalsByKennelIdAndAnimalType(
+            val response = networkAnimalRepository.getAnimalsByKennelIdAndAnimalType(
                 token, kennelId, animalType
             )
-            if (response.isSuccessful) {
-                val animalDTOList: List<AnimalDTO> = response.body() ?: mutableListOf()
-                return@withContext animalMapper
-                    .transformFromDTOList(animalDTOList = animalDTOList)
-                    .toMutableList()
-            } else {
-                when (response.code()) {
-                    403 -> goToLogin()
-                    else -> mutableListOf<Animal>()
-                }
-                mutableListOf()
-            }
+            val animalDTOList: List<AnimalDTO> = response
+            return@withContext animalMapper
+                .transformFromDTOList(animalDTOList = animalDTOList)
+                .toMutableList()
         }
 
     private fun goToLogin() {
@@ -292,6 +294,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         okBtn?.setOnClickListener {
             dialog.cancel()
         }
+    }
 
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 }
