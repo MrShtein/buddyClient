@@ -58,10 +58,10 @@ interface NetworkService {
     ): Response<PersonResponse>
 
     @POST("/api/v1/auth/password/check")
-    fun checkOldPassword(
+    suspend fun checkOldPassword(
         @HeaderMap headerMap: Map<String, String>,
         @Body passwordCheckRequest: PasswordCheckRequest
-    ): Call<Boolean>
+    ): Response<Boolean>
 
     @GET("/api/v1/cities")
     fun getAllCities(): Call<CitiesResponse>

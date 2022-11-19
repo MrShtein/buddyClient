@@ -3,6 +3,8 @@ package mr.shtein.buddyandroidclient.di.module
 import android.content.Context
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.db.CityDbHelper
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
@@ -16,11 +18,12 @@ val appModule: Module = module {
     single { provideFusedLocationClient(androidContext())}
     single { CancellationTokenSource() }
     factory { CityDbHelper(androidContext(), get()) }
-    factory { PasswordEmptyFieldValidator(get()) }
+    factory { PasswordEmptyFieldValidator(get(), provideCoroutineScope()) }
     single(named("userStore")) { provideUserStore(androidContext()) }
     single(named("kennelStore")) { provideKennelStore(androidContext()) }
     single(named("databaseStore")) { provideDatabaseStore(androidContext()) }
     single(named("filterStore")) { provideFilterStore(androidContext()) }
+
 }
 
 private fun provideUserStore(context: Context) =
@@ -37,3 +40,5 @@ private fun provideFilterStore(context: Context) =
 
 private fun provideFusedLocationClient(context: Context) =
     LocationServices.getFusedLocationProviderClient(context)
+
+private fun provideCoroutineScope() = CoroutineScope(Dispatchers.Main)

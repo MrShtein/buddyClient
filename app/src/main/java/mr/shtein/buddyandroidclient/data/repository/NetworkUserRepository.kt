@@ -67,4 +67,20 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
                 }
             }
         }
+
+    override suspend fun checkOldPassword(
+        headerMap: Map<String, String>,
+        passwordCheckRequest: PasswordCheckRequest
+    ): Boolean  = withContext(Dispatchers.IO){
+        val result = networkService.checkOldPassword(
+            headerMap = headerMap,
+            passwordCheckRequest = passwordCheckRequest
+        )
+        when(result.code()) {
+            200 -> {
+                return@withContext result.body()!!
+            }
+            else -> throw ServerErrorException()
+        }
+    }
 }

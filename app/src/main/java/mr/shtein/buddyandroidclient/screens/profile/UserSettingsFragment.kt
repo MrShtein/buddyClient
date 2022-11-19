@@ -432,14 +432,17 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         override fun onFail(error: String) {
             oldPwdContainer.isErrorEnabled = true
             oldPwdContainer.error = error
+            dialog.dismiss()
         }
 
         override fun onFailure() {
             showError("Ошибка в сети")
+            dialog.dismiss()
         }
 
         override fun onNoAuthorize() {
             showError("Нет авторизации")
+            dialog.dismiss()
         }
     }
 
