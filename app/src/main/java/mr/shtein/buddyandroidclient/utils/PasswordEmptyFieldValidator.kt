@@ -1,6 +1,9 @@
 package mr.shtein.buddyandroidclient.utils
 
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
@@ -8,8 +11,13 @@ import mr.shtein.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
-class PasswordEmptyFieldValidator(val networkService: NetworkService): EmptyFieldValidator() {
+class PasswordEmptyFieldValidator(
+    private val userRepository: UserRepository,
+    val coroutineScope: CoroutineScope
+) : EmptyFieldValidator() {
 
     companion object {
         private const val TOO_SHORT_PASSWORD_MSG: String = "Пароль слишком короткий"
@@ -28,33 +36,32 @@ class PasswordEmptyFieldValidator(val networkService: NetworkService): EmptyFiel
         if (password != value) throw PasswordsIsDifferentException(PASSWORD_IS_DIFFERENT_MSG)
     }
 
-    fun assertIsValidOldPassword(password: String, personId: Long,
-                                 token: String, oldPwdCallBack: PasswordCallBack) {
-        var headerMap = hashMapOf<String, String>()
+    fun assertIsValidOldPassword(
+        password: String, personId: Long,
+        token: String, oldPwdCallBack: PasswordCallBack
+    ) {
+        val headerMap = hashMapOf<String, String>()
         headerMap["Authorization"] = token
         val passwordRequest = PasswordCheckRequest(password, personId)
 
-        networkService.checkOldPassword(headerMap, passwordRequest)
-            .enqueue(object : Callback<Boolean> {
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                    try {
-                        if  (response.raw().code() == 403) throw NoAuthorizationException("Вы не авторизованы")
-                        val responseBody = response.body()
-                        if (responseBody == true) {
-                            oldPwdCallBack.onSuccess()
-                        } else if (responseBody == false) {
-                            oldPwdCallBack.onFail(OLD_PASSWORD_IS_WRONG)
-                        }
-                    } catch (error: NoAuthorizationException) {
-                        oldPwdCallBack.onNoAuthorize()
-                    }
-
+        coroutineScope.launch {
+            try {
+                val result = userRepository.checkOldPassword(
+                    headerMap = headerMap,
+                    passwordCheckRequest = passwordRequest
+                )
+                if (result) {
+                    oldPwdCallBack.onSuccess()
+                    return@launch
                 }
-
-                override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    oldPwdCallBack.onFailure()
-                }
-            })
-
+                oldPwdCallBack.onFail(OLD_PASSWORD_IS_WRONG)
+            } catch (error: ServerErrorException) {
+                oldPwdCallBack.onFailure()
+            } catch (error: ConnectException) {
+                oldPwdCallBack.onFailure()
+            } catch (error: SocketTimeoutException) {
+                oldPwdCallBack.onFailure()
+            }
+        }
     }
 }
