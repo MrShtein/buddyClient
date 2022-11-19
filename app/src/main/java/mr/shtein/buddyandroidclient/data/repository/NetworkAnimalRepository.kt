@@ -1,15 +1,18 @@
 package mr.shtein.buddyandroidclient.data.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.model.AnimalDTO
 import mr.shtein.network.NetworkService
 
 class NetworkAnimalRepository(
     private val networkService: NetworkService,
     private val animalMapper: AnimalMapper
-    ) : AnimalRepository {
+) : AnimalRepository {
 
     override suspend fun getAnimals(filter: AnimalFilter): List<Animal> {
         val minAge = getMinAge(filter.minAge)
@@ -34,6 +37,26 @@ class NetworkAnimalRepository(
             }
             else -> {
                 listOf()
+            }
+        }
+    }
+
+    override suspend fun getAnimalsByKennelIdAndAnimalType(
+        token: String,
+        kennelId: Int,
+        animalType: String
+    ): MutableList<AnimalDTO> = withContext(Dispatchers.IO) {
+        val result = networkService.getAnimalsByKennelIdAndAnimalType(
+            token = token,
+            kennelId = kennelId,
+            animalType = animalType
+        )
+        when (result.code()) {
+            200 -> {
+                return@withContext result.body()!!
+            }
+            else -> {
+                throw ServerErrorException()
             }
         }
     }
