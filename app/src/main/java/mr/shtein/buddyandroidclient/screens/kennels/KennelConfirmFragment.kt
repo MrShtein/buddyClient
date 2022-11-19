@@ -5,10 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -24,7 +21,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
+import mr.shtein.buddyandroidclient.data.repository.KennelRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.exceptions.validate.ItemAlreadyExistException
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.AvatarWrapper
 import mr.shtein.buddyandroidclient.model.KennelRequest
 import mr.shtein.network.NetworkService
@@ -36,6 +36,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
 import java.lang.StringBuilder
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
@@ -59,6 +60,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
     private val networkService: NetworkService by inject()
     private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
+    private val networkKennelRepository: KennelRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,36 +132,40 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
             coroutineScope.launch {
                 try {
                     val avatarWrapper: AvatarWrapper? = getPhotoAndType()
-                    val response = addNewKennel(avatarWrapper)
-                    when (response.code()) {
-                        201 -> {
-                            userPropertiesRepository.saveUserRole(ADMIN_ROLE_TXT)
-                            avatarWrapper?.file?.delete()
-                            showDialog(true)
-                        }
-                        409 -> {
-                            avatarWrapper?.file?.delete()
-                            showDialog(false)
-                        }
-                    }
+                    addNewKennel(avatarWrapper)
+                    avatarWrapper?.file?.delete()
+                    userPropertiesRepository.saveUserRole(ADMIN_ROLE_TXT)
+                    showDialog(true)
 
+                } catch (ex: ItemAlreadyExistException) {
+                    showDialog(false)
                 } catch (ex: FileNotFoundException) {
                     Log.e(
                         "error",
                         "Не получилось найти файл"
-                    ) //TODO Найти другие exceptions, которые могут сработать
-                } catch (ex: SocketTimeoutException) {
-                    Log.e(
-                        "error",
-                        "Что-то пошло не так и сервер не ответил"
                     )
+                } catch (ex: SocketTimeoutException) {
+                    val exText = requireContext().getString(R.string.internet_failure_text)
+                    progressBar.isVisible = false
+                    showError(errorText = exText)
+                    findNavController().popBackStack()
+                } catch (ex: ConnectException) {
+                    val exText = requireContext().getString(R.string.internet_failure_text)
+                    progressBar.isVisible = false
+                    showError(errorText = exText)
+                    findNavController().popBackStack()
+                } catch (ex: ServerErrorException) {
+                    val exText = requireContext().getString(R.string.server_error_msg)
+                    progressBar.isVisible = false
+                    showError(errorText = exText)
+                    findNavController().popBackStack()
                 }
 
             }
         }
     }
 
-    private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?): Response<Void> {
+    private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?) {
         var requestFile: RequestBody? = null
         var body: MultipartBody.Part? = null
 
@@ -184,12 +190,10 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                 avatarWrapper.file.name,
                 requestFile
             )
-            networkService.addNewKennel(headers, requestBody, body)
+            networkKennelRepository.addNewKennel(headers, requestBody, body)
         } else {
-            networkService.addNewKennel(headers, requestBody, null)
+            networkKennelRepository.addNewKennel(headers, requestBody, null)
         }
-
-
     }
 
     private suspend fun getPhotoAndType(): AvatarWrapper? {
@@ -246,6 +250,10 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                     navOptions
                 )
         }
+    }
+
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 
 

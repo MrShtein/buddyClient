@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,7 +20,9 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
+import mr.shtein.buddyandroidclient.data.repository.KennelRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.KennelPreview
 import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
@@ -29,6 +32,8 @@ import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 private const val ANIMAL_LIST_ID = "animalsListFragment"
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -55,9 +60,10 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private var kennelsList = mutableListOf<KennelPreview>()
     private var isReadyKennelsList = false
     private var volunteersList = mutableListOf<KennelPreview>()
-    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val networkImageLoader: ImageLoader by inject()
+    private val networkKennelRepository: KennelRepository by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +81,8 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
             }
         }
-        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? =
+            arguments?.getParcelable(LAST_FRAGMENT_KEY)
         if (fragmentsListForAssigningAnimation != null) {
             changeAnimationsWhenStartFragment(fragmentsListForAssigningAnimation)
         }
@@ -94,10 +101,21 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         super.onViewCreated(view, savedInstanceState)
         coroutineScope.launch {
             val personId = userPropertiesRepository.getUserId()
-            getKennels(personId)
-            initRecyclerView(view)
-            if (kennelsList.size == 0) {
-                showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
+            try {
+                getKennels(personId)
+                initRecyclerView(view)
+                if (kennelsList.size == 0) {
+                    showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
+                }
+            } catch (error: ServerErrorException) {
+                val errorText = requireContext().getString(R.string.server_error_msg)
+                showError(errorText)
+            } catch (error: SocketTimeoutException) {
+                val errorText = requireContext().getString(R.string.internet_failure_text)
+                showError(errorText)
+            } catch (error: ConnectException) {
+                val errorText = requireContext().getString(R.string.internet_failure_text)
+                showError(errorText)
             }
         }
     }
@@ -160,32 +178,19 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     private suspend fun getKennels(personId: Long) = withContext(Dispatchers.IO) {
         val token = userPropertiesRepository.getUserToken()
-        val response = networkService.getKennelsByPersonId(token, personId)
-        if (response.isSuccessful) {
-            val kennelResponsePreview = response.body()
-            kennelResponsePreview?.forEach {
-                val kennelPreview = KennelPreview(
-                    it.kennelId,
-                    it.volunteersAmount,
-                    it.animalsAmount,
-                    it.name,
-                    it.avatarUrl,
-                    it.isValid
-                )
-                kennelsList.add(kennelPreview)
-                isReadyKennelsList = true
-            }
-        } else {
-            when (response.code()) {
-                403 -> goToLogin()
-                else -> TODO()
-            }
+        val kennelResponsePreview = networkKennelRepository.getKennelsByPersonId(token, personId)
+        kennelResponsePreview.forEach {
+            val kennelPreview = KennelPreview(
+                it.kennelId,
+                it.volunteersAmount,
+                it.animalsAmount,
+                it.name,
+                it.avatarUrl,
+                it.isValid
+            )
+            kennelsList.add(kennelPreview)
+            isReadyKennelsList = true
         }
-    }
-
-    private fun goToLogin() {
-        Log.i("info", "Токен протух, необходимо его обновить")
-        TODO()
     }
 
     private fun initRecyclerView(view: View) {
@@ -223,5 +228,9 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             }
             else -> {}
         }
+    }
+
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 }

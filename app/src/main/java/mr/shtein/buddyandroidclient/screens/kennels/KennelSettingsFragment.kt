@@ -52,8 +52,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         private const val IDENTIFICATION_NUM_KEY = "isValidIdentificationNum"
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val KENNEL_AVATAR_FILE_NAME = "kennel_avt.jpeg"
-
-
     }
 
     private lateinit var avatarImg: AppCompatImageView
