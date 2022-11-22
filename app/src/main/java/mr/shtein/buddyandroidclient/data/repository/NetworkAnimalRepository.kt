@@ -3,11 +3,18 @@ package mr.shtein.buddyandroidclient.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
+import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
+import mr.shtein.buddyandroidclient.exceptions.validate.EmptyBodyException
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.NetworkService
+import okhttp3.RequestBody
+
+private const val CREATED_CODE = 201
+private const val UPDATED_CODE = 200
 
 class NetworkAnimalRepository(
     private val networkService: NetworkService,
@@ -40,6 +47,66 @@ class NetworkAnimalRepository(
             }
         }
     }
+
+    override suspend fun addNewAnimal(token: String, addOrUpdateAnimalRequest: AddOrUpdateAnimal) =
+        withContext(Dispatchers.IO) {
+            val result = networkService.addNewAnimal(
+                token = token,
+                addOrUpdateAnimalRequest = addOrUpdateAnimalRequest
+            )
+            when (result.code()) {
+                201 -> {
+                    return@withContext CREATED_CODE
+                }
+                403 -> {
+                    throw BadTokenException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
+
+    override suspend fun updateAnimal(
+        token: String,
+        addOrUpdateAnimalRequest: AddOrUpdateAnimal
+    ): Animal = withContext(Dispatchers.IO) {
+        val result = networkService.updateAnimal(
+            token = token,
+            addOrUpdateAnimalRequest = addOrUpdateAnimalRequest
+        )
+        when (result.code()) {
+            200 -> {
+                val animalDTO: AnimalDTO = result.body() ?: throw EmptyBodyException("")
+                return@withContext animalMapper.transformFromDTO(animalDTO)
+            }
+            403 -> {
+                throw BadTokenException()
+            }
+            else -> {
+                throw ServerErrorException()
+            }
+        }
+    }
+
+    override suspend fun addPhotoToTmpDir(token: String, bytes: RequestBody): String =
+        withContext(Dispatchers.IO) {
+            val result = networkService.addPhotoToTmpDir(
+                token = token,
+                bytes = bytes
+            )
+            when (result.code()) {
+                201 -> {
+                    return@withContext result.body()!!
+                }
+                403 -> {
+                    throw BadTokenException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
 
     override suspend fun getAnimalsByKennelIdAndAnimalType(
         token: String,
