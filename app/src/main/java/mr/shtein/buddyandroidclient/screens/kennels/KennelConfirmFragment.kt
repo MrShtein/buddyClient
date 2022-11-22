@@ -32,7 +32,6 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
-import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
 import java.lang.StringBuilder
@@ -155,7 +154,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
                     showError(errorText = exText)
                     findNavController().popBackStack()
                 } catch (ex: ServerErrorException) {
-                    val exText = requireContext().getString(R.string.server_error_msg)
+                    val exText = requireContext().getString(R.string.server_unavailable_msg)
                     progressBar.isVisible = false
                     showError(errorText = exText)
                     findNavController().popBackStack()

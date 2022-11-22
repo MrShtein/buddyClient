@@ -29,7 +29,6 @@ import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
-import java.lang.Exception
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -202,7 +201,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 val errorText = requireContext().getString(R.string.internet_failure_text)
                 showError(errorText = errorText)
             } catch (ex: ServerErrorException) {
-                val errorText = requireContext().getString(R.string.server_error_msg)
+                val errorText = requireContext().getString(R.string.server_unavailable_msg)
                 showError(errorText = errorText)
             }
         }

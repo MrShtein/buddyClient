@@ -1,7 +1,6 @@
 package mr.shtein.buddyandroidclient.screens.kennels
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
-import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
@@ -24,7 +22,6 @@ import mr.shtein.buddyandroidclient.data.repository.KennelRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.KennelPreview
-import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
@@ -108,7 +105,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                     showDescriptionText(R.string.add_kennel_fragment_empty_kennels_text)
                 }
             } catch (error: ServerErrorException) {
-                val errorText = requireContext().getString(R.string.server_error_msg)
+                val errorText = requireContext().getString(R.string.server_unavailable_msg)
                 showError(errorText)
             } catch (error: SocketTimeoutException) {
                 val errorText = requireContext().getString(R.string.internet_failure_text)

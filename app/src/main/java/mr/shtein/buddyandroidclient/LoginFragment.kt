@@ -119,7 +119,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         user.email = email
         user.password = password
 
-        val serverErrorMsg = getString(R.string.server_error_msg)
+        val serverErrorMsg = getString(R.string.server_unavailable_msg)
 
         coroutine.launch {
             try {

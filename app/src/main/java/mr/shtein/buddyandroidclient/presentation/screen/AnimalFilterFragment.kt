@@ -295,7 +295,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     }
 
     override fun showServerErrorMsg() {
-        val serverErrorMsg = getString(R.string.server_error_msg)
+        val serverErrorMsg = getString(R.string.server_unavailable_msg)
         Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
     }
 
