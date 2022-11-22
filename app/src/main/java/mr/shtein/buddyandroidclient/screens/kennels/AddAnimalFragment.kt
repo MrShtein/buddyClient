@@ -229,6 +229,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             } catch (ex: ServerErrorException) {
                 val errorText = getString(R.string.server_unavailable_msg)
                 showError(errorText = errorText)
+            } catch (ex: ConnectException) {
+                val errorText = getString(R.string.internet_failure_text)
+                showError(errorText = errorText)
+            } catch (ex: SocketTimeoutException) {
+                val errorText = getString(R.string.internet_failure_text)
+                showError(errorText = errorText)
             }
         }
 

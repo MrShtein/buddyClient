@@ -27,6 +27,7 @@ import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
 import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import org.koin.android.ext.android.inject
 import java.lang.Exception
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
@@ -227,6 +228,9 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                 val serverErrorMsg = getString(R.string.server_unavailable_msg)
                 Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
+                val lowInternetMessage = getString(R.string.internet_failure_text)
+                Toast.makeText(requireContext(), lowInternetMessage, Toast.LENGTH_LONG).show()
+            } catch (ex: ConnectException) {
                 val noInternetMsg = getString(R.string.internet_failure_text)
                 Toast.makeText(requireContext(), noInternetMsg, Toast.LENGTH_LONG).show()
             }
