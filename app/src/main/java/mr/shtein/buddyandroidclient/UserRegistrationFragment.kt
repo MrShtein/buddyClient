@@ -224,7 +224,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                 val exText = getString(R.string.bad_data_text)
                 Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
             } catch (ex: ServerErrorException) {
-                val serverErrorMsg = getString(R.string.server_error_msg)
+                val serverErrorMsg = getString(R.string.server_unavailable_msg)
                 Toast.makeText(requireContext(), serverErrorMsg, Toast.LENGTH_LONG).show()
             } catch (ex: SocketTimeoutException) {
                 val noInternetMsg = getString(R.string.internet_failure_text)

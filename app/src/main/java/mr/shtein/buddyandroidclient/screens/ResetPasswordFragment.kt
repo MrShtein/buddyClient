@@ -89,7 +89,7 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
                     )
                     findNavController().popBackStack()
                 } else {
-                    val exText = getString(R.string.server_error_msg)
+                    val exText = getString(R.string.server_unavailable_msg)
                     setFragmentResult(
                         LOGIN_REQUEST_KEY,
                         bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)
@@ -97,14 +97,14 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
                     findNavController().popBackStack()
                 }
             } catch (ex: ConnectException) {
-                val exText = getString(R.string.server_error_msg)
+                val exText = getString(R.string.server_unavailable_msg)
                 setFragmentResult(
                     LOGIN_REQUEST_KEY,
                     bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)
                 )
                 findNavController().popBackStack()
             } catch (ex: SocketTimeoutException) {
-                val exText = getString(R.string.server_error_msg)
+                val exText = getString(R.string.server_unavailable_msg)
                 setFragmentResult(
                     LOGIN_REQUEST_KEY,
                     bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)

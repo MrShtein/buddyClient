@@ -105,7 +105,7 @@ class AnimalsListPresenterImpl(
             } catch (ex: SocketTimeoutException) {
                 viewState.showError(R.string.internet_failure_text)
             } catch (ex: ServerErrorException) {
-                viewState.showError(R.string.server_error_msg)
+                viewState.showError(R.string.server_unavailable_msg)
             } catch (ex: LocationServiceException) {
                 viewState.showError(R.string.location_failure_text)
             } finally {
