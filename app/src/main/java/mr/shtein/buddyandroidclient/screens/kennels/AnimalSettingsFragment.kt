@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -21,7 +22,10 @@ import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
+import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
+import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
+import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
 import mr.shtein.buddyandroidclient.model.Animal
 import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.setStatusBarColor
@@ -30,6 +34,8 @@ import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 import java.lang.Exception
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 private const val ANIMAL_KEY = "animal_key"
 private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
@@ -57,6 +63,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private var animal: Animal? = null
     private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkAnimalRepository: AnimalRepository by inject()
     private val networkImageLoader: ImageLoader by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,16 +200,35 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
             coroutine.launch {
                 try {
                     animal?.let { animal ->
-                        val result = deleteAnimal(animal.id, token)
+                        networkAnimalRepository.deleteAnimal(token, animal.id)
+                        val bundle = bundleOf(
+                            RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
+                            ANIMAL_KEY to animal.id,
+                        )
+                        setFragmentResult(RESULT_LISTENER_KEY, bundle)
                         spinner?.isVisible = false
-                        if (result) {
-                            dialog.cancel()
-                            findNavController().popBackStack()
-                        }
+                        dialog.dismiss()
+                        findNavController().popBackStack()
                     }
-                } catch (ex: Exception) {
-                    Log.d("error", ex.message.toString())
+                } catch (ex: BadTokenException) {
+                    userPropertiesRepository.saveUserToken("")
+                    val errorText = getString(R.string.bad_token_msg)
+                    showError(errorText = errorText)
                     if (motionLayout is MotionLayout) motionLayout.transitionToEnd()
+                } catch (ex: ServerErrorException) {
+                    val errorText = getString(R.string.server_unavailable_msg)
+                    showError(errorText = errorText)
+                    if (motionLayout is MotionLayout) motionLayout.transitionToEnd()
+                } catch (ex: ConnectException) {
+                    val errorText = getString(R.string.internet_failure_text)
+                    showError(errorText = errorText)
+                    if (motionLayout is MotionLayout) motionLayout.transitionToEnd()
+                } catch (ex: SocketTimeoutException) {
+                    val errorText = getString(R.string.internet_failure_text)
+                    showError(errorText = errorText)
+                    if (motionLayout is MotionLayout) motionLayout.transitionToEnd()
+                } finally {
+                    dialog.dismiss()
                 }
             }
         }
@@ -216,6 +242,10 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
         }
     }
 
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
+    }
+
     override fun onSnapPositionChange(position: Int) {
         val elementsCount = animal?.imgUrl?.size
         photoCounter.text =
@@ -225,24 +255,4 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
                 elementsCount
             )
     }
-
-    private suspend fun deleteAnimal(animalId: Long, token: String): Boolean = withContext(Dispatchers.IO) {
-            val response = networkService.deleteAnimal(token, animalId)
-            val bundle = bundleOf(
-                RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
-                ANIMAL_KEY to animal?.id,
-            )
-            when (response.code()) {
-                200 -> {
-                    setFragmentResult(RESULT_LISTENER_KEY, bundle)
-                    return@withContext true
-                }
-                403 -> {
-                    throw Exception("Что-то пошло не так c токеном") //TODO Разобраться с ошибками
-                }
-                else -> throw Exception("Что-то пошло не так") //TODO Разобраться с ошибками
-            }
-        }
-
-
 }

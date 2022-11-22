@@ -67,6 +67,22 @@ class NetworkAnimalRepository(
             }
         }
 
+    override suspend fun deleteAnimal(token: String, animalId: Long): Unit =
+        withContext(Dispatchers.IO) {
+            val result = networkService.deleteAnimal(token = token, animalId = animalId)
+            when (result.code()) {
+                200 -> {
+                    return@withContext
+                }
+                403 -> {
+                    throw BadTokenException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
+
     override suspend fun updateAnimal(
         token: String,
         addOrUpdateAnimalRequest: AddOrUpdateAnimal
