@@ -26,6 +26,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.*
+import mr.shtein.buddyandroidclient.data.repository.AnimalBreedRepository
+import mr.shtein.buddyandroidclient.data.repository.AnimalCharacteristicsRepository
+import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.buddyandroidclient.model.Animal
@@ -34,7 +37,6 @@ import mr.shtein.buddyandroidclient.model.ImageContainer
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.Breed
 import mr.shtein.model.AddOrUpdateAnimal
-import mr.shtein.network.NetworkService
 import mr.shtein.buddyandroidclient.utils.ImageValidator
 import mr.shtein.buddyandroidclient.utils.SharedPreferences
 import mr.shtein.network.ImageLoader
@@ -42,10 +44,11 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import java.io.ByteArrayOutputStream
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 
 private const val IMAGE_TYPE = "image/*"
-private const val NO_ANIMAL_TYPE_MSG = "Сначала необходимо выбрать питомца"
 private const val NO_PHOTO_ERROR = "Необходимо добавить хотя бы одну фотографию"
 private const val NO_AGE_ERROR = "Необходимо указать возраст питомца"
 private const val EMPTY_NAME_ERROR = "Необходимо ввести имя питомца"
@@ -54,11 +57,9 @@ private const val EMPTY_COLOR_ERROR = "Необходимо выбрать цв�
 private const val EMPTY_DESCRIPTION_ERROR = "Необходимо ввести описание питомца"
 private const val KENNEL_ID_KEY = "kennel_id"
 private const val SERVER_ERROR = "Что-то не так с сервером, попробуйте позже"
-private const val COLOR_CHARACTERISTIC_ID = 1
 private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
-private const val ERROR = "error"
 private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
 private const val IMAGE_CONTENT_TYPE = "image/webp"
 
@@ -107,7 +108,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var getSomeImages: ActivityResultLauncher<String>
     private lateinit var maleBtn: RadioButton
     private lateinit var femaleBtn: RadioButton
-    private lateinit var storage: SharedPreferences
     private var isFromAnimalSettings: Boolean = false
     private var animalForChange: Animal? = null
     private val animalDto = AddOrUpdateAnimal()
@@ -117,9 +117,11 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private var animalColors: List<AnimalCharacteristic> = listOf()
     private var deletedImage: ImageContainer? = null
     private var isInsetsWorked = false
-    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val networkAnimalRepository: AnimalRepository by inject()
     private val networkImageLoader: ImageLoader by inject()
+    private val networkAnimalBreedRepository: AnimalBreedRepository by inject()
+    private val networkAnimalCharacteristicsRepository: AnimalCharacteristicsRepository by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,9 +147,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             imageContainer.overlay.isVisible = true
                             imageContainer.progressBar.isVisible = true
                             val resolver = requireContext().contentResolver
-                            val imgInBytes = resolver.openInputStream(imgUri)?.readBytes() ?: byteArrayOf()
+                            val imgInBytes =
+                                resolver.openInputStream(imgUri)?.readBytes() ?: byteArrayOf()
                             val compressedImgInBytes = compressImage(imgInBytes)
-                            val imgInBitmap = BitmapFactory.decodeByteArray(compressedImgInBytes,0,compressedImgInBytes.size)
+                            val imgInBitmap = BitmapFactory.decodeByteArray(
+                                compressedImgInBytes,
+                                0,
+                                compressedImgInBytes.size
+                            )
                             imageContainer.url = uploadImage(compressedImgInBytes)
                             imageContainer.imageView.setImageBitmap(imgInBitmap)
                             animalDto.photoNamesForCreate.add(imageContainer.url ?: "")
@@ -155,10 +162,15 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                             imageContainer.overlay.isVisible = false
                             imageContainer.progressBar.isVisible = false
                         } catch (ex: ServerErrorException) {
-                            Toast.makeText(requireContext(), SERVER_ERROR, Toast.LENGTH_LONG).show()
-                        } catch (ex: Exception) {
-                            Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
-                            Log.e("error", ex.message.toString())
+                            showError(SERVER_ERROR)
+                        } catch (ex: SocketTimeoutException) {
+                            val message = getString(R.string.server_unavailable_msg)
+                            showError(message)
+                        } catch (ex: ConnectException) {
+                            val message = getString(R.string.server_unavailable_msg)
+                            showError(message)
+                        } catch (ex: BadTokenException) {
+                            handleBadTokenException()
                         }
                     }
                     imageContainer.uri = uriList[indexForUriList]
@@ -168,6 +180,14 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             }
         }
 
+    }
+
+    private fun handleBadTokenException() {
+        val userCity = userPropertiesRepository.getUserCity()
+        userPropertiesRepository.removeAll()
+        userPropertiesRepository.saveUserCity(userCity)
+        val message = getString(R.string.bad_token_msg)
+        showError(message)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -189,26 +209,31 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
         animalDto.personId = userPropertiesRepository.getUserId()
         initViews(view)
-        setListeners(view)
+        setListeners()
 
         coroutineScope.launch {
             try {
-                animalBreeds = getAnimalBreeds(animalDto.animalTypeId)
-                animalColors = getAnimalColors(COLOR_CHARACTERISTIC_ID)
+                animalBreeds = networkAnimalBreedRepository.getAnimalBreeds(animalDto.animalTypeId)
+                animalColors = networkAnimalCharacteristicsRepository.getAnimalColors()
                 setAnimalsBreedToAdapter()
                 setAnimalsColorsToAdapter()
 
                 if (isFromAnimalSettings) {
                     setCurrentDataToInputs()
                 }
-            } catch (ex: Exception) {
-                Toast.makeText(requireContext(), ex.message, Toast.LENGTH_LONG).show()
+            } catch (ex: EmptyBodyException) {
+                val errorText = getString(R.string.server_error_msg)
+                showError(errorText = errorText)
+            } catch (ex: BadTokenException) {
+                handleBadTokenException()
+            } catch (ex: ServerErrorException) {
+                val errorText = getString(R.string.server_unavailable_msg)
+                showError(errorText = errorText)
             }
         }
 
 
     }
-
 
     private fun initViews(view: View) {
         scroll = view.findViewById(R.id.add_animal_scroll)
@@ -312,7 +337,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
 
     }
 
-    private fun setListeners(view: View) {
+    private fun setListeners() {
 
         imageContainerList.forEach { image ->
             image.addBtn.setOnClickListener {
@@ -477,58 +502,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
     }
 
-    private suspend fun getAnimalBreeds(animalType: Int): List<Breed> =
-        withContext(Dispatchers.IO) {
-            if (animalType != 0) {
-                val response = networkService.getAnimalsBreed(animalType)
-                if (response.isSuccessful) {
-                    return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
-                } else {
-                    when (response.code()) {
-                        403 -> {
-                            userPropertiesRepository.saveUserToken("")
-                            val msg = requireContext().resources.getString(R.string.bad_token_msg)
-                            throw BadTokenException(msg)
-                        }
-                        else -> throw Exception("Что-то не так с сервером")
-                        //TODO разобраться с ошибками
-                    }
-
-                }
-            } else {
-                throw EmptyFieldException(NO_ANIMAL_TYPE_MSG)
-            }
-        }
-
-    private suspend fun getAnimalColors(colorId: Int): List<AnimalCharacteristic> =
-        withContext(Dispatchers.IO) {
-            val response = networkService.getAnimalsCharacteristicByCharacteristicTypeId(colorId)
-            if (response.isSuccessful) {
-                return@withContext response.body() ?: throw EmptyBodyException(SERVER_ERROR)
-            } else {
-                when (response.code()) {
-                    403 -> {
-                        userPropertiesRepository.saveUserToken("")
-                        val msg = requireContext().resources.getString(R.string.bad_token_msg)
-                        throw BadTokenException(msg)
-                    }
-                    else -> throw Exception("Что-то не так с сервером")
-                    //TODO разобраться с ошибками
-                }
-
-            }
-        }
-
-    private suspend fun addNewAnimal() = withContext(Dispatchers.IO) {
-        val token = userPropertiesRepository.getUserToken()
-        return@withContext networkService.addNewAnimal(token, animalDto)
-    }
-
-    private suspend fun updateAnimal() = withContext(Dispatchers.IO) {
-        val token = userPropertiesRepository.getUserToken()
-        return@withContext networkService.updateAnimal(token, animalDto)
-    }
-
     private fun validateForm(): Boolean {
         var hasInvalidValue = false
         val imageValidator = ImageValidator()
@@ -642,46 +615,45 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             coroutineScope.launch {
                 spinner?.isVisible = true
                 try {
-                    val result = if (isFromAnimalSettings) {
-                        updateAnimal()
+                    val token = userPropertiesRepository.getUserToken()
+                    if (isFromAnimalSettings) {
+                        val animal: Animal = networkAnimalRepository.updateAnimal(
+                            token = token,
+                            addOrUpdateAnimalRequest = animalDto
+                        )
+                        spinner?.isVisible = false
+                        dialog.dismiss()
+                        isInsetsWorked = false
+                        val bundle = Bundle()
+                        bundle.putParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT, animal)
+                        setFragmentResult(FROM_ADD_ANIMAL_REQUEST_KEY, bundle)
+                        findNavController().popBackStack()
                     } else {
-                        addNewAnimal()
-                    }
-                    when (result.code()) {
-                        200 -> {
-                            spinner?.isVisible = false
-                            dialog.dismiss()
-                            val updatedAnimal = result.body() as Animal
-                            isInsetsWorked = false
-                            val bundle = Bundle()
-                            bundle.putParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT, updatedAnimal)
-                            setFragmentResult(FROM_ADD_ANIMAL_REQUEST_KEY, bundle)
-                            findNavController().popBackStack()
-                        }
-                        201 -> {
-                            spinner?.isVisible = false
-                            dialog.dismiss()
-                            isInsetsWorked = false
-                            findNavController().popBackStack()
-                        }
-                        403 -> {
-                            val badTokenMsg = requireContext().getString(R.string.bad_token_msg)
-                            throw BadTokenException(badTokenMsg)
-                        }
-                        500 -> {
-                            throw ServerErrorException()
-                        }
+                        networkAnimalRepository.addNewAnimal(
+                            token = token,
+                            addOrUpdateAnimalRequest = animalDto
+                        )
+                        spinner?.isVisible = false
+                        dialog.dismiss()
+                        isInsetsWorked = false
+                        findNavController().popBackStack()
                     }
 
                 } catch (ex: BadTokenException) {
                     dialog.dismiss()
-                    Log.d("server", SERVER_ERROR)
                     showBadTokenDialog(userPropertiesRepository)
                 } catch (ex: ServerErrorException) {
                     dialog.dismiss()
-                    val message = getString(R.string.server_error_msg)
-                    Log.d("server", SERVER_ERROR)
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                    val message = getString(R.string.server_unavailable_msg)
+                    showError(message)
+                } catch (ex: ConnectException) {
+                    dialog.dismiss()
+                    val message = getString(R.string.internet_failure_text)
+                    showError(message)
+                } catch (ex: SocketTimeoutException) {
+                    dialog.dismiss()
+                    val message = getString(R.string.internet_failure_text)
+                    showError(message)
                 }
             }
         }
@@ -757,88 +729,78 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private suspend fun uploadImage(imageInBytes: ByteArray): String = withContext(Dispatchers.IO) {
         val token = userPropertiesRepository.getUserToken()
         val requestBody = RequestBody.create(MediaType.get(IMAGE_CONTENT_TYPE), imageInBytes)
-        val result = networkService.addPhotoToTmpDir(token, requestBody)
-        when (result.code()) {
-            201 -> {
-                return@withContext result.body() ?: ""
-            }
-            403 -> {
-                val errorMsg = requireContext().getString(R.string.bad_token_msg)
-                Log.d(ERROR, errorMsg)
-                throw BadTokenException(errorMsg)
-            }
-            else -> {
-                val errorMsg = requireContext().getString(R.string.server_error_msg)
-                Log.d(ERROR, errorMsg)
-                throw ServerErrorException()
-            }
-        }
+        return@withContext networkAnimalRepository.addPhotoToTmpDir(token, requestBody)
     }
 
-    private suspend fun compressImage(imageInByte: ByteArray): ByteArray =
-        withContext(Dispatchers.Default) {
-            val bitmap: Bitmap = BitmapFactory.decodeByteArray(imageInByte, 0, imageInByte.size)
-            val scaledBitmap = getScaledDownBitmap(bitmap, 1920, false)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                scaledBitmap?.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, byteArrayOutputStream)
-            } else {
-                scaledBitmap?.compress(Bitmap.CompressFormat.WEBP, 90, byteArrayOutputStream)
-            }
-            bitmap.recycle()
-            return@withContext byteArrayOutputStream.toByteArray()
-        }
-
-    private fun getScaledDownBitmap(
-        bitmap: Bitmap,
-        threshold: Int,
-        isNecessaryToKeepOrig: Boolean
-    ): Bitmap? {
-        val width = bitmap.width
-        val height = bitmap.height
-        var newWidth = width
-        var newHeight = height
-        if (width > height && width > threshold) {
-            newWidth = threshold
-            newHeight = (height * newWidth.toFloat() / width).toInt()
-        }
-        if (width > height && width <= threshold) {
-            return bitmap
-        }
-        if (width < height && height > threshold) {
-            newHeight = threshold
-            newWidth = (width * newHeight.toFloat() / height).toInt()
-        }
-        if (width < height && height <= threshold) {
-            return bitmap
-        }
-        if (width == height && width > threshold) {
-            newWidth = threshold
-            newHeight = newWidth
-        }
-        return if (width == height && width <= threshold) {
-            bitmap
-        } else getResizedBitmap(bitmap, newWidth, newHeight, isNecessaryToKeepOrig)
-    }
-
-    private fun getResizedBitmap(
-        bm: Bitmap,
-        newWidth: Int,
-        newHeight: Int,
-        isNecessaryToKeepOrig: Boolean
-    ): Bitmap? {
-        val width = bm.width
-        val height = bm.height
-        val scaleWidth = newWidth.toFloat() / width
-        val scaleHeight = newHeight.toFloat() / height
-        val matrix = Matrix()
-        matrix.postScale(scaleWidth, scaleHeight)
-
-        val resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
-        if (!isNecessaryToKeepOrig) {
-            bm.recycle()
-        }
-        return resizedBitmap
+    private fun showError(errorText: String) {
+        Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
 }
+
+private suspend fun compressImage(imageInByte: ByteArray): ByteArray =
+    withContext(Dispatchers.Default) {
+        val bitmap: Bitmap = BitmapFactory.decodeByteArray(imageInByte, 0, imageInByte.size)
+        val scaledBitmap = getScaledDownBitmap(bitmap, 1920, false)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            scaledBitmap?.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, byteArrayOutputStream)
+        } else {
+            scaledBitmap?.compress(Bitmap.CompressFormat.WEBP, 90, byteArrayOutputStream)
+        }
+        bitmap.recycle()
+        return@withContext byteArrayOutputStream.toByteArray()
+    }
+
+private fun getScaledDownBitmap(
+    bitmap: Bitmap,
+    threshold: Int,
+    isNecessaryToKeepOrig: Boolean
+): Bitmap? {
+    val width = bitmap.width
+    val height = bitmap.height
+    var newWidth = width
+    var newHeight = height
+    if (width > height && width > threshold) {
+        newWidth = threshold
+        newHeight = (height * newWidth.toFloat() / width).toInt()
+    }
+    if (width > height && width <= threshold) {
+        return bitmap
+    }
+    if (width < height && height > threshold) {
+        newHeight = threshold
+        newWidth = (width * newHeight.toFloat() / height).toInt()
+    }
+    if (width < height && height <= threshold) {
+        return bitmap
+    }
+    if (width == height && width > threshold) {
+        newWidth = threshold
+        newHeight = newWidth
+    }
+    return if (width == height && width <= threshold) {
+        bitmap
+    } else getResizedBitmap(bitmap, newWidth, newHeight, isNecessaryToKeepOrig)
+}
+
+private fun getResizedBitmap(
+    bm: Bitmap,
+    newWidth: Int,
+    newHeight: Int,
+    isNecessaryToKeepOrig: Boolean
+): Bitmap? {
+    val width = bm.width
+    val height = bm.height
+    val scaleWidth = newWidth.toFloat() / width
+    val scaleHeight = newHeight.toFloat() / height
+    val matrix = Matrix()
+    matrix.postScale(scaleWidth, scaleHeight)
+
+    val resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
+    if (!isNecessaryToKeepOrig) {
+        bm.recycle()
+    }
+    return resizedBitmap
+}
+
 

@@ -381,7 +381,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val headerMap = hashMapOf<String, String>()
         token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
-        val serverErrorText = context?.getString(R.string.server_error_msg) ?: UNEXPECTED_ERROR
+        val serverErrorText = context?.getString(R.string.server_unavailable_msg) ?: UNEXPECTED_ERROR
         val noNetworkErrorText = context?.getString(R.string.internet_failure_text)
             ?: UNEXPECTED_ERROR
         coroutineScope.launch {

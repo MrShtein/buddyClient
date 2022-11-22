@@ -25,7 +25,7 @@ class AnimalMapper(
         )
     }
 
-    private fun transformFromDTO(animalDTO: AnimalDTO): Animal {
+    fun transformFromDTO(animalDTO: AnimalDTO): Animal {
         return Animal(
             id = animalDTO.id,
             imgUrl = animalPhotoMapper.transformFromDTOList(animalDTO.imgUrl),
