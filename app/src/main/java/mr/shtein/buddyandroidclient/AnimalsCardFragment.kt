@@ -28,11 +28,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.Kennel
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.Kennel
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
 

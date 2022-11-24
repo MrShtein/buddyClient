@@ -19,13 +19,12 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.CatPhotoAdapter
 import mr.shtein.buddyandroidclient.adapters.DogPhotoAdapter
-import mr.shtein.buddyandroidclient.data.mapper.AnimalMapper
-import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.setStatusBarColor
+import mr.shtein.data.mapper.AnimalMapper
+import mr.shtein.data.model.Animal
+import mr.shtein.data.repository.AnimalRepository
+import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
@@ -82,7 +81,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(false)
-        val kennelItem: KennelPreview = arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)!!
+        val kennelItem: mr.shtein.data.model.KennelPreview = arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)!!
 
         initViews(view)
         setValuesToViews(kennelItem)
@@ -106,7 +105,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
     }
 
-    private fun setValuesToViews(kennelItem: KennelPreview) {
+    private fun setValuesToViews(kennelItem: mr.shtein.data.model.KennelPreview) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
         val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)
@@ -215,7 +214,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         )
     }
 
-    private fun setListeners(kennelItem: KennelPreview) {
+    private fun setListeners(kennelItem: mr.shtein.data.model.KennelPreview) {
         addDogsBtn.setOnClickListener {
             val kennelId = kennelItem.kennelId
             val bundle = bundleOf(

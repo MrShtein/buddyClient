@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.data.model.KennelPreview
 import mr.shtein.network.ImageLoader
 
 class KennelsAdapter(
-    var kennels: List<KennelPreview>,
+    var kennels: List<mr.shtein.data.model.KennelPreview>,
     var kennelTouchCallback: OnKennelItemClickListener,
     private val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<KennelsAdapter.KennelsViewHolder>() {
@@ -33,7 +33,7 @@ class KennelsAdapter(
         return kennels.size
     }
 
-    private fun getItem(position: Int): KennelPreview = kennels[position]
+    private fun getItem(position: Int): mr.shtein.data.model.KennelPreview = kennels[position]
 
     inner class KennelsViewHolder(
         private val itemView: View,
@@ -49,7 +49,7 @@ class KennelsAdapter(
             itemView.setOnClickListener(this)
         }
 
-        fun bind(kennelPreviewItem: KennelPreview) {
+        fun bind(kennelPreviewItem: mr.shtein.data.model.KennelPreview) {
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
             val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
@@ -75,7 +75,7 @@ class KennelsAdapter(
     }
 
     interface OnKennelItemClickListener {
-        fun onClick(kennelItem: KennelPreview)
+        fun onClick(kennelItem: mr.shtein.data.model.KennelPreview)
     }
 
     private fun makeVolunteersText(amount: Int): String {

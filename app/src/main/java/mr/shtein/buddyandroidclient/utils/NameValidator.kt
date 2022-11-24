@@ -2,7 +2,7 @@ package mr.shtein.buddyandroidclient.utils
 
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import mr.shtein.buddyandroidclient.exceptions.validate.TooShortLengthException
+import mr.shtein.data.exception.TooShortLengthException
 
 class NameValidator(
     private val input: TextInputEditText,

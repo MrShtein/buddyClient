@@ -23,15 +23,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.CityRepository
-import mr.shtein.buddyandroidclient.data.repository.DatabasePropertiesRepository
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.db.CityDbHelper
+import mr.shtein.data.db.CityDbHelper
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.CityArrayAdapter
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.data.repository.CityRepository
+import mr.shtein.data.repository.DatabasePropertiesRepository
+import mr.shtein.data.repository.UserPropertiesRepository
 import org.koin.android.ext.android.inject
 
 const val CITY_REQUEST_KEY = "new_city_request"

@@ -31,8 +31,8 @@ import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.network.ImageLoader
@@ -49,7 +49,7 @@ interface OnLocationBtnClickListener {
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface AnimalListView : MvpView {
-    fun updateList(animalList: List<Animal>)
+    fun updateList(animalList: List<mr.shtein.data.model.Animal>)
 
     fun setAnimationWhenToAnimalCardNavigate()
     fun setAnimationWhenToAddKennelNavigate()
@@ -74,7 +74,7 @@ interface AnimalListView : MvpView {
     fun showAnimalCountText(animalsAmount: Int)
 
     @OneExecution
-    fun navigateToAnimalFilter(animalFilter: AnimalFilter)
+    fun navigateToAnimalFilter(animalFilter: mr.shtein.data.model.AnimalFilter)
 
     @OneExecution
     fun showLocationFailureText(locationFailureText: Int)
@@ -154,7 +154,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         binding.animalsListCatChip.isChecked = isChecked
     }
 
-    override fun updateList(animalList: List<Animal>) {
+    override fun updateList(animalList: List<mr.shtein.data.model.Animal>) {
         val previousListSize = adapter.updateAnimalList(animalList)
         binding.animalsListSearchProgressBar.visibility = View.INVISIBLE
         binding.animalsListSwipeLayout.isRefreshing = false
@@ -178,7 +178,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         )
     }
 
-    override fun onAnimalCardClick(animal: Animal) {
+    override fun onAnimalCardClick(animal: mr.shtein.data.model.Animal) {
         val bundle = Bundle()
         bundle.putParcelable("animal", animal)
         findNavController().navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
@@ -250,7 +250,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         Toast.makeText(requireContext(), failureText, Toast.LENGTH_LONG).show()
     }
 
-    override fun navigateToAnimalFilter(animalFilter: AnimalFilter) {
+    override fun navigateToAnimalFilter(animalFilter: mr.shtein.data.model.AnimalFilter) {
         val bundle = Bundle()
         bundle.putParcelable(ANIMAL_FILTER_KEY, animalFilter)
         findNavController().navigate(
@@ -277,7 +277,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         )
         val badge = BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
         val animalFilter =
-            arguments?.getParcelable<AnimalFilter>(ANIMAL_FILTER_KEY) ?: AnimalFilter()
+            arguments?.getParcelable<mr.shtein.data.model.AnimalFilter>(ANIMAL_FILTER_KEY) ?: mr.shtein.data.model.AnimalFilter()
         animalListPresenter.onInit(fineLocationPermission, coarseLocationPermission, animalFilter, badge)
     }
 

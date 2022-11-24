@@ -14,10 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
-import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.data.model.AnimalFilter
 import mr.shtein.buddyandroidclient.setStatusBarColor
+import mr.shtein.data.repository.UserPropertiesRepository
 import org.koin.android.ext.android.inject
 
 const val ANIMAL_FILTER_KEY = "animal_filter"
@@ -43,9 +43,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         exitTransition
         setStatusBarColor(false)
@@ -70,8 +68,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             isInsetsWorked = false
 
             val city = userPropertiesRepository.getUserCity()
-            val animalTypeFilter =
-            if (city == "") {
+            val animalTypeFilter = if (city == "") {
                 findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
             } else {
                 if (animalFilter.animalTypeId == null) {
@@ -80,7 +77,9 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
                     animalFilter.animalTypeId = animalTypes
                 }
                 val bundle = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
-                findNavController().navigate(R.id.action_startFragment_to_animalsListFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_startFragment_to_animalsListFragment, bundle
+                )
             }
         }, 3000)
 

@@ -1,12 +1,12 @@
 package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.LocationState
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.LocationState
 
 class AnimalDiffUtil(
-    var oldList: List<Animal>,
-    var newList: List<Animal>) : DiffUtil.Callback() {
+    var oldList: List<mr.shtein.data.model.Animal>,
+    var newList: List<mr.shtein.data.model.Animal>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size
@@ -31,10 +31,10 @@ class AnimalDiffUtil(
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
-        if (oldItem.distance != newItem.distance) return LocationState.DISTANCE_VISIBLE_STATE
-        if (newItem.locationState == LocationState.INIT_STATE) return LocationState.INIT_STATE
-        if (newItem.locationState == LocationState.SEARCH_STATE) return LocationState.SEARCH_STATE
-        if (newItem.locationState == LocationState.BAD_RESULT_STATE) return LocationState.BAD_RESULT_STATE
+        if (oldItem.distance != newItem.distance) return mr.shtein.data.model.LocationState.DISTANCE_VISIBLE_STATE
+        if (newItem.locationState == mr.shtein.data.model.LocationState.INIT_STATE) return mr.shtein.data.model.LocationState.INIT_STATE
+        if (newItem.locationState == mr.shtein.data.model.LocationState.SEARCH_STATE) return mr.shtein.data.model.LocationState.SEARCH_STATE
+        if (newItem.locationState == mr.shtein.data.model.LocationState.BAD_RESULT_STATE) return mr.shtein.data.model.LocationState.BAD_RESULT_STATE
         return null
     }
 }

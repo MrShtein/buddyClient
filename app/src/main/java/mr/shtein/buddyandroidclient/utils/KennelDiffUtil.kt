@@ -1,9 +1,9 @@
 package mr.shtein.buddyandroidclient.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import mr.shtein.buddyandroidclient.model.KennelPreview
+import mr.shtein.data.model.KennelPreview
 
-class KennelDiffUtil(var oldList: List<KennelPreview>, var newList: List<KennelPreview>) :
+class KennelDiffUtil(var oldList: List<mr.shtein.data.model.KennelPreview>, var newList: List<mr.shtein.data.model.KennelPreview>) :
     DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size

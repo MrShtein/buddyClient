@@ -2,6 +2,8 @@ package mr.shtein.buddyandroidclient
 
 import android.app.Application
 import mr.shtein.buddyandroidclient.di.module.*
+import mr.shtein.data.di.mapperModule
+import mr.shtein.data.di.repositoryModule
 import mr.shtein.network.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
