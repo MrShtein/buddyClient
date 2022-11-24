@@ -6,9 +6,9 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.BuildConfig
-import mr.shtein.buddyandroidclient.db.CityDbHelper
+import mr.shtein.data.db.CityDbHelper
 import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.data.util.SharedPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named

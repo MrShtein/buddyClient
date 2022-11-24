@@ -22,18 +22,16 @@ import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
-import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.BadTokenException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.network.NetworkService
+import mr.shtein.data.exception.BadTokenException
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import mr.shtein.data.model.Animal
+import mr.shtein.data.repository.AnimalRepository
+import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
 import org.koin.android.ext.android.inject
-import java.lang.Exception
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -61,7 +59,6 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     private lateinit var photoCounter: TextView
     private val coroutine: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private var animal: Animal? = null
-    private val networkService: NetworkService by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val networkAnimalRepository: AnimalRepository by inject()
     private val networkImageLoader: ImageLoader by inject()

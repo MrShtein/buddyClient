@@ -1,7 +1,6 @@
 package mr.shtein.buddyandroidclient.utils
 
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyCityFieldException
-import mr.shtein.buddyandroidclient.exceptions.validate.ValidationException
+import mr.shtein.data.exception.ValidationException
 
 class PhoneNumberValidator : Validator {
 

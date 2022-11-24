@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.presentation.screen.OnLocationBtnClickListener
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.LocationState
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.LocationState
 import mr.shtein.buddyandroidclient.utils.AnimalDiffUtil
 import mr.shtein.buddyandroidclient.viewholders.AnimalsViewHolder
 import mr.shtein.network.ImageLoader
@@ -16,7 +16,7 @@ import mr.shtein.network.NetworkImageLoader
 
 class AnimalsAdapter(
     context: Context,
-    var animals: List<Animal>,
+    var animals: List<mr.shtein.data.model.Animal>,
     var onAnimalCardClickListener: OnAnimalCardClickListener,
     var onLocationBtnClickListener: OnLocationBtnClickListener,
     private val networkImageLoader: ImageLoader
@@ -47,8 +47,8 @@ class AnimalsAdapter(
             payloads.isEmpty() -> {
                 super.onBindViewHolder(holder, position, payloads)
             }
-            payloads[0] is LocationState -> {
-                holder.makeViewByState(payloads[0] as LocationState, animals[position].distance)
+            payloads[0] is mr.shtein.data.model.LocationState -> {
+                holder.makeViewByState(payloads[0] as mr.shtein.data.model.LocationState, animals[position].distance)
             }
             else -> {
                 holder.bindDistanceText(payloads[0].toString())
@@ -60,7 +60,7 @@ class AnimalsAdapter(
         return animals.size
     }
 
-    fun updateAnimalList(newAnimalList: List<Animal>) : Int {
+    fun updateAnimalList(newAnimalList: List<mr.shtein.data.model.Animal>) : Int {
         val previousAnimalListSize = animals.size
         val animalDiffUtil = AnimalDiffUtil(animals, newAnimalList)
         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
@@ -69,6 +69,6 @@ class AnimalsAdapter(
         return previousAnimalListSize
     }
 
-    private fun getItem(position: Int): Animal = animals[position]
+    private fun getItem(position: Int): mr.shtein.data.model.Animal = animals[position]
 
 }

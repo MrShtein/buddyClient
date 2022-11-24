@@ -11,8 +11,8 @@ import mr.shtein.buddyandroidclient.presentation.screen.OnLocationBtnClickListen
 import mr.shtein.buddyandroidclient.ProtoAnimalsViewHolder
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.LocationState
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.LocationState
 import mr.shtein.network.ImageLoader
 import mr.shtein.network.NetworkImageLoader
 
@@ -34,7 +34,7 @@ class AnimalsViewHolder(
     private var locationText: TextView = itemView.findViewById(R.id.animal_row_distance_text)
     private val locationSpinner: ProgressBar =
         itemView.findViewById(R.id.animal_row_distance_progress)
-    private lateinit var animal: Animal
+    private lateinit var animal: mr.shtein.data.model.Animal
 
     init {
         itemView.setOnClickListener(this)
@@ -44,7 +44,7 @@ class AnimalsViewHolder(
     }
 
 
-    fun bind(animal: Animal) {
+    fun bind(animal: mr.shtein.data.model.Animal) {
         this.animal = animal
         val currentContext: Context = animalName.context
         this.animalName.text = animal.name
@@ -54,22 +54,22 @@ class AnimalsViewHolder(
         this.animalColor.text =
             currentContext.getString(R.string.animal_color, animal.characteristics["color"])
         setPrimaryPhoto(animal)
-        makeViewByState(animal.locationState ?: LocationState.INIT_STATE, animal.distance)
+        makeViewByState(animal.locationState ?: mr.shtein.data.model.LocationState.INIT_STATE, animal.distance)
     }
 
     fun bindDistanceText(distance: String) {
         locationText.text = distance
     }
 
-    fun makeViewByState(state: LocationState, distance: String) {
+    fun makeViewByState(state: mr.shtein.data.model.LocationState, distance: String) {
         when (state) {
-            LocationState.INIT_STATE -> {
+            mr.shtein.data.model.LocationState.INIT_STATE -> {
                 makeInitState()
             }
-            LocationState.SEARCH_STATE -> {
+            mr.shtein.data.model.LocationState.SEARCH_STATE -> {
                 makeSearchState()
             }
-            LocationState.DISTANCE_VISIBLE_STATE -> {
+            mr.shtein.data.model.LocationState.DISTANCE_VISIBLE_STATE -> {
                 makeDistanceVisibleState(distance)
             }
             else -> {
@@ -101,7 +101,7 @@ class AnimalsViewHolder(
         onAnimalCardClickListener.onAnimalCardClick(animal)
     }
 
-    private fun setPrimaryPhoto(animal: Animal) {
+    private fun setPrimaryPhoto(animal: mr.shtein.data.model.Animal) {
         val primaryUrl = animal.imgUrl.filter { it.primary }
         val url: String = primaryUrl[0].url
         val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)

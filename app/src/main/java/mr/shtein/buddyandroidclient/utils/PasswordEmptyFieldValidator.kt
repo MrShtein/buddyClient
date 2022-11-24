@@ -3,14 +3,13 @@ package mr.shtein.buddyandroidclient.utils
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import mr.shtein.buddyandroidclient.data.repository.UserRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.PasswordCheckRequest
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.network.NetworkService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import mr.shtein.data.exception.EmptyFieldException
+import mr.shtein.data.exception.PasswordsIsDifferentException
+import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.exception.TooShortLengthException
+import mr.shtein.data.repository.UserRepository
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 

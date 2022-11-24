@@ -26,19 +26,19 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.*
-import mr.shtein.buddyandroidclient.data.repository.AnimalBreedRepository
-import mr.shtein.buddyandroidclient.data.repository.AnimalCharacteristicsRepository
-import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.*
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.Gender
-import mr.shtein.buddyandroidclient.model.ImageContainer
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.Breed
 import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.buddyandroidclient.utils.ImageValidator
-import mr.shtein.buddyandroidclient.utils.SharedPreferences
+import mr.shtein.data.exception.BadTokenException
+import mr.shtein.data.exception.EmptyBodyException
+import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.ImageContainer
+import mr.shtein.data.repository.AnimalBreedRepository
+import mr.shtein.data.repository.AnimalCharacteristicsRepository
+import mr.shtein.data.repository.AnimalRepository
+import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -406,7 +406,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
         maleBtn.setOnClickListener {
-            animalDto.genderId = Gender.MALE.genderId
+            animalDto.genderId = mr.shtein.data.model.Gender.MALE.genderId
             maleBtn.buttonTintList = ColorStateList
                 .valueOf(requireContext().getColor(R.color.cian5))
             femaleBtn.buttonTintList = ColorStateList
@@ -414,7 +414,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         }
 
         femaleBtn.setOnClickListener {
-            animalDto.genderId = Gender.FEMALE.genderId
+            animalDto.genderId = mr.shtein.data.model.Gender.FEMALE.genderId
             maleBtn.buttonTintList = ColorStateList
                 .valueOf(requireContext().getColor(R.color.cian5))
             femaleBtn.buttonTintList = ColorStateList

@@ -1,6 +1,6 @@
 package mr.shtein.buddyandroidclient.domain.interactor
 
-import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.data.model.AnimalFilter
 
 interface AnimalFilterInteractor {
 
@@ -25,7 +25,7 @@ interface AnimalFilterInteractor {
     fun saveMaxAge(maxAge: Int)
     fun getMaxAge(): Int
 
-    fun makeAnimalFilter(): AnimalFilter
+    fun makeAnimalFilter(): mr.shtein.data.model.AnimalFilter
     fun removeAllData(): Unit
 
 }

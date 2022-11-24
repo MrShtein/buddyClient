@@ -20,14 +20,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.KennelPropertiesRepository
-import mr.shtein.buddyandroidclient.data.repository.KennelRepository
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.ItemAlreadyExistException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.AvatarWrapper
-import mr.shtein.buddyandroidclient.model.KennelRequest
-import mr.shtein.network.NetworkService
+import mr.shtein.data.exception.ItemAlreadyExistException
+import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.model.AvatarWrapper
+import mr.shtein.data.repository.KennelPropertiesRepository
+import mr.shtein.data.repository.KennelRepository
+import mr.shtein.data.repository.UserPropertiesRepository
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,7 +44,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         private const val ADMIN_ROLE_TXT = "ROLE_ADMIN"
     }
 
-    private lateinit var settingsData: KennelRequest
+    private lateinit var settingsData: mr.shtein.data.model.KennelRequest
     private lateinit var avatarImg: ImageView
     private lateinit var name: TextView
     private lateinit var phone: TextView
@@ -57,7 +55,6 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var saveBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
     private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-    private val networkService: NetworkService by inject()
     private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
     private val networkKennelRepository: KennelRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()

@@ -6,18 +6,16 @@ import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
-import mr.shtein.buddyandroidclient.exceptions.validate.LocationServiceException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.Coordinates
-import mr.shtein.buddyandroidclient.model.LocationState
-import mr.shtein.buddyandroidclient.model.AnimalFilter
+import mr.shtein.data.exception.LocationServiceException
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.*
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.LocationState
+import mr.shtein.data.repository.UserPropertiesRepository
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor
@@ -42,7 +40,7 @@ interface AnimalListPresenter {
     fun onInit(
         fineLocationPermission: Int,
         coarseLocationPermission: Int,
-        animalFilter: AnimalFilter,
+        animalFilter: mr.shtein.data.model.AnimalFilter,
         badge: BadgeDrawable
     )
 
@@ -66,7 +64,7 @@ class AnimalsListPresenterImpl(
     private var fineLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private var coarseLocationPermission: Int = PackageManager.PERMISSION_DENIED
     private lateinit var badge: BadgeDrawable
-    private lateinit var animalFilter: AnimalFilter
+    private lateinit var animalFilter: mr.shtein.data.model.AnimalFilter
     private var coroutineScope: CoroutineScope = CoroutineScope(mainDispatchers)
 
     override fun onAnimalShowCommand(
@@ -116,14 +114,14 @@ class AnimalsListPresenterImpl(
     }
 
 
-
     override fun onClickToLocationBtn(permissions: Map<String, Boolean>) {
         if (permissions.containsValue(true)) {
             val animalsWithNewState = changeLocationState(LocationState.SEARCH_STATE)
             viewState.updateList(animalsWithNewState)
             coroutineScope.launch {
                 try {
-                    val coordinates: Coordinates = locationService.getCurrentDistance()
+                    val coordinates: mr.shtein.data.model.Coordinates =
+                        locationService.getCurrentDistance()
                     val token: String = userPropertiesRepository.getUserToken()
                     successLocation(token, coordinates)
                 } catch (ex: Exception) {
@@ -142,7 +140,10 @@ class AnimalsListPresenterImpl(
         }
     }
 
-    private suspend fun successLocation(token: String, coordinates: Coordinates) {
+    private suspend fun successLocation(
+        token: String,
+        coordinates: mr.shtein.data.model.Coordinates
+    ) {
         locationList = animalInteractor.getDistancesFromUser(token, coordinates)
         locationState = LocationState.DISTANCE_VISIBLE_STATE
         animalList = setDistancesToAnimals(locationList!!)
@@ -252,7 +253,7 @@ class AnimalsListPresenterImpl(
     override fun onInit(
         fineLocationPermission: Int,
         coarseLocationPermission: Int,
-        animalFilter: AnimalFilter,
+        animalFilter: mr.shtein.data.model.AnimalFilter,
         badge: BadgeDrawable
     ) {
         this.fineLocationPermission = fineLocationPermission
@@ -267,14 +268,14 @@ class AnimalsListPresenterImpl(
             animalTypeId.add(DOG_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList()
             animalTypeList.add(DOG_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(DOG_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList()
             animalTypeList.remove(DOG_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
 
@@ -287,14 +288,13 @@ class AnimalsListPresenterImpl(
             animalTypeId.add(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
             val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+                filterInteractor.getAnimalTypeIdList()
             animalTypeList.add(CAT_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
-            val animalTypeList: MutableList<Int> =
-                filterInteractor.getAnimalTypeIdList() ?: mutableListOf()
+            val animalTypeList: MutableList<Int> = filterInteractor.getAnimalTypeIdList()
             animalTypeList.remove(CAT_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         }
@@ -313,7 +313,7 @@ class AnimalsListPresenterImpl(
         viewState.navigateToAnimalFilter(animalFilter)
     }
 
-    private fun calculateFilterNumbers(animalFilter: AnimalFilter): Int {
+    private fun calculateFilterNumbers(animalFilter: mr.shtein.data.model.AnimalFilter): Int {
         var count = 0
         if ((animalFilter.animalTypeId?.size ?: 0) > 0) count++
         if ((animalFilter.cityId?.size ?: 0) > 0) count++

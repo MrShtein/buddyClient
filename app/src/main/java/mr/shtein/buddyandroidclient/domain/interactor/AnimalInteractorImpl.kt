@@ -2,12 +2,12 @@ package mr.shtein.buddyandroidclient.domain.interactor
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mr.shtein.buddyandroidclient.data.repository.*
-import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.AnimalFilter
-import mr.shtein.buddyandroidclient.model.Coordinates
+import mr.shtein.data.exception.IncorrectDataException
+import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.AnimalFilter
+import mr.shtein.data.model.Coordinates
+import mr.shtein.data.repository.*
 import mr.shtein.model.AnimalCharacteristic
 import mr.shtein.model.AnimalType
 import mr.shtein.model.Breed

@@ -20,13 +20,13 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import mr.shtein.buddyandroidclient.exceptions.validate.IncorrectDataException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
+import mr.shtein.data.exception.IncorrectDataException
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.model.Person
 import mr.shtein.model.LoginInfo
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.data.repository.UserRepository
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.data.repository.UserRepository
 import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.ConnectException

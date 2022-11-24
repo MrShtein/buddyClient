@@ -1,6 +1,6 @@
 package mr.shtein.buddyandroidclient.utils
 
-import mr.shtein.buddyandroidclient.exceptions.validate.EmptyFieldException
+import mr.shtein.data.exception.EmptyFieldException
 
 open class EmptyFieldValidator: Validator  {
 

@@ -30,9 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.data.repository.UserRepository
-import mr.shtein.buddyandroidclient.exceptions.validate.*
 import mr.shtein.model.PersonRequest
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.EmailCheckRequest
@@ -40,6 +37,9 @@ import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
+import mr.shtein.data.exception.*
+import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.data.repository.UserRepository
 import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots

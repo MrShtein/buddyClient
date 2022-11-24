@@ -7,11 +7,11 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.model.Animal
+import mr.shtein.data.model.Animal
 import mr.shtein.network.ImageLoader
 
 class CatPhotoAdapter(
-    private val animalsList: List<Animal>,
+    private val animalsList: List<mr.shtein.data.model.Animal>,
     val token: String,
     private val animalTouchCallback: OnAnimalItemClickListener,
     private val networkImageLoader: ImageLoader
@@ -34,7 +34,7 @@ class CatPhotoAdapter(
         return animalsList.size
     }
 
-    private fun getItem(position: Int): Animal = animalsList[position]
+    private fun getItem(position: Int): mr.shtein.data.model.Animal = animalsList[position]
 
 
     inner class AnimalInKennelViewHolder(
@@ -48,7 +48,7 @@ class CatPhotoAdapter(
             avatar.setOnClickListener(this)
         }
 
-        fun bind(animalCard: Animal) {
+        fun bind(animalCard: mr.shtein.data.model.Animal) {
             val animalAvatarUrl = animalCard.imgUrl.find {
                 it.primary
             }
@@ -69,6 +69,6 @@ class CatPhotoAdapter(
     }
 
     interface OnAnimalItemClickListener {
-        fun onClick(animalItem: Animal)
+        fun onClick(animalItem: mr.shtein.data.model.Animal)
     }
 }
