@@ -3,6 +3,7 @@ package mr.shtein.network
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 
 class NetworkImageLoader(
@@ -18,6 +19,7 @@ class NetworkImageLoader(
         Glide.with(imageView.context)
             .load(fullUrl)
             .placeholder(placeHolder)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageView)
     }
     override fun setPhotoToView(
@@ -28,6 +30,7 @@ class NetworkImageLoader(
         Glide.with(imageView.context)
             .load(personAvatarUri)
             .placeholder(placeholder)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageView)
     }
 }
