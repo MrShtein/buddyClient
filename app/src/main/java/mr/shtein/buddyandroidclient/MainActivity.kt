@@ -13,11 +13,14 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
+import mr.shtein.buddyandroidclient.navigator.Navigator
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
@@ -32,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var bottomNav: BottomNavigationView
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val navigator: Navigator by inject()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.main_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
         bottomNav = findViewById(R.id.bottom_nav_view)
 
@@ -140,7 +145,15 @@ class MainActivity : AppCompatActivity() {
         bottomNav.visibility = View.VISIBLE
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigator.bind(navController = navController)
+    }
 
+    override fun onPause() {
+        super.onPause()
+        navigator.unbind()
+    }
 }
 
 fun Fragment.changeMarginBottom(view: View, mainActivity: MainActivity) {

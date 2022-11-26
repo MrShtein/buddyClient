@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.R
+import mr.shtein.buddyandroidclient.navigator.Navigator
 import mr.shtein.data.db.CityDbHelper
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
@@ -37,7 +38,6 @@ import org.koin.android.ext.android.inject
 const val CITY_REQUEST_KEY = "new_city_request"
 const val CITY_BUNDLE_KEY = "new_city_bundle"
 const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
-private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 
 class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
@@ -51,6 +51,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
     private val cityDbHelper: CityDbHelper by inject()
     private val localDbCityRepository: CityRepository by inject()
+    private val navigator: Navigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val previousFragment = findNavController().previousBackStackEntry?.id
+        val previousFragment = navigator.getPreviousBackStackEntry()
         if (previousFragment == null) {
             val slideEnterTransition = Slide()
             slideEnterTransition.duration = 300
@@ -99,8 +100,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
 
     private fun setListeners() {
         cityInputText.setOnItemClickListener { adapter, _, position, _ ->
-            val navController = findNavController()
-            val navLabel = navController.previousBackStackEntry?.destination?.label
+            val navLabel = navigator.getPreviousNavLabel()
 
             if (navLabel == "UserSettingsFragment" || navLabel == "UserProfileFragment") {
                 textHint.setText(R.string.city_choice_description_text_else_from_settings)
@@ -118,7 +118,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                         )
                     )
                     hideKeyboard()
-                    navController.popBackStack()
+                    navigator.popBackStack()
                 }
                 "KennelSettingsFragment" -> {
                     setFragmentResult(
@@ -128,28 +128,16 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
                         )
                     )
                     hideKeyboard()
-                    navController.popBackStack()
+                    navigator.popBackStack()
                 }
                 "UserProfileFragment" -> {
                     hideKeyboard()
-                    navController.popBackStack(
-                        R.id.animalsListFragment,
-                        false
-                    )
+                    navigator.backToAnimalList()
                 }
                 else -> {
-                    val bundle = bundleOf(
-                        LAST_FRAGMENT_KEY to FragmentsListForAssigningAnimation.CITY_CHOICE
-                    )
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(R.id.cityChoiceFragment, true)
-                        .build()
                     hideKeyboard()
-                    navController.navigate(
-                        R.id.action_cityChoiceFragment_to_animalsListFragment,
-                        bundle,
-                        navOptions
-                    )
+                    navigator.moveToAnimalListFromCity()
+
                 }
             }
         }
