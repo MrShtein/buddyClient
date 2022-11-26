@@ -24,6 +24,7 @@ class BuddyApplication : Application() {
                     interactorModule,
                     presenterModule,
                     mapperModule,
+                    navigatorModule
                 )
             )
         }

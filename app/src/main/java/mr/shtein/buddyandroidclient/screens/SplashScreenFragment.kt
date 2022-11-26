@@ -11,10 +11,10 @@ import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
+import mr.shtein.buddyandroidclient.navigator.Navigator
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.data.repository.UserPropertiesRepository
@@ -30,6 +30,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
     private var isInsetsWorked = false
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val animalFilterInteractor: AnimalFilterInteractor by inject()
+    private val navigator: Navigator by inject()
     private lateinit var animalFilter: AnimalFilter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,17 +70,15 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
             val city = userPropertiesRepository.getUserCity()
             val animalTypeFilter = if (city == "") {
-                findNavController().navigate(R.id.action_startFragment_to_cityChoiceFragment)
+                navigator.moveToCityNav()
             } else {
                 if (animalFilter.animalTypeId == null) {
                     val animalTypes = mutableListOf(DOG_TYPE_KEY, CAT_TYPE_KEY)
                     animalFilterInteractor.saveAnimalTypeIdList(animalTypes)
                     animalFilter.animalTypeId = animalTypes
                 }
-                val bundle = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
-                findNavController().navigate(
-                    R.id.action_startFragment_to_animalsListFragment, bundle
-                )
+                val animalFilter = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
+                navigator.moveToAnimalListFromSplash(animalFilter = animalFilter)
             }
         }, 3000)
 
