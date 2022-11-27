@@ -1,17 +1,71 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.nav_version = "2.4.0"
+    ext {
+        navigation = "2.4.1"
+        core = "1.7.0"
+        activity = "1.4.0"
+        fragment = "1.4.1"
+        legacy_support_v4 = "1.0.0"
+        recyclerview = "1.2.1"
+        appcompat = "1.4.1"
+
+        material = "1.6.1"
+
+        lottie = "5.2.0"
+
+        retrofit = "2.9.0"
+        retrofit_converter_scalars = "2.9.0"
+        retrofit_converter_gson = "2.5.0"
+        glide = "4.13.2"
+
+        gson = "2.10"
+        decoro = "1.5.0"
+        koin = "3.2.0"
+
+        kotlin_coroutines_play_services = "1.6.4"
+
+        kaspresso = "1.3.0"
+        junit_jupiter = "5.9.0"
+        mockito_core = "4.7.0"
+        mockito_kotlin = "4.0.0"
+        kotlinx_coroutines_test = "1.6.4"
+        kotlin_faker = "1.11.0"
+
+        moxy = "2.2.2"
+
+        play_services_location = "19.0.1"
+        firebase_bom = "30.3.2"
+
+        hms_location = "6.4.0.300"
+        agconnect_core = "1.7.1.300"
+        agconnect_crash = "1.7.1.300"
+
+        sdk_versions = [
+                compile: 31,
+                min: 24,
+                target: 31
+        ]
+
+        gradle_version = "7.3.0"
+        kotlin_gradle_plugin = "1.7.10"
+        firebase_crashlytics_gradle = "2.9.1"
+        google_services = "4.3.13"
+        agcp = "1.7.1.300"
+    }
+
+
+
     repositories {
         google()
         mavenCentral()
-        maven {url 'https://developer.huawei.com/repo/'}
+        maven {url "https://developer.huawei.com/repo/"}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
-        classpath 'com.google.gms:google-services:4.3.13'
-        classpath 'com.huawei.agconnect:agcp:1.7.1.300'
+        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_gradle_plugin"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_gradle"
+        classpath "com.google.gms:google-services:$google_services"
+        classpath "com.huawei.agconnect:agcp:$agcp"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
