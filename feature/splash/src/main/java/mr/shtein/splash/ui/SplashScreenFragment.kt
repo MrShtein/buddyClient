@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.screens
+package mr.shtein.splash.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -12,12 +12,11 @@ import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.transition.Slide
-import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
-import mr.shtein.buddyandroidclient.navigator.Navigator
 import mr.shtein.data.model.AnimalFilter
-import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.splash.R
+import mr.shtein.splash.domain.AnimalFilterInteractor
+import mr.shtein.splash.navigation.StartNavigation
 import org.koin.android.ext.android.inject
 
 const val ANIMAL_FILTER_KEY = "animal_filter"
@@ -30,7 +29,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
     private var isInsetsWorked = false
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val animalFilterInteractor: AnimalFilterInteractor by inject()
-    private val navigator: Navigator by inject()
+    private val navigator: StartNavigation by inject()
     private lateinit var animalFilter: AnimalFilter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +46,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         exitTransition
-        setStatusBarColor(false)
+       // setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {

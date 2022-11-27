@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.navigator
+package mr.shtein.splash.navigation
 
 import android.os.Bundle
 

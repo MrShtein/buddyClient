@@ -2,6 +2,7 @@ package mr.shtein.buddyandroidclient.domain.interactor
 
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.repository.FilterPropertiesRepository
+import mr.shtein.splash.domain.AnimalFilterInteractor
 
 class AnimalFilterInteractorImpl(
     private val animalFilterPropertiesRepository: FilterPropertiesRepository

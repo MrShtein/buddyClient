@@ -61,7 +61,6 @@
     <string name="entrance_btn_text">Вход</string>
     <string name="registration_btn_text">Регистрация</string>
     <string name="project_logo_dog_sun_and_grass">Логотип приложения - собака, солнце и трава</string>
-    <string name="project_logo_text">Текстовый логотип проекта Бадди</string>
     <string name="input_hint_for_city_choice">Введите Ваш город</string>
     <string name="profile_name_hint">Имя</string>
     <string name="user_settings_label">Настройки</string>
