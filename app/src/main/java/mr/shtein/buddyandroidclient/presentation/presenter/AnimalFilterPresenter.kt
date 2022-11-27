@@ -5,7 +5,6 @@ import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.ServerErrorException
@@ -15,6 +14,7 @@ import mr.shtein.data.repository.CityRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.FilterAutocompleteItem
+import mr.shtein.splash.domain.AnimalFilterInteractor
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 

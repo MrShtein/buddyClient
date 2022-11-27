@@ -6,7 +6,6 @@ import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.domain.interactor.AnimalFilterInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
 import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
 import mr.shtein.data.exception.LocationServiceException
@@ -16,6 +15,7 @@ import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.LocationState
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.splash.domain.AnimalFilterInteractor
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor

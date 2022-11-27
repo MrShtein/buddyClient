@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.navigator.BaseNavigator
+import mr.shtein.splash.navigation.StartNavigation
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation {
 
