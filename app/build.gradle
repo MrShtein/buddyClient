@@ -1,15 +1,15 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-parcelize'
-    id 'kotlin-kapt'
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-parcelize"
+    id "kotlin-kapt"
 
 }
 if(getGradle().getStartParameter().getTaskNames().toString().toLowerCase().contains("huawei")) {
-    apply plugin: 'com.huawei.agconnect'
+    apply plugin: "com.huawei.agconnect"
 } else {
-    apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.google.gms.google-services'
+    apply plugin: "com.google.firebase.crashlytics"
+    apply plugin: "com.google.gms.google-services"
 }
 
 android {
@@ -17,26 +17,26 @@ android {
     flavorDimensions "services"
     productFlavors {
         huawei {
-            dimension 'services'
-            applicationIdSuffix '.huawei'
+            dimension "services"
+            applicationIdSuffix ".huawei"
         }
         google {
-            dimension 'services'
+            dimension "services"
         }
     }
 
     signingConfigs {
         release {
             Properties keystoreConfig = new Properties()
-            keystoreConfig.load(new FileInputStream(file('keystore.config')))
+            keystoreConfig.load(new FileInputStream(file("keystore.config")))
 
-            storeFile file(keystoreConfig['storeFile'])
-            storePassword keystoreConfig['storePassword']
-            keyPassword keystoreConfig['keyPassword']
-            keyAlias keystoreConfig['keyAlias']
+            storeFile file(keystoreConfig["storeFile"])
+            storePassword keystoreConfig["storePassword"]
+            keyPassword keystoreConfig["keyPassword"]
+            keyAlias keystoreConfig["keyAlias"]
         }
     }
-    compileSdk 31
+    compileSdk sdk_versions.compile
 
     buildFeatures {
         viewBinding = true
@@ -44,8 +44,8 @@ android {
 
     defaultConfig {
         applicationId "mr.shtein.buddyandroidclient"
-        minSdk 24
-        targetSdk 31
+        minSdk sdk_versions.min
+        targetSdk sdk_versions.target
         versionCode 5
         versionName "1.2.0"
 
@@ -62,7 +62,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -70,7 +70,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
     testOptions {
@@ -81,12 +81,12 @@ android {
     sourceSets {
         huawei {
             java {
-                srcDirs 'src/huawei/java'
+                srcDirs "src/huawei/java"
             }
         }
         google {
             java {
-                srcDirs 'src/google/java'
+                srcDirs "src/google/java"
             }
         }
     }
@@ -99,53 +99,55 @@ java  {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation "androidx.core:core-ktx:$core"
+    implementation "androidx.activity:activity-ktx:$activity"
+    implementation "androidx.fragment:fragment-ktx:$fragment"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.3"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support_v4"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview"
+    implementation "androidx.appcompat:appcompat:$appcompat"
 
-    implementation "androidx.navigation:navigation-fragment-ktx:2.4.1"
-    implementation "androidx.navigation:navigation-ui-ktx:2.4.1"
+    implementation "com.google.android.material:material:$material"
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation 'com.airbnb.android:lottie:4.1.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "com.airbnb.android:lottie:$lottie"
 
-    implementation 'jp.wasabeef:picasso-transformations:2.4.0'
-    implementation 'ru.tinkoff.decoro:decoro:1.5.0'
-    implementation "io.insert-koin:koin-android:3.2.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
 
-    runtimeOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
-    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.3.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-    testImplementation 'org.mockito:mockito-core:4.7.0'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-    testImplementation 'io.github.serpro69:kotlin-faker:1.11.0'
-    implementation "com.github.moxy-community:moxy:2.2.2"
-    implementation "com.github.moxy-community:moxy-app-compat:2.2.2"
-    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
-    implementation "com.github.moxy-community:moxy-material:2.2.2"
-    implementation "com.github.moxy-community:moxy-ktx:2.2.2"
+    implementation "com.google.code.gson:gson:$gson"
 
-    googleImplementation 'com.google.android.gms:play-services-location:19.0.1'
-    googleImplementation platform('com.google.firebase:firebase-bom:30.3.2')
-    googleImplementation 'com.google.firebase:firebase-crashlytics'
-    googleImplementation 'com.google.firebase:firebase-analytics'
+    implementation "ru.tinkoff.decoro:decoro:$decoro"
+    implementation "io.insert-koin:koin-android:$koin"
 
-    huaweiImplementation 'com.huawei.hms:location:6.4.0.300'
-    huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
-    huaweiImplementation 'com.huawei.agconnect:agconnect-crash:1.7.1.300'
+    runtimeOnly "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$kotlin_coroutines_play_services"
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.google.code.gson:gson:2.10'
+    androidTestImplementation "com.kaspersky.android-components:kaspresso:$kaspresso"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junit_jupiter"
+    testImplementation "org.mockito:mockito-core:$mockito_core"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_test"
+    testImplementation "io.github.serpro69:kotlin-faker:$kotlin_faker"
 
-    implementation project(path: ':core:network')
-    implementation project(path: ':core:model')
-    implementation project(path: ':core:data')
-    implementation project(path: ':core:navigator')
+    implementation "com.github.moxy-community:moxy:$moxy"
+    implementation "com.github.moxy-community:moxy-app-compat:$moxy"
+    kapt "com.github.moxy-community:moxy-compiler:$moxy"
+    implementation "com.github.moxy-community:moxy-material:$moxy"
+    implementation "com.github.moxy-community:moxy-ktx:$moxy"
+
+    googleImplementation "com.google.android.gms:play-services-location:$play_services_location"
+    googleImplementation platform("com.google.firebase:firebase-bom:$firebase_bom")
+    googleImplementation "com.google.firebase:firebase-crashlytics"
+    googleImplementation "com.google.firebase:firebase-analytics"
+
+    huaweiImplementation "com.huawei.hms:location:$hms_location"
+    huaweiImplementation "com.huawei.agconnect:agconnect-core:$agconnect_core"
+    huaweiImplementation "com.huawei.agconnect:agconnect-crash:$agconnect_crash"
+
+    implementation project(path: ":core:network")
+    implementation project(path: ":core:model")
+    implementation project(path: ":core:data")
+    implementation project(path: ":core:navigator")
 
 }
