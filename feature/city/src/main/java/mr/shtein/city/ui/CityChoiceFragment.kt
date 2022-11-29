@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.screens
+package mr.shtein.city.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -14,25 +14,20 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.navigator.Navigator
+import mr.shtein.city.R
+import mr.shtein.city.navigation.CityNavigation
+import mr.shtein.city.adapter.CityArrayAdapter
 import mr.shtein.data.db.CityDbHelper
-import mr.shtein.model.CityChoiceItem
-import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
-import mr.shtein.buddyandroidclient.setStatusBarColor
-import mr.shtein.buddyandroidclient.utils.CityArrayAdapter
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.CityRepository
 import mr.shtein.data.repository.DatabasePropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.model.CityChoiceItem
 import org.koin.android.ext.android.inject
 
 const val CITY_REQUEST_KEY = "new_city_request"
@@ -51,7 +46,7 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
     private val databasePropertiesRepository: DatabasePropertiesRepository by inject()
     private val cityDbHelper: CityDbHelper by inject()
     private val localDbCityRepository: CityRepository by inject()
-    private val navigator: Navigator by inject()
+    private val navigator: CityNavigation by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,8 +83,8 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
             adapter = CityArrayAdapter(requireContext(), cities)
             cityInputText.setAdapter(adapter)
         }
-        setStatusBarColor(true)
-        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
+        //setStatusBarColor(true)
+        //setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
     }
 
     private fun initViews(view: View) {
