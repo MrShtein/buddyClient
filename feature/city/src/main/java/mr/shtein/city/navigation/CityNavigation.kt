@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.navigator
+package mr.shtein.city.navigation
 
 interface CityNavigation {
     fun getPreviousBackStackEntry(): String?

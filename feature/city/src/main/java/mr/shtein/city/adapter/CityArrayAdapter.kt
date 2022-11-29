@@ -1,8 +1,10 @@
-package mr.shtein.buddyandroidclient.utils
+package mr.shtein.city.adapter
 
 import android.content.Context
-import android.widget.*
-import mr.shtein.buddyandroidclient.R
+import android.widget.ArrayAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import mr.shtein.city.R
 import mr.shtein.model.CityChoiceItem
 import kotlin.collections.ArrayList
 

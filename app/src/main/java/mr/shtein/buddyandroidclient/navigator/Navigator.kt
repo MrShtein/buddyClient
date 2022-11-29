@@ -7,13 +7,13 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.navigator.BaseNavigator
 import mr.shtein.splash.navigation.StartNavigation
+import mr.shtein.city.navigation.CityNavigation
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation {
 
     override fun moveToCityNav() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
     }
-
     override fun moveToAnimalListFromSplash(animalFilter: Bundle) {
         navController?.navigate(
             R.id.action_startFragment_to_animalsListFragment, animalFilter
