@@ -34,6 +34,7 @@ import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
 
 

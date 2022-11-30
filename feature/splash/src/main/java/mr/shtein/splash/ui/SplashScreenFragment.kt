@@ -18,6 +18,7 @@ import mr.shtein.splash.R
 import mr.shtein.splash.domain.AnimalFilterInteractor
 import mr.shtein.splash.navigation.StartNavigation
 import org.koin.android.ext.android.inject
+import mr.shtein.ui_util.setStatusBarColor
 
 const val ANIMAL_FILTER_KEY = "animal_filter"
 private const val DOG_TYPE_KEY = 1
@@ -46,7 +47,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         exitTransition
-       // setStatusBarColor(false)
+        setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {

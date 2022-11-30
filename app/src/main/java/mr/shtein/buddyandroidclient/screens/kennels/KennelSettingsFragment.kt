@@ -25,10 +25,10 @@ import kotlinx.coroutines.withContext
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment
-import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.*
 import mr.shtein.data.repository.KennelPropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.ui_util.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots

@@ -28,6 +28,8 @@ import mr.shtein.data.repository.CityRepository
 import mr.shtein.data.repository.DatabasePropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.CityChoiceItem
+import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
 
 const val CITY_REQUEST_KEY = "new_city_request"
@@ -83,8 +85,8 @@ class CityChoiceFragment : Fragment(R.layout.city_choice_fragment) {
             adapter = CityArrayAdapter(requireContext(), cities)
             cityInputText.setAdapter(adapter)
         }
-        //setStatusBarColor(true)
-        //setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
+        setStatusBarColor(true)
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
     }
 
     private fun initViews(view: View) {

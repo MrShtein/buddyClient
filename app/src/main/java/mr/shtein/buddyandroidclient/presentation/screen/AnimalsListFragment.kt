@@ -36,6 +36,7 @@ import mr.shtein.data.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 

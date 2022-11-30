@@ -25,6 +25,7 @@ import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
+import mr.shtein.ui_util.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.net.ConnectException

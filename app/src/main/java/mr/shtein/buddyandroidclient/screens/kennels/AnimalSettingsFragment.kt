@@ -24,13 +24,13 @@ import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
 import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.ServerErrorException
-import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
 import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
 import mr.shtein.data.model.Animal
 import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
