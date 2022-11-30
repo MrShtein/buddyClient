@@ -26,8 +26,8 @@ import mr.shtein.buddyandroidclient.adapters.SelectionAdapter
 import mr.shtein.buddyandroidclient.databinding.AnimalFilterFragmentBinding
 import mr.shtein.model.FilterAutocompleteItem
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalFilterPresenter
-import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.setInsetsListenerForPadding
 import org.koin.android.ext.android.get
 
 private const val ANIMAL_FILTER_KEY = "animal_filter"

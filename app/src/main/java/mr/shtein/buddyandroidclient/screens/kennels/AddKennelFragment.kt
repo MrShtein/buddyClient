@@ -19,8 +19,6 @@ import kotlinx.coroutines.*
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.buddyandroidclient.adapters.KennelsAdapter
 import mr.shtein.data.exception.ServerErrorException
-import mr.shtein.buddyandroidclient.setInsetsListenerForPadding
-import mr.shtein.buddyandroidclient.setStatusBarColor
 import mr.shtein.buddyandroidclient.utils.KennelDiffUtil
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.data.model.KennelPreview
@@ -28,6 +26,8 @@ import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.util.SharedPreferences
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException

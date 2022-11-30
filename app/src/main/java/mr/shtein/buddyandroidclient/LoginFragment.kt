@@ -27,6 +27,7 @@ import mr.shtein.model.LoginInfo
 import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
+import mr.shtein.ui_util.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.ConnectException

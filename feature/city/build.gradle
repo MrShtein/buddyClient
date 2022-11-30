@@ -42,5 +42,6 @@ dependencies {
     implementation project(path: ':core:navigator')
     implementation project(path: ':core:data')
     implementation project(path: ':core:model')
+    implementation project(path: ':ui_util')
 
 }

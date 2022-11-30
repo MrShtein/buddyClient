@@ -40,6 +40,8 @@ import mr.shtein.data.repository.AnimalCharacteristicsRepository
 import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.ui_util.setStatusBarColor
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject

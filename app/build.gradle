@@ -145,6 +145,7 @@ dependencies {
     huaweiImplementation "com.huawei.agconnect:agconnect-core:$agconnect_core"
     huaweiImplementation "com.huawei.agconnect:agconnect-crash:$agconnect_crash"
 
+    implementation project(path: ":ui_util")
     implementation project(path: ":core:network")
     implementation project(path: ":core:model")
     implementation project(path: ":core:data")
