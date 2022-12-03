@@ -18,7 +18,7 @@ import mr.shtein.kennel.ui.*
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation {
 
-    override fun moveToCityNav() {
+    override fun moveToCityChoiceFromSplashScreen() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
     }
 
@@ -123,7 +123,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         )
     }
 
-    override fun moveToCityChoice() {
+    override fun moveToCityChoiceFromKennelSettings() {
         navController?.navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment)
     }
 
