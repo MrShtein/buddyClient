@@ -14,7 +14,7 @@ interface KennelNavigation {
     fun moveToAddAnimalFromKennelConfirm()
     fun moveToAddAnimalFromKennelHome(kennelId: Int, animalTypeId: Int)
     fun moveToAnimalSettings(animal: Animal)
-    fun moveToCityChoice()
+    fun moveToCityChoiceFromKennelSettings()
     fun moveToKennelConfirmFragment(kennelRequest: KennelRequest)
     fun backToPreviousFragment()
 

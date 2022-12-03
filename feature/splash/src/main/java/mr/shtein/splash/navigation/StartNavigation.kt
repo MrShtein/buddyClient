@@ -3,6 +3,6 @@ package mr.shtein.splash.navigation
 import android.os.Bundle
 
 interface StartNavigation {
-    fun moveToCityNav()
+    fun moveToCityChoiceFromSplashScreen()
     fun moveToAnimalListFromSplash(animalFilter: Bundle)
 }
