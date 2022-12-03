@@ -1,6 +1,7 @@
 plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
+    id "kotlin-parcelize"
 }
 
 android {
@@ -34,6 +35,9 @@ dependencies {
 
     implementation "androidx.core:core-ktx:$core"
     implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
 
     implementation "androidx.fragment:fragment-ktx:$fragment"
+
+    implementation project(path: ':core:data')
 }

@@ -11,7 +11,7 @@ import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
 import mr.shtein.data.exception.LocationServiceException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.`AnimalListView$$State`
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import org.junit.jupiter.api.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource

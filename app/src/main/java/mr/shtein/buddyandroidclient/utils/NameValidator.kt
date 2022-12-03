@@ -7,7 +7,7 @@ import mr.shtein.data.exception.TooShortLengthException
 class NameValidator(
     private val input: TextInputEditText,
     private val inputContainer: TextInputLayout
-) : Validator {
+) : mr.shtein.util.validator.Validator {
 
     companion object {
         private const val INVALID_NAME_MSG: String = "Имя должно быть больше одного знака"

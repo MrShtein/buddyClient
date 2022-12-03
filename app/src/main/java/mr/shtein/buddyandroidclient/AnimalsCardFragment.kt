@@ -27,11 +27,11 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
-import mr.shtein.buddyandroidclient.adapters.AnimalPhotoAdapter
+import mr.shtein.kennel.ui.adapter.AnimalPhotoAdapter
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.Kennel
-import mr.shtein.buddyandroidclient.utils.OnSnapPositionChangeListener
-import mr.shtein.buddyandroidclient.utils.event.SnapOnScrollListener
+import mr.shtein.kennel.util.OnSnapPositionChangeListener
+import mr.shtein.kennel.util.SnapOnScrollListener
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor

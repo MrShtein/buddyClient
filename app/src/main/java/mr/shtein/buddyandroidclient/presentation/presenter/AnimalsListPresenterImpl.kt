@@ -11,7 +11,7 @@ import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
 import mr.shtein.data.exception.LocationServiceException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.*
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.LocationState
 import mr.shtein.data.repository.UserPropertiesRepository

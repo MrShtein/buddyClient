@@ -11,6 +11,7 @@ import mr.shtein.data.model.AnimalFilter
 import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.NetworkService
+import okhttp3.MediaType
 import okhttp3.RequestBody
 
 private const val CREATED_CODE = 201
@@ -104,11 +105,13 @@ class NetworkAnimalRepository(
         }
     }
 
-    override suspend fun addPhotoToTmpDir(token: String, bytes: RequestBody): String =
+    override suspend fun addPhotoToTmpDir(token: String, image: ByteArray): String =
         withContext(Dispatchers.IO) {
+            val requestBody = RequestBody.create(MediaType.get(IMAGE_CONTENT_TYPE), image)
+
             val result = networkService.addPhotoToTmpDir(
                 token = token,
-                bytes = bytes
+                bytes = requestBody
             )
             when (result.code()) {
                 201 -> {
@@ -191,5 +194,9 @@ class NetworkAnimalRepository(
         } else {
             genderId
         }
+    }
+
+    companion object {
+        private const val IMAGE_CONTENT_TYPE = "image/webp"
     }
 }

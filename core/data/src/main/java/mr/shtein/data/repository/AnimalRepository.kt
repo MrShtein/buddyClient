@@ -24,7 +24,7 @@ interface AnimalRepository {
 
     suspend fun addPhotoToTmpDir(
         token: String,
-        bytes: RequestBody
+        image: ByteArray
     ): String
 
     suspend fun updateAnimal(

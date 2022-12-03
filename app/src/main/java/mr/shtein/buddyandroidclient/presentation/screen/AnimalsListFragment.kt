@@ -31,10 +31,8 @@ import mr.shtein.buddyandroidclient.*
 import mr.shtein.buddyandroidclient.adapters.AnimalsAdapter
 import mr.shtein.buddyandroidclient.adapters.OnAnimalCardClickListener
 import mr.shtein.buddyandroidclient.databinding.AnimalsListFragmentBinding
-import mr.shtein.data.model.Animal
-import mr.shtein.data.model.AnimalFilter
 import mr.shtein.buddyandroidclient.presentation.presenter.AnimalsListPresenterImpl
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.get

@@ -1,5 +1,7 @@
 package mr.shtein.data.repository
 
+import mr.shtein.data.model.AvatarWrapper
+import mr.shtein.data.model.KennelRequest
 import mr.shtein.model.KennelPreviewResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -7,9 +9,9 @@ import okhttp3.RequestBody
 interface KennelRepository {
 
     suspend fun addNewKennel(
-        headers: Map<String, String>,
-        kennelRequest: RequestBody,
-        file: MultipartBody.Part?
+        token: String,
+        kennelRequest: KennelRequest,
+        avatarWrapper: AvatarWrapper?
     )
 
     suspend fun getKennelsByPersonId(

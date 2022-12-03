@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor

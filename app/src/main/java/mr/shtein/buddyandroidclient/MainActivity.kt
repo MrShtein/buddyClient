@@ -8,13 +8,10 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.navigator.Navigator
 import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import org.koin.android.ext.android.inject
 
@@ -161,22 +158,6 @@ fun Fragment.changeMarginBottom(view: View, mainActivity: MainActivity) {
     val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.setMargins(0, 0, 0, bottomNavHeight)
     view.layoutParams = layoutParams
-}
-
-
-
-fun Fragment.showBadTokenDialog(userPropertiesRepository: UserPropertiesRepository) {
-    val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
-
-        .setView(R.layout.bad_token_dialog)
-        .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
-        .show()
-
-    val okBtn: Button? = dialog.findViewById(R.id.bad_token_dialog_ok_btn)
-
-    okBtn?.setOnClickListener {
-        userPropertiesRepository.saveUserToken("")
-    }
 }
 
 val FragmentManager.currentNavigationFragment: Fragment?
