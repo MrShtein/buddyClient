@@ -146,12 +146,14 @@ dependencies {
     huaweiImplementation "com.huawei.agconnect:agconnect-crash:$agconnect_crash"
 
     implementation project(path: ":ui_util")
+    implementation project(path: ":util")
     implementation project(path: ":core:network")
     implementation project(path: ":core:model")
     implementation project(path: ":core:data")
     implementation project(path: ":core:navigator")
     implementation project(path: ":feature:splash")
     implementation project(path: ":feature:city")
+    implementation project(path: ":feature:kennel")
 
 
 

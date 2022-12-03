@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test
 
 class EmptyFieldValidatorTest {
 
-    val emptyFieldValidator: EmptyFieldValidator = EmptyFieldValidator()
+    val emptyFieldValidator: mr.shtein.uitl.validator.EmptyFieldValidator =
+        mr.shtein.uitl.validator.EmptyFieldValidator()
     val EMPTY_FIELD_MSG: String = "Данное поле не может быть пустым"
 
     @Test

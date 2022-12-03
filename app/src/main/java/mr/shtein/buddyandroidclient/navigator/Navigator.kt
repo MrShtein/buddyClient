@@ -2,18 +2,26 @@ package mr.shtein.buddyandroidclient.navigator
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
+import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.navigator.BaseNavigator
 import mr.shtein.splash.navigation.StartNavigation
 import mr.shtein.city.navigation.CityNavigation
+import mr.shtein.data.model.Animal
+import mr.shtein.data.model.KennelPreview
+import mr.shtein.data.model.KennelRequest
+import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.kennel.ui.*
 
-class Navigator() : BaseNavigator(), StartNavigation, CityNavigation {
+class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation {
 
     override fun moveToCityNav() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
     }
+
     override fun moveToAnimalListFromSplash(animalFilter: Bundle) {
         navController?.navigate(
             R.id.action_startFragment_to_animalsListFragment, animalFilter
@@ -50,7 +58,88 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation {
         )
     }
 
+    override fun addTransitionsForKennelFlow(fragment: Fragment) {
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.label == KENNEL_SETTINGS_LABEL || destination.label == KENNEL_HOME_LABEL) {
+                fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+            }
+        }
+    }
+
+    override fun moveToKennelSettings() {
+        navController?.navigate(R.id.action_addKennelFragment_to_kennelSettingsFragment)
+    }
+
+    override fun moveToKennelHome(kennel: Bundle) {
+        navController?.navigate(
+            R.id.action_addKennelFragment_to_kennelHomeFragment,
+            kennel
+        )
+    }
+
+    override fun backToPreviousFragment() {
+        navController?.popBackStack()
+    }
+
+    override fun moveToAddAnimal(animal: Animal, isFromSettings: Boolean) {
+        val bundle = bundleOf(
+            ANIMAL_KEY to animal,
+            FROM_SETTINGS_FRAGMENT_KEY to isFromSettings
+        )
+        navController?.navigate(
+            R.id.action_animalSettingsFragment_to_addAnimalFragment,
+            bundle
+        )
+    }
+
+    override fun moveToAddAnimalFromKennelConfirm() {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.addKennelFragment, true)
+            .build()
+        navController?.navigate(
+            R.id.action_kennelConfirmFragment_to_addKennelFragment,
+            null,
+            navOptions
+        )
+    }
+
+    override fun moveToAnimalSettings(animal: Animal) {
+        val bundle = Bundle()
+        bundle.putParcelable(ANIMAL_KEY, animal)
+        navController?.navigate(
+            R.id.action_kennelHomeFragment_to_animalSettingsFragment,
+            bundle
+        )
+    }
+
+    override fun moveToAddAnimalFromKennelHome(kennelId: Int, animalTypeId: Int) {
+        val bundle = bundleOf(
+            KENNEL_ID_KEY to kennelId,
+            ANIMAL_TYPE_ID_KEY to animalTypeId
+        )
+        navController?.navigate(
+            R.id.action_kennelHomeFragment_to_addAnimalFragment,
+            bundle
+        )
+    }
+
+    override fun moveToCityChoice() {
+        navController?.navigate(R.id.action_kennelSettingsFragment_to_cityChoiceFragment)
+    }
+
+    override fun moveToKennelConfirmFragment(kennelRequest: KennelRequest) {
+        val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequest)
+        navController?.navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment, bundle)
+    }
+
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"
+        private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
+        private const val KENNEL_HOME_LABEL = "KennelHomeFragment"
+        private const val ANIMAL_KEY = "animal_key"
+        private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
+        private const val KENNEL_ID_KEY = "kennel_id"
+        private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
+        private const val SETTINGS_DATA_KEY = "settings_data"
     }
 }

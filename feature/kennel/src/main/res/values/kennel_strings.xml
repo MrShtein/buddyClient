@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_kennel_fragment_empty_kennels_text">К сожалению у Вас пока \n нет приютов</string>
+    <string name="add_kennel_fragment_empty_volunteers_text">Хотите поучаствовать\n в волонтерской программе? \n Пишите на адрес - \n mr.shtein61@yandex.ru</string>
+    <string name="add_animal_years_text">Лет</string>
+    <string name="add_animal_moths_text">Мес</string>
+    <string name="year">Год</string>
+    <string name="add_animal_dialog_clarification_text">%1$s питомца</string>
+    <string name="add">Добавить</string>
+    <string name="add_animal_label_text">Добавление животного</string>
+    <string name="add_animal_first_img_description">Первая картинка с животным</string>
+    <string name="add_animal_add_btn_description">Кнопка для добавления новой фотографии</string>
+    <string name="add_animal_cancel_image_btn_description">Кнопка для удаления фотографии животного</string>
+    <string name="add_animal_second_img_description">Вторая картинка с животным</string>
+    <string name="add_animal_third_img_description">Третья картинка с животным</string>
+    <string name="add_animal_fourth_img_description">Четвертая картинка с животным</string>
+    <string name="abbr_month">Мес</string>
+    <string name="month">Месяц</string>
+    <string name="add_animal_description_label_text">Описание:</string>
+    <string name="add_animal_add_btn_text">Сохранить питомца</string>
+    <string name="animal_photo_description">Фото питомца</string>
+    <string name="animal_delete_dialog_clarification_text">Вы точно хотите \n удалить питомца?</string>
+    <string name="animal_delete_error_dialog_clarification_text">Во время удаления что-то пошло не так\n попробуйте немного позже</string>
+    <string name="kennel_confirm_failed_text">Данный приют уже зарегистрирован\n за дополнительной информацией можно\n можно обратиться по адресу mr.shtein61@yandex.ru</string>
+    <string name="kennel_confirm_congratulation">Поздравляем</string>
+    <string name="kennel_confirm_description_text">Приют успешно добавлен\n в ближайшие 2 дня мы свяжемся с вами\nи можно будет публиковать питомцев</string>
+    <string name="animal_in_kennel_avatar_description">Фото животного для входа в профиль животного</string>
+    <string name="kennel_settings_label">Регистрация приюта:</string>
+    <string name="organization_name_label_text">Название организации:</string>
+    <string name="kennel_settings_name_hint">Папа Кот</string>
+    <string name="kennel_settings_phone_number_label">Телефон организации:</string>
+    <string name="kennel_settings_phone_number_hint">+7(928)555-55-55</string>
+    <string name="kennel_settings_email_hint">papakot@yandex.ru</string>
+    <string name="kennel_settings_city_hint">Ростов-на-Дону, Ростовская область</string>
+    <string name="kennel_settings_address_label">Адрес:</string>
+    <string name="kennel_settings_street_hint">Улица</string>
+    <string name="kennel_settings_house_hint">Дом</string>
+    <string name="kennel_settings_building_hint">Корп.</string>
+    <string name="kennel_settings_identification_number_label">ИНН:</string>
+    <string name="kennel_settings_identification_number_hint">0123456789</string>
+
+
+
+    <plurals name="buddy_found_count_without_word_find">
+        <item quantity="zero">%d питомцев</item>
+        <item quantity="one">%d питомец</item>
+        <item quantity="two">%d питомца</item>
+        <item quantity="few">%d питомца</item>
+        <item quantity="many">%d питомцев</item>
+        <item quantity="other">%d питомцев</item>
+    </plurals>
+
+    <plurals name="animal_found_count">
+        <item quantity="zero">%d животных</item>
+        <item quantity="one">%d животное</item>
+        <item quantity="two">%d животных</item>
+        <item quantity="few">%d животных</item>
+        <item quantity="many">%d животных</item>
+        <item quantity="other">%d животных</item>
+    </plurals>
+</resources>

@@ -41,6 +41,7 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.google.code.gson:gson:$gson"
 
     implementation project(path: ":core:network")
     implementation project(path: ":core:model")

@@ -24,7 +24,7 @@ import mr.shtein.data.exception.IncorrectDataException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.model.Person
 import mr.shtein.model.LoginInfo
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.ui_util.setInsetsListenerForPadding

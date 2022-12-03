@@ -10,6 +10,7 @@ import mr.shtein.data.exception.PasswordsIsDifferentException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.exception.TooShortLengthException
 import mr.shtein.data.repository.UserRepository
+import mr.shtein.util.validator.EmptyFieldValidator
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 

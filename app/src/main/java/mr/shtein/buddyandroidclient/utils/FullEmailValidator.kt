@@ -9,6 +9,8 @@ import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.model.EmailCheckRequest
+import mr.shtein.util.validator.EmptyFieldValidator
+import mr.shtein.util.validator.Validator
 import org.koin.core.component.KoinComponent
 import java.net.ConnectException
 import java.net.SocketTimeoutException
