@@ -70,7 +70,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
 
             val city = userPropertiesRepository.getUserCity()
             val animalTypeFilter = if (city == "") {
-                navigator.moveToCityNav()
+                navigator.moveToCityChoiceFromSplashScreen()
             } else {
                 if (animalFilter.animalTypeId == null) {
                     val animalTypes = mutableListOf(DOG_TYPE_KEY, CAT_TYPE_KEY)

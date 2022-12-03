@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.screens.profile
+package mr.shtein.profile.ui
 
 import android.net.Uri
 import android.os.Bundle
@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment
 
 import android.view.*
 import android.widget.*
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
-import mr.shtein.buddyandroidclient.R
-import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.profile.navigation.ProfileNavigation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.user.R
 import org.koin.android.ext.android.inject
 
 
@@ -27,6 +27,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private var personSettingsBtn: ImageButton? = null
     private lateinit var exitBtn: MaterialButton
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val navigator: ProfileNavigation by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +67,13 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
     private fun setListeners() {
         personSettingsBtn?.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_userSettingsFragment)
+            navigator.moveToUserSettings()
+
         }
         exitBtn.setOnClickListener {
-            userPropertiesRepository.removeAll() //TODO Проверить нужно ли еще что-то стирать
-            findNavController().navigate(R.id.action_userProfileFragment_to_cityChoiceFragment)
+            userPropertiesRepository.removeAll()
+            navigator.moveToCityChoiceFromUserProfile()
+
         }
     }
 
@@ -91,7 +94,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
     private fun setImageToAvatar() {
         val imageUri = userPropertiesRepository.getUserUri()
         if (imageUri == "") {
-            personAvatarImg?.setImageResource(R.drawable.user_photo_placeholder)
+            personAvatarImg?.setImageResource(R.drawable.light_person_placeholder)
         } else {
             personAvatarImg?.setImageURI(Uri.parse(imageUri))
         }

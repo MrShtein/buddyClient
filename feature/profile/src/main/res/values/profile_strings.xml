@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_name_title">Имя:</string>
+    <string name="profile_status_title">Статус:</string>
+    <string name="exit_btn">Выйти</string>
+
+</resources>

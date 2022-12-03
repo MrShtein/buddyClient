@@ -50,9 +50,6 @@
     <string name="animal_list_btn_name">Лента</string>
     <string name="favorite_btn_name">Избранное</string>
     <string name="kennels_btn_name">Приюты</string>
-    <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
-    <string name="profile_name_title">Имя:</string>
-    <string name="profile_status_title">Статус:</string>
     <string name="profile_volonteer_btn_text">Стать волонтером</string>
     <string name="registration_or_entrance_str">Регистрация/Вход</string>
     <string name="registr_or_entrance_text">Вам необходимо\n выполнить вход или зарегистрироваться</string>
@@ -113,7 +110,6 @@
     <string name="shelter">Приют</string>
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
-    <string name="exit_btn">Выйти</string>
     <string name="forget_password_question"><u>Забыли пароль?</u></string>
     <string name="password_reset_or_rebuild_headline">Восстановление пароля</string>
     <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
