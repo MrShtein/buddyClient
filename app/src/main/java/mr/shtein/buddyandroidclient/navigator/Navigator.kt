@@ -11,12 +11,12 @@ import mr.shtein.navigator.BaseNavigator
 import mr.shtein.splash.navigation.StartNavigation
 import mr.shtein.city.navigation.CityNavigation
 import mr.shtein.data.model.Animal
-import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.ui.*
+import mr.shtein.profile.navigation.ProfileNavigation
 
-class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation {
+class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation,
+    ProfileNavigation {
 
     override fun moveToCityChoiceFromSplashScreen() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
@@ -131,6 +131,15 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         val bundle = bundleOf(SETTINGS_DATA_KEY to kennelRequest)
         navController?.navigate(R.id.action_kennelSettingsFragment_to_kennelConfirmFragment, bundle)
     }
+
+    override fun moveToUserSettings() {
+        navController?.navigate(R.id.action_userProfileFragment_to_userSettingsFragment)
+    }
+
+    override fun moveToCityChoiceFromUserProfile() {
+        navController?.navigate(R.id.action_userProfileFragment_to_cityChoiceFragment)
+    }
+
 
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"

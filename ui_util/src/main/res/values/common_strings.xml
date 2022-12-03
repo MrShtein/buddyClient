@@ -28,6 +28,7 @@
     <string name="e_mail">E-mail:</string>
     <string name="city_label">Город:</string>
     <string name="settings_save_btn">Сохранить</string>
+    <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
 
 
     <plurals name="buddy_found_count">

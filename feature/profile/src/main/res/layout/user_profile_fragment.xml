@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="centerCrop"
         app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
-        tools:src="@drawable/user_photo_placeholder"/>
+        tools:src="@drawable/light_person_placeholder"/>
 
     <View
         android:id="@+id/dividerPhotoHintAndNameText"
