@@ -117,9 +117,6 @@
 
         </androidx.constraintlayout.motion.widget.MotionLayout>
 
-
-
-
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>

@@ -11,6 +11,7 @@
     <color name="grey3">#999999</color>
     <color name="dialog_primary_color">#E1EEf3</color>
     <color name="dialog_clarification_text_color">#494547</color>
+    <color name="input_unfocused">#8CFFFFFF</color>
 
 
 </resources>

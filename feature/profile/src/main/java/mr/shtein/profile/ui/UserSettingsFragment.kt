@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.screens.profile
+package mr.shtein.profile.ui
 
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -18,7 +18,6 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
@@ -29,17 +28,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import mr.shtein.buddyandroidclient.R
-import mr.shtein.model.PersonRequest
-import mr.shtein.model.CityChoiceItem
-import mr.shtein.model.EmailCheckRequest
-import mr.shtein.buddyandroidclient.network.callback.MailCallback
-import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
-import mr.shtein.buddyandroidclient.utils.*
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
+import mr.shtein.model.CityChoiceItem
+import mr.shtein.model.EmailCheckRequest
+import mr.shtein.model.PersonRequest
+import mr.shtein.profile.navigation.ProfileNavigation
 import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.user.R
+import mr.shtein.util.validator.FullEmailValidator
+import mr.shtein.util.validator.MailCallback
+import mr.shtein.util.validator.PasswordCallBack
+import mr.shtein.util.validator.PasswordEmptyFieldValidator
 import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -66,7 +67,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private var personId by Delegates.notNull<Long>()
     private var cityId by Delegates.notNull<Long>()
     private var isFromCityChoice: Boolean? = null
-
 
     private lateinit var userName: TextInputEditText
     private lateinit var userSurname: TextInputEditText
@@ -95,6 +95,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
     private val networkUserRepository: UserRepository by inject()
+    private val navigator: ProfileNavigation by inject()
 
     private var motionLayout: MotionLayout? = null
 
@@ -106,7 +107,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
 
-        setFragmentResultListener(CITY_REQUEST_KEY) { requestKey, bundle ->
+        setFragmentResultListener(CITY_REQUEST_KEY) { _, bundle ->
             val newCity = bundle.getString(CITY_BUNDLE_KEY)
             isFromCityChoice = bundle.getBoolean(IS_FROM_CITY_BUNDLE_KEY)
             if (newCity != null) setCity(newCity)
@@ -260,7 +261,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         city.addTextChangedListener(textWatcher)
         city.setOnFocusChangeListener { _, isFocused ->
             if (isFocused) {
-                findNavController().navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
+                navigator.moveToCItyChoiceFromUserSettings()
             }
         }
 
@@ -465,7 +466,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
-
         val positiveDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_positive_btn)
         val negativeDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_negative_btn)
         val okBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_ok_btn)
@@ -482,7 +482,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
         okBtn?.setOnClickListener {
             dialog.dismiss()
-            findNavController().popBackStack()
+            navigator.backToPreviousFragment()
         }
     }
 

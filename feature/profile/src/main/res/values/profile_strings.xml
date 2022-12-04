@@ -3,5 +3,16 @@
     <string name="profile_name_title">Имя:</string>
     <string name="profile_status_title">Статус:</string>
     <string name="exit_btn">Выйти</string>
-
+    <string name="user_settings_label">Настройки</string>
+    <string name="add_photo_to_profile_description">Кнопка для добавления фотографии в профиль</string>
+    <string name="user_settings_surname_label">Фамилия:</string>
+    <string name="user_settings_men_btn">Мужской</string>
+    <string name="user_settings_women_btn">Женский</string>
+    <string name="user_settings_phone_label">Телефон:</string>
+    <string name="user_settings_change_pwd_label">Сменить пароль:</string>
+    <string name="user_settings_old_pwd_hint">Старый пароль</string>
+    <string name="user_settings_new_pwd_hint">Новый пароль</string>
+    <string name="user_settings_repeat_new_pwd_hint">Повторите новый пароль</string>
+    <string name="user_settings_dialog_clarification_text">Вы точно хотите \n изменить настройки?</string>
+    <string name="user_settings_dialog_clarification_text_end">Поздравляем Ваш пароль успешно\n изменен</string>
 </resources>

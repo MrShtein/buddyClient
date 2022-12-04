@@ -1,16 +1,13 @@
-package mr.shtein.buddyandroidclient.utils
+package mr.shtein.util.validator
 
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import mr.shtein.buddyandroidclient.network.callback.MailCallback
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.model.EmailCheckRequest
-import mr.shtein.util.validator.EmptyFieldValidator
-import mr.shtein.util.validator.Validator
 import org.koin.core.component.KoinComponent
 import java.net.ConnectException
 import java.net.SocketTimeoutException
