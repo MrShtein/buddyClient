@@ -1,16 +1,14 @@
-package mr.shtein.buddyandroidclient.utils
+package mr.shtein.util.validator
 
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import mr.shtein.model.PasswordCheckRequest
-import mr.shtein.buddyandroidclient.network.callback.PasswordCallBack
 import mr.shtein.data.exception.EmptyFieldException
 import mr.shtein.data.exception.PasswordsIsDifferentException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.exception.TooShortLengthException
 import mr.shtein.data.repository.UserRepository
-import mr.shtein.util.validator.EmptyFieldValidator
+import mr.shtein.model.PasswordCheckRequest
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 

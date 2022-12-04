@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.profile.UserProfileFragment"
+        android:name="mr.shtein.profile.ui.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/user_profile_fragment">
         <action
@@ -105,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/userSettingsFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment"
+        android:name="mr.shtein.profile.ui.UserSettingsFragment"
         android:label="UserSettingsFragment"
         tools:layout="@layout/user_settings_fragment">
         <action

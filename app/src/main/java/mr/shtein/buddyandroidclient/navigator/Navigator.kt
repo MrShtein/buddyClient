@@ -140,6 +140,9 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         navController?.navigate(R.id.action_userProfileFragment_to_cityChoiceFragment)
     }
 
+    override fun moveToCItyChoiceFromUserSettings() {
+        navController?.navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
+    }
 
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"

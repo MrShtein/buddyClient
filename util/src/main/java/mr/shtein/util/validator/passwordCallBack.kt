@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.network.callback
+package mr.shtein.util.validator
 
 import java.lang.Exception
 

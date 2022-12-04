@@ -44,4 +44,20 @@
         <item name="android:paddingBottom">15dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="MyLayout" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="backgroundTint">@color/input_background</item>
+        <item name="colorPrimary">@color/cian5</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="shapeAppearanceLargeComponent">@style/mySt</item>
+    </style>
+
+    <style name="mySt" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
+    </style>
+
+    <style name="ShoppingList.BottomSheetDialog" parent="Widget.Material3.BottomSheet">
+        <item name="backgroundTint">@color/white</item>
+    </style>
 </resources>

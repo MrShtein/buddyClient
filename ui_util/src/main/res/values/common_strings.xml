@@ -29,6 +29,9 @@
     <string name="city_label">Город:</string>
     <string name="settings_save_btn">Сохранить</string>
     <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
+    <string name="name_label_text">Имя:</string>
+    <string name="gender_label">Пол:</string>
+
 
 
     <plurals name="buddy_found_count">

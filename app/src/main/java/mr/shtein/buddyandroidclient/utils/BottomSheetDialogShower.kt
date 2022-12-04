@@ -15,7 +15,7 @@ class BottomSheetDialogShower {
     companion object {
 
         fun createAndShowBottomSheetDialog(view: View, navController: NavController) {
-            val bottomSheetDialog = BottomSheetDialog(view.context, R.style.myst)
+            val bottomSheetDialog = BottomSheetDialog(view.context, R.style.mySt)
             bottomSheetDialog.setContentView(R.layout.signup_and_signin_bottom_sheet)
             val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
 

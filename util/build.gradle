@@ -35,6 +35,11 @@ dependencies {
     implementation "androidx.core:core-ktx:$core"
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_core"
+
+    implementation "io.insert-koin:koin-android:$koin"
 
     implementation project(path: ":core:data")
+    implementation project(path: ":core:model")
+    implementation project(path: ":ui_util")
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.data.db.CityDbHelper
-import mr.shtein.buddyandroidclient.utils.PasswordEmptyFieldValidator
+import mr.shtein.util.validator.PasswordEmptyFieldValidator
 import mr.shtein.data.util.SharedPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
