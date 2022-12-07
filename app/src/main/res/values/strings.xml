@@ -6,7 +6,6 @@
     <string name="my_button">MyButton</string>
     <string name="welcome_text">МЫ РАДЫ\n ПРИВЕТСТВОВАТЬ\n ТЕБЯ В\n ПРИЛОЖЕНИИ BUDDY!</string>
     <string name="city_choice_text">ПРОСТО\n ВЫБЕРИ <b>СВОЙ</b>\n <b>ГОРОД</b> И МЫ\n НАЙДЕМ <b>ТЕБЕ</b>\n <b>ПИТОМЦА</b></string>
-    <string name="next">ДАЛЕЕ</string>
     <string name="button_description">It\'s a button man</string>
     <string name="city_text">Город:</string>
     <string name="cat_photo_description">It\'s a photo of nice cat</string>
@@ -28,9 +27,7 @@
     <string name="button_for_email">Button for email: %1$s</string>
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
-    <string name="login_main_text">Вход</string>
     <string name="make_password">Придумайте пароль:</string>
-    <string name="password">Password:</string>
     <string name="registration_kennel_name">Название приюта:</string>
     <string name="registration_main_text">Регистрация</string>
     <string name="registration_kennel_name_text">Название приюта:</string>
@@ -45,7 +42,6 @@
     <string name="avatar">Avatar</string>
     <string name="name_surname_text">Ф.И.О.</string>
     <string name="kennel_identify_num">ИНН предприятия:</string>
-    <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
     <string name="profile_btn_name">Профиль</string>
     <string name="animal_list_btn_name">Лента</string>
     <string name="favorite_btn_name">Избранное</string>
@@ -96,7 +92,6 @@
     <string name="shelter">Приют</string>
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
-    <string name="forget_password_question"><u>Забыли пароль?</u></string>
     <string name="admin_email">mr.shtein61@yandex.ru</string>
     <string name="email_subject">Сброс пароля</string>
     <string name="animal_filter_label_text">Фильтр</string>

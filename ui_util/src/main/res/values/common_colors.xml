@@ -13,6 +13,7 @@
     <color name="dialog_clarification_text_color">#494547</color>
     <color name="input_unfocused">#8CFFFFFF</color>
     <color name="black_10">#1A000000</color>
+    <color name="black_0">#00000000</color>
 
 
 </resources>

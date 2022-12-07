@@ -145,6 +145,28 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         navController?.navigate(R.id.action_userSettingsFragment_to_cityChoiceFragment)
     }
 
+    override fun moveToResetPassword() {
+        navController?.navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+    }
+
+    override fun moveToAnimalListFragment(fromFragment: FragmentsListForAssigningAnimation) {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.animalsListFragment, false)
+            .build()
+        val lastFragmentBundle = bundleOf().apply {
+            putParcelable(
+                LAST_FRAGMENT_KEY,
+                FragmentsListForAssigningAnimation.LOGIN
+            )
+        }
+
+        navController?.navigate(
+            R.id.action_loginFragment_to_animalsListFragment,
+            lastFragmentBundle,
+            navOptions
+        )
+    }
+
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"
         private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
