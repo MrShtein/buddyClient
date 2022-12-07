@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient
+package mr.shtein.auth.ui
 
 import android.os.Bundle
 import android.view.Gravity
@@ -9,10 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +17,8 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mr.shtein.auth.R
+import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.data.exception.IncorrectDataException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.model.Person
@@ -46,6 +45,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var coroutine: CoroutineScope
     private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val navigator: AuthNavigation by inject()
 
     override fun onStart() {
         super.onStart()
@@ -106,7 +106,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val forgotPasswordBtn = view.findViewById<Button>(R.id.login_fragment_forgot_password_btn)
 
         forgotPasswordBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+            navigator.moveToResetPassword()
         }
 
         button.setOnClickListener {
@@ -138,16 +138,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 userPropertiesRepository.saveUserPhoneNumber(loginInfo.phone)
                 userPropertiesRepository.saveUserGender(loginInfo.gender)
 
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.animalsListFragment, false)
-                    .build()
-                val lastFragmentBundle = bundleOf()
-                lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, FragmentsListForAssigningAnimation.LOGIN)
-                findNavController().navigate(
-                    R.id.action_loginFragment_to_animalsListFragment,
-                    lastFragmentBundle,
-                    navOptions
-                )
+                navigator.moveToAnimalListFragment(FragmentsListForAssigningAnimation.LOGIN)
             } catch (ex: IncorrectDataException) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setMessage("Вы ввели неправильный логин или пароль")

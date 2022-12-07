@@ -4,5 +4,10 @@
     <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
     <string name="reset_password_btn">Сбросить пароль</string>
     <string name="reset_password_success_phrase">Новый пароль успешно отправлен</string>
+    <string name="login_main_text">Вход</string>
+    <string name="password">Password:</string>
+    <string name="next">ДАЛЕЕ</string>
+    <string name="forget_password_question"><u>Забыли пароль?</u></string>
+    <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
 
 </resources>
