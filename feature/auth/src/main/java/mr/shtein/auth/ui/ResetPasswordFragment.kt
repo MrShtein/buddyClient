@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.screens
+package mr.shtein.auth.ui
 
 import android.os.Bundle
 import android.view.Gravity
@@ -9,13 +9,13 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import mr.shtein.buddyandroidclient.R
-import mr.shtein.buddyandroidclient.databinding.ResetPasswordFragmentBinding
+import mr.shtein.auth.R
+import mr.shtein.auth.databinding.ResetPasswordFragmentBinding
+import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.ui_util.setInsetsListenerForPadding
@@ -31,6 +31,7 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
     private var _binding: ResetPasswordFragmentBinding? = null
     private val binding get() = _binding!!
     private val retrofitUserRepository: UserRepository by inject()
+    private val navigator: AuthNavigation by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = ResetPasswordFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
@@ -87,14 +88,14 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
                         LOGIN_REQUEST_KEY,
                         bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to result)
                     )
-                    findNavController().popBackStack()
+                    navigator.backToPreviousFragment()
                 } else {
                     val exText = getString(R.string.server_unavailable_msg)
                     setFragmentResult(
                         LOGIN_REQUEST_KEY,
                         bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)
                     )
-                    findNavController().popBackStack()
+                    navigator.backToPreviousFragment()
                 }
             } catch (ex: ConnectException) {
                 val exText = getString(R.string.server_unavailable_msg)
@@ -102,20 +103,20 @@ class ResetPasswordFragment : Fragment(R.layout.reset_password_fragment) {
                     LOGIN_REQUEST_KEY,
                     bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)
                 )
-                findNavController().popBackStack()
+                navigator.backToPreviousFragment()
             } catch (ex: SocketTimeoutException) {
                 val exText = getString(R.string.server_unavailable_msg)
                 setFragmentResult(
                     LOGIN_REQUEST_KEY,
                     bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to exText)
                 )
-                findNavController().popBackStack()
+                navigator.backToPreviousFragment()
             } catch (ex: ServerErrorException) {
                 setFragmentResult(
                     LOGIN_REQUEST_KEY,
                     bundleOf(MSG_FOR_LOGIN_FRAGMENT_KEY to ex.message)
                 )
-                findNavController().popBackStack()
+                navigator.backToPreviousFragment()
             }
         }
     }

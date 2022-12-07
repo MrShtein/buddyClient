@@ -13,7 +13,6 @@
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
     <color name="graphite5">#455B66</color>
 
-    <color name="black_10">#1A000000</color>
     <color name="black_15">#26000000</color>
     <color name="input_focused_underline_and_hint">#FFC700</color>
     <color name="cian4">#1BBDD4</color>

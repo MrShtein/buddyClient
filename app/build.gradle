@@ -155,6 +155,7 @@ dependencies {
     implementation project(path: ":feature:city")
     implementation project(path: ":feature:kennel")
     implementation project(path: ":feature:profile")
+    implementation project(path: ":feature:auth")
 
 
 

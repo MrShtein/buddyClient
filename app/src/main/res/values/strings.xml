@@ -97,12 +97,8 @@
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
     <string name="forget_password_question"><u>Забыли пароль?</u></string>
-    <string name="password_reset_or_rebuild_headline">Восстановление пароля</string>
-    <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
-    <string name="reset_password_success_phrase">Новый пароль успешно отправлен</string>
     <string name="admin_email">mr.shtein61@yandex.ru</string>
     <string name="email_subject">Сброс пароля</string>
-    <string name="reset_password_btn">Сбросить пароль</string>
     <string name="animal_filter_label_text">Фильтр</string>
     <string name="animal_types_label">Типы животных:</string>
     <string name="any_gender_label">Любой</string>
