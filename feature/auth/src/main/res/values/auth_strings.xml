@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_reset_or_rebuild_headline">Восстановление пароля</string>
+    <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
+    <string name="reset_password_btn">Сбросить пароль</string>
+    <string name="reset_password_success_phrase">Новый пароль успешно отправлен</string>
+
+</resources>

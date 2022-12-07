@@ -5,6 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import com.google.android.material.transition.MaterialSharedAxis
+import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.navigator.BaseNavigator
@@ -16,7 +17,7 @@ import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.profile.navigation.ProfileNavigation
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation,
-    ProfileNavigation {
+    ProfileNavigation, AuthNavigation {
 
     override fun moveToCityChoiceFromSplashScreen() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
