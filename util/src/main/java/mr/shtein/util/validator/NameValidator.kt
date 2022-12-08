@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.utils
+package mr.shtein.util.validator
 
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -7,7 +7,7 @@ import mr.shtein.data.exception.TooShortLengthException
 class NameValidator(
     private val input: TextInputEditText,
     private val inputContainer: TextInputLayout
-) : mr.shtein.util.validator.Validator {
+) : Validator {
 
     companion object {
         private const val INVALID_NAME_MSG: String = "Имя должно быть больше одного знака"

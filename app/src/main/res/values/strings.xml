@@ -27,9 +27,7 @@
     <string name="button_for_email">Button for email: %1$s</string>
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
-    <string name="make_password">Придумайте пароль:</string>
     <string name="registration_kennel_name">Название приюта:</string>
-    <string name="registration_main_text">Регистрация</string>
     <string name="registration_kennel_name_text">Название приюта:</string>
     <string name="registration_address_text">Адрес:</string>
     <string name="phone_number_text">Контактный телефон:</string>
@@ -38,7 +36,6 @@
     <string name="street_name_hint">Улица</string>
     <string name="house_number_hint">Дом</string>
     <string name="phone_number_hint">+7-928-128-28-28</string>
-    <string name="repeat_password">Повторите пароль</string>
     <string name="avatar">Avatar</string>
     <string name="name_surname_text">Ф.И.О.</string>
     <string name="kennel_identify_num">ИНН предприятия:</string>
@@ -53,7 +50,6 @@
     <string name="registration_btn_text">Регистрация</string>
     <string name="project_logo_dog_sun_and_grass">Логотип приложения - собака, солнце и трава</string>
     <string name="input_hint_for_city_choice">Введите Ваш город</string>
-    <string name="profile_name_hint">Имя</string>
     <string name="user_settings_old_pwd_label">Старый пароль</string>
     <string name="city_choice_description_text">Введите ваш город и мы покажем животных рядом с вами</string>
     <string name="add_kennel_fragment_kennels_btn_text">Приюты</string>
@@ -88,7 +84,6 @@
     <string name="destination_btn_description">Кнопка для определения местоположения питомца</string>
     <string name="location_failure_text">К сожалению сейчас не получается узнать Ваше местоположение, попробуйте позже</string>
     <string name="socket_timeout_exception_text">К сожалению сейчас нет доступа к интернету, попробуйте позже</string>
-    <string name="bad_data_text">Ничего не вышло, проверьте введенные данные</string>
     <string name="shelter">Приют</string>
     <string name="write">Написать</string>
     <string name="Call">Позвонить</string>
