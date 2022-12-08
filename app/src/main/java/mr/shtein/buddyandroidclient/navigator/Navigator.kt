@@ -167,6 +167,15 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         )
     }
 
+    override fun moveToLogin(isFromRegistration: Boolean) {
+        val bundle: Bundle = Bundle()
+        bundle.putBoolean(IS_FROM_REGISTRATION_KEY, isFromRegistration)
+        navController?.navigate(
+            R.id.action_userRegistrationFragment_to_loginFragment,
+            bundle
+        )
+    }
+
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"
         private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
@@ -176,5 +185,6 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         private const val KENNEL_ID_KEY = "kennel_id"
         private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
         private const val SETTINGS_DATA_KEY = "settings_data"
+        private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
     }
 }

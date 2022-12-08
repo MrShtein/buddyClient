@@ -9,5 +9,10 @@
     <string name="next">ДАЛЕЕ</string>
     <string name="forget_password_question"><u>Забыли пароль?</u></string>
     <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
+    <string name="registration_main_text">Регистрация</string>
+    <string name="profile_name_hint">Имя</string>
+    <string name="make_password">Придумайте пароль:</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="bad_data_text">Ничего не вышло, проверьте введенные данные</string>
 
 </resources>

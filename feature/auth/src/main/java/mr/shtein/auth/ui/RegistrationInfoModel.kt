@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.viewmodels
+package mr.shtein.auth.ui
 
 import androidx.lifecycle.ViewModel
 

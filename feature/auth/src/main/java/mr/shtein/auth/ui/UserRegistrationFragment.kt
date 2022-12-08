@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient
+package mr.shtein.auth.ui
 
 import android.os.Bundle
 import android.view.*
@@ -8,24 +8,24 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.transition.Slide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mr.shtein.auth.R
+import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.model.Person
 import mr.shtein.model.EmailCheckRequest
-import mr.shtein.util.validator.FullEmailValidator
-import mr.shtein.buddyandroidclient.utils.NameValidator
-import mr.shtein.util.validator.PasswordEmptyFieldValidator
-import mr.shtein.buddyandroidclient.viewmodels.RegistrationInfoModel
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.util.validator.FullEmailValidator
 import mr.shtein.util.validator.MailCallback
+import mr.shtein.util.validator.NameValidator
+import mr.shtein.util.validator.PasswordEmptyFieldValidator
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.net.ConnectException
@@ -41,6 +41,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val networkUserRepository: UserRepository by inject()
     private val passwordValidator: PasswordEmptyFieldValidator by inject()
+    private val navigator: AuthNavigation by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -216,12 +217,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         coroutine.launch {
             try {
                 retrofitUserRepository.signUp(person)
-                val bundle: Bundle = Bundle()
-                bundle.putBoolean("is_from_registration", true)
-                findNavController().navigate(
-                    R.id.action_userRegistrationFragment_to_loginFragment,
-                    bundle
-                )
+                navigator.moveToLogin(IS_FROM_REGISTRATION_FLAG)
+
             } catch (ex: IncorrectDataException) {
                 val exText = getString(R.string.bad_data_text)
                 Toast.makeText(requireContext(), exText, Toast.LENGTH_LONG).show()
@@ -295,6 +292,9 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         return null
     }
 
+    companion object {
+        const val IS_FROM_REGISTRATION_FLAG = true
+    }
 
 }
 
