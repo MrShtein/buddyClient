@@ -21,10 +21,9 @@ class BuddyApplication : Application() {
             androidContext(this@BuddyApplication)
             modules(
                 listOf(
-                    appModule,
                     networkModule,
                     repositoryModule,
-                    interactorModule,
+                    locationServiceModule,
                     presenterModule,
                     mapperModule,
                     navigatorModule,
