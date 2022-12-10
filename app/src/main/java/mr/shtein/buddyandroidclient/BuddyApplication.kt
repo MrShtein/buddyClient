@@ -7,6 +7,7 @@ import mr.shtein.data.di.mapperModule
 import mr.shtein.data.di.repositoryModule
 import mr.shtein.data.di.sharedPreferencesModule
 import mr.shtein.network.di.networkModule
+import mr.shtein.util.di.validatorModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,7 +29,8 @@ class BuddyApplication : Application() {
                     mapperModule,
                     navigatorModule,
                     sharedPreferencesModule,
-                    cityModule
+                    cityModule,
+                    validatorModule
                 )
             )
         }
