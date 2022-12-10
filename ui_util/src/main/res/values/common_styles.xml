@@ -53,7 +53,7 @@
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
     </style>
 
-    <style name="mySt" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
+    <style name="Buddy.Widget.BottomSheetDialog.Auth" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
     </style>
 

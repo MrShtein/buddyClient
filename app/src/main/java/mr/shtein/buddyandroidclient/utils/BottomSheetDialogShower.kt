@@ -15,12 +15,11 @@ class BottomSheetDialogShower {
     companion object {
 
         fun createAndShowBottomSheetDialog(view: View, navController: NavController) {
-            val bottomSheetDialog = BottomSheetDialog(view.context, R.style.mySt)
+            val bottomSheetDialog = BottomSheetDialog(view.context, R.style.Buddy_Widget_BottomSheetDialog_Auth)
             bottomSheetDialog.setContentView(R.layout.signup_and_signin_bottom_sheet)
-            val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
 
             val toRegistrationButton: Button? =
-                bottomSheet?.findViewById(R.id.to_registration_fragment_button)
+                bottomSheetDialog.findViewById(R.id.to_registration_fragment_button)
             with(toRegistrationButton) {
                 this?.setOnClickListener {
                     bottomSheetDialog.dismiss()
@@ -29,16 +28,13 @@ class BottomSheetDialogShower {
             }
 
             val toLoginFragmentButton: Button? =
-                bottomSheet?.findViewById(R.id.to_login_fragment_button)
+                bottomSheetDialog.findViewById(R.id.to_login_fragment_button)
             with(toLoginFragmentButton) {
                 this?.setOnClickListener {
                     bottomSheetDialog.dismiss()
                     navController.navigate(R.id.action_animalsListFragment_to_loginFragment)
                 }
             }
-
-            bottomSheet?.setBackgroundResource(R.color.transparent)
-
             bottomSheetDialog.show()
         }
     }
