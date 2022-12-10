@@ -5,10 +5,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import mr.shtein.buddyandroidclient.BuildConfig
 import mr.shtein.data.db.CityDbHelper
 import mr.shtein.util.validator.PasswordEmptyFieldValidator
-import mr.shtein.data.util.SharedPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -19,24 +17,7 @@ val appModule: Module = module {
     single { CancellationTokenSource() }
     factory { CityDbHelper(androidContext(), get()) }
     factory { PasswordEmptyFieldValidator(get(), provideCoroutineScope()) }
-    single(named("userStore")) { provideUserStore(androidContext()) }
-    single(named("kennelStore")) { provideKennelStore(androidContext()) }
-    single(named("databaseStore")) { provideDatabaseStore(androidContext()) }
-    single(named("filterStore")) { provideFilterStore(androidContext()) }
-
 }
-
-private fun provideUserStore(context: Context) =
-    SharedPreferences(context, BuildConfig.USER_STORAGE_NAME)
-
-private fun provideKennelStore(context: Context) =
-    SharedPreferences(context, BuildConfig.KENNEL_STORAGE_NAME)
-
-private fun provideDatabaseStore(context: Context) =
-    SharedPreferences(context, BuildConfig.DATABASE_STORAGE_NAME)
-
-private fun provideFilterStore(context: Context) =
-    SharedPreferences(context, BuildConfig.FILTER_STORAGE_NAME)
 
 private fun provideFusedLocationClient(context: Context) =
     LocationServices.getFusedLocationProviderClient(context)
