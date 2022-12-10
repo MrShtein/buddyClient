@@ -1,4 +1,4 @@
-package mr.shtein.buddyandroidclient.navigator
+package mr.shtein.buddyandroidclient.navigation
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
@@ -17,7 +17,7 @@ import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.profile.navigation.ProfileNavigation
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation,
-    ProfileNavigation, AuthNavigation {
+    ProfileNavigation, AuthNavigation, BottomSheetNavigation {
 
     override fun moveToCityChoiceFromSplashScreen() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
@@ -173,6 +173,45 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         navController?.navigate(
             R.id.action_userRegistrationFragment_to_loginFragment,
             bundle
+        )
+    }
+
+    override fun moveFromAnimalListToUserProfile() {
+        navController?.navigate(R.id.action_animalsListFragment_to_userProfileFragment)
+    }
+
+    override fun moveFromAddKennelToUserProfile() {
+        navController?.navigate(R.id.action_addKennelFragment_to_userProfileFragment)
+    }
+
+    override fun moveFromAnimalListToAddKennel(fromFragment: FragmentsListForAssigningAnimation) {
+        val lastFragmentBundle = bundleOf()
+        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, fromFragment)
+        navController?.navigate(
+            R.id.action_animalsListFragment_to_addKennelFragment,
+            lastFragmentBundle
+        )
+    }
+
+    override fun moveFromUserProfileToAddKennel() {
+        navController?.navigate(R.id.action_userProfileFragment_to_addKennelFragment)
+    }
+
+    override fun moveFromAddKennelToAnimalList(fromFragment: FragmentsListForAssigningAnimation) {
+        val lastFragmentBundle = bundleOf()
+        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, fromFragment)
+        navController?.navigate(
+            R.id.action_addKennelFragment_to_animalsListFragment,
+            lastFragmentBundle
+        )
+    }
+
+    override fun moveFromUserProfileToAnimalList(fromFragment: FragmentsListForAssigningAnimation) {
+        val lastFragmentBundle = bundleOf()
+        lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, fromFragment)
+        navController?.navigate(
+            R.id.action_userProfileFragment_to_animalsListFragment,
+            lastFragmentBundle
         )
     }
 
