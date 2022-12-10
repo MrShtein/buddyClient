@@ -10,7 +10,7 @@ import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterView
 import mr.shtein.data.model.AnimalFilter
-import mr.shtein.data.repository.CityRepository
+import mr.shtein.city.data.CityRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.FilterAutocompleteItem

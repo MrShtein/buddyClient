@@ -1,4 +1,4 @@
-package mr.shtein.city.ui
+package mr.shtein.city.presentation
 
 import android.content.Context
 import android.os.Bundle
@@ -23,9 +23,9 @@ import kotlinx.coroutines.launch
 import mr.shtein.city.R
 import mr.shtein.city.navigation.CityNavigation
 import mr.shtein.city.adapter.CityArrayAdapter
-import mr.shtein.data.db.CityDbHelper
-import mr.shtein.data.repository.CityRepository
-import mr.shtein.data.repository.DatabasePropertiesRepository
+import mr.shtein.city.data.CityDbHelper
+import mr.shtein.city.data.CityRepository
+import mr.shtein.city.data.DatabasePropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.ui_util.setInsetsListenerForPadding

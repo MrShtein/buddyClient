@@ -2,6 +2,7 @@ package mr.shtein.buddyandroidclient
 
 import android.app.Application
 import mr.shtein.buddyandroidclient.di.module.*
+import mr.shtein.city.di.cityModule
 import mr.shtein.data.di.mapperModule
 import mr.shtein.data.di.repositoryModule
 import mr.shtein.data.di.sharedPreferencesModule
@@ -26,7 +27,8 @@ class BuddyApplication : Application() {
                     presenterModule,
                     mapperModule,
                     navigatorModule,
-                    sharedPreferencesModule
+                    sharedPreferencesModule,
+                    cityModule
                 )
             )
         }

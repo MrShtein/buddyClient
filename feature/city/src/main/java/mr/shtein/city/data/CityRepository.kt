@@ -1,4 +1,4 @@
-package mr.shtein.data.repository
+package mr.shtein.city.data
 
 import mr.shtein.model.CityChoiceItem
 

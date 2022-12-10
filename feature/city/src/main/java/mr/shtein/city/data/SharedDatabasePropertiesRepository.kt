@@ -1,18 +1,14 @@
-package mr.shtein.data.repository
+package mr.shtein.city.data
 
-import android.security.keystore.KeyNotYetValidException
 import mr.shtein.data.util.SharedPreferences
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
-import org.koin.core.qualifier.qualifier
 
 
 const val DATABASE_VERSION = "database_version"
 const val DATABASE_NAME = "database_name"
 
 
-class SharedDatabasePropertiesRepository(private val storage: SharedPreferences) : DatabasePropertiesRepository {
+class SharedDatabasePropertiesRepository(private val storage: SharedPreferences) :
+    DatabasePropertiesRepository {
 
     override fun getDatabaseVersion(): Int {
         return storage.readInt(DATABASE_VERSION, 0)
