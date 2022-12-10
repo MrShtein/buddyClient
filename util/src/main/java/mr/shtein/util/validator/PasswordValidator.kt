@@ -12,7 +12,7 @@ import mr.shtein.model.PasswordCheckRequest
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class PasswordEmptyFieldValidator(
+class PasswordValidator(
     private val userRepository: UserRepository,
     val coroutineScope: CoroutineScope
 ) : EmptyFieldValidator() {

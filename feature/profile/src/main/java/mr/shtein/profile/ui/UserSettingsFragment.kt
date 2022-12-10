@@ -40,7 +40,7 @@ import mr.shtein.user.R
 import mr.shtein.util.validator.FullEmailValidator
 import mr.shtein.util.validator.MailCallback
 import mr.shtein.util.validator.PasswordCallBack
-import mr.shtein.util.validator.PasswordEmptyFieldValidator
+import mr.shtein.util.validator.PasswordValidator
 import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -93,7 +93,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
     private val userPropertiesRepository: UserPropertiesRepository by inject()
-    private val passwordValidator: PasswordEmptyFieldValidator by inject()
+    private val passwordValidator: PasswordValidator by inject()
     private val networkUserRepository: UserRepository by inject()
     private val navigator: ProfileNavigation by inject()
 

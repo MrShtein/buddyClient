@@ -25,7 +25,7 @@ import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.util.validator.FullEmailValidator
 import mr.shtein.util.validator.MailCallback
 import mr.shtein.util.validator.NameValidator
-import mr.shtein.util.validator.PasswordEmptyFieldValidator
+import mr.shtein.util.validator.PasswordValidator
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.net.ConnectException
@@ -40,7 +40,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
     private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val networkUserRepository: UserRepository by inject()
-    private val passwordValidator: PasswordEmptyFieldValidator by inject()
+    private val passwordValidator: PasswordValidator by inject()
     private val navigator: AuthNavigation by inject()
 
 
@@ -246,7 +246,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
         inputContainersList: List<TextInputLayout>,
         view: View,
         fullEmailValidator: FullEmailValidator,
-        passwordValidator: PasswordEmptyFieldValidator,
+        passwordValidator: PasswordValidator,
         nameValidator: NameValidator
     ): TextInputLayout? {
 
@@ -301,7 +301,7 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
 private fun passwordChecker(
     input: TextInputEditText,
     inputContainer: TextInputLayout,
-    passwordValidator: PasswordEmptyFieldValidator
+    passwordValidator: PasswordValidator
 ) {
     try {
         val value = input.text.toString()
@@ -316,7 +316,7 @@ private fun passwordChecker(
 private fun repeatPasswordChecker(
     input: TextInputEditText, inputContainer: TextInputLayout,
     pswInput: TextInputEditText,
-    passwordValidator: PasswordEmptyFieldValidator,
+    passwordValidator: PasswordValidator,
     regInfoModel: RegistrationInfoModel
 ) {
     try {
