@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="mr.shtein.buddyandroidclient.LoginFragment"
+        android:name="mr.shtein.auth.ui.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"
-        android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
+        android:name="mr.shtein.auth.ui.UserRegistrationFragment"
         android:label="UserRegistrationFragment"
         tools:layout="@layout/user_registration_fragment">
         <action
@@ -194,7 +194,7 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.ResetPasswordFragment"
+        android:name="mr.shtein.auth.ui.ResetPasswordFragment"
         android:label="ResetPasswordFragment"
         tools:layout="@layout/reset_password_fragment"/>
     <fragment
