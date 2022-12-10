@@ -1,15 +1,10 @@
-package mr.shtein.data.db
+package mr.shtein.city.data
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import mr.shtein.data.repository.DatabasePropertiesRepository
 import java.io.File
 import java.io.FileOutputStream
-
-const val DATABASE_NAME = "buddy"
-const val DATABASE_VERSION = 1
-const val ASSETS_PATH = "databases"
 
 class CityDbHelper(
     val context: Context,
@@ -67,6 +62,12 @@ class CityDbHelper(
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
 
+    }
+
+    companion object {
+        const val DATABASE_NAME = "buddy"
+        const val DATABASE_VERSION = 1
+        const val ASSETS_PATH = "databases"
     }
 }
 

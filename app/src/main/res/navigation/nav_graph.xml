@@ -26,7 +26,7 @@
         android:defaultValue="false" />
     <fragment
         android:id="@+id/cityChoiceFragment"
-        android:name="mr.shtein.city.ui.CityChoiceFragment"
+        android:name="mr.shtein.city.presentation.CityChoiceFragment"
         android:label="city_choice_fragment"
         tools:layout="@layout/city_choice_fragment">
         <action

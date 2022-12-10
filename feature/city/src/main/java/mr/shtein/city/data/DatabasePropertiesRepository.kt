@@ -1,4 +1,4 @@
-package mr.shtein.data.repository
+package mr.shtein.city.data
 
 interface DatabasePropertiesRepository {
     fun getDatabaseVersion(): Int
