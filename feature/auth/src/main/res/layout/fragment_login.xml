@@ -44,7 +44,7 @@
         android:id="@+id/login_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_main_text"
+        android:text="@string/entrance_text"
         android:textAlignment="center"
         android:textColor="@color/cian5"
         android:textSize="16sp"

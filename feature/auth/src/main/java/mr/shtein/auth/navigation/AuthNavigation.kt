@@ -7,4 +7,6 @@ interface AuthNavigation {
     fun moveToResetPassword()
     fun moveToAnimalListFragment(fromFragment: FragmentsListForAssigningAnimation)
     fun moveToLogin(isFromRegistration: Boolean)
+    fun moveToLoginFromAnimalList()
+    fun moveToUserRegistration()
 }

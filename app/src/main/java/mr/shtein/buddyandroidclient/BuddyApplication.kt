@@ -1,6 +1,7 @@
 package mr.shtein.buddyandroidclient
 
 import android.app.Application
+import mr.shtein.auth.di.bottomSheetBuilder
 import mr.shtein.buddyandroidclient.di.module.*
 import mr.shtein.city.di.cityModule
 import mr.shtein.data.di.mapperModule
@@ -29,7 +30,8 @@ class BuddyApplication : Application() {
                     navigatorModule,
                     sharedPreferencesModule,
                     cityModule,
-                    validatorModule
+                    validatorModule,
+                    bottomSheetBuilder
                 )
             )
         }

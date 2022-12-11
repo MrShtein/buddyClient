@@ -215,6 +215,14 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         )
     }
 
+    override fun moveToLoginFromAnimalList() {
+        navController?.navigate(R.id.action_animalsListFragment_to_loginFragment)
+    }
+
+    override fun moveToUserRegistration() {
+        navController?.navigate(R.id.action_animalsListFragment_to_userRegistrationFragment)
+    }
+
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"
         private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
