@@ -1,0 +1,52 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+    id "kotlin-kapt"
+}
+
+android {
+    namespace "mr.shtein.animal"
+    compileSdk sdk_versions.compile
+
+    defaultConfig {
+        minSdk sdk_versions.min
+        targetSdk sdk_versions.target
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$core"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+
+
+    implementation "com.github.moxy-community:moxy:$moxy"
+    implementation "com.github.moxy-community:moxy-app-compat:$moxy"
+    kapt "com.github.moxy-community:moxy-compiler:$moxy"
+    implementation "com.github.moxy-community:moxy-material:$moxy"
+    implementation "com.github.moxy-community:moxy-ktx:$moxy"
+
+    implementation project(path: ":core:model")
+    implementation project(path: ":core:data")
+    implementation project(path: ":core:navigator")
+    implementation project(path: ":ui_util")
+    implementation project(path: ":util")
+}
