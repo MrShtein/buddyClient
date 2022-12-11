@@ -14,10 +14,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.navigation.Navigator
-import mr.shtein.buddyandroidclient.utils.BottomSheetDialogShower
+import mr.shtein.auth.presentation.BottomSheetDialogShower
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val ANIMAL_LIST_LABEL = "animals_list_fragment"
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val navigator: Navigator by inject()
+    private val bottomSheetDialogShower: BottomSheetDialogShower by inject {
+        parametersOf(this)
+    }
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,10 +69,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.profile_graph -> {
                     val token: String = userPropertiesRepository.getUserToken()
                     if (token == "") {
-                        BottomSheetDialogShower.createAndShowBottomSheetDialog(
-                            bottomNav,
-                            navController
-                        )
+                        bottomSheetDialogShower.createAndShowBottomSheetDialog()
                         return@setOnItemSelectedListener false
                     } else {
                         when (navController.currentBackStackEntry?.destination?.label) {
@@ -88,10 +89,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.kennel_graph -> {
                     val token: String = userPropertiesRepository.getUserToken()
                     if (token == "") {
-                        BottomSheetDialogShower.createAndShowBottomSheetDialog(
-                            bottomNav,
-                            navController
-                        )
+                        bottomSheetDialogShower.createAndShowBottomSheetDialog()
                         return@setOnItemSelectedListener false
                     } else {
                         when (navController.currentBackStackEntry?.destination?.label) {

@@ -1,4 +1,4 @@
-package mr.shtein.auth.ui
+package mr.shtein.auth.presentation
 
 import androidx.lifecycle.ViewModel
 

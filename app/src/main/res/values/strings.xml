@@ -44,10 +44,6 @@
     <string name="favorite_btn_name">Избранное</string>
     <string name="kennels_btn_name">Приюты</string>
     <string name="profile_volonteer_btn_text">Стать волонтером</string>
-    <string name="registration_or_entrance_str">Регистрация/Вход</string>
-    <string name="registr_or_entrance_text">Вам необходимо\n выполнить вход или зарегистрироваться</string>
-    <string name="entrance_btn_text">Вход</string>
-    <string name="registration_btn_text">Регистрация</string>
     <string name="project_logo_dog_sun_and_grass">Логотип приложения - собака, солнце и трава</string>
     <string name="input_hint_for_city_choice">Введите Ваш город</string>
     <string name="user_settings_old_pwd_label">Старый пароль</string>

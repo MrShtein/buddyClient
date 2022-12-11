@@ -11,17 +11,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/registration_or_entrance_str"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/registration_or_entrance_str"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:backgroundTint="@color/cian5"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="@string/entrance_btn_text"
+            android:text="@string/entrance_text"
             android:textColor="@color/white"
             app:rippleColor="@color/white"
             app:cornerRadius="5dp" />
