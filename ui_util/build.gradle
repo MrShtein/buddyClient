@@ -38,6 +38,8 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     implementation "androidx.fragment:fragment-ktx:$fragment"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
 
     implementation project(path: ':core:data')
+    implementation project(path: ':core:network')
 }

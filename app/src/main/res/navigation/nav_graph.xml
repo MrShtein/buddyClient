@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalsListFragment"
-        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalsListFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalsListFragment"
         android:label="animals_list_fragment"
         tools:layout="@layout/animals_list_fragment">
         <action
@@ -114,7 +114,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalsCardFragment"
-        android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalsCardFragment"
         android:label="AnimalsCardFragment"
         tools:layout="@layout/animal_card_fragment" />
     <fragment
@@ -199,7 +199,7 @@
         tools:layout="@layout/reset_password_fragment"/>
     <fragment
         android:id="@+id/animalFilterFragment"
-        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalFilterFragment"
         android:label="AnimalFilterFragment"
         tools:layout="@layout/animal_filter_fragment">
         <action

@@ -3,8 +3,10 @@ package mr.shtein.buddyandroidclient.navigation
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.google.android.material.transition.MaterialSharedAxis
+import mr.shtein.animal.navigation.AnimalNavigation
 import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.buddyandroidclient.R
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
@@ -12,12 +14,13 @@ import mr.shtein.navigator.BaseNavigator
 import mr.shtein.splash.navigation.StartNavigation
 import mr.shtein.city.navigation.CityNavigation
 import mr.shtein.data.model.Animal
+import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.profile.navigation.ProfileNavigation
 
 class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavigation,
-    ProfileNavigation, AuthNavigation, BottomSheetNavigation {
+    ProfileNavigation, AuthNavigation, BottomSheetNavigation, AnimalNavigation {
 
     override fun moveToCityChoiceFromSplashScreen() {
         navController?.navigate(R.id.action_startFragment_to_cityChoiceFragment)
@@ -168,7 +171,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
     }
 
     override fun moveToLogin(isFromRegistration: Boolean) {
-        val bundle: Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putBoolean(IS_FROM_REGISTRATION_KEY, isFromRegistration)
         navController?.navigate(
             R.id.action_userRegistrationFragment_to_loginFragment,
@@ -223,6 +226,31 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         navController?.navigate(R.id.action_animalsListFragment_to_userRegistrationFragment)
     }
 
+    override fun moveToAnimalListFromAnimalFilter(from: FragmentsListForAssigningAnimation) {
+        val bundle = bundleOf(LAST_FRAGMENT_KEY to from)
+        navController?.navigate(R.id.action_animalFilterFragment_to_animalsListFragment, bundle)
+    }
+
+    override fun moveToAnimalCardFromAnimalList(animal: Animal) {
+        val bundle = Bundle()
+        bundle.putParcelable(ANIMAL_KEY, animal)
+        navController?.navigate(R.id.action_animalsListFragment_to_animalsCardFragment, bundle)
+    }
+
+    override fun moveToAnimalFilterFromAnimalList(animalFilter: AnimalFilter) {
+        val bundle = Bundle()
+        bundle.putParcelable(ANIMAL_FILTER_KEY, animalFilter)
+        navController?.navigate(R.id.action_animalsListFragment_to_animalFilterFragment, bundle)
+    }
+
+    override fun addOnDestinationChangeListener(onDestinationChangedListener: NavController.OnDestinationChangedListener) {
+        navController?.addOnDestinationChangedListener(onDestinationChangedListener)
+    }
+
+    override fun removeDestinationChangeListener(onDestinationChangedListener: NavController.OnDestinationChangedListener) {
+        navController?.removeOnDestinationChangedListener(onDestinationChangedListener)
+    }
+
     companion object {
         private const val LAST_FRAGMENT_KEY = "last_fragment"
         private const val KENNEL_SETTINGS_LABEL = "KennelSettingsFragment"
@@ -233,5 +261,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
+        private const val ANIMAL_FILTER_KEY = "animal_filter"
+
     }
 }

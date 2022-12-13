@@ -6,8 +6,8 @@ import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
-import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
+import mr.shtein.animal.domain.AnimalInteractor
+import mr.shtein.animal.domain.LocationInteractor
 import mr.shtein.data.exception.LocationServiceException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.`AnimalListView$$State`
@@ -54,7 +54,7 @@ class AnimalListPresenterTest {
     private lateinit var locationService: LocationInteractor
     private lateinit var userPropertiesRepository: UserPropertiesRepository
     private lateinit var testDispatcher: TestDispatcher
-    private lateinit var animalListPresenter: AnimalsListPresenterImpl
+    private lateinit var animalListPresenter: mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl
 
     @BeforeAll
     fun initValues() {
@@ -79,7 +79,7 @@ class AnimalListPresenterTest {
         locationService = mock<LocationInteractor>()
         userPropertiesRepository = mock<UserPropertiesRepository>()
         testDispatcher = UnconfinedTestDispatcher()
-        animalListPresenter = AnimalsListPresenterImpl(
+        animalListPresenter = mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl(
             animalInteractor, locationService, userPropertiesRepository, testDispatcher
         )
         animalListPresenter.setViewState(animalListView)

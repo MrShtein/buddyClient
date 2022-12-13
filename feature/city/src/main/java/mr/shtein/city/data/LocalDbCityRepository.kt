@@ -3,6 +3,7 @@ package mr.shtein.city.data
 import android.database.Cursor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mr.shtein.data.repository.CityRepository
 import mr.shtein.model.CityChoiceItem
 
 class LocalDbCityRepository(

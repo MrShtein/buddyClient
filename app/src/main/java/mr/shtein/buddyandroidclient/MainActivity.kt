@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.navigation.Navigator
@@ -58,6 +59,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.animalsListFragment -> {
                         showBottomNav()
                         bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
+                        val animalListSwipeView =
+                            findViewById<SwipeRefreshLayout>(R.id.animals_list_swipe_layout)
                     }
                     else -> hideBottomNav()
                 }
@@ -140,17 +143,13 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         navigator.unbind()
     }
-}
 
-fun Fragment.changeMarginBottom(view: View, mainActivity: MainActivity) {
-    val bottomNavHeight = mainActivity.bottomNav.height
-    val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-    layoutParams.setMargins(0, 0, 0, bottomNavHeight)
-    view.layoutParams = layoutParams
 }
 
 val FragmentManager.currentNavigationFragment: Fragment?
     get() = primaryNavigationFragment?.childFragmentManager?.fragments?.first()
+
+
 
 
 

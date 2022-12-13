@@ -1,6 +1,6 @@
 package mr.shtein.city.di
 
-import mr.shtein.city.data.CityRepository
+import mr.shtein.data.repository.CityRepository
 import mr.shtein.city.data.DatabasePropertiesRepository
 import mr.shtein.city.data.LocalDbCityRepository
 import mr.shtein.city.data.SharedDatabasePropertiesRepository

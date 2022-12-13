@@ -4,14 +4,14 @@ package mr.shtein.buddyandroidclient.domain.interactor
 import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import mr.shtein.animal.domain.AnimalInteractor
+import mr.shtein.animal.domain.AnimalInteractorImpl
 import mr.shtein.buddyandroidclient.data.repository.AnimalRepository
 import mr.shtein.buddyandroidclient.data.repository.DistanceCounterRepository
-import mr.shtein.data.model.Animal
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.stub
 
 class AnimalInteractorTest {
 
