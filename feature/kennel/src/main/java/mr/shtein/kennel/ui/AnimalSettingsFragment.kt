@@ -26,9 +26,9 @@ import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.ui.adapter.AnimalPhotoAdapter
-import mr.shtein.kennel.util.OnSnapPositionChangeListener
-import mr.shtein.kennel.util.SnapOnScrollListener
+import mr.shtein.ui_util.AnimalPhotoAdapter
+import mr.shtein.ui_util.OnSnapPositionChangeListener
+import mr.shtein.ui_util.SnapOnScrollListener
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject

@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.transition.Slide
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.domain.interactor.AnimalFilterInteractor
 import mr.shtein.splash.R
-import mr.shtein.splash.domain.AnimalFilterInteractor
 import mr.shtein.splash.navigation.StartNavigation
 import org.koin.android.ext.android.inject
 import mr.shtein.ui_util.setStatusBarColor

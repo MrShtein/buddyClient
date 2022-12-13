@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mr.shtein.animal.domain.LocationInteractor
 import mr.shtein.data.exception.LocationServiceException
 
 class LocationServiceInteractor(

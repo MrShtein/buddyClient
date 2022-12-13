@@ -12,18 +12,12 @@
     <string name="animal_choice_text_in_current_city">КОГО ИЩЕМ в</string>
     <string name="it_s_a_check_button_for_your_choice">It\'s a check button for your choice</string>
     <string name="logo_discription">Logo</string>
-    <string name="more">Ещё</string>
-    <string name="bird_for_more">v</string>
     <string name="menu_button_description">It\'s menu button</string>
     <string name="animal_filter_button">It\'s a filter button</string>
     <string name="kennel_name">Приют \"%1$s\"</string>
-    <string name="animal_gender">Пол: %1$s</string>
-    <string name="animal_age">Возраст: %1$s</string>
-    <string name="animal_breed">Порода: %1$s</string>
-    <string name="animal_color">Цвет: %1$s</string>
+
     <string name="animal_fur_length">Длина шерсти: %1$s</string>
     <string name="animal_s_image">animal\'s image</string>
-    <string name="button_for_call">Button for call: %1$s</string>
     <string name="button_for_email">Button for email: %1$s</string>
     <string name="registration_button">Регистрация</string>
     <string name="login_button">Логин</string>
@@ -39,10 +33,7 @@
     <string name="avatar">Avatar</string>
     <string name="name_surname_text">Ф.И.О.</string>
     <string name="kennel_identify_num">ИНН предприятия:</string>
-    <string name="profile_btn_name">Профиль</string>
-    <string name="animal_list_btn_name">Лента</string>
     <string name="favorite_btn_name">Избранное</string>
-    <string name="kennels_btn_name">Приюты</string>
     <string name="profile_volonteer_btn_text">Стать волонтером</string>
     <string name="project_logo_dog_sun_and_grass">Логотип приложения - собака, солнце и трава</string>
     <string name="input_hint_for_city_choice">Введите Ваш город</string>
@@ -66,8 +57,7 @@
 
     <string name="not_valid_kennel_dialog_verification_text">К сожалению Ваш приют еще \n не прошел верификацию</string>
     <string name="ok_btn_text">Ok</string>
-    <string name="from_text">от</string>
-    <string name="until_text">до</string>
+
 
     <string name="add_animal_kind_label_text">Вид животного</string>
     <string name="bad_token_dialog_text">Срок действия логина закончился,\n необходимо заново войти в приложение</string>
@@ -78,29 +68,9 @@
     <string name="animals_list_search_btn_description">Кнопка для поиска питомца</string>
 
     <string name="destination_btn_description">Кнопка для определения местоположения питомца</string>
-    <string name="location_failure_text">К сожалению сейчас не получается узнать Ваше местоположение, попробуйте позже</string>
     <string name="socket_timeout_exception_text">К сожалению сейчас нет доступа к интернету, попробуйте позже</string>
     <string name="shelter">Приют</string>
-    <string name="write">Написать</string>
-    <string name="Call">Позвонить</string>
     <string name="admin_email">mr.shtein61@yandex.ru</string>
     <string name="email_subject">Сброс пароля</string>
-    <string name="animal_filter_label_text">Фильтр</string>
-    <string name="animal_types_label">Типы животных:</string>
-    <string name="any_gender_label">Любой</string>
-    <string name="find_zero_animals_text">Найдено 0 животных</string>
-
-
-
-
-
-    <plurals name="filter_btn_animal_count">
-        <item quantity="zero">Найдено %d животных</item>
-        <item quantity="one">Найдено %d животное</item>
-        <item quantity="two">Найдено %d животных</item>
-        <item quantity="few">Найдено %d животных</item>
-        <item quantity="many">Найдено %d животных</item>
-        <item quantity="other">Найдено %d животных</item>
-    </plurals>
 
 </resources>

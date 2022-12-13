@@ -24,7 +24,7 @@ import mr.shtein.city.R
 import mr.shtein.city.navigation.CityNavigation
 import mr.shtein.city.adapter.CityArrayAdapter
 import mr.shtein.city.data.CityDbHelper
-import mr.shtein.city.data.CityRepository
+import mr.shtein.data.repository.CityRepository
 import mr.shtein.city.data.DatabasePropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.CityChoiceItem

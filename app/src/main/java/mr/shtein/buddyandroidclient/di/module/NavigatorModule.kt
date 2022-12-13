@@ -1,5 +1,6 @@
 package mr.shtein.buddyandroidclient.di.module
 
+import mr.shtein.animal.navigation.AnimalNavigation
 import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.buddyandroidclient.navigation.BottomSheetNavigation
 import mr.shtein.city.navigation.CityNavigation
@@ -18,7 +19,8 @@ val navigatorModule: Module = module {
         KennelNavigation::class,
         ProfileNavigation::class,
         AuthNavigation::class,
-        BottomSheetNavigation::class
+        BottomSheetNavigation::class,
+        AnimalNavigation::class
     )
 }
 
