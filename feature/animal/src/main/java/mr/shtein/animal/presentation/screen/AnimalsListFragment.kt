@@ -40,6 +40,7 @@ import mr.shtein.animal.presentation.listener.OnAnimalCardClickListener
 import mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AnimalFilter
+import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setStatusBarColor
@@ -103,6 +104,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private val networkImageLoader: ImageLoader by inject()
     private val navigator: AnimalNavigation by inject()
+    private val appPropertiesRepository: AppPropertiesRepository by inject()
     private var onDestinationChangedListener: NavController.OnDestinationChangedListener? = null
 
     @InjectPresenter
@@ -262,7 +264,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     }
 
     private fun setUpView() {
-       // changeMarginBottom(binding.animalsListSwipeLayout)
+        changeMarginBottom(binding.animalsListSwipeLayout)
         setStatusBarColor(true)
         initRecyclerView()
         setListeners()
@@ -369,25 +371,12 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
         }
     }
 
-//    private fun changeMarginBottom(view: View) {
-//        val bottomNavHeightInDP = 56f;
-//        val bottomNavHeightInPx = TypedValue.applyDimension(
-//            TypedValue.COMPLEX_UNIT_DIP,
-//            bottomNavHeightInDP,
-//            resources.displayMetrics
-//        )
-//        requireActivity().findNavController().
-//        val bottomInsets = requireActivity()
-//            .window
-//            .decorView
-//            .rootWindowInsets
-//            .getInsets(WindowInsetsCompat.Type.systemBars())
-//            .bottom
-//        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-//        val marginBottom = (bottomNavHeightInPx + bottomInsets).toInt()
-//        layoutParams.setMargins(0, 0, 0, marginBottom)
-//        view.layoutParams = layoutParams
-//    }
+    private fun changeMarginBottom(view: View) {
+        val bottomNavHeightInDP = appPropertiesRepository.getBottomNavHeight()
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, 0, 0, bottomNavHeightInDP)
+        view.layoutParams = layoutParams
+    }
 }
 
 

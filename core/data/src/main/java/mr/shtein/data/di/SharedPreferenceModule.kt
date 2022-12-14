@@ -13,6 +13,7 @@ val sharedPreferencesModule: Module = module {
     single(named("kennelStore")) { provideKennelStore(androidContext()) }
     single(named("databaseStore")) { provideDatabaseStore(androidContext()) }
     single(named("filterStore")) { provideFilterStore(androidContext()) }
+    single(named("appStore")) { provideAppStore(androidContext()) }
 }
 
 private fun provideUserStore(context: Context) =
@@ -26,3 +27,6 @@ private fun provideDatabaseStore(context: Context) =
 
 private fun provideFilterStore(context: Context) =
     SharedPreferences(context, BuildConfig.FILTER_STORAGE_NAME)
+
+private fun provideAppStore(context: Context) =
+    SharedPreferences(context, BuildConfig.APP_STORAGE_NAME)
