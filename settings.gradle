@@ -9,3 +9,18 @@ dependencyResolutionManagement {
 }
 rootProject.name = "buddyAndroidClient"
 include ':app'
+include ':core'
+include ':core:model'
+include ':core:network'
+include ':core:data'
+include ':core:navigator'
+include ':feature'
+include ':feature:splash'
+include ':feature:city'
+include ':ui_util'
+include ':feature:kennel'
+include ':util'
+include ':feature:profile'
+include ':feature:auth'
+include ':feature:animal'
+include ':core:domain'

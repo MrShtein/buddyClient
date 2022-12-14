@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_reset_or_rebuild_headline">Восстановление пароля</string>
+    <string name="reset_or_rebuild_password_description">Для восстановления пароля введите адрес электронной почты указанный при регистрации и нажмите кнопку Сбросить пароль</string>
+    <string name="reset_password_btn">Сбросить пароль</string>
+    <string name="reset_password_success_phrase">Новый пароль успешно отправлен</string>
+    <string name="entrance_text">Вход</string>
+    <string name="password">Password:</string>
+    <string name="next">ДАЛЕЕ</string>
+    <string name="forget_password_question"><u>Забыли пароль?</u></string>
+    <string name="snackbar_registration_text">Поздравляем, вы успешно зарегистрировались</string>
+    <string name="registration_main_text">Регистрация</string>
+    <string name="profile_name_hint">Имя</string>
+    <string name="make_password">Придумайте пароль:</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="bad_data_text">Ничего не вышло, проверьте введенные данные</string>
+    <string name="registration_or_entrance_str">Регистрация/Вход</string>
+    <string name="registr_or_entrance_text">Вам необходимо\n выполнить вход или зарегистрироваться</string>
+    <string name="registration_btn_text">Регистрация</string>
+
+</resources>

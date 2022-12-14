@@ -1,0 +1,52 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+}
+
+android {
+    namespace "mr.shtein.kennel"
+    compileSdk sdk_versions.compile
+
+    defaultConfig {
+        minSdk sdk_versions.min
+        targetSdk sdk_versions.target
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$core"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.fragment:fragment-ktx:$fragment"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview"
+
+
+    implementation "io.insert-koin:koin-android:$koin"
+
+    implementation "ru.tinkoff.decoro:decoro:$decoro"
+
+    implementation project(path: ":ui_util")
+    implementation project(path: ":util")
+    implementation project(path: ":core:network")
+    implementation project(path: ":core:model")
+    implementation project(path: ":core:data")
+    implementation project(path: ":core:navigator")
+}

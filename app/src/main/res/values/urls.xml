@@ -1,4 +1,0 @@
-<resources>
-    <string name="kennel_avatar_endpoint">/api/v1/kennel/avatar/</string>
-    <string name="animal_photo_endpoint">/api/v1/animal/photo/</string>
-</resources>

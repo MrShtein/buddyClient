@@ -1,6 +1,0 @@
-<badge xmlns:app="http://schemas.android.com/apk/res-auto"
-style="@style/Widget.MaterialComponents.Badge"
-app:backgroundColor="@color/choice_color"
-app:badgeTextColor="#FFFFFF"
-app:maxCharacterCount="2"
-/>
