@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.SplashScreenFragment"
+        android:name="mr.shtein.splash.ui.SplashScreenFragment"
         android:label="StartFragment"
         tools:layout="@layout/start_fragment">
         <action
@@ -26,7 +26,7 @@
         android:defaultValue="false" />
     <fragment
         android:id="@+id/cityChoiceFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.CityChoiceFragment"
+        android:name="mr.shtein.city.presentation.CityChoiceFragment"
         android:label="city_choice_fragment"
         tools:layout="@layout/city_choice_fragment">
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="mr.shtein.buddyandroidclient.LoginFragment"
+        android:name="mr.shtein.auth.presentation.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/userRegistrationFragment"
-        android:name="mr.shtein.buddyandroidclient.UserRegistrationFragment"
+        android:name="mr.shtein.auth.presentation.UserRegistrationFragment"
         android:label="UserRegistrationFragment"
         tools:layout="@layout/user_registration_fragment">
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.profile.UserProfileFragment"
+        android:name="mr.shtein.profile.ui.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/user_profile_fragment">
         <action
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalsListFragment"
-        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalsListFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalsListFragment"
         android:label="animals_list_fragment"
         tools:layout="@layout/animals_list_fragment">
         <action
@@ -105,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/userSettingsFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.profile.UserSettingsFragment"
+        android:name="mr.shtein.profile.ui.UserSettingsFragment"
         android:label="UserSettingsFragment"
         tools:layout="@layout/user_settings_fragment">
         <action
@@ -114,12 +114,12 @@
     </fragment>
     <fragment
         android:id="@+id/animalsCardFragment"
-        android:name="mr.shtein.buddyandroidclient.AnimalsCardFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalsCardFragment"
         android:label="AnimalsCardFragment"
         tools:layout="@layout/animal_card_fragment" />
     <fragment
         android:id="@+id/addKennelFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddKennelFragment"
+        android:name="mr.shtein.kennel.ui.AddKennelFragment"
         android:label="AddKennelFragment"
         tools:layout="@layout/add_kennel_fragment">
         <action
@@ -147,7 +147,7 @@
     </fragment>
     <fragment
         android:id="@+id/kennelSettingsFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelSettingsFragment"
+        android:name="mr.shtein.kennel.ui.KennelSettingsFragment"
         android:label="KennelSettingsFragment"
         tools:layout="@layout/kennel_settings_fragment">
         <action
@@ -159,7 +159,7 @@
     </fragment>
     <fragment
         android:id="@+id/kennelConfirmFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelConfirmFragment"
+        android:name="mr.shtein.kennel.ui.KennelConfirmFragment"
         android:label="KennelConfirmFragment"
         tools:layout="@layout/kennel_confirm_fragment">
         <action
@@ -168,7 +168,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalSettingsFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.AnimalSettingsFragment"
+        android:name="mr.shtein.kennel.ui.AnimalSettingsFragment"
         android:label="AnimalSettingsFragment"
         tools:layout="@layout/animal_settings_fragment">
         <action
@@ -177,12 +177,12 @@
     </fragment>
     <fragment
         android:id="@+id/addAnimalFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.AddAnimalFragment"
+        android:name="mr.shtein.kennel.ui.AddAnimalFragment"
         android:label="AddAnimalFragment"
         tools:layout="@layout/add_animal_fragment" />
     <fragment
         android:id="@+id/kennelHomeFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.kennels.KennelHomeFragment"
+        android:name="mr.shtein.kennel.ui.KennelHomeFragment"
         android:label="KennelHomeFragment"
         tools:layout="@layout/kennel_home_fragment">
         <action
@@ -194,12 +194,12 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="mr.shtein.buddyandroidclient.screens.ResetPasswordFragment"
+        android:name="mr.shtein.auth.presentation.ResetPasswordFragment"
         android:label="ResetPasswordFragment"
         tools:layout="@layout/reset_password_fragment"/>
     <fragment
         android:id="@+id/animalFilterFragment"
-        android:name="mr.shtein.buddyandroidclient.presentation.screen.AnimalFilterFragment"
+        android:name="mr.shtein.animal.presentation.screen.AnimalFilterFragment"
         android:label="AnimalFilterFragment"
         tools:layout="@layout/animal_filter_fragment">
         <action

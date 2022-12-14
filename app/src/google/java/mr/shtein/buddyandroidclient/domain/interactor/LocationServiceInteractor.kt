@@ -8,10 +8,8 @@ import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mr.shtein.buddyandroidclient.exceptions.validate.LocationServiceException
-import mr.shtein.buddyandroidclient.model.Coordinates
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import mr.shtein.animal.domain.LocationInteractor
+import mr.shtein.data.exception.LocationServiceException
 
 class LocationServiceInteractor(
     private val fusedLocationClient: FusedLocationProviderClient,
@@ -20,14 +18,14 @@ class LocationServiceInteractor(
 
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
-    override suspend fun getCurrentDistance(): Coordinates = withContext(Dispatchers.IO) {
+    override suspend fun getCurrentDistance(): mr.shtein.data.model.Coordinates = withContext(Dispatchers.IO) {
         val locationTask = fusedLocationClient.getCurrentLocation(
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancelTokenSourceForLocation.token
         )
         val location = getLocation()
         location?.let {
-            return@withContext Coordinates(it.latitude, it.longitude)
+            return@withContext mr.shtein.data.model.Coordinates(it.latitude, it.longitude)
         }
 
         throw LocationServiceException()

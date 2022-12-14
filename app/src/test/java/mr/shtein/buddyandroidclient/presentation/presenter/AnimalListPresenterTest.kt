@@ -6,15 +6,12 @@ import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import mr.shtein.buddyandroidclient.data.repository.UserPropertiesRepository
-import mr.shtein.buddyandroidclient.domain.interactor.AnimalInteractor
-import mr.shtein.buddyandroidclient.domain.interactor.LocationInteractor
-import mr.shtein.buddyandroidclient.exceptions.validate.LocationServiceException
-import mr.shtein.buddyandroidclient.exceptions.validate.ServerErrorException
-import mr.shtein.buddyandroidclient.model.Animal
-import mr.shtein.buddyandroidclient.model.Coordinates
-import mr.shtein.buddyandroidclient.model.Kennel
+import mr.shtein.animal.domain.AnimalInteractor
+import mr.shtein.animal.domain.LocationInteractor
+import mr.shtein.data.exception.LocationServiceException
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.buddyandroidclient.presentation.screen.`AnimalListView$$State`
-import mr.shtein.buddyandroidclient.utils.FragmentsListForAssigningAnimation
+import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import org.junit.jupiter.api.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -22,10 +19,8 @@ import org.mockito.ArgumentMatchers.*
 import org.mockito.InOrder
 import org.mockito.Mockito
 import org.mockito.kotlin.*
-import java.lang.Exception
 import java.lang.RuntimeException
 import java.net.ConnectException
-import java.net.SocketException
 import java.net.SocketTimeoutException
 
 private const val PERMISSION_DENIED = -1
@@ -35,7 +30,7 @@ private const val LONGITUDE = 6.5
 private const val TOKEN = "test_token_string"
 private val FILTER_LIST = listOf(1, 2)
 private val DISTANCES = hashMapOf<Int, Int>(1 to 1)
-private val COORDINATES = Coordinates(LATITUDE, LONGITUDE)
+private val COORDINATES = mr.shtein.data.model.Coordinates(LATITUDE, LONGITUDE)
 private const val IS_DOG_CHECKED = true
 private const val IS_CAT_CHECKED = true
 private const val IS_FROM_NETWORK_POSITIVE = true
@@ -52,14 +47,14 @@ private const val LOGIN_LABEL = "LoginFragment"
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnimalListPresenterTest {
 
-    private lateinit var animalList: List<Animal>
+    private lateinit var animalList: List<mr.shtein.data.model.Animal>
     private lateinit var faker: Faker
     private lateinit var animalInteractor: AnimalInteractor
     private lateinit var animalListView: `AnimalListView$$State`
     private lateinit var locationService: LocationInteractor
     private lateinit var userPropertiesRepository: UserPropertiesRepository
     private lateinit var testDispatcher: TestDispatcher
-    private lateinit var animalListPresenter: AnimalsListPresenterImpl
+    private lateinit var animalListPresenter: mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl
 
     @BeforeAll
     fun initValues() {
@@ -67,7 +62,7 @@ class AnimalListPresenterTest {
         animalList = List(50) {
             faker.randomProvider.randomClassInstance() {
                 typeGenerator {
-                    Kennel(
+                    mr.shtein.data.model.Kennel(
                         faker.random.nextInt(min = 1, max = 2),
                         faker.funnyName.name(),
                         faker.address.fullAddress(),
@@ -84,7 +79,7 @@ class AnimalListPresenterTest {
         locationService = mock<LocationInteractor>()
         userPropertiesRepository = mock<UserPropertiesRepository>()
         testDispatcher = UnconfinedTestDispatcher()
-        animalListPresenter = AnimalsListPresenterImpl(
+        animalListPresenter = mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl(
             animalInteractor, locationService, userPropertiesRepository, testDispatcher
         )
         animalListPresenter.setViewState(animalListView)
@@ -108,12 +103,12 @@ class AnimalListPresenterTest {
         animalListPresenter.onAnimalShowCommand(IS_DOG_CHECKED, IS_CAT_CHECKED, IS_FROM_NETWORK_POSITIVE)
         inOrder.verify(animalListView).toggleAnimalSearchProgressBar(isVisible = true)
         advanceUntilIdle()
-        inOrder.verify(animalListView).updateList(anyList<Animal>())
+        inOrder.verify(animalListView).updateList(anyList<mr.shtein.data.model.Animal>())
         inOrder.verify(animalListView).toggleAnimalSearchProgressBar(isVisible = false)
 
         animalListPresenter.onAnimalShowCommand(IS_DOG_CHECKED, IS_CAT_CHECKED, IS_FROM_NETWORK_NEGATIVE)
         inOrder.verify(animalListView).toggleAnimalSearchProgressBar(isVisible = true)
-        inOrder.verify(animalListView).updateList(anyList<Animal>())
+        inOrder.verify(animalListView).updateList(anyList<mr.shtein.data.model.Animal>())
         inOrder.verify(animalListView).toggleAnimalSearchProgressBar(isVisible = false)
     }
 
@@ -198,7 +193,9 @@ class AnimalListPresenterTest {
     @Test
     fun `should show error toast when ServerError Exception throws`() = runTest(testDispatcher.scheduler) {
         animalListPresenter.onInit(PERMISSION_DENIED, PERMISSION_DENIED)
-        Mockito.`when`(animalInteractor.getAnimalsByFilter(FILTER_LIST)).thenThrow(ServerErrorException())
+        Mockito.`when`(animalInteractor.getAnimalsByFilter(FILTER_LIST)).thenThrow(
+            ServerErrorException()
+        )
 
         animalListPresenter.onAnimalShowCommand(IS_DOG_CHECKED, IS_CAT_CHECKED, IS_FROM_NETWORK_POSITIVE)
         advanceUntilIdle()
