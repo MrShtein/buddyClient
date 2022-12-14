@@ -8,6 +8,7 @@ import org.koin.dsl.module
 const val KENNEL_STORE_NAME = "kennelStore"
 const val USER_STORE_NAME = "userStore"
 const val FILTER_STORE_NAME = "filterStore"
+const val APP_STORE_NAME = "appStore"
 
 val repositoryModule: Module = module {
     single<AnimalRepository> { NetworkAnimalRepository(get(), get()) }
@@ -26,5 +27,8 @@ val repositoryModule: Module = module {
     }
     factory<FilterPropertiesRepository> {
         SharedFilterPropertiesRepository(get(named(FILTER_STORE_NAME)))
+    }
+    factory<AppPropertiesRepository> {
+        SharedAppPropertiesRepository(get(named(APP_STORE_NAME)))
     }
 }

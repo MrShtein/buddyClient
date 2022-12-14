@@ -1,7 +1,9 @@
 package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.navigation.Navigator
 import mr.shtein.auth.presentation.BottomSheetDialogShower
+import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
 import org.koin.android.ext.android.inject
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val navigator: Navigator by inject()
+    private val appPropertiesRepository: AppPropertiesRepository by inject()
     private val bottomSheetDialogShower: BottomSheetDialogShower by inject {
         parametersOf(this)
     }
@@ -47,6 +51,24 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav = findViewById(R.id.bottom_nav_view)
 
+        val onLayoutChangeListener: OnLayoutChangeListener = object : OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                oldLeft: Int,
+                oldTop: Int,
+                oldRight: Int,
+                oldBottom: Int
+            ) {
+                appPropertiesRepository.saveBottomNavHeight(v.height + 10)
+                v.removeOnLayoutChangeListener(this)
+            }
+        }
+
+        bottomNav.addOnLayoutChangeListener(onLayoutChangeListener)
 
         bottomNav.setupWithNavController(navController)
         bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
@@ -59,8 +81,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.animalsListFragment -> {
                         showBottomNav()
                         bottomNav.menu.findItem(R.id.animals_feed_graph).isChecked = true
-                        val animalListSwipeView =
-                            findViewById<SwipeRefreshLayout>(R.id.animals_list_swipe_layout)
+
                     }
                     else -> hideBottomNav()
                 }
@@ -143,7 +164,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         navigator.unbind()
     }
-
 }
 
 val FragmentManager.currentNavigationFragment: Fragment?
