@@ -5,7 +5,7 @@ import mr.shtein.data.exception.ValidationException
 class IdentificationNumberValidator: Validator {
 
     companion object {
-        private var IDENTIFICATION_NUMBER_EXCEPTION = "ИНН должен состоять из 12 цифр, у Вас ${PhoneNumberValidator.numberCount}"
+        private var IDENTIFICATION_NUMBER_EXCEPTION = "ИНН должен состоять из 10 цифр"
     }
 
     override fun validateValue(valueForValidate: String): Boolean {
@@ -13,7 +13,7 @@ class IdentificationNumberValidator: Validator {
     }
 
     private fun isValidIdentificationNumber(number: String): Boolean {
-        if (number.length != 12) throw ValidationException(IDENTIFICATION_NUMBER_EXCEPTION)
+        if (number.length != 10) throw ValidationException(IDENTIFICATION_NUMBER_EXCEPTION)
         return true
     }
 }
