@@ -267,7 +267,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     identificationNum,
                     identificationNumberInputContainer
                 )
-
             }
         }
 
