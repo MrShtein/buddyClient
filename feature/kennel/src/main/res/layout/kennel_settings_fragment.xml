@@ -229,7 +229,8 @@
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container"
-            android:hint="@string/kennel_settings_house_hint">
+            android:hint="@string/kennel_settings_house_hint"
+            app:errorTextColor="@color/transparent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/kennel_settings_house_input"

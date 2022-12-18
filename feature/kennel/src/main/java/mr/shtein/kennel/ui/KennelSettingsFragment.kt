@@ -340,7 +340,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             needScroll = false
             goToNextScreen = false
             houseNumberContainer.isErrorEnabled = true
-            houseNumberContainer.error = errorText
             btn.isClickable = true
         }
         validateAndHighlightError(
@@ -389,7 +388,12 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             val isValidValue = validator.validateValue(valueForValidating)
             validationStoreForFields.mapOfValues[valueNameInStore] = isValidValue
         } catch (ex: Exception) {
-            container.error = ex.message
+            if (container.id != R.id.kennel_settings_house_input_container) {
+                container.error = ex.message
+            } else {
+                //Совсем без текста в элементе не отображается ошибка, цвет текста в данном случае - transparent
+                container.error = "1"
+            }
             container.isErrorEnabled = true
         }
     }
