@@ -77,11 +77,6 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
     }
 
-    override fun onStop() {
-        super.onStop()
-        animal = null
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
