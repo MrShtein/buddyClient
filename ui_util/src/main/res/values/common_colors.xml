@@ -20,6 +20,21 @@
     <color name="cian4">#1BBDD4</color>
     <color name="blue1">#007AE9</color>
 
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black_50">#80000000</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
+
+
+    <color name="input_focused_underline_and_hint">#FFC700</color>
+
+    <color name="dark_00_Dp">#121212</color>
+    <color name="cian5_10">#1A1998A7</color>
+
 
 
 
