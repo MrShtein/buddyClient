@@ -20,16 +20,28 @@ interface AnimalFilterView : MvpView {
     )
 
     @AddToEndSingle
-    fun showBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>)
+    fun createBreedChip(filterBreed: FilterAutocompleteItem)
 
     @AddToEndSingle
-    fun showColorChips(colorsForChips: MutableList<FilterAutocompleteItem>)
+    fun createColorChip(filterColor: FilterAutocompleteItem)
 
     @AddToEndSingle
-    fun showAnimalTypeChips(animalTypesForChips: MutableList<FilterAutocompleteItem>)
+    fun createAnimalTypeChip(filterAnimalType: FilterAutocompleteItem)
 
     @AddToEndSingle
-    fun showCityChips(citiesForChips: MutableList<FilterAutocompleteItem>)
+    fun createCityChip(filterCity: FilterAutocompleteItem)
+
+    @AddToEndSingle
+    fun showBreedChips(breedsForChips: MutableSet<FilterAutocompleteItem>)
+
+    @AddToEndSingle
+    fun showColorChips(colorsForChips: MutableSet<FilterAutocompleteItem>)
+
+    @AddToEndSingle
+    fun showAnimalTypeChips(animalTypesForChips: MutableSet<FilterAutocompleteItem>)
+
+    @AddToEndSingle
+    fun showCityChips(citiesForChips: MutableSet<FilterAutocompleteItem>)
 
     @OneExecution
     fun deleteBreedChip(chip: Chip)
@@ -62,7 +74,7 @@ interface AnimalFilterView : MvpView {
     fun deleteAnimalTypeChip(chip: Chip)
 
     @AddToEndSingle
-    fun updateAnimalTypeList(types: List<FilterAutocompleteItem>?)
+    fun updateAnimalTypeList(types: Set<FilterAutocompleteItem>?)
 
     @AddToEndSingle
     fun setMinMaxAge(minAge: Int, maxAge: Int)

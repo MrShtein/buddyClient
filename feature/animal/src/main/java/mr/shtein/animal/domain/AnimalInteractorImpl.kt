@@ -23,7 +23,7 @@ interface AnimalInteractor {
     suspend fun getAnimalsByFilter(animalFilter: AnimalFilter): List<Animal>
     suspend fun getDistancesFromUser(token: String, coordinates: Coordinates): HashMap<Int, Int>
     suspend fun getAnimalTypes(): List<FilterAutocompleteItem>
-    suspend fun getAnimalBreeds(animalTypeList: List<Int>): List<FilterAutocompleteItem>
+    suspend fun getAnimalBreeds(animalTypeList: Set<Int>): List<FilterAutocompleteItem>
     suspend fun getAnimalCharacteristics(characteristicId: Int): List<FilterAutocompleteItem>
     suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int
 }
@@ -53,7 +53,7 @@ class AnimalInteractorImpl(
         return mapAnimalTypeToFilterItem(animalType)
     }
 
-    override suspend fun getAnimalBreeds(animalTypeList: List<Int>): List<FilterAutocompleteItem> {
+    override suspend fun getAnimalBreeds(animalTypeList: Set<Int>): List<FilterAutocompleteItem> {
         val allBreeds = mutableListOf<Breed>()
         val currentList = animalTypeList.toMutableList()
         if (currentList.isEmpty()) {

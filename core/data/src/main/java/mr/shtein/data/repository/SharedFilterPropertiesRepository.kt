@@ -14,16 +14,16 @@ const val NO_AGE_FILTER_VALUE = -1
 
 class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
     FilterPropertiesRepository {
-    override fun getAnimalTypeIdList(): MutableList<Int> {
+    override fun getAnimalTypeIdList(): MutableSet<Int> {
         val animalTypeSet = storage.readStringSet(ANIMAL_TYPE_KEY, null)
         return animalTypeSet
             ?.map {
                 it.toInt()
             }
-            ?.toMutableList() ?: mutableListOf()
+            ?.toMutableSet() ?: mutableSetOf()
     }
 
-    override fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>) {
+    override fun saveAnimalTypeIdList(animalTypeId: MutableSet<Int>) {
         val animalTypeIdSet = animalTypeId
             .map {
                 it.toString()
@@ -32,16 +32,16 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(ANIMAL_TYPE_KEY, animalTypeIdSet)
     }
 
-    override fun getCityIdList(): MutableList<Int> {
+    override fun getCityIdList(): MutableSet<Int> {
         val cityIdSet = storage.readStringSet(CITY_KEY, null)
         return cityIdSet
             ?.map {
                 it.toInt()
             }
-            ?.toMutableList() ?: mutableListOf()
+            ?.toMutableSet() ?: mutableSetOf()
     }
 
-    override fun saveCityIdList(cityId: List<Int>) {
+    override fun saveCityIdList(cityId: MutableSet<Int>) {
         val cityIdSet = cityId
             .map {
                 it.toString()
@@ -50,16 +50,16 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(CITY_KEY, cityIdSet)
     }
 
-    override fun getBreedIdList(): MutableList<Int> {
+    override fun getBreedIdList(): MutableSet<Int> {
         val breedIdSet = storage.readStringSet(BREED_KEY, null)
         return breedIdSet
             ?.map {
                 it.toInt()
             }
-            ?.toMutableList() ?: mutableListOf()
+            ?.toMutableSet() ?: mutableSetOf()
     }
 
-    override fun saveBreedIdList(breedId: List<Int>) {
+    override fun saveBreedIdList(breedId: MutableSet<Int>) {
         val breedIdSet = breedId
             .map {
                 it.toString()
@@ -68,16 +68,16 @@ class SharedFilterPropertiesRepository(private val storage: SharedPreferences) :
         storage.writeStringSet(BREED_KEY, breedIdSet)
     }
 
-    override fun getColorIdList(): MutableList<Int> {
+    override fun getColorIdList(): MutableSet<Int> {
         val characteristicIddSet = storage.readStringSet(COLOR_KEY, null)
         return characteristicIddSet
             ?.map {
                 it.toInt()
             }
-            ?.toMutableList() ?: mutableListOf()
+            ?.toMutableSet() ?: mutableSetOf()
     }
 
-    override fun saveColorIdList(colorId: List<Int>) {
+    override fun saveColorIdList(colorId: MutableSet<Int>) {
         val characteristicIdSet = colorId
             .map {
                 it.toString()

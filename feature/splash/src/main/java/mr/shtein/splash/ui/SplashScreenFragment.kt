@@ -73,7 +73,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
                 navigator.moveToCityChoiceFromSplashScreen()
             } else {
                 if (animalFilter.animalTypeId == null) {
-                    val animalTypes = mutableListOf(DOG_TYPE_KEY, CAT_TYPE_KEY)
+                    val animalTypes: MutableSet<Int> = mutableSetOf(DOG_TYPE_KEY, CAT_TYPE_KEY)
                     animalFilterInteractor.saveAnimalTypeIdList(animalTypes)
                     animalFilter.animalTypeId = animalTypes
                 }

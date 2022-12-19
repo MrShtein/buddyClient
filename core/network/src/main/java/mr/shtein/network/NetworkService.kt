@@ -16,22 +16,22 @@ import retrofit2.http.*
 interface NetworkService {
     @GET("/api/v1/animal")
     suspend fun getAnimals(
-        @Query("type_id") animalTypeId: List<Int>?,
-        @Query("city_id") cityId: List<Int>?,
-        @Query("breed_id") breedId: List<Int>?,
+        @Query("type_id") animalTypeId: Set<Int>?,
+        @Query("city_id") cityId: Set<Int>?,
+        @Query("breed_id") breedId: Set<Int>?,
         @Query("gender") genderId: Int?,
-        @Query("characteristic_id") characteristicId: List<Int>?,
+        @Query("characteristic_id") characteristicId: Set<Int>?,
         @Query("min_age") minAge: Int?,
         @Query("max_age") maxAge: Int?
     ): Response<List<AnimalDTO>>
 
     @GET("/api/v1/animal/count")
     suspend fun getAnimalsCountByFilter(
-        @Query("type_id") animalTypeId: List<Int>?,
-        @Query("city_id") cityId: List<Int>?,
-        @Query("breed_id") breedId: List<Int>?,
+        @Query("type_id") animalTypeId: Set<Int>?,
+        @Query("city_id") cityId: Set<Int>?,
+        @Query("breed_id") breedId: Set<Int>?,
         @Query("gender") genderId: Int?,
-        @Query("characteristic_id") characteristicId: List<Int>?,
+        @Query("characteristic_id") characteristicId: Set<Int>?,
         @Query("min_age") minAge: Int?,
         @Query("max_age") maxAge: Int?
     ): Response<Int>

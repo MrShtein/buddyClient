@@ -8,10 +8,10 @@ class AnimalFilterInteractorImpl(
 ) : AnimalFilterInteractor {
 
     override fun makeAnimalFilter(): AnimalFilter {
-        val animalTypeIdList: MutableList<Int> = animalFilterPropertiesRepository.getAnimalTypeIdList()
-        val cityIdList: MutableList<Int> = animalFilterPropertiesRepository.getCityIdList()
-        val breedIdList: MutableList<Int> = animalFilterPropertiesRepository.getBreedIdList()
-        val characteristicIdList: MutableList<Int> =
+        val animalTypeIdList: MutableSet<Int> = animalFilterPropertiesRepository.getAnimalTypeIdList()
+        val cityIdList: MutableSet<Int> = animalFilterPropertiesRepository.getCityIdList()
+        val breedIdList: MutableSet<Int> = animalFilterPropertiesRepository.getBreedIdList()
+        val characteristicIdList: MutableSet<Int> =
             animalFilterPropertiesRepository.getColorIdList()
         val genderId: Int = animalFilterPropertiesRepository.getGenderId()
         val minAge: Int = animalFilterPropertiesRepository.getMinAge()
@@ -25,38 +25,38 @@ class AnimalFilterInteractorImpl(
             genderId = genderId,
             minAge = minAge,
             maxAge = maxAge
-        )
+        ) //TODO Заменить на MutableList на MutableSet
     }
 
-    override fun getAnimalTypeIdList(): MutableList<Int> {
+    override fun getAnimalTypeIdList(): MutableSet<Int> {
         return animalFilterPropertiesRepository.getAnimalTypeIdList()
     }
 
-    override fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>) {
+    override fun saveAnimalTypeIdList(animalTypeId: MutableSet<Int>) {
         animalFilterPropertiesRepository.saveAnimalTypeIdList(animalTypeId)
     }
 
-    override fun getCityIdList(): MutableList<Int> {
+    override fun getCityIdList(): MutableSet<Int> {
         return animalFilterPropertiesRepository.getCityIdList()
     }
 
-    override fun saveCityIdList(cityId: MutableList<Int>) {
+    override fun saveCityIdList(cityId: MutableSet<Int>) {
         animalFilterPropertiesRepository.saveCityIdList(cityId)
     }
 
-    override fun getBreedIdList(): MutableList<Int> {
+    override fun getBreedIdSet(): MutableSet<Int> {
         return animalFilterPropertiesRepository.getBreedIdList()
     }
 
-    override fun saveBreedIdList(breedId: MutableList<Int>) {
+    override fun saveBreedIdSet(breedId: MutableSet<Int>) {
         animalFilterPropertiesRepository.saveBreedIdList(breedId)
     }
 
-    override fun getColorIdIdList(): MutableList<Int> {
+    override fun getColorIdIdList(): MutableSet<Int> {
         return animalFilterPropertiesRepository.getColorIdList()
     }
 
-    override fun saveColorIdList(colorIdList: MutableList<Int>) {
+    override fun saveColorIdList(colorIdList: MutableSet<Int>) {
         animalFilterPropertiesRepository.saveColorIdList(colorIdList)
     }
 
