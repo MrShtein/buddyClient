@@ -1,17 +1,17 @@
 package mr.shtein.data.repository
 
 interface FilterPropertiesRepository {
-    fun getAnimalTypeIdList(): MutableList<Int>
-    fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>)
+    fun getAnimalTypeIdList(): MutableSet<Int>
+    fun saveAnimalTypeIdList(animalTypeId: MutableSet<Int>)
 
-    fun getCityIdList(): MutableList<Int>
-    fun saveCityIdList(cityId: List<Int>)
+    fun getCityIdList(): MutableSet<Int>
+    fun saveCityIdList(cityId: MutableSet<Int>)
 
-    fun getBreedIdList(): MutableList<Int>
-    fun saveBreedIdList(breedId: List<Int>)
+    fun getBreedIdList(): MutableSet<Int>
+    fun saveBreedIdList(breedId: MutableSet<Int>)
 
-    fun getColorIdList(): MutableList<Int>
-    fun saveColorIdList(colorId: List<Int>)
+    fun getColorIdList(): MutableSet<Int>
+    fun saveColorIdList(colorId: MutableSet<Int>)
 
     fun getGenderId(): Int
     fun saveGenderIdList(genderId: Int)

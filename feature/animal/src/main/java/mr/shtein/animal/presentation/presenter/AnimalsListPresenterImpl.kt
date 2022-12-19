@@ -265,18 +265,18 @@ class AnimalsListPresenterImpl(
     }
 
     override fun onDogChipClicked(dogChecked: Boolean) {
-        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        val animalTypeId: MutableSet<Int> = animalFilter.animalTypeId ?: mutableSetOf()
         if (dogChecked) {
             animalTypeId.add(DOG_ID)
-            animalFilter.animalTypeId = animalTypeId
-            val animalTypeList: MutableList<Int> =
+            animalFilter.animalTypeId = animalTypeId.toMutableSet()
+            val animalTypeList: MutableSet<Int> =
                 filterInteractor.getAnimalTypeIdList()
             animalTypeList.add(DOG_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(DOG_ID)
             animalFilter.animalTypeId = animalTypeId
-            val animalTypeList: MutableList<Int> =
+            val animalTypeList: MutableSet<Int> =
                 filterInteractor.getAnimalTypeIdList()
             animalTypeList.remove(DOG_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
@@ -285,18 +285,18 @@ class AnimalsListPresenterImpl(
     }
 
     override fun onCatChipClicked(catChecked: Boolean) {
-        val animalTypeId: MutableList<Int> = animalFilter.animalTypeId ?: mutableListOf()
+        val animalTypeId: MutableSet<Int> = animalFilter.animalTypeId ?: mutableSetOf()
         if (catChecked) {
             animalTypeId.add(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
-            val animalTypeList: MutableList<Int> =
+            val animalTypeList: MutableSet<Int> =
                 filterInteractor.getAnimalTypeIdList()
             animalTypeList.add(CAT_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         } else {
             animalTypeId.remove(CAT_ID)
             animalFilter.animalTypeId = animalTypeId
-            val animalTypeList: MutableList<Int> = filterInteractor.getAnimalTypeIdList()
+            val animalTypeList: MutableSet<Int> = filterInteractor.getAnimalTypeIdList()
             animalTypeList.remove(CAT_ID)
             filterInteractor.saveAnimalTypeIdList(animalTypeList)
         }

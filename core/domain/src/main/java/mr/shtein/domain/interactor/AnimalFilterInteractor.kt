@@ -4,17 +4,17 @@ import mr.shtein.data.model.AnimalFilter
 
 interface AnimalFilterInteractor {
 
-    fun getAnimalTypeIdList(): MutableList<Int>
-    fun saveAnimalTypeIdList(animalTypeId: MutableList<Int>)
+    fun getAnimalTypeIdList(): MutableSet<Int>
+    fun saveAnimalTypeIdList(animalTypeId: MutableSet<Int>)
 
-    fun getCityIdList(): MutableList<Int>
-    fun saveCityIdList(cityId: MutableList<Int>)
+    fun getCityIdList(): MutableSet<Int>
+    fun saveCityIdList(cityId: MutableSet<Int>)
 
-    fun getBreedIdList(): MutableList<Int>
-    fun saveBreedIdList(breedId: MutableList<Int>)
+    fun getBreedIdSet(): MutableSet<Int>
+    fun saveBreedIdSet(breedId: MutableSet<Int>)
 
-    fun getColorIdIdList(): MutableList<Int>
-    fun saveColorIdList(colorIdList: MutableList<Int>)
+    fun getColorIdIdList(): MutableSet<Int>
+    fun saveColorIdList(colorIdList: MutableSet<Int>)
 
     fun getGenderId(): Int
     fun saveGenderId(genderId: Int)

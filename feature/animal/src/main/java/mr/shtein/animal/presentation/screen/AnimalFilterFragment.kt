@@ -104,30 +104,30 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
-    override fun showBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>) {
-        val breedChips: List<Chip> = makeBreedChips(breedsForChips)
+    override fun showBreedChips(breedsForChips: MutableSet<FilterAutocompleteItem>) {
+        val breedChips: Set<Chip> = makeBreedChips(breedsForChips)
         breedChips.forEach {
             binding.animalFilterBreedChipsContainer.addView(it)
         }
     }
 
 
-    override fun showColorChips(colorsForChips: MutableList<FilterAutocompleteItem>) {
-        val colorChips: List<Chip> = makeColorChips(colorsForChips)
+    override fun showColorChips(colorsForChips: MutableSet<FilterAutocompleteItem>) {
+        val colorChips: Set<Chip> = makeColorChips(colorsForChips)
         colorChips.forEach {
             binding.animalFilterColorChipsContainer.addView(it)
         }
     }
 
-    override fun showAnimalTypeChips(animalTypesForChips: MutableList<FilterAutocompleteItem>) {
-        val animalTypeChips: List<Chip> = makeAnimalTypeChips(animalTypesForChips)
+    override fun showAnimalTypeChips(animalTypesForChips: MutableSet<FilterAutocompleteItem>) {
+        val animalTypeChips: Set<Chip> = makeAnimalTypeChips(animalTypesForChips)
         animalTypeChips.forEach {
             binding.animalFilterAnimalTypeChipsContainer.addView(it)
         }
     }
 
-    override fun showCityChips(citiesForChips: MutableList<FilterAutocompleteItem>) {
-        val citiesChips: List<Chip> = makeCityChips(citiesForChips)
+    override fun showCityChips(citiesForChips: MutableSet<FilterAutocompleteItem>) {
+        val citiesChips: Set<Chip> = makeCityChips(citiesForChips)
         citiesChips.forEach {
             binding.animalFilterCityChipsContainer.addView(it)
         }
@@ -162,50 +162,28 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
             val adapter = binding.animalFilterBreedInput.adapter as SelectionAdapter
             val filterBreed = adapter.getItem(position)
             animalFilterPresenter.onBreedFilterItemClick(filterBreed!!)
-            filterBreed.isSelected = true
-            filterBreed.let {
-                val chip = makeBreedChip(it.name, it.id)
-                binding.animalFilterBreedChipsContainer.addView(chip)
-            }
+
             binding.animalFilterBreedInput.setText("")
         }
 
         binding.animalFilterColorInput.setOnItemClickListener { parent, view, position, id ->
-
             val adapter = binding.animalFilterColorInput.adapter as SelectionAdapter
             val filterColor = adapter.getItem(position)
             animalFilterPresenter.onColorFilterItemClick(filterColor!!)
-            filterColor.isSelected = true
-            filterColor.let {
-                val chip = makeColorChip(it.name, it.id)
-                binding.animalFilterColorChipsContainer.addView(chip)
-            }
             binding.animalFilterColorInput.setText("")
         }
 
         binding.animalFilterCityInput.setOnItemClickListener { parent, view, position, id ->
-
             val adapter = binding.animalFilterCityInput.adapter as SelectionAdapter
             val filterCity = adapter.getItem(position)
             animalFilterPresenter.onCityFilterItemClick(filterCity!!)
-            filterCity.isSelected = true
-            filterCity.let {
-                val chip = makeCityChip(it.name, it.id)
-                binding.animalFilterCityChipsContainer.addView(chip)
-            }
             binding.animalFilterCityInput.setText("")
         }
 
         binding.animalFilterAnimalTypeInput.setOnItemClickListener { parent, view, position, id ->
-
             val adapter = binding.animalFilterAnimalTypeInput.adapter as SelectionAdapter
             val filterAnimalType = adapter.getItem(position)
             animalFilterPresenter.onAnimalTypeFilterItemClick(filterAnimalType!!)
-            filterAnimalType.isSelected = true
-            filterAnimalType.let {
-                val chip = makeAnimalTypeChip(it.name, it.id)
-                binding.animalFilterAnimalTypeChipsContainer.addView(chip)
-            }
             binding.animalFilterAnimalTypeInput.setText("")
         }
 
@@ -243,6 +221,11 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         )
     }
 
+    override fun createBreedChip(filterBreed: FilterAutocompleteItem) {
+        val chip = makeBreedChip(filterBreed.name, filterBreed.id)
+        binding.animalFilterBreedChipsContainer.addView(chip)
+    }
+
     override fun deleteBreedChip(chip: Chip) {
         binding.animalFilterBreedChipsContainer.removeView(chip)
     }
@@ -252,6 +235,11 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.clear()
         adapter.addAll(breeds!!)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun createColorChip(filterColor: FilterAutocompleteItem) {
+        val chip = makeColorChip(filterColor.name, filterColor.id)
+        binding.animalFilterColorChipsContainer.addView(chip)
     }
 
     override fun deleteColorChip(chip: Chip) {
@@ -265,6 +253,11 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.notifyDataSetChanged()
     }
 
+    override fun createCityChip(filterCity: FilterAutocompleteItem) {
+        val chip = makeCityChip(filterCity.name, filterCity.id)
+        binding.animalFilterCityChipsContainer.addView(chip)
+    }
+
     override fun deleteCityChip(chip: Chip) {
         binding.animalFilterCityChipsContainer.removeView(chip)
     }
@@ -276,11 +269,16 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         adapter.notifyDataSetChanged()
     }
 
+    override fun createAnimalTypeChip(filterAnimalType: FilterAutocompleteItem) {
+        val chip = makeAnimalTypeChip(filterAnimalType.name, filterAnimalType.id)
+        binding.animalFilterAnimalTypeChipsContainer.addView(chip)
+    }
+
     override fun deleteAnimalTypeChip(chip: Chip) {
         binding.animalFilterAnimalTypeChipsContainer.removeView(chip)
     }
 
-    override fun updateAnimalTypeList(types: List<FilterAutocompleteItem>?) {
+    override fun updateAnimalTypeList(types: Set<FilterAutocompleteItem>?) {
         val adapter = binding.animalFilterAnimalTypeInput.adapter as SelectionAdapter
         adapter.clear()
         adapter.addAll(types!!)
@@ -302,36 +300,36 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         Toast.makeText(requireContext(), tokenErrorMsg, Toast.LENGTH_LONG).show()
     }
 
-    private fun makeBreedChips(breedsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+    private fun makeBreedChips(breedsForChips: MutableSet<FilterAutocompleteItem>): Set<Chip> {
         return breedsForChips
             .map {
                 makeBreedChip(it.name, it.id)
             }
-            .toList()
+            .toSet()
     }
 
-    private fun makeColorChips(colorsForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+    private fun makeColorChips(colorsForChips: MutableSet<FilterAutocompleteItem>): Set<Chip> {
         return colorsForChips
             .map {
                 makeColorChip(it.name, it.id)
             }
-            .toList()
+            .toSet()
     }
 
-    private fun makeCityChips(citiesForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+    private fun makeCityChips(citiesForChips: MutableSet<FilterAutocompleteItem>): Set<Chip> {
         return citiesForChips
             .map {
                 makeCityChip(it.name, it.id)
             }
-            .toList()
+            .toSet()
     }
 
-    private fun makeAnimalTypeChips(animalTypesForChips: MutableList<FilterAutocompleteItem>): List<Chip> {
+    private fun makeAnimalTypeChips(animalTypesForChips: MutableSet<FilterAutocompleteItem>): Set<Chip> {
         return animalTypesForChips
             .map {
                 makeAnimalTypeChip(it.name, it.id)
             }
-            .toList()
+            .toSet()
     }
 
     private fun makeBreedChip(text: String, itemId: Int): Chip {
