@@ -1,4 +1,4 @@
-package mr.shtein.kennel.ui
+package mr.shtein.kennel.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +21,7 @@ import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.ui.adapter.KennelsAdapter
+import mr.shtein.kennel.presentation.adapter.KennelsAdapter
 import mr.shtein.kennel.util.KennelDiffUtil
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation

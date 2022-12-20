@@ -1,4 +1,4 @@
-package mr.shtein.kennel.ui
+package mr.shtein.kennel.presentation
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

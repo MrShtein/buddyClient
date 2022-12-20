@@ -119,7 +119,7 @@
         tools:layout="@layout/animal_card_fragment" />
     <fragment
         android:id="@+id/addKennelFragment"
-        android:name="mr.shtein.kennel.ui.AddKennelFragment"
+        android:name="mr.shtein.kennel.presentation.AddKennelFragment"
         android:label="AddKennelFragment"
         tools:layout="@layout/add_kennel_fragment">
         <action
@@ -147,7 +147,7 @@
     </fragment>
     <fragment
         android:id="@+id/kennelSettingsFragment"
-        android:name="mr.shtein.kennel.ui.KennelSettingsFragment"
+        android:name="mr.shtein.kennel.presentation.KennelSettingsFragment"
         android:label="KennelSettingsFragment"
         tools:layout="@layout/kennel_settings_fragment">
         <action
@@ -159,7 +159,7 @@
     </fragment>
     <fragment
         android:id="@+id/kennelConfirmFragment"
-        android:name="mr.shtein.kennel.ui.KennelConfirmFragment"
+        android:name="mr.shtein.kennel.presentation.KennelConfirmFragment"
         android:label="KennelConfirmFragment"
         tools:layout="@layout/kennel_confirm_fragment">
         <action
@@ -168,7 +168,7 @@
     </fragment>
     <fragment
         android:id="@+id/animalSettingsFragment"
-        android:name="mr.shtein.kennel.ui.AnimalSettingsFragment"
+        android:name="mr.shtein.kennel.presentation.AnimalSettingsFragment"
         android:label="AnimalSettingsFragment"
         tools:layout="@layout/animal_settings_fragment">
         <action
@@ -177,12 +177,12 @@
     </fragment>
     <fragment
         android:id="@+id/addAnimalFragment"
-        android:name="mr.shtein.kennel.ui.AddAnimalFragment"
+        android:name="mr.shtein.kennel.presentation.AddAnimalFragment"
         android:label="AddAnimalFragment"
         tools:layout="@layout/add_animal_fragment" />
     <fragment
         android:id="@+id/kennelHomeFragment"
-        android:name="mr.shtein.kennel.ui.KennelHomeFragment"
+        android:name="mr.shtein.kennel.presentation.KennelHomeFragment"
         android:label="KennelHomeFragment"
         tools:layout="@layout/kennel_home_fragment">
         <action

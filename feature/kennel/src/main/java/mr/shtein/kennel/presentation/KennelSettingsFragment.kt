@@ -1,4 +1,4 @@
-package mr.shtein.kennel.ui
+package mr.shtein.kennel.presentation
 
 import android.net.Uri
 import android.os.Bundle
