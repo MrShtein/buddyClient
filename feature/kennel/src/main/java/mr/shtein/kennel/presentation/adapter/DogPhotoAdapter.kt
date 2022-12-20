@@ -1,4 +1,4 @@
-package mr.shtein.kennel.ui.adapter
+package mr.shtein.kennel.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View

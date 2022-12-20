@@ -1,4 +1,4 @@
-package mr.shtein.kennel.ui
+package mr.shtein.kennel.presentation
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,8 +21,8 @@ import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.ui.adapter.CatPhotoAdapter
-import mr.shtein.kennel.ui.adapter.DogPhotoAdapter
+import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
+import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
