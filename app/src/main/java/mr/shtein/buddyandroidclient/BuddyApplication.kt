@@ -9,6 +9,7 @@ import mr.shtein.data.di.mapperModule
 import mr.shtein.data.di.repositoryModule
 import mr.shtein.data.di.sharedPreferencesModule
 import mr.shtein.domain.di.commonInteractorModule
+import mr.shtein.kennel.di.kennelModule
 import mr.shtein.network.di.networkModule
 import mr.shtein.util.di.validatorModule
 import org.koin.android.ext.koin.androidContext
@@ -34,7 +35,8 @@ class BuddyApplication : Application() {
                     cityModule,
                     validatorModule,
                     bottomSheetBuilder,
-                    commonInteractorModule
+                    commonInteractorModule,
+                    kennelModule
                 )
             )
         }

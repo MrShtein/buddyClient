@@ -80,7 +80,7 @@
     <string name="input_hint_for_city_choice">Введите Ваш город</string>
     <string name="user_settings_old_pwd_label">Старый пароль</string>
     <string name="city_choice_description_text">Введите ваш город и мы покажем животных рядом с вами</string>
-    <string name="add_kennel_fragment_kennels_btn_text">Приюты</string>
+    <string name="add_kennel_fragment_kennels_btn_text">Мои приюты</string>
     <string name="add_kennel_fragment_volunteer_btn_text">Волонтеры</string>
     <string name="add_kennel_fragment_add_btn_text">Добавить приют</string>
     <string name="kennel_confirm_reg_text">Подтверждение регистрации</string>

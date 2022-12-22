@@ -35,6 +35,11 @@ class KennelsAdapter(
 
     private fun getItem(position: Int): KennelPreview = kennels[position]
 
+    fun setNewData(kennelPreviewList: List<KennelPreview>) {
+        kennels = kennelPreviewList
+        notifyDataSetChanged()
+    }
+
     inner class KennelsViewHolder(
         private val itemView: View,
         private val onKennelListener: OnKennelItemClickListener
