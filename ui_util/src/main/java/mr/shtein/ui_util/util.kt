@@ -1,5 +1,6 @@
 package mr.shtein.ui_util
 
+import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
@@ -55,3 +56,8 @@ fun Fragment.showBadTokenDialog(userPropertiesRepository: UserPropertiesReposito
         userPropertiesRepository.saveUserToken("")
     }
 }
+
+val Int.dp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
