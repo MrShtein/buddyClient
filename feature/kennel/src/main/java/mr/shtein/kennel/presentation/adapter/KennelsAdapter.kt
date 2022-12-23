@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.marginBottom
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.network.ImageLoader
+import mr.shtein.ui_util.dp
+import mr.shtein.ui_util.px
 
 class KennelsAdapter(
     var kennels: List<KennelPreview>,
@@ -26,7 +30,7 @@ class KennelsAdapter(
 
     override fun onBindViewHolder(kennelViewHolder: KennelsViewHolder, position: Int) {
         val kennelCard = getItem(position)
-        kennelViewHolder.bind(kennelCard)
+        kennelViewHolder.bind(kennelCard, position)
     }
 
     override fun getItemCount(): Int {
@@ -54,7 +58,8 @@ class KennelsAdapter(
             itemView.setOnClickListener(this)
         }
 
-        fun bind(kennelPreviewItem: KennelPreview) {
+        fun bind(kennelPreviewItem: KennelPreview, position: Int) {
+            if (position == itemCount - 1) addMarginBottomToFinalElement()
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
             val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
@@ -77,11 +82,23 @@ class KennelsAdapter(
         override fun onClick(v: View?) {
             onKennelListener.onClick(kennels[absoluteAdapterPosition])
         }
+
+        private fun addMarginBottomToFinalElement() {
+            val params = itemView.layoutParams as ViewGroup.MarginLayoutParams
+            params.setMargins(
+                params.marginStart,
+                params.topMargin,
+                params.marginEnd,
+                params.bottomMargin + 40.px)
+            itemView.layoutParams = params
+        }
     }
 
     interface OnKennelItemClickListener {
         fun onClick(kennelItem: KennelPreview)
     }
+
+
 
     private fun makeVolunteersText(amount: Int): String {
         val mainText = "волонтер"

@@ -1,5 +1,7 @@
 package mr.shtein.kennel.presentation
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,32 +10,25 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
-import kotlinx.coroutines.*
-import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.model.KennelPreview
-import mr.shtein.data.repository.KennelRepository
-import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.KennelsAdapter
 import mr.shtein.kennel.presentation.state.AddKennelState
 import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
-import mr.shtein.kennel.util.KennelDiffUtil
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
 
@@ -49,10 +44,12 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private lateinit var descriptionView: TextView
     private lateinit var addKennelBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
+    private lateinit var noKennelsAnimation: LottieAnimationView
     private lateinit var kennelRecycler: RecyclerView
     private lateinit var kennelAdapter: KennelsAdapter
     private val networkImageLoader: ImageLoader by inject()
     private val navigator: KennelNavigation by inject()
+    private val appPropertiesRepository: AppPropertiesRepository by inject()
     private val addKennelViewModel: AddKennelViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +74,8 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             setStatusBarColor(true)
             setInsetsListenerForPadding(it, left = false, top = true, right = false, bottom = false)
             initViews(it)
+            initRecyclerView(it)
+            changeMarginBottom(kennelRecycler)
             setListeners()
         }
         return view
@@ -84,7 +83,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView(view)
         addKennelViewModel.addKennelState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AddKennelState.Loading -> {
@@ -96,7 +94,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                     adapter.setNewData(state.kennelsList)
                 }
                 is AddKennelState.NoItem -> {
-                    progressBar.visibility = View.INVISIBLE
+                    animateEmptyKennelsListAnimationAppearance()
                 }
                 is AddKennelState.Failure -> {
                     progressBar.visibility = View.INVISIBLE
@@ -116,6 +114,34 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         descriptionView = view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_absence)
         addKennelBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
         progressBar = view.findViewById(R.id.add_kennel_fragment_progressbar)
+        noKennelsAnimation = view.findViewById(R.id.add_kennel_empty_kennels_animation)
+    }
+
+    private fun animateEmptyKennelsListAnimationAppearance() {
+        noKennelsAnimation.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            animate()
+                .alpha(1f)
+                .setDuration(300)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        playAnimation()
+                    }
+                })
+
+            progressBar.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        progressBar.visibility = View.GONE
+                    }
+                })
+        }
     }
 
     private fun setListeners() {
@@ -150,5 +176,12 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             }
             else -> {}
         }
+    }
+
+    private fun changeMarginBottom(view: View) {
+        val bottomNavHeightInDP = appPropertiesRepository.getBottomNavHeight()
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, 0, 0, bottomNavHeightInDP)
+        view.layoutParams = layoutParams
     }
 }
