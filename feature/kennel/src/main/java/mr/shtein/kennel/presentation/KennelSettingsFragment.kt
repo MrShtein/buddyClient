@@ -2,17 +2,18 @@ package mr.shtein.kennel.presentation
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
@@ -25,8 +26,12 @@ import mr.shtein.data.repository.KennelPropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.kennel.presentation.state.kennel_settings.CityFieldState
+import mr.shtein.kennel.presentation.state.kennel_settings.KennelAvatarState
+import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
 import mr.shtein.kennel.util.KennelValidationStore
 import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.util.ImageCompressor
 import mr.shtein.util.validator.*
 import org.koin.android.ext.android.inject
 import ru.tinkoff.decoro.MaskImpl
@@ -47,7 +52,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         private const val STREET_KEY = "isValidStreet"
         private const val HOUSE_KEY = "isValidHouseNum"
         private const val IDENTIFICATION_NUM_KEY = "isValidIdentificationNum"
-        private const val KENNEL_AVATAR_FILE_NAME = "kennel_avt.jpeg"
+        private const val KENNEL_AVATAR_FILE_NAME = "temp_kennel_avt.webp"
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
     }
@@ -71,6 +76,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private lateinit var identificationNumberInput: TextInputEditText
     private lateinit var saveBtn: MaterialButton
     private lateinit var photoBtn: AppCompatImageButton
+    private lateinit var dogPlaceholder: ShapeableImageView
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var getAvatarLauncher: ActivityResultLauncher<String>
     private var avatarUri: Uri? = null
@@ -78,11 +84,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
     private val navigator: KennelNavigation by inject()
+    private val kennelSettingsViewModel: KennelSettingsViewModel by inject()
+    private val imageCompressor: ImageCompressor by inject()
 
     private var isFromCityChoice: Boolean = false
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private var cityId: Long = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,21 +102,26 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             val newCity = bundle.getString(CITY_BUNDLE_KEY)
             isFromCityChoice = bundle.getBoolean(IS_FROM_CITY_BUNDLE_KEY)
             if (newCity != null) {
-                setCity(newCity)
-                cityId = newCity.split(",")[0].toLong()
+                kennelSettingsViewModel.onCityChanged(city = newCity)
             }
         }
 
         getAvatarLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 coroutineScope.launch {
-                    val newPathForAvt = "${requireContext().filesDir}/$KENNEL_AVATAR_FILE_NAME"
-                    avatarImg.setImageURI(uri)
-                    avatarUri = uri
-                    copyFileToInternalStorage(uri)
-                    kennelPropertiesRepository.saveKennelAvatarUri(newPathForAvt)
+                    val avatar: ByteArray = requireContext()
+                        .contentResolver
+                        .openInputStream(uri)
+                        ?.readBytes() ?: byteArrayOf()
+                    val compressedAvatar: ByteArray = imageCompressor.compressImage(avatar)
+                    val pathToTempAvatarFile =
+                        "${requireContext().filesDir}/$KENNEL_AVATAR_FILE_NAME"
+                    kennelSettingsViewModel.onAvatarChanged(
+                        avatarPath = pathToTempAvatarFile,
+                        avatarUri = uri.toString()
+                    )
+                    copyFileToInternalStorage(compressedAvatar)
                 }
-
             }
         }
     }
@@ -123,14 +134,51 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         initMaskForPhone(phoneNumberInput)
         setListeners()
 
+        kennelSettingsViewModel.cityFieldState.observe(viewLifecycleOwner) { cityState ->
+            when (cityState) {
+                is CityFieldState.Value -> {
+                    cityInput.setText(cityState.value.fullName)
+                    if (cityInputContainer.isErrorEnabled) {
+                        cityInputContainer.isErrorEnabled = false
+                    }
+                }
+                is CityFieldState.Error -> {
+                    cityInputContainer.error = cityState.message
+                    cityInputContainer.isErrorEnabled = true
+                }
+                is CityFieldState.Validate -> {}
+            }
+        }
+
+        kennelSettingsViewModel.kennelAvatarState.observe(viewLifecycleOwner) { avatarState ->
+            when (avatarState) {
+                KennelAvatarState.EmptyValue -> {
+                    avatarCancelBtn.visibility = View.INVISIBLE
+                    photoBtn.visibility = View.VISIBLE
+                    dogPlaceholder.visibility = View.VISIBLE
+                    avatarImg.setImageDrawable(null)
+                    coroutineScope.launch {
+                        deleteFileFromInternalStorage()
+                    }
+                }
+                is KennelAvatarState.Value -> {
+                    avatarCancelBtn.visibility = View.VISIBLE
+                    photoBtn.visibility = View.INVISIBLE
+                    dogPlaceholder.visibility = View.INVISIBLE
+                    avatarImg.setImageURI(avatarState.avatarUri.toUri())
+                }
+            }
+        }
+
+
     }
 
     private fun initViews(view: View) {
         avatarImg = view.findViewById(R.id.kennel_settings_avatar_img)
         photoBtn = view.findViewById(R.id.kennel_settings_photo_btn)
         avatarCancelBtn = view.findViewById(R.id.kennel_settings_cancel_avatar_btn)
+        dogPlaceholder = view.findViewById(R.id.kennel_settings_avatar_dog_placeholder)
 
-        setAvatarImgIfExist()
         nameContainer = view.findViewById(R.id.kennel_settings_organization_name_input_container)
         nameInput = view.findViewById(R.id.kennel_settings_organization_name_input)
         phoneNumberInputContainer =
@@ -156,25 +204,16 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
 
     private fun setListeners() {
         cityInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (cityInputContainer.isErrorEnabled) cityInputContainer.isErrorEnabled = false
-                cityInput.inputType = InputType.TYPE_NULL
-                navigator.moveToCityChoiceFromKennelSettings()
-            }
+            kennelSettingsViewModel.onCityInputFocusChanged(hasFocus = hasFocus)
         }
 
         photoBtn.setOnClickListener {
             val dataType = "image/*"
             getAvatarLauncher.launch(dataType)
-            it.visibility = View.INVISIBLE
-            avatarCancelBtn.visibility = View.VISIBLE
         }
 
         avatarCancelBtn.setOnClickListener {
-            kennelPropertiesRepository.saveKennelAvatarUri("")
-            avatarImg.setImageDrawable(null)
-            photoBtn.visibility = View.VISIBLE
-            it.visibility = View.INVISIBLE
+            kennelSettingsViewModel.onAvatarCancelBtnClicked()
         }
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
@@ -276,13 +315,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
     }
 
-    private fun setCity(cityInfo: String) {
-        val (id, name, region) = cityInfo.split(",")
-        val visibleCityInfo = "$name, $region"
-        cityId = id.toLong()
-        cityInput.setText(visibleCityInfo)
-    }
-
     private fun initMaskForPhone(phoneNumberInput: TextInputEditText) {
         val maskImpl: MaskImpl = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
         maskImpl.isHideHardcodedHead = true
@@ -361,7 +393,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 nameInput.text.toString(),
                 phoneNumberInput.text.toString(),
                 emailInput.text.toString(),
-                "${cityId},${cityInput.text.toString()}",
+                cityInput.text.toString(),
                 streetInput.text.toString(),
                 houseNumberInput.text.toString(),
                 buildingNumberInput.text.toString(),
@@ -397,25 +429,17 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
     }
 
-    private fun setAvatarImgIfExist() {
-        val avatarPath = kennelPropertiesRepository.getKennelAvatarUri()
-        if (avatarPath != "") {
-            avatarImg.setImageURI(Uri.parse(avatarPath))
-            photoBtn.visibility = View.INVISIBLE
-            avatarCancelBtn.visibility = View.VISIBLE
+    private suspend fun copyFileToInternalStorage(avatarInBytes: ByteArray) =
+        withContext(Dispatchers.IO) {
+            val file = File(requireContext().filesDir, KENNEL_AVATAR_FILE_NAME)
+            file.writeBytes(avatarInBytes)
+        }
+
+    private suspend fun deleteFileFromInternalStorage() {
+        withContext(Dispatchers.IO) {
+            val file = File(requireContext().filesDir, KENNEL_AVATAR_FILE_NAME)
+            file.delete()
         }
     }
 
-    private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
-        val file = File(requireContext().filesDir, KENNEL_AVATAR_FILE_NAME)
-        val fileStream = requireContext().contentResolver.openInputStream(uri)
-        if (fileStream != null) {
-            file.writeBytes(fileStream.readBytes())
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        kennelPropertiesRepository.saveKennelAvatarUri("")
-    }
 }

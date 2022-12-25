@@ -3,7 +3,7 @@ package mr.shtein.kennel.domain
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
-import mr.shtein.kennel.presentation.state.AddKennelState
+import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 
 class KennelInteractorImpl(

@@ -21,7 +21,7 @@ import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.KennelsAdapter
-import mr.shtein.kennel.presentation.state.AddKennelState
+import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
@@ -38,6 +38,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     companion object {
         private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
         private const val SNACK_BAR_VISIBILITY_TIME = 10000
+        private const val ANIMATION_DURATION = 300L
     }
 
     private lateinit var kennelsBtn: TextView
@@ -124,7 +125,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
             animate()
                 .alpha(1f)
-                .setDuration(300)
+                .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
@@ -134,7 +135,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
             progressBar.animate()
                 .alpha(0f)
-                .setDuration(300)
+                .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
