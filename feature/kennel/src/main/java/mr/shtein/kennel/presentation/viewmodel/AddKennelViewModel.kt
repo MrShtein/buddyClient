@@ -8,13 +8,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import mr.shtein.data.exception.ServerErrorException
-import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.kennel.domain.KennelInteractor
-import mr.shtein.kennel.domain.KennelInteractorImpl
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.presentation.state.AddKennelState
-import mr.shtein.network.ImageLoader
+import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 

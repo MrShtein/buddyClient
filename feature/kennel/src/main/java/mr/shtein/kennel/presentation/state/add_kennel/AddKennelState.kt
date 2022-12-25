@@ -1,4 +1,4 @@
-package mr.shtein.kennel.presentation.state
+package mr.shtein.kennel.presentation.state.add_kennel
 
 import mr.shtein.data.model.KennelPreview
 

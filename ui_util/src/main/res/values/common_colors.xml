@@ -28,6 +28,9 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black_50">#80000000</color>
+    <color name="surface_3">#e0ecee</color>
+    <color name="on_surface">#191C1D</color>
+
 
     <color name="mtrl_textinput_default_box_stroke_color">@color/grey3</color>
 
