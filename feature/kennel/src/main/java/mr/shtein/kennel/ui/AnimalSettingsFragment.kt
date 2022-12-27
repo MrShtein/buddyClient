@@ -171,7 +171,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.animal_delete_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val positiveBtn: Button? =

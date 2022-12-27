@@ -189,7 +189,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         if (!isKennelAlreadyExist) {
             val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
                 .setView(R.layout.kennel_failed_dialog)
-                .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+                //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
                 .show()
             val okBtn: Button? = dialog.findViewById(R.id.kennel_failed_ok_btn)
             okBtn?.setOnClickListener {
@@ -201,7 +201,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.kennel_confirm_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val okBtn: Button? = dialog.findViewById(R.id.kennel_confirm_dialog_ok_btn)
