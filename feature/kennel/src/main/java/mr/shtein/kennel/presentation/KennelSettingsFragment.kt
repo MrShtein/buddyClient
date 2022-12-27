@@ -26,10 +26,7 @@ import mr.shtein.data.repository.KennelPropertiesRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.presentation.state.kennel_settings.CityFieldState
-import mr.shtein.kennel.presentation.state.kennel_settings.EmailFieldState
-import mr.shtein.kennel.presentation.state.kennel_settings.KennelAvatarState
-import mr.shtein.kennel.presentation.state.kennel_settings.OrganizationNameState
+import mr.shtein.kennel.presentation.state.kennel_settings.*
 import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
 import mr.shtein.kennel.util.KennelValidationStore
 import mr.shtein.ui_util.setInsetsListenerForPadding
@@ -200,6 +197,21 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
+        kennelSettingsViewModel.phoneNumberState.observe(viewLifecycleOwner) { phoneState ->
+            when (phoneState) {
+                is PhoneNumberState.Value -> {
+                    if (phoneNumberInputContainer.isErrorEnabled) {
+                        phoneNumberInputContainer.isErrorEnabled = false
+                    }
+                }
+                is PhoneNumberState.Error -> {
+                    phoneNumberInputContainer.isErrorEnabled = true
+                    phoneNumberInputContainer.error = phoneState.message
+                }
+                PhoneNumberState.Validate -> {}
+            }
+        }
+
 
     }
 
@@ -254,18 +266,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         phoneNumberInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (phoneNumberInputContainer.isErrorEnabled)
-                    phoneNumberInputContainer.isErrorEnabled = false
-            } else {
-                val kennelPhoneNum = phoneNumberInput.text.toString()
-                validateAndHighlightError(
-                    PhoneNumberValidator(),
-                    PHONE_NUM_KEY,
-                    kennelPhoneNum,
-                    phoneNumberInputContainer
-                )
-            }
+            kennelSettingsViewModel.onPhoneNumberFocusChanged(
+                hasFocus = hasFocus,
+                phone = phoneNumberInput.text.toString()
+            )
         }
 
         emailInput.setOnFocusChangeListener { _, hasFocus ->

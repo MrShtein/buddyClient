@@ -6,4 +6,5 @@ interface KennelInteractor {
     suspend fun loadKennelsListByPersonId(): AddKennelState
     suspend fun validateEmail(email: String): ValidationResult
     suspend fun validateKennelName(name: String): ValidationResult
+    suspend fun validatePhoneNumberLength(phone: String): ValidationResult
 }

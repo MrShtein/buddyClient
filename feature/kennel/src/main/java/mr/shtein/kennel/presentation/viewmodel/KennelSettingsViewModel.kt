@@ -5,16 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.kennel.CityField
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.ValidationResult
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.presentation.KennelSettingsFragment
 import mr.shtein.kennel.presentation.state.kennel_settings.*
-import mr.shtein.util.validator.EmptyFieldValidator
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 
 class KennelSettingsViewModel(
     val navigator: KennelNavigation,
@@ -123,6 +118,27 @@ class KennelSettingsViewModel(
                         _organizationNameState.value = OrganizationNameState.Error(
                             message = result.errorMessage,
                             wrongValue = name
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onPhoneNumberFocusChanged(hasFocus: Boolean, phone: String) {
+        if (hasFocus && _phoneNumberState.value is PhoneNumberState.Error) {
+            _phoneNumberState.value = PhoneNumberState.Value(value = phone)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validatePhoneNumberLength(phone)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _phoneNumberState.value = PhoneNumberState.Value(value = phone)
+                    }
+                    is ValidationResult.Failure -> {
+                        _phoneNumberState.value = PhoneNumberState.Error(
+                            message = result.errorMessage,
+                            wrongValue = phone
                         )
                     }
                 }
