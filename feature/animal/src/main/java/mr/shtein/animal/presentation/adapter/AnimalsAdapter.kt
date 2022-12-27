@@ -55,7 +55,7 @@ class AnimalsAdapter(
                 holder.makeViewByState(payloads[0] as LocationState, animals[position].distance)
             }
             else -> {
-                holder.bindDistanceText(payloads[0].toString())
+//                holder.bindDistanceText(payloads[0].toString())
             }
         }
     }
@@ -92,7 +92,7 @@ class AnimalsViewHolder(
     private val breed: TextView = itemView.findViewById(R.id.animal_row_breed_name)
     private val animalColor: TextView = itemView.findViewById(R.id.animal_row_color)
     private val locationBtn: ImageButton = itemView.findViewById(R.id.animal_row_location_btn)
-    private var locationText: TextView = itemView.findViewById(R.id.animal_row_distance_text)
+//    private var locationText: TextView = itemView.findViewById(R.id.animal_row_distance_text)
     private val locationSpinner: ProgressBar =
         itemView.findViewById(R.id.animal_row_distance_progress)
     private lateinit var animal: Animal
@@ -118,9 +118,9 @@ class AnimalsViewHolder(
         makeViewByState(animal.locationState ?: LocationState.INIT_STATE, animal.distance)
     }
 
-    fun bindDistanceText(distance: String) {
-        locationText.text = distance
-    }
+//    fun bindDistanceText(distance: String) {
+//        locationText.text = distance
+//    }
 
     fun makeViewByState(state: LocationState, distance: String) {
         when (state) {
@@ -141,21 +141,21 @@ class AnimalsViewHolder(
 
     private fun makeInitState() {
         locationBtn.visibility = View.VISIBLE
-        locationText.visibility = View.GONE
+//        locationText.visibility = View.GONE
         locationSpinner.visibility = View.GONE
     }
 
     private fun makeSearchState() {
         locationBtn.visibility = View.GONE
-        locationText.visibility = View.GONE
+//        locationText.visibility = View.GONE
         locationSpinner.visibility = View.VISIBLE
     }
 
     private fun makeDistanceVisibleState(distance: String) {
         locationBtn.visibility = View.GONE
         locationSpinner.visibility = View.GONE
-        locationText.visibility = View.VISIBLE
-        locationText.text = distance
+//        locationText.visibility = View.VISIBLE
+//        locationText.text = distance
     }
 
     override fun onClick(v: View?) {
