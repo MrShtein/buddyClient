@@ -14,6 +14,7 @@ import androidx.core.text.bold
 import androidx.core.text.color
 import androidx.core.text.toSpanned
 import com.google.android.material.chip.Chip
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.transition.MaterialSharedAxis
 import moxy.MvpAppCompatFragment
@@ -82,19 +83,19 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
     ) {
         breedsAdapter = SelectionAdapter(requireContext(), animalBreeds)
         binding.animalFilterBreedInput.setAdapter(breedsAdapter)
-        binding.animalFilterBreedInput.setDropDownBackgroundResource(R.color.white)
+//        binding.animalFilterBreedInput.setDropDownBackgroundResource(R.color.white)
 
         colorsAdapter = SelectionAdapter(requireContext(), animalColors)
         binding.animalFilterColorInput.setAdapter(colorsAdapter)
-        binding.animalFilterColorInput.setDropDownBackgroundResource(R.color.white)
+//        binding.animalFilterColorInput.setDropDownBackgroundResource(R.color.white)
 
         citiesAdapter = SelectionAdapter(requireContext(), animalCities)
         binding.animalFilterCityInput.setAdapter(citiesAdapter)
-        binding.animalFilterCityInput.setDropDownBackgroundResource(R.color.white)
+//        binding.animalFilterCityInput.setDropDownBackgroundResource(R.color.white)
 
         typesAdapter = SelectionAdapter(requireContext(), animalTypes)
         binding.animalFilterAnimalTypeInput.setAdapter(typesAdapter)
-        binding.animalFilterAnimalTypeInput.setDropDownBackgroundResource(R.color.white)
+//        binding.animalFilterAnimalTypeInput.setDropDownBackgroundResource(R.color.white)
 
     }
 
@@ -392,18 +393,20 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         val ageText = getString(R.string.age_text)
         val fromText = getString(R.string.from_text)
         val untilText = getString(R.string.until_text)
-        val minMaxAgeNumColor = Color.parseColor(getString(R.color.cian5))
+        val minMaxAgeNumColor = MaterialColors.getColor(requireContext(), R.attr.colorPrimary,R.color.black)
         val spannableBuilder = SpannableStringBuilder()
         spannableBuilder
             .bold { append(ageText) }
-            .append(" ")
+            .append("    ")
             .append(fromText)
-            .append(" ")
+            .append("  ")
             .color(minMaxAgeNumColor) { append(minAge.toString()) }
-            .append(" ")
+            .append("  ")
+            .append("лет    ")
             .append(untilText)
-            .append(" ")
+            .append("  ")
             .color(minMaxAgeNumColor) { append(maxAge.toString()) }
+            .append("  лет")
         return spannableBuilder.toSpanned()
     }
 
