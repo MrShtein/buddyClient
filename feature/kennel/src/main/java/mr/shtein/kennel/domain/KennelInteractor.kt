@@ -7,4 +7,5 @@ interface KennelInteractor {
     suspend fun validateEmail(email: String): ValidationResult
     suspend fun validateKennelName(name: String): ValidationResult
     suspend fun validatePhoneNumberLength(phone: String): ValidationResult
+    suspend fun validateStreet(street: String): ValidationResult
 }
