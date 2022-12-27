@@ -19,7 +19,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/registration_or_entrance_str"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="?attr/colorOnSurface" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -36,28 +36,28 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="25dp"
             android:text="@string/registr_or_entrance_text"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="?attr/colorOnSurface" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/to_login_fragment_button"
-            style="@style/Buddy.Widget.LargeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="20dp"
-            android:text="Вход" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/to_registration_fragment_button"
-            style="@style/Buddy.Widget.MiddleButton.Outlined"
+            style="@style/Buddy.Widget.LargeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="30dp"
             android:text="@string/registration_btn_text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_login_fragment_button"
+            style="@style/Buddy.Widget.MiddleButton.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:text="Вход" />
 
     </LinearLayout>
 

@@ -131,12 +131,12 @@
             android:id="@+id/kennel_home_dogs_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="25dp"
             android:text="@string/dogs"
             android:textColor="?attr/colorOnSurface"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_animals_icon"
-            app:layout_constraintTop_toBottomOf="@+id/kennel_home_volunteers_icon" />
+            app:layout_constraintTop_toBottomOf="@+id/kennel_home_volunteers_btn" />
 
         <TextView
             android:id="@+id/kennel_home_dogs_amount"
@@ -220,6 +220,16 @@
             android:layout_marginBottom="154dp"
             android:visibility="gone"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/kennel_home_volunteers_btn"
+            style="@style/Buddy.Widget.MiddleButton"
+            android:text="Волонтеры"
+            app:icon="@drawable/volunteers_icon_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/kennel_home_add_dogs_btn"
+            app:layout_constraintTop_toBottomOf="@+id/kennel_home_volunteers_amount" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
