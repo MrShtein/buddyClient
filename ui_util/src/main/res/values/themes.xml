@@ -100,9 +100,9 @@
 
 
     <style name="Buddy.Widget.Chip.Input" parent="Widget.Material3.Chip.Input">
-        <item name="android:textColor">@color/chip_background_text_color</item>
-        <item name="chipBackgroundColor">@color/chip_background_color</item>
-        <item name="chipStrokeColor">@color/chip_stroke_color</item>
+<!--        <item name="android:textColor">@color/chip_background_text</item>-->
+<!--        <item name="chipBackgroundColor">@color/chip_background_color</item>-->
+<!--        <item name="chipStrokeColor">@color/chip_stroke_color</item>-->
         <item name="closeIconVisible">false</item>
         <item name="chipCornerRadius">30dp</item>
         <item name="elevation">5dp</item>

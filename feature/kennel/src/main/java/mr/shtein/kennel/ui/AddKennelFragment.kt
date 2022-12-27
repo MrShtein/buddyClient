@@ -41,7 +41,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private lateinit var kennelsBtn: MaterialButton
-    private lateinit var volunteersBtn: MaterialButton
+//    private lateinit var volunteersBtn: MaterialButton
     private lateinit var kennelsUnderscore: View
     private lateinit var volunteersUnderscore: View
     private lateinit var descriptionView: TextView
@@ -120,10 +120,10 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private fun initViews(view: View) {
-        kennelsBtn = view.findViewById(R.id.add_kennel_fragment_kennels_btn)
-        volunteersBtn = view.findViewById(R.id.add_kennel_fragment_volunteers_btn)
-        kennelsUnderscore = view.findViewById(R.id.add_kennel_fragment_kennel_underscore)
-        volunteersUnderscore = view.findViewById(R.id.add_kennel_fragment_volunteer_underscore)
+        kennelsBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
+//        volunteersBtn = view.findViewById(R.id.add_kennel_fragment_volunteers_btn)
+//        kennelsUnderscore = view.findViewById(R.id.add_kennel_fragment_kennel_underscore)
+//        volunteersUnderscore = view.findViewById(R.id.add_kennel_fragment_volunteer_underscore)
         descriptionView = view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_absence)
         addKennelBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
     }
@@ -144,21 +144,21 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             }
         }
 
-        volunteersBtn.setOnClickListener {
-            val kennelsUnderscoreVisibility = kennelsUnderscore.isVisible
-            addKennelBtn.visibility = View.GONE
-            if (kennelsUnderscoreVisibility) {
-                kennelsUnderscore.isVisible = false
-                volunteersUnderscore.isVisible = true
-                descriptionView.text = ""
-                val diffUtil = KennelDiffUtil(kennelsList, volunteersList)
-                val diffResult = DiffUtil.calculateDiff(diffUtil)
-                kennelAdapter.kennels = volunteersList
-                diffResult.dispatchUpdatesTo(kennelAdapter)
-                if (volunteersList.size == 0)
-                    showDescriptionText(R.string.add_kennel_fragment_empty_volunteers_text)
-            }
-        }
+//        volunteersBtn.setOnClickListener {
+//            val kennelsUnderscoreVisibility = kennelsUnderscore.isVisible
+//            addKennelBtn.visibility = View.GONE
+//            if (kennelsUnderscoreVisibility) {
+//                kennelsUnderscore.isVisible = false
+//                volunteersUnderscore.isVisible = true
+//                descriptionView.text = ""
+//                val diffUtil = KennelDiffUtil(kennelsList, volunteersList)
+//                val diffResult = DiffUtil.calculateDiff(diffUtil)
+//                kennelAdapter.kennels = volunteersList
+//                diffResult.dispatchUpdatesTo(kennelAdapter)
+//                if (volunteersList.size == 0)
+//                    showDescriptionText(R.string.add_kennel_fragment_empty_volunteers_text)
+//            }
+//        }
 
         addKennelBtn.setOnClickListener {
             navigator.moveToKennelSettings()

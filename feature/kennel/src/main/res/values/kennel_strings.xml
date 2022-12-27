@@ -18,11 +18,11 @@
     <string name="month">Месяц</string>
     <string name="add_animal_description_label_text">Описание:</string>
     <string name="add_animal_add_btn_text">Сохранить питомца</string>
-    <string name="animal_delete_dialog_clarification_text">Вы точно хотите \n удалить питомца?</string>
+    <string name="animal_delete_dialog_clarification_text">Вы точно хотите удалить животное из приюта?</string>
     <string name="animal_delete_error_dialog_clarification_text">Во время удаления что-то пошло не так\n попробуйте немного позже</string>
     <string name="kennel_confirm_failed_text">Данный приют уже зарегистрирован\n за дополнительной информацией можно\n можно обратиться по адресу mr.shtein61@yandex.ru</string>
     <string name="kennel_confirm_congratulation">Поздравляем</string>
-    <string name="kennel_confirm_description_text">Приют успешно добавлен\n в ближайшие 2 дня мы свяжемся с вами\nи можно будет публиковать питомцев</string>
+    <string name="kennel_confirm_description_text">Приют успешно добавлен\nв ближайшие 2 дня мы свяжемся с вами и можно будет публиковать питомцев</string>
     <string name="animal_in_kennel_avatar_description">Фото животного для входа в профиль животного</string>
     <string name="kennel_settings_label">Регистрация приюта:</string>
     <string name="organization_name_label_text">Название организации:</string>

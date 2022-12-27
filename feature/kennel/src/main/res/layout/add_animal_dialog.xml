@@ -11,7 +11,6 @@
         style="@style/Buddy.Widget.CardView.Filled"
         android:layout_width="310dp"
         android:layout_height="200dp"
-        android:backgroundTint="@color/dialog_primary_color"
         app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
