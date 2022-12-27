@@ -19,6 +19,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
@@ -529,9 +530,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun changeSaveBtnColor(isTextChange: Boolean) {
         if (isTextChange) {
-            saveBtn.setBackgroundColor(requireContext().getColor(R.color.cian5))
+            saveBtn.setBackgroundColor(MaterialColors.getColor(requireContext(), R.attr.colorPrimary, R.color.black))
         } else {
-            saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
+            saveBtn.setBackgroundColor(MaterialColors.getColor(requireContext(), R.attr.colorSurfaceVariant, R.color.black))
         }
     }
 
