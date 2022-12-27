@@ -95,10 +95,12 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var yearsContainer: View
     private lateinit var yearsNum: TextView
     private lateinit var yearsText: TextView
+    private lateinit var yearsSliderText: TextView
     private lateinit var monthsContainer: View
     private lateinit var monthsSlider: Slider
     private lateinit var monthsNum: TextView
     private lateinit var monthsText: TextView
+    private lateinit var monthsSliderText: TextView
     private lateinit var animalName: TextInputEditText
     private lateinit var animalNameInputContainer: TextInputLayout
     private lateinit var animalBreedsInputContainer: TextInputLayout
@@ -589,9 +591,21 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         if (isError) {
             monthsContainer.background = errorBackground
             yearsContainer.background = errorBackground
+            yearsNum.setTextColor(errorText)
+            yearsText.setTextColor(errorText)
+            monthsNum.setTextColor(errorText)
+            monthsText.setTextColor(errorText)
+            yearsSliderText.setTextColor(errorText)
+            monthsSliderText.setTextColor(errorText)
         } else {
             monthsContainer.background = noErrorBackground
             yearsContainer.background = noErrorBackground
+            yearsNum.setTextColor(noErrorText)
+            yearsText.setTextColor(noErrorText)
+            monthsNum.setTextColor(noErrorText)
+            monthsText.setTextColor(noErrorText)
+            yearsSliderText.setTextColor(noErrorText)
+            monthsSliderText.setTextColor(noErrorText)
         }
     }
 
