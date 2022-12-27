@@ -18,6 +18,7 @@ import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
@@ -557,16 +558,16 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         if (animalDto.genderId == 0) {
             hasInvalidValue = true
             maleBtn.buttonTintList = ColorStateList
-                .valueOf(requireContext().getColor(R.color.choice_color))
+                .valueOf(MaterialColors.getColor(requireContext(), R.attr.colorError, R.color.black))
             femaleBtn.buttonTintList = ColorStateList
-                .valueOf(requireContext().getColor(R.color.choice_color))
+                .valueOf(MaterialColors.getColor(requireContext(), R.attr.colorError, R.color.black))
         }
         return hasInvalidValue
     }
 
     private fun changeImageErrorHighLight(isError: Boolean) {
-        val errorBackground = requireContext().getDrawable(R.drawable.has_image_stroke)
-        val noErrorBackground = requireContext().getDrawable(R.drawable.no_image_stroke)
+        val errorBackground = requireContext().getDrawable(R.drawable.photo_animal_placeholder)
+        val noErrorBackground = requireContext().getDrawable(R.drawable.photo_animal_placeholder)
         if (isError) {
             firstImage.background = errorBackground
             secondImage.background = errorBackground
@@ -583,6 +584,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private fun changeAgeContainersErrorHighLight(isError: Boolean) {
         val errorBackground = requireContext().getDrawable(R.drawable.has_age_container_stroke)
         val noErrorBackground = requireContext().getDrawable(R.drawable.animal_age_background)
+        val errorText = MaterialColors.getColor(requireContext(), R.attr.colorError, R.color.black)
+        val noErrorText = MaterialColors.getColor(requireContext(), R.attr.colorOnSurface, R.color.black)
         if (isError) {
             monthsContainer.background = errorBackground
             yearsContainer.background = errorBackground
@@ -597,7 +600,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.add_animal_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val addOrUpdateText: TextView? = dialog.findViewById(R.id.add_animal_dialog_clarification)
