@@ -56,8 +56,8 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var kennelName: TextView
     private lateinit var address: TextView
     private lateinit var avatar: ShapeableImageView
-    private lateinit var distance: TextView
-    private lateinit var heartBox: CheckBox
+//    private lateinit var distance: TextView
+//    private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
     private lateinit var callBtn: MaterialButton
     private lateinit var constraintLayout: ConstraintLayout
@@ -149,15 +149,15 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private fun initViews(view: View) {
         imageCount = view.findViewById(R.id.animal_card_image_count)
         animalName = view.findViewById(R.id.animal_card_animal_name)
-        heartBox = view.findViewById(R.id.animal_card_heart)
-        distance = view.findViewById(R.id.animal_card_distance_text)
+//        heartBox = view.findViewById(R.id.animal_card_heart)
+//        distance = view.findViewById(R.id.animal_card_distance_text)
         gender = view.findViewById(R.id.animal_card_gender_value)
         age = view.findViewById(R.id.animal_card_age_value)
         breed = view.findViewById(R.id.animal_card_breed_value)
         color = view.findViewById(R.id.animal_card_color_value)
         description = view.findViewById(R.id.animal_card_description)
         kennelName = view.findViewById(R.id.animal_card_kennel_name_value)
-        address = view.findViewById(R.id.animal_card_kennel_address)
+        address = view.findViewById(R.id.animal_card_kennel_number_volunteers)
         avatar = view.findViewById(R.id.animal_card_kennel_avatar)
         writeBtn = view.findViewById(R.id.animal_card_email_btn)
         callBtn = view.findViewById(R.id.animal_card_phone_btn)
@@ -177,7 +177,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             breed.text = animal.breed
             color.text = animal.characteristics["color"]
             description.text = animal.description
-            distance.text = animal.distance
+            //distance.text = animal.distance
 
             val kennel: Kennel = animal.kennel
             kennelName.text = kennel.name
