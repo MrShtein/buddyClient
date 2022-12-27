@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.EmptyFieldException
 import mr.shtein.data.exception.IllegalEmailException
+import mr.shtein.data.exception.ValidationException
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
@@ -19,6 +20,7 @@ class KennelInteractorImpl(
     private val kennelMapper: KennelPreviewMapper,
     private val emailValidator: Validator,
     private val emptyFieldValidator: Validator,
+    private val phoneNumberValidator: Validator,
     private val dispatcher: CoroutineDispatcher
 ) : KennelInteractor {
 
@@ -51,6 +53,16 @@ class KennelInteractorImpl(
                 emptyFieldValidator.validateValue(valueForValidate = name)
                 return@withContext ValidationResult.Success
             } catch (ex: EmptyFieldException) {
+                return@withContext ValidationResult.Failure(ex.message!!)
+            }
+        }
+
+    override suspend fun validatePhoneNumberLength(phone: String): ValidationResult =
+        withContext(dispatcher) {
+            try {
+                phoneNumberValidator.validateValue(phone)
+                return@withContext ValidationResult.Success
+            } catch (ex: ValidationException) {
                 return@withContext ValidationResult.Failure(ex.message!!)
             }
         }
