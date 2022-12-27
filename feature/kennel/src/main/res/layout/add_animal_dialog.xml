@@ -8,8 +8,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/add_animal_dialog_container"
+        style="@style/Buddy.Widget.CardView.Filled"
         android:layout_width="310dp"
-        android:layout_height="290dp"
+        android:layout_height="200dp"
         android:backgroundTint="@color/dialog_primary_color"
         app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,74 +29,64 @@
         app:layout_constraintStart_toStartOf="@id/add_animal_dialog_container"
         app:layout_constraintTop_toTopOf="@id/add_animal_dialog_container" />
 
-    <ImageView
-        android:id="@+id/add_animal_dialog_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/user_settings_icon_description"
-        android:elevation="2dp"
-        android:src="@drawable/notification_dialog_icon"
-        app:layout_constraintEnd_toEndOf="@id/add_animal_dialog_container"
-        app:layout_constraintStart_toStartOf="@id/add_animal_dialog_container"
-        app:layout_constraintTop_toTopOf="@id/add_animal_dialog_container" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/add_animal_dialog_icon"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:contentDescription="@string/user_settings_icon_description"-->
+    <!--        android:elevation="2dp"-->
+    <!--        android:src="@drawable/notification_dialog_icon"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/add_animal_dialog_container"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/add_animal_dialog_container"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/add_animal_dialog_container" />-->
 
     <TextView
         android:id="@+id/add_animal_dialog_clarification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
         android:elevation="2dp"
         android:text="@string/add_animal_dialog_clarification_text"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_animal_dialog_icon" />
+        app:layout_constraintStart_toStartOf="@+id/add_animal_dialog_container"
+        app:layout_constraintTop_toTopOf="@+id/add_animal_dialog_container" />
 
     <TextView
         android:id="@+id/add_animal_dialog_clarification_text_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        tools:text="Хотите добавить собаку Роман Палыч\nв приют Папа Кот"
-        android:lineHeight="25sp"
-        android:textColor="@color/dialog_clarification_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="15dp"
+        android:elevation="2dp"
+        android:lineHeight="20sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintStart_toStartOf="@+id/add_animal_dialog_clarification"
         app:layout_constraintTop_toBottomOf="@id/add_animal_dialog_clarification"
-        android:layout_marginTop="25dp"
-        android:elevation="2dp"/>
+        tools:text="Хотите добавить собаку Роман Палыч\nв приют Папа Кот" />
 
     <Button
         android:id="@+id/add_animal_dialog_positive_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/Buddy.Widget.SmallButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
         android:text="@string/yes_btn"
-        android:textColor="@color/cian5"
-        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/add_animal_dialog_negative_btn"
         app:layout_constraintBottom_toBottomOf="@id/add_animal_dialog_negative_btn"
-        android:elevation="2dp"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
         />
 
     <Button
         android:id="@+id/add_animal_dialog_negative_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/Buddy.Widget.SmallButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
         android:text="@string/no_btn"
-        android:textColor="@color/cian5"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/add_animal_dialog_container"
         app:layout_constraintBottom_toBottomOf="@id/add_animal_dialog_container"
-        android:elevation="2dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"/>
 

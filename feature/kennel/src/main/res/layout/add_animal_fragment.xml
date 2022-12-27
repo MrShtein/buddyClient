@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/add_animal_scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_animal_main_container"
@@ -16,61 +15,61 @@
             android:id="@+id/add_animal_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="35dp"
             android:text="@string/add_animal_label_text"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="22sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/add_animal_top_image_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_label" />
+        <!--        <View-->
+        <!--            android:id="@+id/add_animal_top_image_divider"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginStart="15dp"-->
+        <!--            android:layout_marginTop="30dp"-->
+        <!--            android:layout_marginEnd="15dp"-->
+        <!--            android:background="@color/background_grey2"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/add_animal_label" />-->
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_animal_first_animal_img"
-            android:layout_width="165dp"
+            android:layout_width="150dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/no_image_stroke"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/photo_animal_placeholder"
             android:contentDescription="@string/add_animal_first_img_description"
-            app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/add_animal_second_animal_img"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
+            app:layout_constraintTop_toBottomOf="@+id/add_animal_label" />
 
         <View
             android:id="@+id/add_animal_first_img_overlay"
+            android:background="@drawable/photo_animal_placeholder"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_20"
-            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            android:elevation="10dp"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img" />
 
         <ProgressBar
             android:id="@+id/add_animal_first_img_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
             android:indeterminateTint="@color/cian5"
             android:visibility="invisible"
-           />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_first_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_first_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_first_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_first_animal_img" />
 
         <ImageButton
             android:id="@+id/add_animal_first_add_image_btn"
@@ -100,42 +99,38 @@
 
         <ImageView
             android:id="@+id/add_animal_second_animal_img"
-            android:layout_width="165dp"
+            android:layout_width="150dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/grey4"
+            android:background="@drawable/photo_animal_placeholder"
             android:contentDescription="@string/add_animal_second_img_description"
-            app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/add_animal_first_animal_img"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_top_image_divider" />
+            app:layout_constraintTop_toTopOf="@+id/add_animal_first_animal_img" />
 
         <View
             android:id="@+id/add_animal_second_img_overlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_20"
-            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img" />
 
         <ProgressBar
             android:id="@+id/add_animal_second_img_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
             android:indeterminateTint="@color/cian5"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_second_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_second_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_second_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_second_animal_img" />
 
         <ImageButton
             android:id="@+id/add_animal_second_add_btn"
@@ -164,13 +159,13 @@
 
         <ImageView
             android:id="@+id/add_animal_third_animal_img"
-            android:layout_width="165dp"
+            android:layout_width="150dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:background="@color/grey4"
+            android:background="@drawable/photo_animal_placeholder"
             android:contentDescription="@string/add_animal_third_img_description"
-            app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/add_animal_fourth_animal_img"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -180,25 +175,22 @@
             android:id="@+id/add_animal_third_img_overlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_20"
-            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img" />
 
         <ProgressBar
             android:id="@+id/add_animal_third_img_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
             android:indeterminateTint="@color/cian5"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_third_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_third_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_third_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_third_animal_img" />
 
         <ImageButton
             android:id="@+id/add_animal_third_add_btn"
@@ -227,14 +219,14 @@
 
         <ImageView
             android:id="@+id/add_animal_fourth_animal_img"
-            android:layout_width="165dp"
+            android:layout_width="150dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/grey4"
+            android:background="@drawable/photo_animal_placeholder"
             android:contentDescription="@string/add_animal_fourth_img_description"
-            app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_animal_third_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_second_animal_img" />
@@ -243,25 +235,22 @@
             android:id="@+id/add_animal_third_fourth_overlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/black_20"
-            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img" />
 
         <ProgressBar
             android:id="@+id/add_animal_fourth_img_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
-            android:indeterminateTint="@color/cian5"
+            android:indeterminateTint="?attr/colorPrimary"
             android:visibility="invisible"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintStart_toStartOf="@id/add_animal_fourth_animal_img"
+            app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img" />
 
         <ImageButton
             android:id="@+id/add_animal_fourth_add_btn"
@@ -288,57 +277,60 @@
             app:layout_constraintEnd_toEndOf="@id/add_animal_fourth_animal_img"
             app:layout_constraintTop_toTopOf="@id/add_animal_fourth_animal_img" />
 
-        <View
-            android:id="@+id/add_animal_bottom_image_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_fourth_animal_img" />
+        <!--        <View-->
+        <!--            android:id="@+id/add_animal_bottom_image_divider"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginStart="15dp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_marginEnd="15dp"-->
+        <!--            android:background="@color/background_grey2"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/add_animal_fourth_animal_img" />-->
 
         <TextView
             android:id="@+id/add_animal_age_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:text="@string/age_text"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/add_animal_bottom_image_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_image_divider" />
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_animal_third_animal_img" />
 
         <View
             android:id="@+id/add_animal_years_container"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="50dp"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/animal_age_background"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/add_animal_third_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
 
         <TextView
             android:id="@+id/add_animal_years_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/zero"
-            android:textSize="40sp"
+            android:text="0"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/add_animal_years_container_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
             app:layout_constraintTop_toTopOf="@id/add_animal_years_container"
             tools:text="5" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/add_animal_years_container_divider"
+            style="@style/Buddy.Widget.Divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/grey4"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_years_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
@@ -348,9 +340,10 @@
             android:id="@+id/add_animal_years_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cian5"
             android:text="@string/add_animal_years_text"
-            android:textSize="35sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="26sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_years_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_years_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
@@ -359,12 +352,12 @@
 
         <View
             android:id="@+id/add_animal_months_container"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/animal_age_background"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/add_animal_fourth_animal_img"
             app:layout_constraintTop_toBottomOf="@id/add_animal_age_label" />
 
         <TextView
@@ -372,20 +365,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/zero"
-            android:textSize="40sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/add_animal_months_container_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
             app:layout_constraintTop_toTopOf="@id/add_animal_months_container"
             tools:text="8" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/add_animal_months_container_divider"
+            style="@style/Buddy.Widget.Divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/grey4"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_months_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
@@ -395,115 +390,117 @@
             android:id="@+id/add_animal_months_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cian5"
             android:text="@string/abbr_month"
-            android:textSize="35sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="26sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/add_animal_months_container"
             app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
             app:layout_constraintStart_toStartOf="@id/add_animal_months_container"
             app:layout_constraintTop_toBottomOf="@id/add_animal_months_container_divider"
             tools:text="Мес." />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/add_animal_age_divider"
+            style="@style/Buddy.Widget.Divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintStart_toStartOf="@id/add_animal_years_container"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_months_container"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_months_container"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="-10dp"
-            android:layout_marginEnd="-10dp"
-            />
+            android:layout_marginEnd="40dp"
+            android:background="@color/background_grey2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_months_container" />
 
         <TextView
             android:id="@+id/add_animal_year_slider_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/year"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_age_divider"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@id/add_animal_age_divider" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/add_animal_years_slider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:stepSize="1"
             android:valueFrom="0"
             android:valueTo="20"
-            android:stepSize="1"
-            app:trackColor="@color/cian5"
-            app:thumbColor="@color/cian5"
-            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_age_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_year_slider_text"/>
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_year_slider_text"
+            app:thumbColor="?attr/colorPrimary"
+            app:trackColor="?attr/colorSurfaceVariant" />
 
         <TextView
             android:id="@+id/add_animal_month_slider_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/month"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_years_slider"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@id/add_animal_years_slider" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/add_animal_months_slider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:stepSize="1"
             android:valueFrom="0"
             android:valueTo="12"
-            android:stepSize="1"
-            app:trackColor="@color/cian5"
-            app:thumbColor="@color/cian5"
-            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
             app:layout_constraintEnd_toEndOf="@id/add_animal_age_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_month_slider_text"/>
+            app:layout_constraintStart_toStartOf="@id/add_animal_age_divider"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_month_slider_text"
+            app:thumbColor="?attr/colorPrimary"
+            app:trackColor="?attr/colorSurfaceVariant" />
 
-        <View
-            android:id="@+id/add_animal_sliders_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_months_slider"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"/>
+        <!--        <View-->
+        <!--            android:id="@+id/add_animal_sliders_divider"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:background="@color/background_grey2"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/add_animal_months_slider"-->
+        <!--            android:layout_marginTop="15dp"-->
+        <!--            android:layout_marginStart="15dp"-->
+        <!--            android:layout_marginEnd="15dp"/>-->
 
         <TextView
             android:id="@+id/add_animal_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nickname_text"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_sliders_divider"
+            android:layout_marginTop="50dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="@id/add_animal_age_label"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/add_animal_months_slider" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_animal_name_container"
+            style="@style/Buddy.Widget.InputLayout.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainer"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_name_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            >
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_name_label">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_animal_name_input"
+                style="@style/Buddy.Widget.InputEditText.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/cursorColorForInputs"
-                />
+                android:theme="@style/cursorColorForInputs" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -511,35 +508,30 @@
             android:id="@+id/add_animal_breed_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/animal_breed_label"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/add_animal_name_label"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_name_container"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@id/add_animal_name_container" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_animal_breed_container"
+            style="@style/Buddy.Widget.Input.Outlined.Exposed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainerForAutocomplete"
-            app:endIconMode="none"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            >
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:endIconMode="dropdown_menu"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_label">
 
             <AutoCompleteTextView
                 android:id="@+id/add_animal_breed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:completionThreshold="1"
-                android:dropDownAnchor="@id/add_animal_breed_container"
-                android:theme="@style/cursorColorForInputs"
-                />
+                android:inputType="none"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -547,26 +539,24 @@
             android:id="@+id/add_animal_color_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/animal_color_label"
-            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="@id/add_animal_breed_label"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_container"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@id/add_animal_breed_container" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_animal_color_container"
+            style="@style/Buddy.Widget.Input.Outlined.Exposed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainerForAutocomplete"
-            app:endIconMode="dropdown_menu"
-            app:endIconTint="@color/cian5"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_color_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            >
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:endIconMode="dropdown_menu"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_color_label">
 
             <AutoCompleteTextView
                 android:id="@+id/add_animal_color_input"
@@ -577,117 +567,119 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <View
-            android:id="@+id/add_animal_bottom_color_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_color_container" />
+        <!--        <View-->
+        <!--            android:id="@+id/add_animal_bottom_color_divider"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginTop="15dp"-->
+        <!--            android:background="@color/background_grey2"-->
+        <!--            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"-->
+        <!--            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/add_animal_color_container" />-->
 
         <TextView
             android:id="@+id/add_animal_genre_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/animal_gender_label_text"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/add_animal_years_slider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_color_divider"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/add_animal_color_label"
+            app:layout_constraintTop_toBottomOf="@+id/add_animal_color_container" />
 
         <RadioGroup
             android:id="@+id/add_animal_genre_radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/add_animal_genre_label"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_label"
-            android:layout_marginTop="15dp">
+            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_label">
 
             <RadioButton
                 android:id="@+id/add_animal_male_button"
+                style="@style/Buddy.Widget.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/cian5"
-                android:text="@string/male_letter"
-                android:textSize="20sp"
-                android:textColor="@color/grey3"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:paddingBottom="1dp"/>
+                android:paddingBottom="1dp"
+                android:text="@string/male_letter" />
 
             <RadioButton
                 android:id="@+id/add_animal_female_button"
+                style="@style/Buddy.Widget.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/cian5"
-                android:text="@string/female_letter"
-                android:textSize="20sp"
-                android:textColor="@color/grey3"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:paddingBottom="1dp"/>
+                android:paddingBottom="1dp"
+                android:text="@string/female_letter" />
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/add_animal_castration_button"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:paddingStart="10dp"-->
+            <!--                android:paddingEnd="10dp"-->
+            <!--                android:text="@string/castration" />-->
+
         </RadioGroup>
 
-        <View
-            android:id="@+id/add_animal_bottom_gender_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/background_grey2"
-            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"
-            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group" />
+        <!--        <View-->
+        <!--            android:id="@+id/add_animal_bottom_gender_divider"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginTop="15dp"-->
+        <!--            android:background="@color/background_grey2"-->
+        <!--            app:layout_constraintStart_toStartOf="@id/add_animal_top_image_divider"-->
+        <!--            app:layout_constraintEnd_toEndOf="@id/add_animal_top_image_divider"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/add_animal_genre_radio_group" />-->
 
         <TextView
             android:id="@+id/add_animal_description_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/add_animal_description_label_text"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/add_animal_color_container"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_bottom_gender_divider"
-            android:layout_marginTop="15dp"/>
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintStart_toStartOf="@+id/add_animal_color_label"
+            app:layout_constraintTop_toBottomOf="@+id/add_animal_genre_radio_group" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_animal_description_container"
+            style="@style/Buddy.Widget.InputLayout.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textInputContainer"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_description_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            >
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_description_label">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_animal_description_input"
+                style="@style/Buddy.Widget.InputEditText.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:theme="@style/cursorColorForInputs"
-                />
+                android:theme="@style/cursorColorForInputs" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/add_animal_add_btn"
+            style="style/Buddy.Widget.LargeButton"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/add_animal_add_btn_text"
             android:textAllCaps="false"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_animal_description_container"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="134dp"
-            android:backgroundTint="@color/cian5"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_animal_description_container" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
