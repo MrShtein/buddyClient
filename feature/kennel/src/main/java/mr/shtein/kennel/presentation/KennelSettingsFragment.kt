@@ -212,6 +212,21 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
+        kennelSettingsViewModel.streetState.observe(viewLifecycleOwner) { streetState ->
+            when (streetState) {
+                is StreetState.Value -> {
+                    if (streetInputContainer.isErrorEnabled) {
+                        streetInputContainer.isErrorEnabled = false
+                    }
+                }
+                is StreetState.Error -> {
+                    streetInputContainer.isErrorEnabled = true
+                    streetInputContainer.error = streetState.message
+                }
+                StreetState.Validate -> {}
+            }
+        }
+
 
     }
 
@@ -281,24 +296,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         streetInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (streetInputContainer.isErrorEnabled) streetInputContainer.isErrorEnabled = false
-            } else {
-                val cityNameText = cityInput.text.toString()
-                val streetText = streetInput.text.toString()
-                validateAndHighlightError(
-                    EmptyFieldValidator(),
-                    CITY_KEY,
-                    cityNameText,
-                    cityInputContainer
-                )
-                validateAndHighlightError(
-                    EmptyFieldValidator(),
-                    STREET_KEY,
-                    streetText,
-                    streetInputContainer
-                )
-            }
+            kennelSettingsViewModel.onStreetFocusChanged(
+                hasFocus = hasFocus,
+                street = streetInput.text.toString()
+            )
         }
 
         houseNumberInput.setOnFocusChangeListener { _, hasFocus ->

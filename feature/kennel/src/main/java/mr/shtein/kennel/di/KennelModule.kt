@@ -36,8 +36,6 @@ val kennelModule: Module = module {
     single<Validator>(named(EMPTY_FIELD_VALIDATOR_KEY)) { EmptyFieldValidator() }
     single<Validator>(named(PHONE_NUMBER_VALIDATOR_KEY)) { PhoneNumberLengthValidator() }
 
-
-
     viewModel { AddKennelViewModel(dispatcherMain, get(), get()) }
     viewModel { KennelSettingsViewModel(get(), get()) }
 }

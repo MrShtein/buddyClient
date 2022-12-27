@@ -145,4 +145,25 @@ class KennelSettingsViewModel(
             }
         }
     }
+
+    fun onStreetFocusChanged(hasFocus: Boolean, street: String) {
+        if (hasFocus && _streetState.value is StreetState.Error) {
+            _streetState.value = StreetState.Value(value = street)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validateStreet(street)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _streetState.value = StreetState.Value(value = street)
+                    }
+                    is ValidationResult.Failure -> {
+                        _streetState.value = StreetState.Error(
+                            message = result.errorMessage,
+                            wrongValue = street
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

@@ -66,4 +66,14 @@ class KennelInteractorImpl(
                 return@withContext ValidationResult.Failure(ex.message!!)
             }
         }
+
+    override suspend fun validateStreet(street: String): ValidationResult =
+        withContext(dispatcher) {
+            try {
+                emptyFieldValidator.validateValue(street)
+                return@withContext ValidationResult.Success
+            } catch (ex: EmptyFieldException) {
+                return@withContext ValidationResult.Failure(ex.message!!)
+            }
+        }
 }
