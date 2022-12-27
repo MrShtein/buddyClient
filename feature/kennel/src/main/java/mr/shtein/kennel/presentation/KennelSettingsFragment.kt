@@ -27,7 +27,9 @@ import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.state.kennel_settings.CityFieldState
+import mr.shtein.kennel.presentation.state.kennel_settings.EmailFieldState
 import mr.shtein.kennel.presentation.state.kennel_settings.KennelAvatarState
+import mr.shtein.kennel.presentation.state.kennel_settings.OrganizationNameState
 import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
 import mr.shtein.kennel.util.KennelValidationStore
 import mr.shtein.ui_util.setInsetsListenerForPadding
@@ -170,6 +172,34 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
+        kennelSettingsViewModel.emailFieldState.observe(viewLifecycleOwner) { emailState ->
+            when (emailState) {
+                is EmailFieldState.Value -> {
+                    if (emailInputContainer.isErrorEnabled) {
+                        emailInputContainer.isErrorEnabled = false
+                    }
+                }
+                is EmailFieldState.Error -> {
+                    emailInputContainer.isErrorEnabled = true
+                    emailInputContainer.error = emailState.message
+                }
+                EmailFieldState.Validate -> TODO()
+            }
+        }
+
+        kennelSettingsViewModel.organizationNameState.observe(viewLifecycleOwner) { nameState ->
+            when (nameState) {
+                is OrganizationNameState.Value -> {
+                    if (nameContainer.isErrorEnabled) nameContainer.isErrorEnabled = false
+                }
+                is OrganizationNameState.Error -> {
+                    nameContainer.isErrorEnabled = true
+                    nameContainer.error = nameState.message
+                }
+                OrganizationNameState.Validate -> {}
+            }
+        }
+
 
     }
 
@@ -217,17 +247,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         nameInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (nameContainer.isErrorEnabled) nameContainer.isErrorEnabled = false
-            } else {
-                val kennelName = nameInput.text.toString()
-                validateAndHighlightError(
-                    EmptyFieldValidator(),
-                    KENNEL_NAME_KEY,
-                    kennelName,
-                    nameContainer
-                )
-            }
+            kennelSettingsViewModel.onKennelNameFocusChanged(
+                hasFocus = hasFocus,
+                name = nameInput.text.toString()
+            )
         }
 
         phoneNumberInput.setOnFocusChangeListener { _, hasFocus ->
@@ -246,17 +269,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         emailInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (emailInputContainer.isErrorEnabled) emailInputContainer.isErrorEnabled = false
-            } else {
-                val emailInputText = emailInput.text.toString()
-                validateAndHighlightError(
-                    SimpleEmailValidator(),
-                    EMAIL_KEY,
-                    emailInputText,
-                    emailInputContainer
-                )
-            }
+            val emailInputText = emailInput.text.toString()
+            kennelSettingsViewModel.onEmailInputFocusChanged(
+                hasFocus = hasFocus,
+                email = emailInputText
+            )
         }
 
         streetInput.setOnFocusChangeListener { _, hasFocus ->

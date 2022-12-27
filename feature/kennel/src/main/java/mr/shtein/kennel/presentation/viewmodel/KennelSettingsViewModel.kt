@@ -3,12 +3,22 @@ package mr.shtein.kennel.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.kennel.CityField
+import mr.shtein.kennel.domain.KennelInteractor
+import mr.shtein.kennel.domain.ValidationResult
 import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.kennel.presentation.KennelSettingsFragment
 import mr.shtein.kennel.presentation.state.kennel_settings.*
+import mr.shtein.util.validator.EmptyFieldValidator
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 class KennelSettingsViewModel(
-    val navigator: KennelNavigation
+    val navigator: KennelNavigation,
+    private val kennelInteractor: KennelInteractor
 ) : ViewModel() {
 
     companion object {
@@ -75,6 +85,48 @@ class KennelSettingsViewModel(
         if (hasFocus) {
             _cityFieldState.value = CityFieldState.Value(value = EMPTY_CITY_VALUE)
             navigator.moveToCityChoiceFromKennelSettings()
+        }
+    }
+
+    fun onEmailInputFocusChanged(hasFocus: Boolean, email: String) {
+        if (hasFocus && _emailFieldState.value is EmailFieldState.Error) {
+            _emailFieldState.value = EmailFieldState.Value(value = email)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validateEmail(email = email)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _emailFieldState.value = EmailFieldState.Value(value = email)
+                    }
+                    is ValidationResult.Failure -> {
+                        _emailFieldState.value = EmailFieldState.Error(
+                            message = result.errorMessage,
+                            wrongValue = email
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onKennelNameFocusChanged(hasFocus: Boolean, name: String) {
+        if (hasFocus && _organizationNameState.value is OrganizationNameState.Error) {
+            _organizationNameState.value = OrganizationNameState.Value(value = name)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validateKennelName(name = name)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _organizationNameState.value = OrganizationNameState.Value(value = name)
+                    }
+                    is ValidationResult.Failure -> {
+                        _organizationNameState.value = OrganizationNameState.Error(
+                            message = result.errorMessage,
+                            wrongValue = name
+                        )
+                    }
+                }
+            }
         }
     }
 }
