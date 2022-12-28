@@ -16,7 +16,7 @@
     <string name="add_animal_fourth_img_description">Четвертая картинка с животным</string>
     <string name="abbr_month">Мес</string>
     <string name="month">Месяц</string>
-    <string name="add_animal_description_label_text">Описание:</string>
+    <string name="add_animal_description_label_text">Описание</string>
     <string name="add_animal_add_btn_text">Сохранить</string>
     <string name="animal_delete_dialog_clarification_text">Вы точно хотите удалить животное из приюта?</string>
     <string name="animal_delete_error_dialog_clarification_text">Во время удаления что-то пошло не так\n попробуйте немного позже</string>
@@ -24,18 +24,18 @@
     <string name="kennel_confirm_congratulation">Поздравляем</string>
     <string name="kennel_confirm_description_text">Приют успешно добавлен\nв ближайшие 2 дня мы свяжемся с вами и можно будет публиковать питомцев</string>
     <string name="animal_in_kennel_avatar_description">Фото животного для входа в профиль животного</string>
-    <string name="kennel_settings_label">Регистрация приюта:</string>
-    <string name="organization_name_label_text">Название организации:</string>
+    <string name="kennel_settings_label">Регистрация приюта</string>
+    <string name="organization_name_label_text">Название организации</string>
     <string name="kennel_settings_name_hint">Папа Кот</string>
-    <string name="kennel_settings_phone_number_label">Телефон организации:</string>
+    <string name="kennel_settings_phone_number_label">Телефон организации</string>
     <string name="kennel_settings_phone_number_hint">+7(928)555-55-55</string>
     <string name="kennel_settings_email_hint">papakot@yandex.ru</string>
     <string name="kennel_settings_city_hint">Ростов-на-Дону, Ростовская область</string>
-    <string name="kennel_settings_address_label">Адрес:</string>
+    <string name="kennel_settings_address_label">Адрес</string>
     <string name="kennel_settings_street_hint">Улица</string>
     <string name="kennel_settings_house_hint">Дом</string>
     <string name="kennel_settings_building_hint">Корп.</string>
-    <string name="kennel_settings_identification_number_label">ИНН:</string>
+    <string name="kennel_settings_identification_number_label">ИНН</string>
     <string name="kennel_settings_identification_number_hint">0123456789</string>
 
 

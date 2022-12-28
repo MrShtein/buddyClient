@@ -260,27 +260,27 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/kennel_settings_email_building_divider"
-            style="@style/Buddy.Widget.Divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_building_input_container" />
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:id="@+id/kennel_settings_email_building_divider"-->
+<!--            style="@style/Buddy.Widget.Divider"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginStart="35dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/kennel_settings_building_input_container" />-->
 
         <TextView
             android:id="@+id/kennel_settings_identification_number_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:text="@string/kennel_settings_identification_number_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_street_input_container"
-            app:layout_constraintTop_toBottomOf="@id/kennel_settings_email_building_divider" />
+            app:layout_constraintTop_toBottomOf="@+id/kennel_settings_house_input_container" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/kennel_settings_identification_number_input_container"
