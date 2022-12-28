@@ -227,6 +227,21 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
+        kennelSettingsViewModel.houseNumberState.observe(viewLifecycleOwner) { houseNumState ->
+            when(houseNumState) {
+                is HouseNumberState.Value -> {
+                    if (houseNumberContainer.isErrorEnabled) {
+                        houseNumberContainer.isErrorEnabled = false
+                    }
+                }
+                is HouseNumberState.Error -> {
+                    houseNumberContainer.isErrorEnabled = true
+                    houseNumberContainer.error = houseNumState.message
+                }
+                HouseNumberState.Validate -> TODO()
+            }
+        }
+
 
     }
 
@@ -303,17 +318,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         houseNumberInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (houseNumberContainer.isErrorEnabled) houseNumberContainer.isErrorEnabled = false
-            } else {
-                val houseNum = houseNumberInput.text.toString()
-                validateAndHighlightError(
-                    EmptyFieldValidator(),
-                    HOUSE_KEY,
-                    houseNum,
-                    houseNumberContainer
-                )
-            }
+            kennelSettingsViewModel.onHouseFocusChanged(
+                hasFocus = hasFocus,
+                house = houseNumberInput.text.toString()
+            )
         }
 
         identificationNumberInput.setOnFocusChangeListener { _, hasFocus ->
