@@ -187,4 +187,27 @@ class KennelSettingsViewModel(
             }
         }
     }
+
+    fun onIdentificationNumFocusChanged(hasFocus: Boolean, identificationNum: String) {
+        if (hasFocus && _identificationNumberState.value is IdentificationNumberState.Error) {
+            _identificationNumberState.value =
+                IdentificationNumberState.Value(value = identificationNum)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validateIdentificationNum(identificationNum)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _identificationNumberState.value =
+                            IdentificationNumberState.Value(value = identificationNum)
+                    }
+                    is ValidationResult.Failure -> {
+                        _identificationNumberState.value = IdentificationNumberState.Error(
+                            message = result.errorMessage,
+                            wrongValue = identificationNum
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

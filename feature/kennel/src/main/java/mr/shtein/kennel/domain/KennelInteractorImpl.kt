@@ -1,7 +1,6 @@
 package mr.shtein.kennel.domain
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.EmptyFieldException
 import mr.shtein.data.exception.IllegalEmailException
@@ -11,7 +10,7 @@ import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
-import mr.shtein.util.validator.EmptyFieldValidator
+import mr.shtein.util.validator.IdentificationNumberValidator
 import mr.shtein.util.validator.Validator
 
 class KennelInteractorImpl(
@@ -21,6 +20,7 @@ class KennelInteractorImpl(
     private val emailValidator: Validator,
     private val emptyFieldValidator: Validator,
     private val phoneNumberValidator: Validator,
+    private val identificationNumberValidator: Validator,
     private val dispatcher: CoroutineDispatcher
 ) : KennelInteractor {
 
@@ -60,7 +60,7 @@ class KennelInteractorImpl(
     override suspend fun validatePhoneNumberLength(phone: String): ValidationResult =
         withContext(dispatcher) {
             try {
-                phoneNumberValidator.validateValue(phone)
+                phoneNumberValidator.validateValue(valueForValidate = phone)
                 return@withContext ValidationResult.Success
             } catch (ex: ValidationException) {
                 return@withContext ValidationResult.Failure(ex.message!!)
@@ -70,7 +70,7 @@ class KennelInteractorImpl(
     override suspend fun validateStreet(street: String): ValidationResult =
         withContext(dispatcher) {
             try {
-                emptyFieldValidator.validateValue(street)
+                emptyFieldValidator.validateValue(valueForValidate = street)
                 return@withContext ValidationResult.Success
             } catch (ex: EmptyFieldException) {
                 return@withContext ValidationResult.Failure(ex.message!!)
@@ -80,9 +80,19 @@ class KennelInteractorImpl(
     override suspend fun validateHouseNum(houseNum: String): ValidationResult =
         withContext(dispatcher) {
             try {
-                emptyFieldValidator.validateValue(houseNum)
+                emptyFieldValidator.validateValue(valueForValidate = houseNum)
                 return@withContext ValidationResult.Success
             } catch (ex: EmptyFieldException) {
+                return@withContext ValidationResult.Failure(ex.message!!)
+            }
+        }
+
+    override suspend fun validateIdentificationNum(identificationNum: String): ValidationResult  =
+        withContext(dispatcher) {
+            try {
+                identificationNumberValidator.validateValue(valueForValidate = identificationNum)
+                return@withContext ValidationResult.Success
+            } catch (ex: ValidationException) {
                 return@withContext ValidationResult.Failure(ex.message!!)
             }
         }
