@@ -393,6 +393,7 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
         val ageText = getString(R.string.age_text)
         val fromText = getString(R.string.from_text)
         val untilText = getString(R.string.until_text)
+        val yearsText = getString(R.string.years_text)
         val minMaxAgeNumColor = MaterialColors.getColor(requireContext(), R.attr.colorPrimary,R.color.black)
         val spannableBuilder = SpannableStringBuilder()
         spannableBuilder
@@ -402,11 +403,13 @@ class AnimalFilterFragment : MvpAppCompatFragment(), AnimalFilterView {
             .append("  ")
             .color(minMaxAgeNumColor) { append(minAge.toString()) }
             .append("  ")
-            .append("лет    ")
+            .append(yearsText)
+            .append("    ")
             .append(untilText)
             .append("  ")
             .color(minMaxAgeNumColor) { append(maxAge.toString()) }
-            .append("  лет")
+            .append("  ")
+            .append(yearsText)
         return spannableBuilder.toSpanned()
     }
 

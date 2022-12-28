@@ -8,7 +8,7 @@
 
     <string name="kennel_avatar_endpoint">/api/v1/kennel/avatar/</string>
     <string name="animal_photo_endpoint">/api/v1/animal/photo/</string>
-    <string name="age_text">Возраст:</string>
+    <string name="age_text">Возраст</string>
     <string name="zero">0</string>
     <string name="nickname_text">Кличка</string>
     <string name="animal_breed_label">Порода</string>
@@ -26,7 +26,7 @@
     <string name="cats">Кошки</string>
     <string name="add_photo_to_kennel_description">Кнопка для установки фотографии для профиля приюта</string>
     <string name="e_mail">E-mail:</string>
-    <string name="city_label">Город:</string>
+    <string name="city_label">Город</string>
     <string name="settings_save_btn">Сохранить</string>
     <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
     <string name="name_label_text">Имя:</string>
@@ -116,12 +116,12 @@
 
 
     <plurals name="buddy_found_count">
-        <item quantity="zero">Найдено %d питомцев</item>
-        <item quantity="one">Найден %d питомец</item>
-        <item quantity="two">Найдено %d питомца</item>
-        <item quantity="few">Найдено %d питомца</item>
-        <item quantity="many">Найдено %d питомцев</item>
-        <item quantity="other">Найдено %d питомцев</item>
+        <item quantity="zero">Найдено %d животных</item>
+        <item quantity="one">Найдено %d животное</item>
+        <item quantity="two">Найдено %d животных</item>
+        <item quantity="few">Найдено %d животных</item>
+        <item quantity="many">Найдено %d животных</item>
+        <item quantity="other">Найдено %d животных</item>
     </plurals>
 
 
