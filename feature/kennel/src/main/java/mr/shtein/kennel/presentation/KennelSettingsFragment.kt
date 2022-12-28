@@ -144,6 +144,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is CityFieldState.Error -> {
                     cityInputContainer.error = cityState.message
                     cityInputContainer.isErrorEnabled = true
+                    scrollToElementIfNeed(cityInputContainer)
                 }
                 is CityFieldState.Validate -> {}
             }
@@ -179,6 +180,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is EmailFieldState.Error -> {
                     emailInputContainer.isErrorEnabled = true
                     emailInputContainer.error = emailState.message
+                    scrollToElementIfNeed(emailInputContainer)
                 }
                 EmailFieldState.Validate -> TODO()
             }
@@ -192,6 +194,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is OrganizationNameState.Error -> {
                     nameContainer.isErrorEnabled = true
                     nameContainer.error = nameState.message
+                    scrollToElementIfNeed(nameContainer)
                 }
                 OrganizationNameState.Validate -> {}
             }
@@ -207,6 +210,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is PhoneNumberState.Error -> {
                     phoneNumberInputContainer.isErrorEnabled = true
                     phoneNumberInputContainer.error = phoneState.message
+                    scrollToElementIfNeed(phoneNumberInputContainer)
                 }
                 PhoneNumberState.Validate -> {}
             }
@@ -222,6 +226,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is StreetState.Error -> {
                     streetInputContainer.isErrorEnabled = true
                     streetInputContainer.error = streetState.message
+                    scrollToElementIfNeed(streetInputContainer)
                 }
                 StreetState.Validate -> {}
             }
@@ -237,6 +242,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is HouseNumberState.Error -> {
                     houseNumberContainer.isErrorEnabled = true
                     houseNumberContainer.error = houseNumState.message
+                    scrollToElementIfNeed(houseNumberContainer)
                 }
                 HouseNumberState.Validate -> TODO()
             }
@@ -252,12 +258,11 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is IdentificationNumberState.Error -> {
                     identificationNumberInputContainer.isErrorEnabled = true
                     identificationNumberInputContainer.error = identificationNumberState.message
+                    scrollToElementIfNeed(identificationNumberInputContainer)
                 }
                 IdentificationNumberState.Validate -> TODO()
             }
         }
-
-
     }
 
     private fun initViews(view: View) {
