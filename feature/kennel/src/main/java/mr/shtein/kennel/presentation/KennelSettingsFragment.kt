@@ -228,7 +228,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.houseNumberState.observe(viewLifecycleOwner) { houseNumState ->
-            when(houseNumState) {
+            when (houseNumState) {
                 is HouseNumberState.Value -> {
                     if (houseNumberContainer.isErrorEnabled) {
                         houseNumberContainer.isErrorEnabled = false
@@ -239,6 +239,21 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     houseNumberContainer.error = houseNumState.message
                 }
                 HouseNumberState.Validate -> TODO()
+            }
+        }
+
+        kennelSettingsViewModel.identificationNumberState.observe(viewLifecycleOwner) { identificationNumberState ->
+            when(identificationNumberState) {
+                is IdentificationNumberState.Value -> {
+                    if (identificationNumberInputContainer.isErrorEnabled) {
+                        identificationNumberInputContainer.isErrorEnabled = false
+                    }
+                }
+                is IdentificationNumberState.Error -> {
+                    identificationNumberInputContainer.isErrorEnabled = true
+                    identificationNumberInputContainer.error = identificationNumberState.message
+                }
+                IdentificationNumberState.Validate -> TODO()
             }
         }
 
@@ -325,18 +340,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         identificationNumberInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                if (identificationNumberInputContainer.isErrorEnabled)
-                    identificationNumberInputContainer.isErrorEnabled = false
-            } else {
-                val identificationNum = identificationNumberInput.text.toString()
-                validateAndHighlightError(
-                    IdentificationNumberValidator(),
-                    IDENTIFICATION_NUM_KEY,
-                    identificationNum,
-                    identificationNumberInputContainer
-                )
-            }
+            kennelSettingsViewModel.onIdentificationNumFocusChanged(
+                hasFocus = hasFocus,
+                identificationNum = identificationNumberInput.text.toString()
+            )
         }
 
         saveBtn.setOnClickListener {
