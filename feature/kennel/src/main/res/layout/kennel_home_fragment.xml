@@ -92,8 +92,7 @@
             app:layout_constraintTop_toTopOf="@id/kennel_home_volunteers_icon"
             app:layout_constraintBottom_toBottomOf="@id/kennel_home_volunteers_icon"
             app:layout_constraintStart_toEndOf="@id/kennel_home_volunteers_icon"
-            android:layout_marginStart="10dp"
-            />
+            android:layout_marginStart="10dp" />
 
         <ImageView
             android:id="@+id/kennel_home_animals_icon"
@@ -181,8 +180,7 @@
             android:textColor="?attr/colorOnSurface"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/kennel_home_dogs_label"
-            app:layout_constraintTop_toBottomOf="@id/kennel_home_dog_carousel"
-            />
+            app:layout_constraintTop_toBottomOf="@id/kennel_home_dog_carousel" />
 
         <TextView
             android:id="@+id/kennel_home_cats_amount"
@@ -230,6 +228,8 @@
             android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="@+id/kennel_home_add_dogs_btn"
             app:layout_constraintTop_toBottomOf="@+id/kennel_home_volunteers_amount" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
