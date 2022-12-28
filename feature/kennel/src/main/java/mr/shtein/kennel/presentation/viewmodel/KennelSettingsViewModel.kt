@@ -166,4 +166,25 @@ class KennelSettingsViewModel(
             }
         }
     }
+
+    fun onHouseFocusChanged(hasFocus: Boolean, house: String) {
+        if (hasFocus && _houseNumberState.value is HouseNumberState.Error) {
+            _houseNumberState.value = HouseNumberState.Value(value = house)
+        } else if (!hasFocus) {
+            viewModelScope.launch {
+                val result = kennelInteractor.validateHouseNum(house)
+                when (result) {
+                    ValidationResult.Success -> {
+                        _houseNumberState.value = HouseNumberState.Value(value = house)
+                    }
+                    is ValidationResult.Failure -> {
+                        _houseNumberState.value = HouseNumberState.Error(
+                            message = result.errorMessage,
+                            wrongValue = house
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

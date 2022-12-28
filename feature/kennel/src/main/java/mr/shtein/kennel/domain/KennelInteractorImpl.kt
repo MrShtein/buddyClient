@@ -76,4 +76,14 @@ class KennelInteractorImpl(
                 return@withContext ValidationResult.Failure(ex.message!!)
             }
         }
+
+    override suspend fun validateHouseNum(houseNum: String): ValidationResult =
+        withContext(dispatcher) {
+            try {
+                emptyFieldValidator.validateValue(houseNum)
+                return@withContext ValidationResult.Success
+            } catch (ex: EmptyFieldException) {
+                return@withContext ValidationResult.Failure(ex.message!!)
+            }
+        }
 }
