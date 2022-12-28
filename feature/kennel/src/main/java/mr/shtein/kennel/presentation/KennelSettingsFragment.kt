@@ -146,7 +146,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     cityInputContainer.isErrorEnabled = true
                     scrollToElementIfNeed(cityInputContainer)
                 }
-                is CityFieldState.Validate -> {}
             }
         }
 
@@ -182,7 +181,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     emailInputContainer.error = emailState.message
                     scrollToElementIfNeed(emailInputContainer)
                 }
-                EmailFieldState.Validate -> TODO()
             }
         }
 
@@ -196,7 +194,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     nameContainer.error = nameState.message
                     scrollToElementIfNeed(nameContainer)
                 }
-                OrganizationNameState.Validate -> {}
             }
         }
 
@@ -212,7 +209,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     phoneNumberInputContainer.error = phoneState.message
                     scrollToElementIfNeed(phoneNumberInputContainer)
                 }
-                PhoneNumberState.Validate -> {}
             }
         }
 
@@ -228,7 +224,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     streetInputContainer.error = streetState.message
                     scrollToElementIfNeed(streetInputContainer)
                 }
-                StreetState.Validate -> {}
             }
         }
 
@@ -244,7 +239,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     houseNumberContainer.error = houseNumState.message
                     scrollToElementIfNeed(houseNumberContainer)
                 }
-                HouseNumberState.Validate -> TODO()
             }
         }
 
@@ -260,7 +254,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                     identificationNumberInputContainer.error = identificationNumberState.message
                     scrollToElementIfNeed(identificationNumberInputContainer)
                 }
-                IdentificationNumberState.Validate -> TODO()
             }
         }
     }
