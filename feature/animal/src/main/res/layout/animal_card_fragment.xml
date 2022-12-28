@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -288,10 +288,6 @@
             app:layout_constraintStart_toEndOf="@id/animal_card_kennel_animals_number"
             app:layout_constraintTop_toTopOf="@+id/animal_card_kennel_animals_number"
             tools:text="животных" />
-
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

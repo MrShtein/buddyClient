@@ -17,7 +17,7 @@
     <string name="abbr_month">Мес</string>
     <string name="month">Месяц</string>
     <string name="add_animal_description_label_text">Описание:</string>
-    <string name="add_animal_add_btn_text">Сохранить питомца</string>
+    <string name="add_animal_add_btn_text">Сохранить</string>
     <string name="animal_delete_dialog_clarification_text">Вы точно хотите удалить животное из приюта?</string>
     <string name="animal_delete_error_dialog_clarification_text">Во время удаления что-то пошло не так\n попробуйте немного позже</string>
     <string name="kennel_confirm_failed_text">Данный приют уже зарегистрирован\n за дополнительной информацией можно\n можно обратиться по адресу mr.shtein61@yandex.ru</string>

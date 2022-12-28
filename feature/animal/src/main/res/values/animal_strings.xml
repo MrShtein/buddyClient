@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="animal_filter_label_text">Фильтр</string>
-    <string name="animal_types_label">Типы животных:</string>
+    <string name="animal_types_label">Тип животного</string>
     <string name="any_gender_label">Любой</string>
-    <string name="find_zero_animals_text">Найдено 0 животных</string>
-    <string name="from_text">от</string>
-    <string name="until_text">до</string>
+    <string name="find_zero_animals_text">Показать 0 животных</string>
+    <string name="from_text"><b>От</b></string>
+    <string name="until_text"><b>До</b></string>
+    <string name="years_text"><b>лет</b></string>
     <string name="more">Ещё</string>
     <string name="bird_for_more">v</string>
     <string name="location_failure_text">К сожалению сейчас не получается узнать Ваше местоположение, попробуйте позже</string>
