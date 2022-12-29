@@ -13,7 +13,7 @@
     <string name="nickname_text">Кличка</string>
     <string name="animal_breed_label">Порода</string>
     <string name="animal_color_label">Цвет</string>
-    <string name="animal_gender_label_text">Пол:</string>
+    <string name="animal_gender_label_text">Пол</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
     <string name="big_card_animal_photo_counter">%1$d/%2$d</string>
@@ -21,11 +21,11 @@
     <string name="alert_dialog_notification_text">Уведомление!</string>
     <string name="yes_btn">Дa</string>
     <string name="no_btn">Нет</string>
-    <string name="user_settings_dialog_ok_btn">Ok</string>
+    <string name="user_settings_dialog_ok_btn">OK</string>
     <string name="dogs">Собаки</string>
     <string name="cats">Кошки</string>
     <string name="add_photo_to_kennel_description">Кнопка для установки фотографии для профиля приюта</string>
-    <string name="e_mail">E-mail</string>
+    <string name="e_mail">E-mail:</string>
     <string name="city_label">Город</string>
     <string name="settings_save_btn">Сохранить</string>
     <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>

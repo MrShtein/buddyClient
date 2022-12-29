@@ -464,7 +464,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.user_settings_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val positiveDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_positive_btn)
