@@ -124,8 +124,6 @@
     <style name="Buddy.Widget.CardView.Filled" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">?attr/colorSurfaceAt3</item>
         <item name="cardCornerRadius">30dp</item>
-        <!--        <item name="android:minWidth">310dp</item>-->
-        <!--        <item name="android:minHeight">200dp</item>-->
     </style>
 
     <style name="Buddy.Widget.IconButton" parent="Widget.Material3.Button.IconButton">

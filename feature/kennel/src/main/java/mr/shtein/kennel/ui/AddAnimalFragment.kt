@@ -4,7 +4,6 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -101,6 +100,11 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
     private lateinit var monthsNum: TextView
     private lateinit var monthsText: TextView
     private lateinit var monthsSliderText: TextView
+//    private lateinit var animalNameLabel: TextView
+//    private lateinit var animalBreedLabel: TextView
+//    private lateinit var animalColorLabel: TextView
+//    private lateinit var animalGenreLabel: TextView
+//    private lateinit var animalDescriptionLabel: TextView
     private lateinit var animalName: TextInputEditText
     private lateinit var animalNameInputContainer: TextInputLayout
     private lateinit var animalBreedsInputContainer: TextInputLayout
@@ -346,6 +350,16 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         maleBtn = view.findViewById(R.id.add_animal_male_button)
         femaleBtn = view.findViewById(R.id.add_animal_female_button)
 
+        yearsSliderText = view.findViewById(R.id.add_animal_year_slider_text)
+        monthsSliderText = view.findViewById(R.id.add_animal_month_slider_text)
+
+//        animalNameLabel = view.findViewById(R.id.add_animal_name_label)
+//        animalBreedLabel = view.findViewById(R.id.add_animal_breed_label)
+//        animalColorLabel = view.findViewById(R.id.add_animal_color_label)
+//        animalGenreLabel = view.findViewById(R.id.add_animal_genre_label)
+//        animalDescriptionLabel = view.findViewById(R.id.add_animal_description_label)
+
+
     }
 
     private fun setListeners() {
@@ -587,7 +601,8 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         val errorBackground = requireContext().getDrawable(R.drawable.has_age_container_stroke)
         val noErrorBackground = requireContext().getDrawable(R.drawable.animal_age_background)
         val errorText = MaterialColors.getColor(requireContext(), R.attr.colorError, R.color.black)
-        val noErrorText = MaterialColors.getColor(requireContext(), R.attr.colorOnSurface, R.color.black)
+        val noErrorColorText = MaterialColors.getColor(requireContext(), R.attr.colorPrimary, R.color.black)
+        val noErrorBlackText = MaterialColors.getColor(requireContext(), R.attr.colorOnSurface, R.color.black)
         if (isError) {
             monthsContainer.background = errorBackground
             yearsContainer.background = errorBackground
@@ -597,15 +612,16 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
             monthsText.setTextColor(errorText)
             yearsSliderText.setTextColor(errorText)
             monthsSliderText.setTextColor(errorText)
+
         } else {
             monthsContainer.background = noErrorBackground
             yearsContainer.background = noErrorBackground
-            yearsNum.setTextColor(noErrorText)
-            yearsText.setTextColor(noErrorText)
-            monthsNum.setTextColor(noErrorText)
-            monthsText.setTextColor(noErrorText)
-            yearsSliderText.setTextColor(noErrorText)
-            monthsSliderText.setTextColor(noErrorText)
+            yearsNum.setTextColor(noErrorBlackText)
+            monthsNum.setTextColor(noErrorBlackText)
+            yearsText.setTextColor(noErrorColorText)
+            monthsText.setTextColor(noErrorColorText)
+            yearsSliderText.setTextColor(noErrorBlackText)
+            monthsSliderText.setTextColor(noErrorBlackText)
         }
     }
 

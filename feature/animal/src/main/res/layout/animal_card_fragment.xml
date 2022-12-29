@@ -58,15 +58,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
             android:contentDescription="@string/button_for_call"
             android:pointerIcon="context_menu"
             android:text="@string/write"
             android:textAllCaps="false"
-            app:layout_constraintEnd_toStartOf="@id/animal_card_phone_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_animal_name"
-            />
+            app:layout_constraintStart_toStartOf="@+id/animal_card_description"
+            app:layout_constraintTop_toBottomOf="@+id/animal_card_animal_name" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_card_phone_btn"
@@ -76,10 +73,8 @@
             android:text="@string/Call"
             android:textAllCaps="false"
             app:icon="@drawable/phone_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/animal_card_email_btn"
-            app:layout_constraintTop_toTopOf="@id/animal_card_email_btn"
-            />
+            app:layout_constraintEnd_toEndOf="@+id/animal_card_description"
+            app:layout_constraintTop_toTopOf="@id/animal_card_email_btn" />
 
 <!--        <CheckBox-->
 <!--            android:id="@+id/animal_card_heart"-->
@@ -135,9 +130,10 @@
             android:id="@+id/animal_card_age_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/age_text"
+            android:text="Возраст:"
             app:layout_constraintStart_toStartOf="@+id/animal_card_gender_label"
             app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label" />
+<!--Текст не добавить в ресурсы!-->
 
         <TextView
             android:id="@+id/animal_card_age_value"
@@ -152,9 +148,10 @@
             android:id="@+id/animal_card_breed_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/animal_breed_label"
+            android:text="Порода:"
             app:layout_constraintStart_toStartOf="@+id/animal_card_age_label"
             app:layout_constraintTop_toBottomOf="@id/animal_card_age_label" />
+        <!--Текст не добавить в ресурсы!-->
 
         <TextView
             android:id="@+id/animal_card_breed_value"
@@ -169,9 +166,10 @@
             android:id="@+id/animal_card_color_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/animal_color_label"
+            android:text="Цвет:"
             app:layout_constraintStart_toStartOf="@+id/animal_card_breed_label"
             app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value" />
+        <!--Текст не добавить в ресурсы!-->
 
         <TextView
             android:id="@+id/animal_card_color_value"
@@ -180,7 +178,7 @@
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
             app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value"
-            tools:text="Цвет: Серый" />
+            tools:text="Серый" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/animal_card_bottom_divider"
@@ -260,6 +258,7 @@
             app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
             app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
             tools:text="0" />
+        <!--        Добавить в коде изменение кол-ва волонтеров-->
 
         <TextView
             android:layout_width="0dp"
@@ -270,6 +269,7 @@
             app:layout_constraintTop_toTopOf="@+id/animal_card_kennel_number_volunteers"
             tools:text="волонтеров" />
 
+
         <TextView
             android:id="@+id/animal_card_kennel_animals_number"
             android:layout_width="0dp"
@@ -279,6 +279,8 @@
             app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
             app:layout_constraintTop_toBottomOf="@+id/animal_card_kennel_number_volunteers"
             tools:text="0" />
+        <!--        Добавить в коде изменение кол-ва животных-->
+
 
         <TextView
             android:layout_width="0dp"
