@@ -122,7 +122,7 @@
     </style>
 
     <style name="Buddy.Widget.CardView.Filled" parent="Widget.Material3.CardView.Filled">
-        <item name="cardBackgroundColor">?attr/colorSurfaceAt3</item>
+        <item name="cardBackgroundColor">@color/transparent</item>
         <item name="cardCornerRadius">30dp</item>
     </style>
 
