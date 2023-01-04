@@ -16,7 +16,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/animal_card_photo_gallery"
             android:layout_width="0dp"
-            android:layout_height="195dp"
+            android:layout_height="250dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -231,65 +231,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="animal_card_kennel_avatar,animal_card_kennel_number_volunteers"
+            app:constraint_referenced_ids="animal_card_kennel_avatar,animal_card_kennel_address"
             tools:layout_editor_absoluteY="611dp" />
 
         <TextView
             android:id="@+id/animal_card_kennel_name_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@id/animal_card_kennel_top_divider"
             app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
             app:layout_constraintTop_toTopOf="@id/animal_card_kennel_avatar"
             tools:text="Папа кот" />
 
-        <!--        в старом дизайне это был android:id="@+id/animal_card_kennel_address, исправить в фрагменте адрес приюта на количество волотеров и добавить количество животных в приюте-->
-
         <TextView
-            android:id="@+id/animal_card_kennel_number_volunteers"
+            android:id="@+id/animal_card_kennel_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="@id/animal_card_kennel_top_divider"
             app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
             app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
-            tools:text="0" />
-        <!--        Добавить в коде изменение кол-ва волонтеров-->
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_number_volunteers"
-            app:layout_constraintTop_toTopOf="@+id/animal_card_kennel_number_volunteers"
-            tools:text="волонтеров" />
-
-
-        <TextView
-            android:id="@+id/animal_card_kennel_animals_number"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_kennel_number_volunteers"
-            tools:text="0" />
-        <!--        Добавить в коде изменение кол-ва животных-->
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_animals_number"
-            app:layout_constraintTop_toTopOf="@+id/animal_card_kennel_animals_number"
-            tools:text="животных" />
+            tools:text="г. Москва, ул. Маросейка д. 25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
