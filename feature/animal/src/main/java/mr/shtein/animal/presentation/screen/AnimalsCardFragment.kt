@@ -157,7 +157,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         color = view.findViewById(R.id.animal_card_color_value)
         description = view.findViewById(R.id.animal_card_description)
         kennelName = view.findViewById(R.id.animal_card_kennel_name_value)
-        address = view.findViewById(R.id.animal_card_kennel_number_volunteers)
+        address = view.findViewById(R.id.animal_card_kennel_address)
         avatar = view.findViewById(R.id.animal_card_kennel_avatar)
         writeBtn = view.findViewById(R.id.animal_card_email_btn)
         callBtn = view.findViewById(R.id.animal_card_phone_btn)
