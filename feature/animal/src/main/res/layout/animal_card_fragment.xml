@@ -53,18 +53,30 @@
             app:layout_constraintTop_toBottomOf="@+id/animal_card_photo_gallery"
             tools:text="Собака Клавдия" />
 
+        <TextView
+            android:id="@+id/animal_card_distance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/animal_card_animal_name"
+            tools:text="550 м от Вас" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_card_email_btn"
             style="@style/Buddy.Widget.MiddleButton.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@string/button_for_call"
             android:pointerIcon="context_menu"
             android:text="@string/write"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="@+id/animal_card_description"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_animal_name" />
+            app:layout_constraintTop_toBottomOf="@+id/animal_card_distance_text" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_card_phone_btn"
@@ -77,27 +89,16 @@
             app:layout_constraintEnd_toEndOf="@+id/animal_card_description"
             app:layout_constraintTop_toTopOf="@id/animal_card_email_btn" />
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/animal_card_heart"-->
-<!--            android:layout_width="25dp"-->
-<!--            android:layout_height="25dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:button="@drawable/heart_checkbox"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/animal_card_animal_name"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/animal_card_animal_name" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/animal_card_distance_text"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="30dp"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/animal_card_animal_name"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/animal_card_heart"-->
-<!--            app:layout_constraintTop_toTopOf="@id/animal_card_animal_name"-->
-<!--            tools:text="550 м от Вас" />-->
+        <!--        <CheckBox-->
+        <!--            android:id="@+id/animal_card_heart"-->
+        <!--            android:layout_width="25dp"-->
+        <!--            android:layout_height="25dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:button="@drawable/heart_checkbox"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/animal_card_animal_name"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/animal_card_animal_name" />-->
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/animal_card_top_divider"
@@ -134,7 +135,7 @@
             android:text="Возраст:"
             app:layout_constraintStart_toStartOf="@+id/animal_card_gender_label"
             app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label" />
-<!--Текст не добавить в ресурсы!-->
+        <!--Текст не добавить в ресурсы!-->
 
         <TextView
             android:id="@+id/animal_card_age_value"
@@ -193,10 +194,10 @@
             android:id="@+id/animal_card_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurface"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/animal_card_top_divider"
@@ -235,11 +236,11 @@
             android:layout_marginEnd="20dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintTop_toTopOf="@id/animal_card_kennel_avatar"
-            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
             app:layout_constraintBottom_toTopOf="@+id/animal_card_kennel_address"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintTop_toTopOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="Папа кот" />
 
         <TextView
@@ -247,11 +248,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
             app:layout_constraintBottom_toBottomOf="@id/animal_card_kennel_avatar"
-            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
+            app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="г. Москва, ул. Маросейка д. 25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

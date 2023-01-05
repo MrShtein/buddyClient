@@ -56,7 +56,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
     private lateinit var kennelName: TextView
     private lateinit var address: TextView
     private lateinit var avatar: ShapeableImageView
-//    private lateinit var distance: TextView
+    private lateinit var distance: TextView
 //    private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
     private lateinit var callBtn: MaterialButton
@@ -150,7 +150,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         imageCount = view.findViewById(R.id.animal_card_image_count)
         animalName = view.findViewById(R.id.animal_card_animal_name)
 //        heartBox = view.findViewById(R.id.animal_card_heart)
-//        distance = view.findViewById(R.id.animal_card_distance_text)
+        distance = view.findViewById(R.id.animal_card_distance_text)
         gender = view.findViewById(R.id.animal_card_gender_value)
         age = view.findViewById(R.id.animal_card_age_value)
         breed = view.findViewById(R.id.animal_card_breed_value)
@@ -177,7 +177,10 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
             breed.text = animal.breed
             color.text = animal.characteristics["color"]
             description.text = animal.description
-            //distance.text = animal.distance
+            if (animal.distance != "") {
+                distance.visibility = View.VISIBLE
+                distance.text = animal.distance
+            }
 
             val kennel: Kennel = animal.kennel
             kennelName.text = kennel.name
