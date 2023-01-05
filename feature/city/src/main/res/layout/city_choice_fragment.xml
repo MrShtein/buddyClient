@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceAt3"
+    android:transitionGroup="true"
     tools:context="mr.shtein.buddyandroidclient.screens.CityChoiceFragment">
 
     <com.google.android.material.textfield.TextInputLayout

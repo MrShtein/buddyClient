@@ -383,7 +383,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val headerMap = hashMapOf<String, String>()
         token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
-        val serverErrorText = context?.getString(R.string.server_unavailable_msg) ?: UNEXPECTED_ERROR
+        val serverErrorText =
+            context?.getString(R.string.server_unavailable_msg) ?: UNEXPECTED_ERROR
         val noNetworkErrorText = context?.getString(R.string.internet_failure_text)
             ?: UNEXPECTED_ERROR
         coroutineScope.launch {
@@ -529,9 +530,21 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun changeSaveBtnColor(isTextChange: Boolean) {
         if (isTextChange) {
-            saveBtn.setBackgroundColor(MaterialColors.getColor(requireContext(), R.attr.colorPrimary, R.color.black))
+            saveBtn.setBackgroundColor(
+                MaterialColors.getColor(
+                    requireContext(),
+                    R.attr.colorPrimary,
+                    R.color.black
+                )
+            )
         } else {
-            saveBtn.setBackgroundColor(MaterialColors.getColor(requireContext(), R.attr.colorSurfaceVariant, R.color.black))
+            saveBtn.setBackgroundColor(
+                MaterialColors.getColor(
+                    requireContext(),
+                    R.attr.colorSurfaceVariant,
+                    R.color.black
+                )
+            )
         }
     }
 
