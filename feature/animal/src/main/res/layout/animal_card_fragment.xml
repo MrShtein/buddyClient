@@ -227,33 +227,31 @@
             app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
             tools:background="@color/cian5" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/animal_card_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="animal_card_kennel_avatar,animal_card_kennel_address"
-            tools:layout_editor_absoluteY="611dp" />
-
         <TextView
             android:id="@+id/animal_card_kennel_name_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/animal_card_kennel_top_divider"
-            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintBottom_toTopOf="@+id/animal_card_kennel_address"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="Папа кот" />
 
         <TextView
             android:id="@+id/animal_card_kennel_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/animal_card_kennel_top_divider"
-            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
+            app:layout_constraintBottom_toBottomOf="@id/animal_card_kennel_avatar"
+            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="г. Москва, ул. Маросейка д. 25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
