@@ -17,7 +17,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/animal_row_image"
             android:layout_width="0dp"
-            android:layout_height="195dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,16 +35,16 @@
             app:layout_constraintTop_toBottomOf="@id/animal_row_image"
             tools:text="Клавдия" />
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/animal_row_heart"-->
-<!--            android:layout_width="25dp"-->
-<!--            android:layout_height="25dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:button="@drawable/heart_checkbox"-->
-<!--            android:visibility="invisible"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/animal_row_image" />-->
+        <CheckBox
+            android:id="@+id/animal_row_heart"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/heart_checkbox"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/animal_row_image" />
 
         <ImageButton
             android:id="@+id/animal_row_location_btn"
@@ -55,21 +55,22 @@
             android:src="@drawable/location_icon"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animal_row_name" />
+            app:layout_constraintTop_toTopOf="@id/animal_row_heart"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"/>
 
-<!--        <TextView-->
-<!--            android:id="@+id/animal_row_distance_text"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:textSize="14sp"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/animal_row_heart"-->
-<!--            tools:text="550 м от Вас" />-->
+        <TextView
+            android:id="@+id/animal_row_distance_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/animal_row_name"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="550 м от Вас" />
 
         <ProgressBar
             android:id="@+id/animal_row_distance_progress"
@@ -77,9 +78,9 @@
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/animal_row_name" />
 
         <TextView
             android:id="@+id/gender_name"
