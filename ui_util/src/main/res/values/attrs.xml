@@ -28,4 +28,6 @@
 
     <attr name="chipCancelFilterColor" format="color|reference" />
 
+    <attr name="placeHolderBackgroundColor" format="color|reference" />
+
 </resources>

@@ -107,13 +107,13 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private fun setValuesToViews(kennelItem: KennelPreview) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
-        val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)
+        val drawable = view?.context!!.getDrawable(R.drawable.light_dog_placeholder)
         token = userPropertiesRepository.getUserToken()
         networkImageLoader.setPhotoToView(
             kennelAvatar,
             endpoint,
             photoName,
-            dogPlaceholder!!
+            drawable
         )
 
         val uriForUserToken = userPropertiesRepository.getUserUri()

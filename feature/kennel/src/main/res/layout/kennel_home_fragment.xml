@@ -20,8 +20,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/kennel_avatar_description"
-            android:scaleType="centerCrop"
-            tools:src="@color/grey3"/>
+            android:background="?attr/placeHolderBackgroundColor"
+            android:scaleType="center"
+            />
 
 
         <!--        <com.google.android.material.imageview.ShapeableImageView-->

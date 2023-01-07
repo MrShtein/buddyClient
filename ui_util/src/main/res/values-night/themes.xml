@@ -63,6 +63,8 @@
 
         <item name="chipCancelFilterColor">@color/secondary90</item>
 
+        <item name="placeHolderBackgroundColor">@color/darkSurface3</item>
+
 
 
     </style>

@@ -63,6 +63,7 @@
     <color name="lightPrimary5">#0D006874</color>
     <color name="neutral30">#444748</color>
     <color name="lightSurface2">#F9FEFF</color>
+    <color name="lightSurface3">#e0ecee</color>
 
 
     <!-- Dark theme -->
@@ -86,6 +87,7 @@
     <color name="darkPrimary8">#144FD8EB</color>
     <color name="darkPrimary5">#0D4FD8EB</color>
     <color name="darkSurface2">#191C1D</color>
+    <color name="darkSurface3">#203134</color>
 
     <color name="neutral80Divider">#C4C7C7</color>
     <color name="secondary70">#96B0B4</color>

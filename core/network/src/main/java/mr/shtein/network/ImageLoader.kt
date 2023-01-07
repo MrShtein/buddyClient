@@ -9,11 +9,11 @@ interface ImageLoader {
         imageView: ImageView,
         endpoint: String,
         path: String,
-        placeHolder: Drawable
+        placeHolder: Drawable?
     )
     fun setPhotoToView(
         imageView: ShapeableImageView,
         personAvatarUri: String,
-        placeholder: Drawable
+        placeholder: Drawable?
     )
 }

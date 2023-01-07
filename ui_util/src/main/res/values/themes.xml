@@ -63,6 +63,7 @@
         <item name="animalFilterTextColor">@color/primary40</item>
 
         <item name="chipCancelFilterColor">@color/secondary10</item>
+        <item name="placeHolderBackgroundColor">@color/lightSurface3</item>
 
 
     </style>
