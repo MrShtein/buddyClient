@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.CommonViewModel
 import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -56,6 +58,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private val networkImageLoader: ImageLoader by inject()
     private val networkKennelRepository: KennelRepository by inject()
     private val navigator: KennelNavigation by inject()
+    private val commonViewModel: CommonViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +83,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         view?.let {
             setStatusBarColor(true)
             setInsetsListenerForPadding(it, left = false, top = true, right = false, bottom = false)
+            changeMarginBottom(it, commonViewModel.bottomNavHeight)
             initViews(it)
             setListeners()
         }
@@ -121,10 +125,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     private fun initViews(view: View) {
         kennelsBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
-//        volunteersBtn = view.findViewById(R.id.add_kennel_fragment_volunteers_btn)
-//        kennelsUnderscore = view.findViewById(R.id.add_kennel_fragment_kennel_underscore)
-//        volunteersUnderscore = view.findViewById(R.id.add_kennel_fragment_volunteer_underscore)
-        descriptionView = view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_absence)
         addKennelBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
     }
 
@@ -218,5 +218,11 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
 
     private fun showError(errorText: String) {
         Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
+    }
+
+    private fun changeMarginBottom(view: View, bottomNavHeight: Int) {
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, 0, 0, bottomNavHeight)
+        view.layoutParams = layoutParams
     }
 }
