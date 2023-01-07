@@ -131,7 +131,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = true)
         initViews(view)
         setUserCurrentUserSettings()
         setListeners()
