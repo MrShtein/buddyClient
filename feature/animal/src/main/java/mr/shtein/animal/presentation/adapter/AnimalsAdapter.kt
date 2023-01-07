@@ -167,12 +167,11 @@ class AnimalsViewHolder(
         val primaryUrl = animal.imgUrl.filter { it.primary }
         val url: String = primaryUrl[0].url
         val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
-        val dogPlaceholder = animalImage.context.getDrawable(R.drawable.light_dog_placeholder)!!
         networkImageLoader.setPhotoToView(
             animalImage,
             endpoint,
             url,
-            dogPlaceholder
+            null
         )
     }
 }

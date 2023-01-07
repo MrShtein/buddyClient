@@ -52,12 +52,11 @@ class KennelsAdapter(
         fun bind(kennelPreviewItem: KennelPreview) {
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
-            val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
             networkImageLoader.setPhotoToView(
                 avatar,
                 endpoint,
                 photoName,
-                dogPlaceholder!!
+                null
             )
 
             kennelName.text = kennelPreviewItem.name
