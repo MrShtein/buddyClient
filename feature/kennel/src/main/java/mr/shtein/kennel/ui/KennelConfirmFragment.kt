@@ -25,6 +25,7 @@ import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.ui_util.setInsetsListenerForPadding
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.io.FileNotFoundException
@@ -67,6 +68,13 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         val bundle = arguments ?: bundleOf()
         kennelRequest = bundle.getParcelable(SETTINGS_DATA_KEY)!!
 
+        setInsetsListenerForPadding(
+            view = view,
+            left = false,
+            top = true,
+            right = false,
+            bottom = false
+        )
         initViews(view)
         setViews()
         setListeners()
@@ -163,7 +171,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
         kennelRequest.userId = userPropertiesRepository.getUserId()
         networkKennelRepository.addNewKennel(
             token = token,
-            kennelRequest =  kennelRequest,
+            kennelRequest = kennelRequest,
             avatarWrapper = avatarWrapper
         )
     }
