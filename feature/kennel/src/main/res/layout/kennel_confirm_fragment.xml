@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_scroll"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:transitionGroup="true">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        >
 
         <ProgressBar
             android:id="@+id/kennel_confirm_progress_bar"
@@ -51,26 +52,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15sp"
                 android:text="@string/kennel_confirm_name_label"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
-
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textAlignment="center"
-                android:textColor="?attr/colorPrimary"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:gravity="center"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="22sp"
                 tools:text="ПапаКОт ПапаКОт ПапаКОт ПапаКОт ПапаКОт ПапаКОт ПапаКОт ПапаКОт" />
 
@@ -78,7 +71,7 @@
                 style="@style/Buddy.Widget.Divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp" />
 
@@ -88,22 +81,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/kennel_confirm_phone_label"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
-
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="+7(777)777-77-77" />
@@ -112,7 +98,7 @@
                 style="@style/Buddy.Widget.Divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp" />
 
@@ -122,25 +108,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/kennel_confirm_email_label"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
-
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textAlignment="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="straniiy@yande.ru straniiy@yande.ru straniiy@yande.ru straniiy@yande.ru" />
@@ -149,7 +127,7 @@
                 style="@style/Buddy.Widget.Divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp" />
 
@@ -159,44 +137,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/kennel_confirm_address_label"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_address_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textAlignment="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="Москва, Московская область" />
-
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_address_street"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textAlignment="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="Маросейка д. 12 корп. 3" />
@@ -205,7 +168,7 @@
                 style="@style/Buddy.Widget.Divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp" />
 
@@ -215,22 +178,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/kennel_confirm_identification_number_label"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
-
-            <!--            <com.google.android.material.divider.MaterialDivider-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                style="@style/Buddy.Widget.Divider"-->
-            <!--                android:layout_marginStart="35dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:layout_marginTop="15dp"/>-->
 
             <TextView
                 android:id="@+id/kennel_confirm_identification_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="123456789123" />
@@ -239,7 +195,7 @@
                 style="@style/Buddy.Widget.Divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp" />
 
@@ -248,9 +204,9 @@
                 style="@style/Buddy.Widget.LargeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="50dp"
                 android:inputType="text"
                 android:paddingTop="20dp"
