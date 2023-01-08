@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -44,6 +45,7 @@ import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.CommonViewModel
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
@@ -104,7 +106,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private val networkImageLoader: ImageLoader by inject()
     private val navigator: AnimalNavigation by inject()
-    private val appPropertiesRepository: AppPropertiesRepository by inject()
+    private val commonViewModel: CommonViewModel by activityViewModels()
     private var onDestinationChangedListener: NavController.OnDestinationChangedListener? = null
 
     @InjectPresenter
@@ -372,7 +374,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     }
 
     private fun changeMarginBottom(view: View) {
-        val bottomNavHeightInDP = appPropertiesRepository.getBottomNavHeight()
+        val bottomNavHeightInDP = commonViewModel.bottomNavHeight
         val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.setMargins(0, 0, 0, bottomNavHeightInDP)
         view.layoutParams = layoutParams
