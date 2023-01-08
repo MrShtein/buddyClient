@@ -1,5 +1,6 @@
 package mr.shtein.ui_util
 
+import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mr.shtein.data.repository.UserPropertiesRepository
 
 fun Fragment.setStatusBarColor(isBlack: Boolean) {
+    val  currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     val windowInsetsController =
         WindowCompat.getInsetsController(requireActivity().window, requireActivity().window.decorView)
+    if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+        windowInsetsController!!.isAppearanceLightStatusBars = false
+        return
+    }
     windowInsetsController!!.isAppearanceLightStatusBars = isBlack
 }
 
