@@ -1,53 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="310dp"
-        android:layout_height="290dp"
-        app:cardCornerRadius="30dp"
-        android:backgroundTint="@color/dialog_primary_color"
-        android:layout_gravity="center">
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        style="@style/Buddy.Widget.CardView.Filled">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:contentDescription="@string/user_settings_icon_description"
-                android:src="@drawable/notification_dialog_icon"
-                android:layout_gravity="center_horizontal" />
+            <!--            <ImageView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="30dp"-->
+            <!--                android:contentDescription="@string/user_settings_icon_description"-->
+            <!--                android:src="@drawable/notification_dialog_icon"-->
+            <!--                android:layout_gravity="center_horizontal" />-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:layout_marginTop="25dp"
                 android:lineHeight="23sp"
                 android:text="@string/kennel_confirm_failed_text"
                 android:textAlignment="center"
-                android:textColor="@color/dialog_clarification_text_color"
-                android:layout_gravity="center_horizontal"/>
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/kennel_failed_ok_btn"
+                style="@style/Buddy.Widget.SmallButton.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:background="@color/transparent"
-                android:text="@string/user_settings_dialog_ok_btn"
-                android:textColor="@color/cian5"
                 android:layout_gravity="end"
                 android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                />
-
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/user_settings_dialog_ok_btn"
+                android:textColor="?attr/colorPrimary" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorNavIcons" format="color|reference" />
+    <attr name="colorNavBackground" format="color|reference" />
+
+    <attr name="colorSurfaceAt3" format="color|reference" />
+    <attr name="colorSurfaceAt2" format="color|reference" />
+    <attr name="colorSurfaceAt1" format="color|reference" />
+
+    <attr name="chipCircleColorTrue" format="color|reference" />
+    <attr name="chipCircleColorFalse" format="color|reference" />
+
+    <attr name="chipCheckMarkColorTrue" format="color|reference" />
+    <attr name="chipCheckMarkColorFalse" format="color|reference" />
+
+    <attr name="chipBackgroundColorTrue" format="color|reference" />
+    <attr name="chipBackgroundColorFalse" format="color|reference" />
+
+    <attr name="chipBackgroundTextColorTrue" format="color|reference" />
+    <attr name="chipBackgroundTextColorFalse" format="color|reference" />
+
+    <attr name="chipStrokeColorTrue" format="color|reference"/>
+    <attr name="chipStrokeColorFalse" format="color|reference"/>
+
+    <attr name="chipIconUnpressedColor" format="color|reference"/>
+
+    <attr name="animalFilterTextColor" format="color|reference" />
+
+    <attr name="chipCancelFilterColor" format="color|reference" />
+
+    <attr name="placeHolderBackgroundColor" format="color|reference" />
+
+</resources>

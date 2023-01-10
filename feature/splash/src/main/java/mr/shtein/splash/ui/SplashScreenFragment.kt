@@ -50,11 +50,11 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
         setStatusBarColor(false)
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                view?.setBackgroundColor(requireContext().getColor(R.color.cian5_10))
-            }
-        }
+//        when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+//            Configuration.UI_MODE_NIGHT_YES -> {
+//                view?.setBackgroundColor(requireContext().getColor(R.color.cian5_10))
+//            }
+//        }
         val logoText: ImageView = view!!.findViewById(R.id.buddy_logo_text)
         ViewCompat.setOnApplyWindowInsetsListener(logoText) { textView, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())

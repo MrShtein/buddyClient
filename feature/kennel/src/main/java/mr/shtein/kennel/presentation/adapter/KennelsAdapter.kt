@@ -4,14 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.marginBottom
-import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.network.ImageLoader
-import mr.shtein.ui_util.dp
 import mr.shtein.ui_util.px
 
 class KennelsAdapter(
@@ -62,12 +59,12 @@ class KennelsAdapter(
             if (position == itemCount - 1) addMarginBottomToFinalElement()
             val endpoint = itemView.resources.getString(R.string.kennel_avatar_endpoint)
             val photoName = kennelPreviewItem.avatarUrl
-            val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
+            val dogPlaceholder = itemView.context.getDrawable(R.drawable.mini_dog_placeholder)
             networkImageLoader.setPhotoToView(
                 avatar,
                 endpoint,
                 photoName,
-                dogPlaceholder!!
+                dogPlaceholder
             )
 
             kennelName.text = kennelPreviewItem.name

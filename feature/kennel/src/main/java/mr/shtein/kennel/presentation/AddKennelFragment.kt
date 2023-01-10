@@ -41,7 +41,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
         private const val ANIMATION_DURATION = 300L
     }
 
-    private lateinit var kennelsBtn: TextView
     private lateinit var descriptionView: TextView
     private lateinit var addKennelBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
@@ -77,6 +76,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
             initViews(it)
             initRecyclerView(it)
             changeMarginBottom(kennelRecycler)
+            changeMarginBottom(addKennelBtn)
             setListeners()
         }
         return view
@@ -111,7 +111,6 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private fun initViews(view: View) {
-        kennelsBtn = view.findViewById(R.id.add_kennel_fragment_kennels_label)
         descriptionView = view.findViewById(R.id.add_kennel_fragment_kennels_or_volunteers_absence)
         addKennelBtn = view.findViewById(R.id.add_kennel_fragment_add_btn)
         progressBar = view.findViewById(R.id.add_kennel_fragment_progressbar)
@@ -182,7 +181,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private fun changeMarginBottom(view: View) {
         val bottomNavHeightInDP = appPropertiesRepository.getBottomNavHeight()
         val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.setMargins(0, 0, 0, bottomNavHeightInDP)
+        layoutParams.setMargins(0, 0, 0, layoutParams.bottomMargin + bottomNavHeightInDP)
         view.layoutParams = layoutParams
     }
 }

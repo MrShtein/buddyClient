@@ -3,82 +3,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:transitionGroup="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/animal_filter_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/animal_filter_label"
+            style="@style/AnimalFilterFragmentTextViewLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="35dp"
             android:text="@string/animal_filter_label_text"
-            android:textColor="@color/cian5"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/animal_filter_city_input_container"
-            style="@style/textInputContainerForFilterAutocomplete"
-            android:layout_width="0dp"
+            style="@style/Buddy.Widget.InputLayout.Filled.Exposed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:hint="@string/city_label"
             android:dropDownHeight="match_parent"
+            android:hint="@string/city_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_label">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/animal_filter_city_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
                 android:completionThreshold="1"
-                android:dropDownHeight="wrap_content"
-                android:popupBackground="@drawable/drop_down_background"
-                />
+                android:dropDownHeight="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/animal_filter_city_chips_container"
+            style="@style/Buddy.Widget.Chip.Input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_city_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
-            >
+            app:layout_constraintEnd_toEndOf="@+id/animal_filter_city_input_container"
+            app:layout_constraintStart_toStartOf="@+id/animal_filter_city_input_container"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_city_input_container">
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/animal_filter_animal_type_input_container"
-            style="@style/textInputContainerForFilterAutocomplete"
-            android:layout_width="0dp"
+            style="@style/Buddy.Widget.InputLayout.Filled.Exposed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
             android:hint="@string/animal_types_label"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_city_chips_container">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/animal_filter_animal_type_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
                 android:completionThreshold="1"
-                android:popupBackground="@drawable/drop_down_background"/>
+                android:popupBackground="@drawable/drop_down_background" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,34 +84,33 @@
             android:id="@+id/animal_filter_animal_type_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
-            >
+            app:layout_constraintEnd_toEndOf="@+id/animal_filter_city_input_container"
+            app:layout_constraintStart_toStartOf="@+id/animal_filter_city_input_container"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_input_container">
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/animal_filter_breed_input_container"
-            style="@style/textInputContainerForFilterAutocomplete"
-            android:popupBackground="@color/white"
-            android:layout_width="0dp"
+            style="@style/Buddy.Widget.InputLayout.Filled.Exposed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
             android:hint="@string/animal_breed_label"
             app:endIconCheckable="true"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_animal_type_chips_container">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/animal_filter_breed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:popupBackground="@color/white"
-                />
+                android:popupBackground="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,31 +118,32 @@
             android:id="@+id/animal_filter_breed_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
-            >
+            app:layout_constraintEnd_toEndOf="@+id/animal_filter_animal_type_chips_container"
+            app:layout_constraintStart_toStartOf="@+id/animal_filter_animal_type_chips_container"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_input_container">
 
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/animal_filter_color_input_container"
-            style="@style/textInputContainerForFilterAutocomplete"
-            android:layout_width="0dp"
+            style="@style/Buddy.Widget.InputLayout.Filled.Exposed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
             android:hint="@string/animal_color_label"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_breed_chips_container">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/animal_filter_color_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:popupBackground="@drawable/drop_down_background"/>
+                android:popupBackground="@drawable/drop_down_background" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,11 +151,10 @@
             android:id="@+id/animal_filter_color_chips_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_input_container"
-            app:layout_constraintStart_toStartOf="@id/animal_filter_animal_type_input_container"
-            app:layout_constraintEnd_toEndOf="@id/animal_filter_animal_type_input_container"
             android:layout_marginTop="10dp"
-            >
+            app:layout_constraintEnd_toEndOf="@+id/animal_filter_breed_chips_container"
+            app:layout_constraintStart_toStartOf="@+id/animal_filter_breed_chips_container"
+            app:layout_constraintTop_toBottomOf="@id/animal_filter_color_input_container">
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -165,23 +162,19 @@
             android:id="@+id/animal_filter_age_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_color_chips_container" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/animal_filter_age_slider"
+            style="@style/Buddy.Widget.Slider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:stepSize="1.0"
-            android:valueFrom="0.0"
-            android:valueTo="35.0"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="@+id/animal_filter_color_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_age_label"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_age_label"
             app:values="@array/age_filter_values" />
@@ -190,10 +183,9 @@
             android:id="@+id/animal_filter_gender_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/gender_label"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/animal_filter_age_label"
             app:layout_constraintTop_toBottomOf="@id/animal_filter_age_slider" />
@@ -207,49 +199,45 @@
 
             <RadioButton
                 android:id="@+id/animal_filter_any_gender_button"
+                style="@style/Buddy.Widget.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
+                android:paddingStart="15dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="1dp"
-                android:text="@string/any_gender_label"
-                android:textColor="@color/graphite5"
-                android:textSize="20sp"
-                app:buttonTint="@color/gender_radio_button_color" />
+                android:text="@string/any_gender_label" />
 
             <RadioButton
                 android:id="@+id/animal_filter_male_button"
+                style="@style/Buddy.Widget.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
+                android:paddingStart="15dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="1dp"
-                android:text="@string/male_letter"
-                android:textColor="@color/graphite5"
-                android:textSize="20sp"
-                app:buttonTint="@color/gender_radio_button_color" />
+                android:text="@string/male_letter" />
 
             <RadioButton
                 android:id="@+id/animal_filter_female_button"
+                style="@style/Buddy.Widget.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
+                android:paddingStart="15dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="1dp"
-                android:text="@string/female_letter"
-                android:textColor="@color/graphite5"
-                android:textSize="20sp"
-                app:buttonTint="@color/gender_radio_button_color" />
+                android:text="@string/female_letter"/>
 
 
         </RadioGroup>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/animal_filter_find_btn"
-            style="@style/materialLargeBtn"
+            style="@style/Buddy.Widget.LargeButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="@string/find_zero_animals_text"
             app:layout_constraintEnd_toEndOf="@id/animal_filter_city_input_container"
             app:layout_constraintStart_toStartOf="@id/animal_filter_city_input_container"

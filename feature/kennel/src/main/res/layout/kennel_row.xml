@@ -7,26 +7,25 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/kennel_row_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@null"
-        android:scaleType="centerCrop"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="?attr/placeHolderBackgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
-        tools:background="@color/cian5"/>
+        />
 
     <TextView
         android:id="@+id/kennel_row_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:layout_marginStart="15dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/kennel_row_image"
         app:layout_constraintTop_toTopOf="@id/kennel_row_image"
         tools:text="Папа Кот" />
@@ -35,6 +34,8 @@
         android:id="@+id/kennel_row_volunteers_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintStart_toStartOf="@id/kennel_row_name"
         app:layout_constraintTop_toBottomOf="@id/kennel_row_name"
         tools:text="137 волонтеров" />
@@ -43,6 +44,7 @@
         android:id="@+id/kennel_row_animals_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="@id/kennel_row_name"
         app:layout_constraintTop_toBottomOf="@id/kennel_row_volunteers_amount"

@@ -4,37 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_grey2"
+    android:background="?attr/colorSurfaceAt3"
+    android:transitionGroup="true"
     tools:context="mr.shtein.buddyandroidclient.screens.CityChoiceFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_text_for_city_choice_container"
-        style="@style/textInputContainerForAutocomplete"
+        style="@style/Buddy.Widget.InputLayout.Filled"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
-        android:outlineAmbientShadowColor="@color/cian5"
-        app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="@color/white"
+        app:endIconDrawable="@drawable/delete_city_btn"
         app:boxStrokeWidth="0dp"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/search_icon"
-        app:startIconTint="@color/cian5">
+        app:startIconDrawable="@drawable/search_icon">
 
         <AutoCompleteTextView
             android:id="@+id/input_text_for_city_choice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:completionThreshold="1"
-            android:paddingStart="15dp"
-            android:popupBackground="@drawable/drop_down_background"
-            android:popupElevation="0dp"
-            android:theme="@style/cursorColorForInputs" />
+            android:popupElevation="0dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -46,11 +41,9 @@
         android:layout_marginEnd="15dp"
         android:gravity="center"
         android:text="@string/city_choice_description_text"
-        android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/input_text_for_city_choice_container"
         app:layout_constraintStart_toStartOf="@id/input_text_for_city_choice_container"
         app:layout_constraintTop_toBottomOf="@id/input_text_for_city_choice_container" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

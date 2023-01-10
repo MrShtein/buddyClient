@@ -64,7 +64,7 @@ class AnimalsAdapter(
         return animals.size
     }
 
-    fun updateAnimalList(newAnimalList: List<Animal>) : Int {
+    fun updateAnimalList(newAnimalList: List<Animal>): Int {
         val previousAnimalListSize = animals.size
         val animalDiffUtil = AnimalDiffUtil(animals, newAnimalList)
         val diffResult = DiffUtil.calculateDiff(animalDiffUtil)
@@ -156,6 +156,7 @@ class AnimalsViewHolder(
         locationSpinner.visibility = View.GONE
         locationText.visibility = View.VISIBLE
         locationText.text = distance
+        animal.distance = distance
     }
 
     override fun onClick(v: View?) {
@@ -166,12 +167,11 @@ class AnimalsViewHolder(
         val primaryUrl = animal.imgUrl.filter { it.primary }
         val url: String = primaryUrl[0].url
         val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
-        val dogPlaceholder = animalImage.context.getDrawable(R.drawable.light_dog_placeholder)!!
         networkImageLoader.setPhotoToView(
             animalImage,
             endpoint,
             url,
-            dogPlaceholder
+            null
         )
     }
 }

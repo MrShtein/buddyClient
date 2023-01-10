@@ -53,12 +53,13 @@
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
     </style>
 
-    <style name="Buddy.Widget.BottomSheetDialog.Auth" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
+    <style name="Buddy.Widget.BottomSheetDialog.Auth" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Buddy.BottomSheet</item>
     </style>
 
-    <style name="ShoppingList.BottomSheetDialog" parent="Widget.Material3.BottomSheet">
-        <item name="backgroundTint">@color/white</item>
+    <style name="ShapeAppearance.Buddy.BottomSheet" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
     <style name="materialLargeBtn" parent="ShapeAppearanceOverlay.Material3.Button">

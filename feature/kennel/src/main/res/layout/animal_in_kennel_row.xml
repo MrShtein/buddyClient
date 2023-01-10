@@ -9,6 +9,8 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:backgroundTint="@color/transparent"
+        android:scaleType="centerCrop"
+        android:padding="0dp"
         android:contentDescription="@string/animal_in_kennel_avatar_description"/>
 
 </LinearLayout>
