@@ -1,27 +1,24 @@
 package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.OnLayoutChangeListener
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.buddyandroidclient.navigation.Navigator
 import mr.shtein.auth.presentation.BottomSheetDialogShower
-import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.util.CommonViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
@@ -33,15 +30,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val navigator: Navigator by inject()
-    private val appPropertiesRepository: AppPropertiesRepository by inject()
     private val bottomSheetDialogShower: BottomSheetDialogShower by inject {
         parametersOf(this)
     }
+    private val commonViewModel by viewModel<CommonViewModel>()
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -63,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 oldRight: Int,
                 oldBottom: Int
             ) {
-                appPropertiesRepository.saveBottomNavHeight(v.height + 10)
+                commonViewModel.bottomNavHeight = v.height
                 v.removeOnLayoutChangeListener(this)
             }
         }

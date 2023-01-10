@@ -3,37 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_for_animal_card"
+    style="@style/Buddy.Widget.CardView.Outlined"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardElevation="0dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/animal_row_image"
             android:layout_width="0dp"
             android:layout_height="250dp"
+            android:background="?attr/placeHolderBackgroundColor"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@color/cian4" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/animal_row_name"
+            style="@style/CardViewTextViewLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_location_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animal_row_heart"
+            app:layout_constraintTop_toBottomOf="@id/animal_row_image"
             tools:text="Клавдия" />
 
         <CheckBox
@@ -49,29 +49,28 @@
 
         <ImageButton
             android:id="@+id/animal_row_location_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/transparent"
+            style="@style/Buddy.Widget.IconButton"
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/location_icon"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animal_row_heart" />
+            app:layout_constraintTop_toTopOf="@id/animal_row_heart"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"/>
 
         <TextView
             android:id="@+id/animal_row_distance_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             android:textSize="14sp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"
+            app:layout_constraintTop_toTopOf="@id/animal_row_name"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animal_row_heart"
             tools:text="550 м от Вас" />
 
         <ProgressBar
@@ -80,18 +79,17 @@
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/animal_row_heart"
+            app:layout_constraintBottom_toBottomOf="@id/animal_row_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animal_row_heart"
-            />
+            app:layout_constraintTop_toTopOf="@id/animal_row_name" />
 
         <TextView
             android:id="@+id/gender_name"
+            style="@style/CardViewTextViewMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/animal_gender"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/animal_row_name"
             app:layout_constraintTop_toBottomOf="@id/animal_row_name"
             tools:text="Пол: мальчик" />
@@ -101,58 +99,67 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_age"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/animal_row_name"
             app:layout_constraintTop_toBottomOf="@id/gender_name"
             tools:text="Возраст: 12 лет" />
 
         <TextView
             android:id="@+id/animal_row_breed_name"
+            style="@style/CardViewTextViewMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_breed"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/animal_row_name"
             app:layout_constraintTop_toBottomOf="@id/animal_row_approximately_age"
             tools:text="Порода: московская сторожевая" />
 
         <TextView
             android:id="@+id/animal_row_color"
+            style="@style/CardViewTextViewMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/animal_color"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/animal_row_name"
             app:layout_constraintTop_toBottomOf="@id/animal_row_breed_name"
             tools:text="Цвет: Серый" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/animal_row_read_more_text"
+            android:src="@drawable/animal_row_read_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/more"
-            android:textColor="@color/blue1"
-            android:textSize="14sp"
+            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_row_color" />
 
-        <TextView
-            android:id="@+id/animal_row_read_more_bird"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/bird_for_more"
-            android:textColor="@color/blue1"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@id/animal_row_read_more_text"
-            app:layout_constraintBottom_toBottomOf="@id/animal_row_read_more_text"
-            android:layout_marginStart="5dp"/>
+<!--        <TextView-->
+<!--            android:id="@+id/animal_row_read_more_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:text="@string/more"-->
+<!--            android:textColor="@color/blue1"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/animal_row_color" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/animal_row_read_more_bird"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:text="@string/bird_for_more"-->
+<!--            android:textColor="@color/blue1"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintStart_toEndOf="@id/animal_row_read_more_text"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/animal_row_read_more_text"-->
+<!--            android:layout_marginStart="5dp"/>-->
 
         <androidx.legacy.widget.Space
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/animal_row_read_more_text" />
 

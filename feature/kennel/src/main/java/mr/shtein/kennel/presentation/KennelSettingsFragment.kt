@@ -13,7 +13,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
@@ -75,7 +74,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private lateinit var identificationNumberInput: TextInputEditText
     private lateinit var saveBtn: MaterialButton
     private lateinit var photoBtn: AppCompatImageButton
-    private lateinit var dogPlaceholder: ShapeableImageView
     private lateinit var nestedScroll: NestedScrollView
     private lateinit var getAvatarLauncher: ActivityResultLauncher<String>
     private var avatarUri: Uri? = null
@@ -154,7 +152,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 KennelAvatarState.EmptyValue -> {
                     avatarCancelBtn.visibility = View.INVISIBLE
                     photoBtn.visibility = View.VISIBLE
-                    dogPlaceholder.visibility = View.VISIBLE
                     avatarImg.setImageDrawable(null)
                     coroutineScope.launch {
                         deleteFileFromInternalStorage()
@@ -163,7 +160,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 is KennelAvatarState.Value -> {
                     avatarCancelBtn.visibility = View.VISIBLE
                     photoBtn.visibility = View.INVISIBLE
-                    dogPlaceholder.visibility = View.INVISIBLE
                     avatarImg.setImageURI(avatarState.avatarUri.toUri())
                 }
             }
@@ -262,7 +258,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         avatarImg = view.findViewById(R.id.kennel_settings_avatar_img)
         photoBtn = view.findViewById(R.id.kennel_settings_photo_btn)
         avatarCancelBtn = view.findViewById(R.id.kennel_settings_cancel_avatar_btn)
-        dogPlaceholder = view.findViewById(R.id.kennel_settings_avatar_dog_placeholder)
 
         nameContainer = view.findViewById(R.id.kennel_settings_organization_name_input_container)
         nameInput = view.findViewById(R.id.kennel_settings_organization_name_input)

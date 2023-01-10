@@ -2,26 +2,68 @@
     <!-- Base application theme. -->
     <style name="Theme.BuddyAndroidClient" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/cian5</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primary40</item>
+        <item name="colorOnPrimary">@color/primary100</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/choice_color</item>
-        <item name="colorOnSecondary">@color/black</item>
-
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
-        
-        <item name="colorSecondaryContainer">@color/cian5_15</item>
+        <item name="colorSecondary">@color/secondary40</item>
+        <item name="colorOnSecondary">@color/secondary100</item>
+        <item name="colorSurface">@color/neutral99</item>
+        <item name="colorOnSurface">@color/neutral10</item>
+        <item name="colorSecondaryContainer">@color/secondary90</item>
 
         <!-- Status bar color. -->
-<!--         Customize your theme here. -->
+        <!--         Customize your theme here. -->
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:colorBackground">@color/neutral99</item>
 
-        <item name="android:colorBackground">@color/background_grey2</item>
+        <!--        <item name="materialCardViewStyle">@style/Widget.Buddy.CardView</item>-->
 
-        <item name="materialCardViewStyle">@style/Widget.Buddy.CardView</item>
+        <item name="colorPrimaryContainer">@color/primary90</item>
+        <item name="colorOnPrimaryContainer">@color/primary10</item>
+        <item name="colorOnSecondaryContainer">@color/secondary10</item>
+        <item name="colorTertiary">@color/tertiary40</item>
+        <item name="colorOnTertiary">@color/tertiary100</item>
+        <item name="colorTertiaryContainer">@color/tertiary90</item>
+        <item name="colorOnTertiaryContainer">@color/tertiary10</item>
+        <item name="colorError">@color/error40</item>
+        <item name="colorOnError">@color/error100</item>
+        <item name="colorErrorContainer">@color/error90</item>
+        <item name="colorOnErrorContainer">@color/error10</item>
+        <item name="colorOnBackground">@color/neutral10</item>
+        <item name="colorSurfaceVariant">@color/neutralVariant90</item>
+        <item name="colorOnSurfaceVariant">@color/neutralVariant30</item>
+        <item name="colorOutline">@color/neutralVariant50</item>
+
+        <item name="colorNavIcons">@color/neutral30</item>
+        <item name="colorNavBackground">@color/lightSurface2</item>
+
+        <item name="colorSurfaceAt3">@color/lightPrimary11</item>
+        <item name="colorSurfaceAt2">@color/lightPrimary8</item>
+        <item name="colorSurfaceAt1">@color/lightPrimary5</item>
+
+        <item name="chipCircleColorTrue">@color/secondary10</item>
+        <item name="chipCircleColorFalse">@color/neutralVariant90</item>
+
+        <item name="chipCheckMarkColorTrue">@color/secondary100</item>
+        <item name="chipCheckMarkColorFalse">@color/secondary30</item>
+
+        <item name="chipBackgroundColorTrue">@color/secondary90</item>
+        <item name="chipBackgroundColorFalse">@color/neutralVariant90</item>
+
+        <item name="chipBackgroundTextColorTrue">@color/secondary10</item>
+        <item name="chipBackgroundTextColorFalse">@color/neutralVariant30</item>
+
+        <item name="chipStrokeColorTrue">@color/secondary90</item>
+        <item name="chipStrokeColorFalse">@color/neutralVariant30</item>
+
+        <item name="chipIconUnpressedColor">@color/neutralVariant30</item>
+
+        <item name="animalFilterTextColor">@color/primary40</item>
+
+        <item name="chipCancelFilterColor">@color/secondary10</item>
+        <item name="placeHolderBackgroundColor">@color/lightSurface3</item>
 
 
     </style>
@@ -31,6 +73,159 @@
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerSize">5dp</item>
 
+    </style>
+
+    <style name="Buddy.Widget.BottomNav" parent="Widget.Material3.NavigationRailView.ActiveIndicator">
+        <item name="itemTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="itemIconTint">?attr/colorNavIcons</item>
+        <item name="backgroundColor">?attr/colorNavBackground</item>
+
+    </style>
+
+    <style name="Buddy.Widget.InputLayout.Filled" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="startIconTint">?attr/colorPrimary</item>
+        <item name="endIconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Buddy.Widget.InputLayout.Outlined" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+
+    </style>
+
+    <style name="Buddy.Widget.InputEditText.Outlined" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+
+    </style>
+
+
+
+
+    <style name="Buddy.Widget.Chip.Input" parent="Widget.Material3.Chip.Input">
+<!--        <item name="android:textColor">@color/chip_background_text</item>-->
+<!--        <item name="chipBackgroundColor">@color/chip_background_color</item>-->
+<!--        <item name="chipStrokeColor">@color/chip_stroke_color</item>-->
+        <item name="closeIconVisible">false</item>
+        <item name="chipCornerRadius">30dp</item>
+        <item name="elevation">5dp</item>
+    </style>
+
+    <style name="Buddy.Widget.Chip.Filter.Input" parent="Buddy.Widget.Chip.Input">
+        <item name="chipStrokeColor">@color/transparent</item>
+        <item name="chipBackgroundColor">?attr/colorSecondaryContainer</item>
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+        <item name="closeIconVisible">true</item>
+        <item name="android:checkable">false</item>
+        <item name="closeIconEnabled">true</item>
+    </style>
+
+    <style name="Buddy.Widget.CardView.Outlined" parent="Widget.Material3.CardView.Outlined">
+        <item name="strokeColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Buddy.Widget.CardView.Filled" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/transparent</item>
+        <item name="cardCornerRadius">30dp</item>
+    </style>
+
+    <style name="Buddy.Widget.IconButton" parent="Widget.Material3.Button.IconButton">
+    </style>
+
+
+    <style name="CardViewTextViewMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="CardViewTextViewLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AnimalFilterFragmentTextViewLarge">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Buddy.Widget.InputLayout.Filled.Exposed" parent="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="endIconDrawable">@drawable/expand_less_more</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="hintTextColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Buddy.Widget.Input.Outlined.Exposed" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="endIconDrawable">@drawable/expand_less_more</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="hintTextColor">?attr/colorOnSurface</item>
+    </style>
+
+
+    <style name="Buddy.Widget.Slider" parent="Widget.Material3.Slider">
+        <item name="android:stepSize">1.0</item>
+        <item name="android:valueFrom">0.0</item>
+        <item name="android:valueTo">35.0</item>
+
+    </style>
+
+    <style name="Buddy.Widget.LargeButton" parent="Widget.Material3.Button">
+        <item name="cornerRadius">50dp</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Buddy.Widget.RadioButton" parent ="Widget.Material3.CompoundButton.RadioButton">
+
+    </style>
+
+    <style name="Buddy.Widget.MiddleButton.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="strokeColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+
+    <style name="Buddy.Widget.SmallButton.Outlined" parent="Buddy.Widget.MiddleButton.Outlined">
+        <item name="strokeColor">@color/transparent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <style name="Buddy.Widget.MiddleButton" parent="Widget.Material3.Button">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">50dp</item>
+    </style>
+
+
+    <style name="Buddy.Widget.Divider" parent="Widget.Material3.MaterialDivider">
+        <item name="dividerColor">@color/neutral80Divider</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Buddy.Widget.Divider.Small" parent="Buddy.Widget.Divider">
+        <item name="dividerColor">?attr/colorSurfaceVariant</item>
+    </style>
+
+    <style name="NestedScrollView">
+        <item name="android:background">?attr/colorSurfaceAt3</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:scrollbarSize">10dp</item>
+        <item name="android:overScrollMode">always</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="Buddy.Widget.Dialog" parent="MaterialAlertDialog.Material3">
+        <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
 

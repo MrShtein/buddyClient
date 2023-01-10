@@ -1,6 +1,5 @@
 package mr.shtein.kennel.presentation
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.data.exception.ServerErrorException
@@ -40,8 +38,8 @@ private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private lateinit var kennelAvatar: ImageView
-    private lateinit var personAvatar: ShapeableImageView
-    private lateinit var settingsBtn: ImageButton
+//    private lateinit var personAvatar: ShapeableImageView
+//    private lateinit var settingsBtn: ImageButton
     private lateinit var kennelName: TextView
     private lateinit var volunteersAmount: TextView
     private lateinit var animalsAmount: TextView
@@ -90,8 +88,8 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private fun initViews(view: View) {
         kennelAvatar = view.findViewById(R.id.kennel_home_avatar)
-        personAvatar = view.findViewById(R.id.kennel_home_person_avatar)
-        settingsBtn = view.findViewById(R.id.kennel_home_settings_btn)
+//        personAvatar = view.findViewById(R.id.kennel_home_person_avatar)
+//        settingsBtn = view.findViewById(R.id.kennel_home_settings_btn)
         kennelName = view.findViewById(R.id.kennel_home_name)
         volunteersAmount = view.findViewById(R.id.kennel_home_volunteers_amount)
         animalsAmount = view.findViewById(R.id.kennel_home_animals_amount)
@@ -107,22 +105,22 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private fun setValuesToViews(kennelItem: KennelPreview) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = kennelItem.avatarUrl
-        val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)
+        val dogPlaceholder = context?.getDrawable(R.drawable.dog_placeholder)
         token = userPropertiesRepository.getUserToken()
         networkImageLoader.setPhotoToView(
             kennelAvatar,
             endpoint,
             photoName,
-            dogPlaceholder!!
+            dogPlaceholder
         )
 
         val uriForUserToken = userPropertiesRepository.getUserUri()
-        val personAvatarPlaceholder = context?.getDrawable(R.drawable.light_person_placeholder)
-        networkImageLoader.setPhotoToView(
-            personAvatar,
-            uriForUserToken,
-            personAvatarPlaceholder!!
-        )
+//        val personAvatarPlaceholder = context?.getDrawable(R.drawable.light_person_placeholder)
+//        networkImageLoader.setPhotoToView(
+//            personAvatar,
+//            uriForUserToken,
+//            personAvatarPlaceholder!!
+//        )
 
         kennelName.text = kennelItem.name
         volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
@@ -254,7 +252,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private fun showKennelIsNotValidDialog() {
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.not_valid_kennel_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor((R.color.transparent))))
+            //.setBackground(ColorDrawable(requireContext().getColor((R.color.transparent))))
             .show()
         val okBtn: Button? = dialog.findViewById(R.id.not_valid_kennel_dialog_ok_btn)
         okBtn?.setOnClickListener {

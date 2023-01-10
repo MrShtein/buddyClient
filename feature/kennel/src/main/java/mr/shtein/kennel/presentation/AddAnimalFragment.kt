@@ -2,7 +2,6 @@ package mr.shtein.kennel.presentation
 
 import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -595,7 +594,6 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.add_animal_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val addOrUpdateText: TextView? = dialog.findViewById(R.id.add_animal_dialog_clarification)
@@ -678,7 +676,7 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                 animalDto.photoNamesForCreate.add(currentImgUrl)
                 switchAddAndCancelBtnVisibility(true, currentContainer)
                 val endpoint = resources.getString(R.string.animal_photo_endpoint)
-                val dogPlaceholder = context?.getDrawable(R.drawable.light_dog_placeholder)!!
+                val dogPlaceholder = context?.getDrawable(R.drawable.dog_placeholder)!!
                 networkImageLoader.setPhotoToView(
                     currentContainer.imageView,
                     endpoint,

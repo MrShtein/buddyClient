@@ -40,12 +40,11 @@ class AnimalPhotoAdapter(
 
         fun bind(url: String) {
             val endpoint = itemView.context.resources.getString(R.string.animal_photo_endpoint)
-            val dogPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)!!
             networkImageLoader.setPhotoToView(
                 animalImage,
                 endpoint,
                 url,
-                dogPlaceholder
+                null
             )
         }
     }

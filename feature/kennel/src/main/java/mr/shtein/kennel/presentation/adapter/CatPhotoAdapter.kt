@@ -52,7 +52,7 @@ class CatPhotoAdapter(
                 it.primary
             }
             val endpoint = itemView.resources.getString(R.string.animal_photo_endpoint)
-            val catPlaceholder = itemView.context.getDrawable(R.drawable.light_dog_placeholder)
+            val catPlaceholder = itemView.context.getDrawable(R.drawable.dog_placeholder)
             networkImageLoader.setPhotoToView(
                 avatar,
                 endpoint,

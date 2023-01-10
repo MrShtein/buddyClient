@@ -26,11 +26,8 @@ import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.ui_util.AnimalPhotoAdapter
-import mr.shtein.ui_util.OnSnapPositionChangeListener
-import mr.shtein.ui_util.SnapOnScrollListener
 import mr.shtein.network.ImageLoader
-import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.ui_util.*
 import org.koin.android.ext.android.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -80,6 +77,13 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setInsetsListenerForPadding(
+            view = view,
+            left = false,
+            top = false,
+            right = false,
+            bottom = true
+        )
         setStatusBarColor(false)
         initViews(view)
         setDataToViews()
@@ -171,7 +175,7 @@ class AnimalSettingsFragment : Fragment(R.layout.animal_settings_fragment),
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.animal_delete_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
+            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val positiveBtn: Button? =

@@ -1,76 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/registration_or_entrance_str"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/registration_or_entrance_str"
+            android:gravity="center"
+            android:textColor="?attr/colorOnSurface" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="25dp"
-            android:background="#CCCCCC" />
+            android:layout_marginBottom="35dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="25dp"
             android:text="@string/registr_or_entrance_text"
-            android:textAlignment="center"
-            android:textColor="#999999"
-            android:textSize="14sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/to_login_fragment_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/cian5"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:text="@string/entrance_text"
-            android:textColor="@color/white"
-            app:rippleColor="@color/white"
-            app:cornerRadius="5dp" />
+            android:gravity="center"
+            android:textColor="?attr/colorOnSurface" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/to_registration_fragment_button"
+            style="@style/Buddy.Widget.LargeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/background_grey2"
-            android:text="@string/registration_btn_text"
-            android:textColor="@color/cian5"
-            app:rippleColor="@color/cian5"
-            app:cornerRadius="5dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"/>
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/registration_btn_text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_login_fragment_button"
+            style="@style/Buddy.Widget.MiddleButton.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="50dp"
+            android:text="Вход" />
 
     </LinearLayout>
 

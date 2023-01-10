@@ -19,6 +19,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
@@ -130,7 +131,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
+        setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = true)
         initViews(view)
         setUserCurrentUserSettings()
         setListeners()
@@ -382,7 +383,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         val headerMap = hashMapOf<String, String>()
         token = userPropertiesRepository.getUserToken()
         headerMap["Authorization"] = token
-        val serverErrorText = context?.getString(R.string.server_unavailable_msg) ?: UNEXPECTED_ERROR
+        val serverErrorText =
+            context?.getString(R.string.server_unavailable_msg) ?: UNEXPECTED_ERROR
         val noNetworkErrorText = context?.getString(R.string.internet_failure_text)
             ?: UNEXPECTED_ERROR
         coroutineScope.launch {
@@ -463,7 +465,6 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
 
             .setView(R.layout.user_settings_dialog)
-            .setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val positiveDialogBtn: Button? = dialog.findViewById(R.id.user_settings_dialog_positive_btn)
@@ -529,9 +530,21 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
 
     private fun changeSaveBtnColor(isTextChange: Boolean) {
         if (isTextChange) {
-            saveBtn.setBackgroundColor(requireContext().getColor(R.color.cian5))
+            saveBtn.setBackgroundColor(
+                MaterialColors.getColor(
+                    requireContext(),
+                    R.attr.colorPrimary,
+                    R.color.black
+                )
+            )
         } else {
-            saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
+            saveBtn.setBackgroundColor(
+                MaterialColors.getColor(
+                    requireContext(),
+                    R.attr.colorSurfaceVariant,
+                    R.color.black
+                )
+            )
         }
     }
 

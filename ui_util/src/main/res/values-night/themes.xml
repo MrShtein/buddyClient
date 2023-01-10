@@ -1,21 +1,71 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BuddyAndroidClient" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.BuddyAndroidClient" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">@color/primary80</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/primary20</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/secondary80</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/secondary20</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
         <item name="shapeAppearanceLargeComponent">@style/mySt</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
 
-        <item name="android:colorBackground">@color/dark_00_Dp</item>
+        <item name="colorPrimaryContainer">@color/primary30</item>
+        <item name="colorOnPrimaryContainer">@color/primary90</item>
+        <item name="colorSecondaryContainer">@color/secondary30</item>
+        <item name="colorOnSecondaryContainer">@color/secondary90</item>
+        <item name="colorTertiary">@color/tertiary80</item>
+        <item name="colorOnTertiary">@color/tertiary20</item>
+        <item name="colorTertiaryContainer">@color/tertiary30</item>
+        <item name="colorOnTertiaryContainer">@color/tertiary90</item>
+        <item name="colorError">@color/error80</item>
+        <item name="colorOnError">@color/error20</item>
+        <item name="colorErrorContainer">@color/error30</item>
+        <item name="colorOnErrorContainer">@color/error90</item>
+        <item name="android:colorBackground">@color/neutral10</item>
+        <item name="colorOnBackground">@color/neutral90</item>
+        <item name="colorSurface">@color/neutral10</item>
+        <item name="colorOnSurface">@color/neutral80</item>
+        <item name="colorSurfaceVariant">@color/neutralVariant30</item>
+        <item name="colorOnSurfaceVariant">@color/neutralVariant80</item>
+        <item name="colorOutline">@color/neutralVariant60</item>
+
+        <item name="colorNavIcons">@color/neutralVariant80</item>
+        <item name="colorNavBackground">@color/darkSurface2</item>
+
+        <item name="colorSurfaceAt3">@color/darkPrimary11</item>
+        <item name="colorSurfaceAt2">@color/darkPrimary8</item>
+        <item name="colorSurfaceAt1">@color/darkPrimary5</item>
+
+        <item name="chipCircleColorTrue">@color/secondary90</item>
+        <item name="chipCircleColorFalse">@color/neutralVariant80</item>
+
+        <item name="chipCheckMarkColorTrue">@color/secondary20</item>
+        <item name="chipCheckMarkColorFalse">@color/neutralVariant30</item>
+
+        <item name="chipBackgroundColorTrue">@color/secondary30</item>
+        <item name="chipBackgroundColorFalse">@color/neutralVariant30</item>
+
+        <item name="chipBackgroundTextColorTrue">@color/secondary90</item>
+        <item name="chipBackgroundTextColorFalse">@color/neutralVariant80</item>
+
+        <item name="chipStrokeColorTrue">@color/secondary30</item>
+        <item name="chipStrokeColorFalse">@color/neutralVariant80</item>
+
+        <item name="chipIconUnpressedColor">@color/neutralVariant80</item>
+
+        <item name="animalFilterTextColor">@color/primary80</item>
+
+        <item name="chipCancelFilterColor">@color/secondary90</item>
+
+        <item name="placeHolderBackgroundColor">@color/darkSurface3</item>
+
+
 
     </style>
 
@@ -23,6 +73,5 @@
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerSize">5dp</item>
-
     </style>
 </resources>

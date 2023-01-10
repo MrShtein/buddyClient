@@ -8,25 +8,25 @@
 
     <string name="kennel_avatar_endpoint">/api/v1/kennel/avatar/</string>
     <string name="animal_photo_endpoint">/api/v1/animal/photo/</string>
-    <string name="age_text">Возраст:</string>
+    <string name="age_text">Возраст</string>
     <string name="zero">0</string>
-    <string name="nickname_text">Кличка:</string>
-    <string name="animal_breed_label">Порода:</string>
-    <string name="animal_color_label">Цвет:</string>
-    <string name="animal_gender_label_text">Пол:</string>
+    <string name="nickname_text">Кличка</string>
+    <string name="animal_breed_label">Порода</string>
+    <string name="animal_color_label">Цвет</string>
+    <string name="animal_gender_label_text">Пол</string>
     <string name="male_letter">М</string>
     <string name="female_letter">Ж</string>
     <string name="big_card_animal_photo_counter">%1$d/%2$d</string>
     <string name="user_settings_icon_description">Иконка на карточке настроек пользователя</string>
-    <string name="alert_dialog_notification_text">Уведомление</string>
+    <string name="alert_dialog_notification_text">Уведомление!</string>
     <string name="yes_btn">Дa</string>
     <string name="no_btn">Нет</string>
-    <string name="user_settings_dialog_ok_btn">Ok</string>
+    <string name="user_settings_dialog_ok_btn">OK</string>
     <string name="dogs">Собаки</string>
     <string name="cats">Кошки</string>
     <string name="add_photo_to_kennel_description">Кнопка для установки фотографии для профиля приюта</string>
     <string name="e_mail">E-mail:</string>
-    <string name="city_label">Город:</string>
+    <string name="city_label">Город</string>
     <string name="settings_save_btn">Сохранить</string>
     <string name="settings_btn_description">Кнопка для входа в настройки профиля пользователя</string>
     <string name="name_label_text">Имя:</string>
@@ -96,7 +96,7 @@
     <string name="kennel_home_animals_icon_description">Иконка с изображением лапы животного</string>
     <string name="kennel_home_add_new_dog_btn_description">Кнопка для добавления новой собаки</string>
 
-    <string name="not_valid_kennel_dialog_verification_text">К сожалению Ваш приют еще \n не прошел верификацию</string>
+    <string name="not_valid_kennel_dialog_verification_text">Ваш приют еще не прошел верификацию</string>
     <string name="ok_btn_text">Ok</string>
 
 
@@ -116,12 +116,12 @@
 
 
     <plurals name="buddy_found_count">
-        <item quantity="zero">Найдено %d питомцев</item>
-        <item quantity="one">Найден %d питомец</item>
-        <item quantity="two">Найдено %d питомца</item>
-        <item quantity="few">Найдено %d питомца</item>
-        <item quantity="many">Найдено %d питомцев</item>
-        <item quantity="other">Найдено %d питомцев</item>
+        <item quantity="zero">Найдено %d животных</item>
+        <item quantity="one">Найдено %d животное</item>
+        <item quantity="two">Найдено %d животных</item>
+        <item quantity="few">Найдено %d животных</item>
+        <item quantity="many">Найдено %d животных</item>
+        <item quantity="other">Найдено %d животных</item>
     </plurals>
 
 
