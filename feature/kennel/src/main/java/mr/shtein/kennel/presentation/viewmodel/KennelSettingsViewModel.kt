@@ -21,7 +21,8 @@ class KennelSettingsViewModel(
         private val EMPTY_CITY_VALUE = CityField()
     }
 
-    private val _cityFieldState: MutableLiveData<CityFieldState> = MutableLiveData()
+    private val _cityFieldState: MutableLiveData<CityFieldState> =
+        MutableLiveData(CityFieldState(CityField()))
     val cityFieldState: LiveData<CityFieldState> = _cityFieldState
 
     private val _emailFieldState: MutableLiveData<EmailFieldState> = MutableLiveData()
@@ -60,9 +61,9 @@ class KennelSettingsViewModel(
 
     fun onCityChanged(city: String) {
         val (cityId, cityName, regionName) = city.split(",")
-        _cityFieldState.value = CityFieldState.Value(
-            value = CityField(id = cityId.toLong(), fullName = "$cityName, $regionName")
-        )
+        val cityField = CityField(id = cityId.toLong(), fullName = "$cityName, $regionName")
+        _cityFieldState.value?.field = cityField
+        _cityFieldState.value?.validationState = ValidationState.Valid
     }
 
     fun onAvatarChanged(avatarPath: String, avatarUri: String) {
@@ -78,7 +79,8 @@ class KennelSettingsViewModel(
 
     fun onCityInputFocusChanged(hasFocus: Boolean) {
         if (hasFocus) {
-            _cityFieldState.value = CityFieldState.Value(value = EMPTY_CITY_VALUE)
+            _cityFieldState.value?.field = EMPTY_CITY_VALUE
+            _cityFieldState.value?.validationState = null
             navigator.moveToCityChoiceFromKennelSettings()
         }
     }

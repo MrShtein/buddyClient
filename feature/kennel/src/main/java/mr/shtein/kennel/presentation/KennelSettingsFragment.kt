@@ -2,6 +2,7 @@ package mr.shtein.kennel.presentation
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,6 +13,7 @@ import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -29,9 +31,11 @@ import mr.shtein.kennel.presentation.state.kennel_settings.*
 import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
 import mr.shtein.kennel.util.KennelValidationStore
 import mr.shtein.ui_util.setInsetsListenerForPadding
+import mr.shtein.ui_util.setStatusBarColor
 import mr.shtein.util.ImageCompressor
 import mr.shtein.util.validator.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
@@ -44,6 +48,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     companion object {
         const val CITY_REQUEST_KEY = "new_city_request"
         private const val KENNEL_NAME_KEY = "isValidName"
+        private const val TAG = "KennelSettingsFragment"
         private const val PHONE_NUM_KEY = "isValidPhone"
         private const val EMAIL_KEY = "isValidEmail"
         private const val CITY_KEY = "isValidCity"
@@ -81,7 +86,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
     private val navigator: KennelNavigation by inject()
-    private val kennelSettingsViewModel: KennelSettingsViewModel by inject()
+    private val kennelSettingsViewModel: KennelSettingsViewModel by viewModel()
     private val imageCompressor: ImageCompressor by inject()
 
     private var isFromCityChoice: Boolean = false
@@ -127,22 +132,28 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         super.onViewCreated(view, savedInstanceState)
         val layout: ConstraintLayout = view.findViewById(R.id.kennel_settings_constraint_layout)
         setInsetsListenerForPadding(layout, left = false, top = true, right = false, bottom = true)
+        setStatusBarColor(isBlack = true)
         initViews(view)
         initMaskForPhone(phoneNumberInput)
         setListeners()
 
         kennelSettingsViewModel.cityFieldState.observe(viewLifecycleOwner) { cityState ->
-            when (cityState) {
-                is CityFieldState.Value -> {
-                    cityInput.setText(cityState.value.fullName)
+            when (cityState.validationState) {
+                is ValidationState.Valid -> {
+                    cityInput.setText(cityState.field.fullName)
                     if (cityInputContainer.isErrorEnabled) {
                         cityInputContainer.isErrorEnabled = false
                     }
                 }
-                is CityFieldState.Error -> {
-                    cityInputContainer.error = cityState.message
+                is ValidationState.Invalid -> {
+                    cityInputContainer.error =
+                        (cityState.validationState as ValidationState.Invalid).message
                     cityInputContainer.isErrorEnabled = true
+                    cityInput.setText(cityState.field.fullName)
                     scrollToElementIfNeed(cityInputContainer)
+                }
+                null -> {
+                    cityInput.setText(cityState.field.fullName)
                 }
             }
         }
@@ -239,7 +250,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.identificationNumberState.observe(viewLifecycleOwner) { identificationNumberState ->
-            when(identificationNumberState) {
+            when (identificationNumberState) {
                 is IdentificationNumberState.Value -> {
                     if (identificationNumberInputContainer.isErrorEnabled) {
                         identificationNumberInputContainer.isErrorEnabled = false
@@ -252,6 +263,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 }
             }
         }
+
+//        kennelSettingsViewModel.saveBtnState.observe(viewLifecycleOwner) { saveBtnState ->
+//            saveBtn.isEnabled = !saveBtnState.isBlocked
+//        }
     }
 
     private fun initViews(view: View) {
@@ -452,7 +467,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             if (container.id != R.id.kennel_settings_house_input_container) {
                 container.error = ex.message
             } else {
-                //Совсем без текста в элементе не отображается ошибка, цвет текста в данном случае - transparent
                 container.error = "1"
             }
             container.isErrorEnabled = true
