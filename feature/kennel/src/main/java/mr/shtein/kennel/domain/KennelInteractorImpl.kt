@@ -24,6 +24,11 @@ class KennelInteractorImpl(
     private val dispatcher: CoroutineDispatcher
 ) : KennelInteractor {
 
+    companion object {
+        //Совсем без текста в элементе не отображается ошибка, цвет текста в данном случае - transparent
+        private const val HOME_ERROR_MESSAGE: String = "1"
+    }
+
     override suspend fun loadKennelsListByPersonId(): AddKennelState {
         val personId = userPropertiesRepository.getUserId()
         val token = userPropertiesRepository.getUserToken()
@@ -83,7 +88,7 @@ class KennelInteractorImpl(
                 emptyFieldValidator.validateValue(valueForValidate = houseNum)
                 return@withContext ValidationResult.Success
             } catch (ex: EmptyFieldException) {
-                return@withContext ValidationResult.Failure(ex.message!!)
+                return@withContext ValidationResult.Failure(HOME_ERROR_MESSAGE)
             }
         }
 
