@@ -31,11 +31,12 @@ class KennelSettingsViewModel(
         MutableLiveData(EmailFieldState())
     val emailFieldState: LiveData<EmailFieldState> = _emailFieldState
 
-    private val _houseNumberState: MutableLiveData<HouseNumberState> = MutableLiveData()
+    private val _houseNumberState: MutableLiveData<HouseNumberState> =
+        MutableLiveData(HouseNumberState())
     val houseNumberState: LiveData<HouseNumberState> = _houseNumberState
 
     private val _identificationNumberState: MutableLiveData<IdentificationNumberState> =
-        MutableLiveData()
+        MutableLiveData(IdentificationNumberState())
     val identificationNumberState: LiveData<IdentificationNumberState> = _identificationNumberState
 
     private val _kennelAvatarState: MutableLiveData<KennelAvatarState> = MutableLiveData()
@@ -51,9 +52,6 @@ class KennelSettingsViewModel(
     val streetState: LiveData<StreetState> = _streetState
 
     init {
-        _houseNumberState.value = HouseNumberState.Value(value = DEFAULT_INPUT_VALUE)
-        _identificationNumberState.value =
-            IdentificationNumberState.Value(value = DEFAULT_INPUT_VALUE)
         _kennelAvatarState.value = KennelAvatarState.EmptyValue
         _organizationNameState.value = OrganizationNameState.Value(value = DEFAULT_INPUT_VALUE)
         _phoneNumberState.value = PhoneNumberState.Value(value = DEFAULT_INPUT_VALUE)
@@ -176,19 +174,24 @@ class KennelSettingsViewModel(
     }
 
     fun onHouseFocusChanged(hasFocus: Boolean, house: String) {
-        if (hasFocus && _houseNumberState.value is HouseNumberState.Error) {
-            _houseNumberState.value = HouseNumberState.Value(value = house)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _houseNumberState.value = _houseNumberState.value?.copy(
+                validationState = null
+            )
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validateHouseNum(house)
                 when (result) {
                     ValidationResult.Success -> {
-                        _houseNumberState.value = HouseNumberState.Value(value = house)
+                        _houseNumberState.value = _houseNumberState.value?.copy(
+                            houseNum = house, validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _houseNumberState.value = HouseNumberState.Error(
-                            message = result.errorMessage,
-                            wrongValue = house
+                        _houseNumberState.value = _houseNumberState.value?.copy(
+                            houseNum = house, validationState = ValidationState.Invalid(
+                                message = result.errorMessage
+                            )
                         )
                     }
                 }
@@ -197,21 +200,24 @@ class KennelSettingsViewModel(
     }
 
     fun onIdentificationNumFocusChanged(hasFocus: Boolean, identificationNum: String) {
-        if (hasFocus && _identificationNumberState.value is IdentificationNumberState.Error) {
-            _identificationNumberState.value =
-                IdentificationNumberState.Value(value = identificationNum)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _identificationNumberState.value = _identificationNumberState.value?.copy(
+                validationState = null
+            )
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validateIdentificationNum(identificationNum)
                 when (result) {
                     ValidationResult.Success -> {
-                        _identificationNumberState.value =
-                            IdentificationNumberState.Value(value = identificationNum)
+                        _identificationNumberState.value = _identificationNumberState.value?.copy(
+                            identificationNum = identificationNum,
+                            validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _identificationNumberState.value = IdentificationNumberState.Error(
-                            message = result.errorMessage,
-                            wrongValue = identificationNum
+                        _identificationNumberState.value = _identificationNumberState.value?.copy(
+                            identificationNum = identificationNum,
+                            validationState = ValidationState.Invalid(message = result.errorMessage)
                         )
                     }
                 }

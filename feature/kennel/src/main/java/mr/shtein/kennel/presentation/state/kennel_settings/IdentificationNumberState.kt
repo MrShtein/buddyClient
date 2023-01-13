@@ -1,6 +1,6 @@
 package mr.shtein.kennel.presentation.state.kennel_settings
 
-sealed class IdentificationNumberState {
-    data class Value(val value: String) : IdentificationNumberState()
-    data class Error(val message: String, val wrongValue: String) : IdentificationNumberState()
-}
+data class IdentificationNumberState (
+    val identificationNum: String = "",
+    val validationState: ValidationState? = null
+)
