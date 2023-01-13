@@ -177,16 +177,24 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.emailFieldState.observe(viewLifecycleOwner) { emailState ->
-            when (emailState) {
-                is EmailFieldState.Value -> {
+            when (emailState.validationState) {
+                is ValidationState.Valid -> {
+                    emailInput.setText(emailState.email)
+                }
+                is ValidationState.Invalid -> {
+                    emailInputContainer.isErrorEnabled = true
+                    emailInputContainer.error =
+                        (emailState.validationState as ValidationState.Invalid).message
+                    emailInput.setText(emailState.email)
+                    emailInput.setSelection(emailInput.length())
+                    scrollToElementIfNeed(emailInputContainer)
+                }
+                null -> {
+                    emailInput.setText(emailState.email)
+                    emailInput.setSelection(emailInput.length())
                     if (emailInputContainer.isErrorEnabled) {
                         emailInputContainer.isErrorEnabled = false
                     }
-                }
-                is EmailFieldState.Error -> {
-                    emailInputContainer.isErrorEnabled = true
-                    emailInputContainer.error = emailState.message
-                    scrollToElementIfNeed(emailInputContainer)
                 }
             }
         }
