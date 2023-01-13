@@ -1,5 +1,6 @@
 package mr.shtein.kennel.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ class KennelSettingsViewModel(
 
     companion object {
         private const val DEFAULT_INPUT_VALUE = ""
+        private const val TAG = "KennelSettingsFragment"
         private val EMPTY_CITY_VALUE = CityField()
     }
 
@@ -25,7 +27,8 @@ class KennelSettingsViewModel(
         MutableLiveData(CityFieldState(CityField()))
     val cityFieldState: LiveData<CityFieldState> = _cityFieldState
 
-    private val _emailFieldState: MutableLiveData<EmailFieldState> = MutableLiveData()
+    private val _emailFieldState: MutableLiveData<EmailFieldState> =
+        MutableLiveData(EmailFieldState())
     val emailFieldState: LiveData<EmailFieldState> = _emailFieldState
 
     private val _houseNumberState: MutableLiveData<HouseNumberState> = MutableLiveData()
@@ -48,8 +51,6 @@ class KennelSettingsViewModel(
     val streetState: LiveData<StreetState> = _streetState
 
     init {
-        _cityFieldState.value = CityFieldState.Value(value = EMPTY_CITY_VALUE)
-        _emailFieldState.value = EmailFieldState.Value(value = DEFAULT_INPUT_VALUE)
         _houseNumberState.value = HouseNumberState.Value(value = DEFAULT_INPUT_VALUE)
         _identificationNumberState.value =
             IdentificationNumberState.Value(value = DEFAULT_INPUT_VALUE)
@@ -86,19 +87,24 @@ class KennelSettingsViewModel(
     }
 
     fun onEmailInputFocusChanged(hasFocus: Boolean, email: String) {
-        if (hasFocus && _emailFieldState.value is EmailFieldState.Error) {
-            _emailFieldState.value = EmailFieldState.Value(value = email)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _emailFieldState.value =
+                _emailFieldState.value?.copy(email = email, validationState = null)
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validateEmail(email = email)
                 when (result) {
                     ValidationResult.Success -> {
-                        _emailFieldState.value = EmailFieldState.Value(value = email)
+                        _emailFieldState.value = _emailFieldState.value?.copy(
+                            email = email, validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _emailFieldState.value = EmailFieldState.Error(
-                            message = result.errorMessage,
-                            wrongValue = email
+                        _emailFieldState.value?.email = email
+                        _emailFieldState.value = _emailFieldState.value?.copy(
+                            validationState = ValidationState.Invalid(
+                                message = result.errorMessage
+                            )
                         )
                     }
                 }
@@ -212,8 +218,6 @@ class KennelSettingsViewModel(
             }
         }
     }
-
-
 
 
 }
