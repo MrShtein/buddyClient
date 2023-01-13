@@ -180,6 +180,7 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             when (emailState.validationState) {
                 is ValidationState.Valid -> {
                     emailInput.setText(emailState.email)
+                    emailInput.setSelection(emailInput.length())
                 }
                 is ValidationState.Invalid -> {
                     emailInputContainer.isErrorEnabled = true
@@ -243,31 +244,48 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.houseNumberState.observe(viewLifecycleOwner) { houseNumState ->
-            when (houseNumState) {
-                is HouseNumberState.Value -> {
+            when (houseNumState.validationState) {
+                is ValidationState.Valid -> {
+                    houseNumberInput.setText(houseNumState.houseNum)
+                    houseNumberInput.setSelection(houseNumberInput.length())
+                }
+                is ValidationState.Invalid -> {
+                    houseNumberContainer.isErrorEnabled = true
+                    houseNumberContainer.error = houseNumState.validationState.message
+                    houseNumberInput.setText(houseNumState.houseNum)
+                    houseNumberInput.setSelection(houseNumberInput.length())
+                    scrollToElementIfNeed(houseNumberContainer)
+                }
+                null -> {
+                    houseNumberInput.setText(houseNumState.houseNum)
+                    houseNumberInput.setSelection(houseNumberInput.length())
                     if (houseNumberContainer.isErrorEnabled) {
                         houseNumberContainer.isErrorEnabled = false
                     }
-                }
-                is HouseNumberState.Error -> {
-                    houseNumberContainer.isErrorEnabled = true
-                    houseNumberContainer.error = houseNumState.message
-                    scrollToElementIfNeed(houseNumberContainer)
                 }
             }
         }
 
         kennelSettingsViewModel.identificationNumberState.observe(viewLifecycleOwner) { identificationNumberState ->
-            when (identificationNumberState) {
-                is IdentificationNumberState.Value -> {
+            when (identificationNumberState.validationState) {
+                is ValidationState.Valid -> {
+                    identificationNumberInput.setText(identificationNumberState.identificationNum)
+                    identificationNumberInput.setSelection(identificationNumberInput.length())
+                }
+                is ValidationState.Invalid -> {
+                    identificationNumberInputContainer.isErrorEnabled = true
+                    identificationNumberInputContainer.error =
+                        identificationNumberState.validationState.message
+                    identificationNumberInput.setText(identificationNumberState.identificationNum)
+                    identificationNumberInput.setSelection(identificationNumberInput.length())
+                    scrollToElementIfNeed(identificationNumberInputContainer)
+                }
+                null -> {
+                    identificationNumberInput.setText(identificationNumberState.identificationNum)
+                    identificationNumberInput.setSelection(identificationNumberInput.length())
                     if (identificationNumberInputContainer.isErrorEnabled) {
                         identificationNumberInputContainer.isErrorEnabled = false
                     }
-                }
-                is IdentificationNumberState.Error -> {
-                    identificationNumberInputContainer.isErrorEnabled = true
-                    identificationNumberInputContainer.error = identificationNumberState.message
-                    scrollToElementIfNeed(identificationNumberInputContainer)
                 }
             }
         }

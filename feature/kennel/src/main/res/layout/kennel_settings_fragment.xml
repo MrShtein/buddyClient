@@ -234,6 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:hint="@string/kennel_settings_house_hint"
+            app:errorTextColor="@color/transparent"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_street_input_container">
 
@@ -292,7 +293,7 @@
             android:layout_marginTop="10dp"
             android:hint="@string/kennel_settings_identification_number_hint"
             app:counterEnabled="true"
-            app:counterMaxLength="12"
+            app:counterMaxLength="10"
             app:layout_constraintEnd_toEndOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintStart_toStartOf="@id/kennel_settings_organization_name_input_container"
             app:layout_constraintTop_toBottomOf="@id/kennel_settings_identification_number_label">
