@@ -11,7 +11,10 @@ import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.Slide
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.domain.interactor.AnimalFilterInteractor
@@ -65,7 +68,8 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
             }
             WindowInsetsCompat.CONSUMED
         }
-        view.postDelayed({
+        lifecycleScope.launch {
+            delay(3000)
             isInsetsWorked = false
 
             val city = userPropertiesRepository.getUserCity()
@@ -80,7 +84,7 @@ class SplashScreenFragment : Fragment(R.layout.start_fragment) {
                 val animalFilter = bundleOf(ANIMAL_FILTER_KEY to animalFilter)
                 navigator.moveToAnimalListFromSplash(animalFilter = animalFilter)
             }
-        }, 3000)
+        }
 
         return view
     }
