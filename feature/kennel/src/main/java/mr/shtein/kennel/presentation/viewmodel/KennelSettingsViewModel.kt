@@ -45,7 +45,8 @@ class KennelSettingsViewModel(
         MutableLiveData(KennelNameState())
     val kennelNameState: LiveData<KennelNameState> = _kennelNameState
 
-    private val _phoneNumberState: MutableLiveData<PhoneNumberState> = MutableLiveData()
+    private val _phoneNumberState: MutableLiveData<PhoneNumberState> =
+        MutableLiveData(PhoneNumberState())
     val phoneNumberState: LiveData<PhoneNumberState> = _phoneNumberState
 
     private val _streetState: MutableLiveData<StreetState> = MutableLiveData()
@@ -53,7 +54,6 @@ class KennelSettingsViewModel(
 
     init {
         _kennelAvatarState.value = KennelAvatarState.EmptyValue
-        _phoneNumberState.value = PhoneNumberState.Value(value = DEFAULT_INPUT_VALUE)
         _streetState.value = StreetState.Value(value = DEFAULT_INPUT_VALUE)
     }
 
@@ -136,19 +136,24 @@ class KennelSettingsViewModel(
     }
 
     fun onPhoneNumberFocusChanged(hasFocus: Boolean, phone: String) {
-        if (hasFocus && _phoneNumberState.value is PhoneNumberState.Error) {
-            _phoneNumberState.value = PhoneNumberState.Value(value = phone)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _phoneNumberState.value = _phoneNumberState.value?.copy(
+                validationState = null
+            )
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validatePhoneNumberLength(phone)
                 when (result) {
                     ValidationResult.Success -> {
-                        _phoneNumberState.value = PhoneNumberState.Value(value = phone)
+                        _phoneNumberState.value = _phoneNumberState.value?.copy(
+                            phoneNum = phone, validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _phoneNumberState.value = PhoneNumberState.Error(
-                            message = result.errorMessage,
-                            wrongValue = phone
+                        _phoneNumberState.value = _phoneNumberState.value?.copy(
+                            phoneNum = phone, validationState = ValidationState.Invalid(
+                                message = result.errorMessage
+                            )
                         )
                     }
                 }

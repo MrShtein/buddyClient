@@ -222,16 +222,24 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.phoneNumberState.observe(viewLifecycleOwner) { phoneState ->
-            when (phoneState) {
-                is PhoneNumberState.Value -> {
+            when (phoneState.validationState) {
+                is ValidationState.Valid -> {
+                    phoneNumberInput.setText(phoneState.phoneNum)
+                    phoneNumberInput.setSelection(phoneNumberInput.length())
+                }
+                is ValidationState.Invalid -> {
+                    phoneNumberInputContainer.isErrorEnabled = true
+                    phoneNumberInputContainer.error = phoneState.validationState.message
+                    phoneNumberInput.setText(phoneState.phoneNum)
+                    phoneNumberInput.setSelection(phoneNumberInput.length())
+                    scrollToElementIfNeed(phoneNumberInputContainer)
+                }
+                null -> {
+                    phoneNumberInput.setText(phoneState.phoneNum)
+                    phoneNumberInput.setSelection(phoneNumberInput.length())
                     if (phoneNumberInputContainer.isErrorEnabled) {
                         phoneNumberInputContainer.isErrorEnabled = false
                     }
-                }
-                is PhoneNumberState.Error -> {
-                    phoneNumberInputContainer.isErrorEnabled = true
-                    phoneNumberInputContainer.error = phoneState.message
-                    scrollToElementIfNeed(phoneNumberInputContainer)
                 }
             }
         }
