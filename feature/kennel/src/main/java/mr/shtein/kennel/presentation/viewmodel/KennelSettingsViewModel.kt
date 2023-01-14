@@ -49,12 +49,11 @@ class KennelSettingsViewModel(
         MutableLiveData(PhoneNumberState())
     val phoneNumberState: LiveData<PhoneNumberState> = _phoneNumberState
 
-    private val _streetState: MutableLiveData<StreetState> = MutableLiveData()
+    private val _streetState: MutableLiveData<StreetState> = MutableLiveData(StreetState())
     val streetState: LiveData<StreetState> = _streetState
 
     init {
         _kennelAvatarState.value = KennelAvatarState.EmptyValue
-        _streetState.value = StreetState.Value(value = DEFAULT_INPUT_VALUE)
     }
 
     fun onCityChanged(city: String) {
@@ -162,19 +161,22 @@ class KennelSettingsViewModel(
     }
 
     fun onStreetFocusChanged(hasFocus: Boolean, street: String) {
-        if (hasFocus && _streetState.value is StreetState.Error) {
-            _streetState.value = StreetState.Value(value = street)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _streetState.value = _streetState.value?.copy(validationState = null)
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validateStreet(street)
                 when (result) {
                     ValidationResult.Success -> {
-                        _streetState.value = StreetState.Value(value = street)
+                        _streetState.value = _streetState.value?.copy(
+                            streetName = street, validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _streetState.value = StreetState.Error(
-                            message = result.errorMessage,
-                            wrongValue = street
+                        _streetState.value = _streetState.value?.copy(
+                            streetName = street, validationState = ValidationState.Invalid(
+                                message = result.errorMessage
+                            )
                         )
                     }
                 }
