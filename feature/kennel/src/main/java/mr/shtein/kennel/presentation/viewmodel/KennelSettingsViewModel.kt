@@ -88,22 +88,28 @@ class KennelSettingsViewModel(
                 _emailFieldState.value?.copy(email = email, validationState = null)
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validateEmail(email = email)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _emailFieldState.value = _emailFieldState.value?.copy(
-                            email = email, validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _emailFieldState.value?.email = email
-                        _emailFieldState.value = _emailFieldState.value?.copy(
-                            validationState = ValidationState.Invalid(
-                                message = result.errorMessage
-                            )
-                        )
-                    }
-                }
+                validateEmail(email)
+            }
+        }
+    }
+
+    private suspend fun validateEmail(email: String): Boolean {
+        val result = kennelInteractor.validateEmail(email = email)
+        when (result) {
+            ValidationResult.Success -> {
+                _emailFieldState.value = _emailFieldState.value?.copy(
+                    email = email, validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _emailFieldState.value?.email = email
+                _emailFieldState.value = _emailFieldState.value?.copy(
+                    validationState = ValidationState.Invalid(
+                        message = result.errorMessage
+                    )
+                )
+                return false
             }
         }
     }
@@ -115,21 +121,27 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validateKennelName(name = name)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _kennelNameState.value = _kennelNameState.value?.copy(
-                            kennelName = name, validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _kennelNameState.value = _kennelNameState.value?.copy(
-                            kennelName = name, validationState = ValidationState.Invalid(
-                                message = result.errorMessage
-                            )
-                        )
-                    }
-                }
+                validateKennelName(name)
+            }
+        }
+    }
+
+    private suspend fun validateKennelName(name: String): Boolean {
+        val result = kennelInteractor.validateKennelName(name = name)
+        when (result) {
+            ValidationResult.Success -> {
+                _kennelNameState.value = _kennelNameState.value?.copy(
+                    kennelName = name, validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _kennelNameState.value = _kennelNameState.value?.copy(
+                    kennelName = name, validationState = ValidationState.Invalid(
+                        message = result.errorMessage
+                    )
+                )
+                return false
             }
         }
     }
@@ -141,21 +153,27 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validatePhoneNumberLength(phone)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _phoneNumberState.value = _phoneNumberState.value?.copy(
-                            phoneNum = phone, validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _phoneNumberState.value = _phoneNumberState.value?.copy(
-                            phoneNum = phone, validationState = ValidationState.Invalid(
-                                message = result.errorMessage
-                            )
-                        )
-                    }
-                }
+                validatePhoneNumber(phone)
+            }
+        }
+    }
+
+    private suspend fun validatePhoneNumber(phone: String): Boolean {
+        val result = kennelInteractor.validatePhoneNumberLength(phone)
+        when (result) {
+            ValidationResult.Success -> {
+                _phoneNumberState.value = _phoneNumberState.value?.copy(
+                    phoneNum = phone, validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _phoneNumberState.value = _phoneNumberState.value?.copy(
+                    phoneNum = phone, validationState = ValidationState.Invalid(
+                        message = result.errorMessage
+                    )
+                )
+                return false
             }
         }
     }
@@ -165,21 +183,27 @@ class KennelSettingsViewModel(
             _streetState.value = _streetState.value?.copy(validationState = null)
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validateStreet(street)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _streetState.value = _streetState.value?.copy(
-                            streetName = street, validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _streetState.value = _streetState.value?.copy(
-                            streetName = street, validationState = ValidationState.Invalid(
-                                message = result.errorMessage
-                            )
-                        )
-                    }
-                }
+                validateStreetName(street)
+            }
+        }
+    }
+
+    private suspend fun validateStreetName(street: String): Boolean {
+        val result = kennelInteractor.validateStreet(street)
+        when (result) {
+            ValidationResult.Success -> {
+                _streetState.value = _streetState.value?.copy(
+                    streetName = street, validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _streetState.value = _streetState.value?.copy(
+                    streetName = street, validationState = ValidationState.Invalid(
+                        message = result.errorMessage
+                    )
+                )
+                return false
             }
         }
     }
@@ -191,21 +215,27 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validateHouseNum(house)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _houseNumberState.value = _houseNumberState.value?.copy(
-                            houseNum = house, validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _houseNumberState.value = _houseNumberState.value?.copy(
-                            houseNum = house, validationState = ValidationState.Invalid(
-                                message = result.errorMessage
-                            )
-                        )
-                    }
-                }
+                validateHouseNum(house)
+            }
+        }
+    }
+
+    private suspend fun validateHouseNum(house: String): Boolean {
+        val result = kennelInteractor.validateHouseNum(house)
+        when (result) {
+            ValidationResult.Success -> {
+                _houseNumberState.value = _houseNumberState.value?.copy(
+                    houseNum = house, validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _houseNumberState.value = _houseNumberState.value?.copy(
+                    houseNum = house, validationState = ValidationState.Invalid(
+                        message = result.errorMessage
+                    )
+                )
+                return false
             }
         }
     }
@@ -217,21 +247,28 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
-                val result = kennelInteractor.validateIdentificationNum(identificationNum)
-                when (result) {
-                    ValidationResult.Success -> {
-                        _identificationNumberState.value = _identificationNumberState.value?.copy(
-                            identificationNum = identificationNum,
-                            validationState = ValidationState.Valid
-                        )
-                    }
-                    is ValidationResult.Failure -> {
-                        _identificationNumberState.value = _identificationNumberState.value?.copy(
-                            identificationNum = identificationNum,
-                            validationState = ValidationState.Invalid(message = result.errorMessage)
-                        )
-                    }
-                }
+                validateIdentificationNum(identificationNum)
+            }
+        }
+    }
+
+    private suspend fun validateIdentificationNum(identificationNum: String): Boolean {
+        val result = kennelInteractor.validateIdentificationNum(identificationNum)
+        when (result) {
+            ValidationResult.Success -> {
+                _identificationNumberState.value = _identificationNumberState.value?.copy(
+                    identificationNum = identificationNum,
+                    validationState = ValidationState.Valid
+                )
+                return true
+            }
+            is ValidationResult.Failure -> {
+                _identificationNumberState.value = _identificationNumberState.value?.copy(
+                    identificationNum = identificationNum,
+                    validationState = ValidationState.Invalid(message = result.errorMessage)
+                )
+                return false
+            }
             }
         }
     }
