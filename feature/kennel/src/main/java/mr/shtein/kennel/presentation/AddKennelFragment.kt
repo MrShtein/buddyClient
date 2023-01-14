@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
@@ -27,6 +28,7 @@ import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.CommonViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -49,7 +51,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     private lateinit var kennelAdapter: KennelsAdapter
     private val networkImageLoader: ImageLoader by inject()
     private val navigator: KennelNavigation by inject()
-    private val appPropertiesRepository: AppPropertiesRepository by inject()
+    private val commonViewModel: CommonViewModel by activityViewModels()
     private val addKennelViewModel: AddKennelViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,9 +181,13 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
     }
 
     private fun changeMarginBottom(view: View) {
-        val bottomNavHeightInDP = appPropertiesRepository.getBottomNavHeight()
         val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.setMargins(0, 0, 0, layoutParams.bottomMargin + bottomNavHeightInDP)
+        layoutParams.setMargins(
+            0,
+            0,
+            0,
+            layoutParams.bottomMargin + commonViewModel.bottomNavHeight
+        )
         view.layoutParams = layoutParams
     }
 }
