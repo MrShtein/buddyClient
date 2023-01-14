@@ -1,6 +1,5 @@
 package mr.shtein.kennel.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,8 +41,9 @@ class KennelSettingsViewModel(
     private val _kennelAvatarState: MutableLiveData<KennelAvatarState> = MutableLiveData()
     val kennelAvatarState: LiveData<KennelAvatarState> = _kennelAvatarState
 
-    private val _organizationNameState: MutableLiveData<OrganizationNameState> = MutableLiveData()
-    val organizationNameState: LiveData<OrganizationNameState> = _organizationNameState
+    private val _kennelNameState: MutableLiveData<KennelNameState> =
+        MutableLiveData(KennelNameState())
+    val kennelNameState: LiveData<KennelNameState> = _kennelNameState
 
     private val _phoneNumberState: MutableLiveData<PhoneNumberState> = MutableLiveData()
     val phoneNumberState: LiveData<PhoneNumberState> = _phoneNumberState
@@ -53,7 +53,6 @@ class KennelSettingsViewModel(
 
     init {
         _kennelAvatarState.value = KennelAvatarState.EmptyValue
-        _organizationNameState.value = OrganizationNameState.Value(value = DEFAULT_INPUT_VALUE)
         _phoneNumberState.value = PhoneNumberState.Value(value = DEFAULT_INPUT_VALUE)
         _streetState.value = StreetState.Value(value = DEFAULT_INPUT_VALUE)
     }
@@ -111,19 +110,24 @@ class KennelSettingsViewModel(
     }
 
     fun onKennelNameFocusChanged(hasFocus: Boolean, name: String) {
-        if (hasFocus && _organizationNameState.value is OrganizationNameState.Error) {
-            _organizationNameState.value = OrganizationNameState.Value(value = name)
-        } else if (!hasFocus) {
+        if (hasFocus) {
+            _kennelNameState.value = _kennelNameState.value?.copy(
+                validationState = null
+            )
+        } else {
             viewModelScope.launch {
                 val result = kennelInteractor.validateKennelName(name = name)
                 when (result) {
                     ValidationResult.Success -> {
-                        _organizationNameState.value = OrganizationNameState.Value(value = name)
+                        _kennelNameState.value = _kennelNameState.value?.copy(
+                            kennelName = name, validationState = ValidationState.Valid
+                        )
                     }
                     is ValidationResult.Failure -> {
-                        _organizationNameState.value = OrganizationNameState.Error(
-                            message = result.errorMessage,
-                            wrongValue = name
+                        _kennelNameState.value = _kennelNameState.value?.copy(
+                            kennelName = name, validationState = ValidationState.Invalid(
+                                message = result.errorMessage
+                            )
                         )
                     }
                 }

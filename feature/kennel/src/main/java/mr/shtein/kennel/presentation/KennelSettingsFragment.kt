@@ -2,7 +2,6 @@ package mr.shtein.kennel.presentation
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,7 +12,6 @@ import androidx.core.net.toUri
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -200,15 +198,25 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
-        kennelSettingsViewModel.organizationNameState.observe(viewLifecycleOwner) { nameState ->
-            when (nameState) {
-                is OrganizationNameState.Value -> {
-                    if (nameContainer.isErrorEnabled) nameContainer.isErrorEnabled = false
+        kennelSettingsViewModel.kennelNameState.observe(viewLifecycleOwner) { nameState ->
+            when (nameState.validationState) {
+                is ValidationState.Valid -> {
+                    nameInput.setText(nameState.kennelName)
+                    nameInput.setSelection(nameInput.length())
                 }
-                is OrganizationNameState.Error -> {
+                is ValidationState.Invalid -> {
                     nameContainer.isErrorEnabled = true
-                    nameContainer.error = nameState.message
+                    nameContainer.error = nameState.validationState.message
+                    nameInput.setText(nameState.kennelName)
+                    nameInput.setSelection(nameInput.length())
                     scrollToElementIfNeed(nameContainer)
+                }
+                null -> {
+                    nameInput.setText(nameState.kennelName)
+                    nameInput.setSelection(nameInput.length())
+                    if (nameContainer.isErrorEnabled) {
+                        nameContainer.isErrorEnabled = false
+                    }
                 }
             }
         }
