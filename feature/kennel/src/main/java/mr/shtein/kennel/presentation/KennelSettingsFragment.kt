@@ -245,16 +245,24 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         kennelSettingsViewModel.streetState.observe(viewLifecycleOwner) { streetState ->
-            when (streetState) {
-                is StreetState.Value -> {
+            when (streetState.validationState) {
+                is ValidationState.Valid -> {
+                    streetInput.setText(streetState.streetName)
+                    streetInput.setSelection(streetInput.length())
+                }
+                is ValidationState.Invalid -> {
+                    streetInputContainer.isErrorEnabled = true
+                    streetInputContainer.error = streetState.validationState.message
+                    streetInput.setText(streetState.streetName)
+                    streetInput.setSelection(streetInput.length())
+                    scrollToElementIfNeed(streetInputContainer)
+                }
+                null -> {
+                    streetInput.setText(streetState.streetName)
+                    streetInput.setSelection(streetInput.length())
                     if (streetInputContainer.isErrorEnabled) {
                         streetInputContainer.isErrorEnabled = false
                     }
-                }
-                is StreetState.Error -> {
-                    streetInputContainer.isErrorEnabled = true
-                    streetInputContainer.error = streetState.message
-                    scrollToElementIfNeed(streetInputContainer)
                 }
             }
         }
