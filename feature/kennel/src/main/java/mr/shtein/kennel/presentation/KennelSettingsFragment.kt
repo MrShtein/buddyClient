@@ -2,6 +2,7 @@ package mr.shtein.kennel.presentation
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -290,6 +291,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
+        kennelSettingsViewModel.buildingState.observe(viewLifecycleOwner) { buildingState ->
+            buildingNumberInput.setText(buildingState.building)
+        }
+
         kennelSettingsViewModel.identificationNumberState.observe(viewLifecycleOwner) { identificationNumberState ->
             when (identificationNumberState.validationState) {
                 is ValidationState.Valid -> {
@@ -314,9 +319,9 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             }
         }
 
-//        kennelSettingsViewModel.saveBtnState.observe(viewLifecycleOwner) { saveBtnState ->
-//            saveBtn.isEnabled = !saveBtnState.isBlocked
-//        }
+        kennelSettingsViewModel.saveBtnState.observe(viewLifecycleOwner) { saveBtnState ->
+            saveBtn.isEnabled = saveBtnState.isEnabled
+        }
     }
 
     private fun initViews(view: View) {
@@ -397,6 +402,13 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
             )
         }
 
+        buildingNumberInput.setOnFocusChangeListener {_, hasFocus ->
+            kennelSettingsViewModel.onBuildingFocusChanged(
+                hasFocus = hasFocus,
+                building = buildingNumberInput.text.toString()
+            )
+        }
+
         identificationNumberInput.setOnFocusChangeListener { _, hasFocus ->
             kennelSettingsViewModel.onIdentificationNumFocusChanged(
                 hasFocus = hasFocus,
@@ -405,8 +417,10 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
         }
 
         saveBtn.setOnClickListener {
-            saveBtn.isClickable = false
-            checkAllFieldsAndNavigate(it)
+            val currentFocus: View? = requireActivity().currentFocus
+            currentFocus?.clearFocus()
+            saveBtn.requestFocus()
+            kennelSettingsViewModel.onSaveBtnClick()
         }
     }
 
@@ -496,7 +510,6 @@ class KennelSettingsFragment : Fragment(R.layout.kennel_settings_fragment) {
                 ""
             )
             userPropertiesRepository.saveUserRole("")
-            navigator.moveToKennelConfirmFragment(kennelRequest = kennelRequest)
         }
     }
 

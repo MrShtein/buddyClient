@@ -4,5 +4,5 @@ import mr.shtein.kennel.CityField
 
 data class CityFieldState(
     var field: CityField,
-    var  validationState: ValidationState? = null
+    var validationState: ValidationState? = null
 )

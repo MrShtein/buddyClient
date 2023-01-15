@@ -15,5 +15,5 @@ data class KennelRequest(
     var kennelHouseNum: String = "",
     var kennelBuildingNum: String = "",
     var kennelIdentifyNum: Long = 0,
-    var role: String
+    var role: String = ""
 ): Parcelable
