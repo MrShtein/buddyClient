@@ -1,6 +1,5 @@
 package mr.shtein.kennel.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,7 @@ import mr.shtein.kennel.CityField
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.ValidationResult
 import mr.shtein.kennel.navigation.KennelNavigation
-import mr.shtein.kennel.presentation.state.BuildingState
+import mr.shtein.kennel.presentation.state.kennel_settings.BuildingState
 import mr.shtein.kennel.presentation.state.kennel_settings.*
 
 class KennelSettingsViewModel(
@@ -358,8 +357,7 @@ class KennelSettingsViewModel(
         when (_kennelAvatarState.value) {
             KennelAvatarState.EmptyValue -> kennelRequest.kennelAvtUri = ""
             is KennelAvatarState.Value -> kennelRequest.kennelAvtUri =
-                ((_kennelAvatarState.value as KennelAvatarState.Value).avatarUri as KennelAvatarState.Value).avatarUri
-                    ?: ""
+                (_kennelAvatarState.value as KennelAvatarState.Value).avatarUri
             null -> kennelRequest.kennelAvtUri = ""
         }
         kennelRequest.kennelName = _kennelNameState.value!!.kennelName
