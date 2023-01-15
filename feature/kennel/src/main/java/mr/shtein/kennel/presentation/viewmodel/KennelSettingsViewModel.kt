@@ -1,14 +1,18 @@
 package mr.shtein.kennel.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.CityField
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.ValidationResult
 import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.kennel.presentation.state.BuildingState
 import mr.shtein.kennel.presentation.state.kennel_settings.*
 
 class KennelSettingsViewModel(
@@ -17,10 +21,12 @@ class KennelSettingsViewModel(
 ) : ViewModel() {
 
     companion object {
-        private const val DEFAULT_INPUT_VALUE = ""
+        private const val CITY_FIELD_ERROR = "Вы не указали город"
         private const val TAG = "KennelSettingsFragment"
         private val EMPTY_CITY_VALUE = CityField()
     }
+
+    private var isSomethingValidatingNow = false
 
     private val _cityFieldState: MutableLiveData<CityFieldState> =
         MutableLiveData(CityFieldState(CityField()))
@@ -51,6 +57,12 @@ class KennelSettingsViewModel(
 
     private val _streetState: MutableLiveData<StreetState> = MutableLiveData(StreetState())
     val streetState: LiveData<StreetState> = _streetState
+
+    private val _buildingState: MutableLiveData<BuildingState> = MutableLiveData(BuildingState())
+    val buildingState: LiveData<BuildingState> = _buildingState
+
+    private val _saveBtnState: MutableLiveData<SaveBtnState> = MutableLiveData(SaveBtnState())
+    val saveBtnState: LiveData<SaveBtnState> = _saveBtnState
 
     init {
         _kennelAvatarState.value = KennelAvatarState.EmptyValue
@@ -88,7 +100,9 @@ class KennelSettingsViewModel(
                 _emailFieldState.value?.copy(email = email, validationState = null)
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validateEmail(email)
+                isSomethingValidatingNow = false
             }
         }
     }
@@ -121,7 +135,9 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validateKennelName(name)
+                isSomethingValidatingNow = false
             }
         }
     }
@@ -153,7 +169,9 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validatePhoneNumber(phone)
+                isSomethingValidatingNow = false
             }
         }
     }
@@ -183,7 +201,9 @@ class KennelSettingsViewModel(
             _streetState.value = _streetState.value?.copy(validationState = null)
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validateStreetName(street)
+                isSomethingValidatingNow = false
             }
         }
     }
@@ -215,9 +235,15 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validateHouseNum(house)
+                isSomethingValidatingNow = false
             }
         }
+    }
+
+    fun onBuildingFocusChanged(hasFocus: Boolean, building: String) {
+        if (!hasFocus) _buildingState.value = _buildingState.value?.copy(building = building)
     }
 
     private suspend fun validateHouseNum(house: String): Boolean {
@@ -247,7 +273,9 @@ class KennelSettingsViewModel(
             )
         } else {
             viewModelScope.launch {
+                isSomethingValidatingNow = true
                 validateIdentificationNum(identificationNum)
+                isSomethingValidatingNow = false
             }
         }
     }
@@ -269,8 +297,82 @@ class KennelSettingsViewModel(
                 )
                 return false
             }
+        }
+    }
+
+    fun onSaveBtnClick() {
+        viewModelScope.launch {
+            while (isSomethingValidatingNow) {
+                delay(50)
+            }
+            var isAllValuesValid = true
+            _saveBtnState.value = _saveBtnState.value?.copy(isEnabled = false)
+            if (_cityFieldState.value?.validationState != ValidationState.Valid) {
+                _cityFieldState.value = _cityFieldState.value?.copy(
+                    validationState = ValidationState.Invalid(message = CITY_FIELD_ERROR)
+                )
+                isAllValuesValid = false
+            }
+
+            if (_emailFieldState.value?.validationState != ValidationState.Valid) {
+                val email: String = _emailFieldState.value?.email ?: ""
+                isAllValuesValid = validateEmail(email = email)
+            }
+
+            if (_houseNumberState.value?.validationState != ValidationState.Valid) {
+                val houseNum: String = _houseNumberState.value?.houseNum ?: ""
+                isAllValuesValid = validateHouseNum(house = houseNum)
+            }
+
+            if (_identificationNumberState.value?.validationState != ValidationState.Valid) {
+                val identificationNum: String =
+                    _identificationNumberState.value?.identificationNum ?: ""
+                isAllValuesValid = validateIdentificationNum(identificationNum = identificationNum)
+            }
+
+            if (_kennelNameState.value?.validationState != ValidationState.Valid) {
+                val kennelName: String = _kennelNameState.value?.kennelName ?: ""
+                isAllValuesValid = validateKennelName(name = kennelName)
+            }
+
+            if (_phoneNumberState.value?.validationState != ValidationState.Valid) {
+                val phoneNum: String = _phoneNumberState.value?.phoneNum ?: ""
+                isAllValuesValid = validatePhoneNumber(phone = phoneNum)
+            }
+
+            if (_streetState.value?.validationState != ValidationState.Valid) {
+                val streetName: String = _streetState.value?.streetName ?: ""
+                isAllValuesValid = validateStreetName(street = streetName)
+            }
+
+            _saveBtnState.value = _saveBtnState.value?.copy(isEnabled = true)
+            if (isAllValuesValid) {
+                val kennelRequest: KennelRequest = makeKennelRequest()
+                navigator.moveToKennelConfirmFragment(kennelRequest = kennelRequest)
             }
         }
+    }
+
+    private fun makeKennelRequest(): KennelRequest {
+        val kennelRequest: KennelRequest = KennelRequest()
+        when (_kennelAvatarState.value) {
+            KennelAvatarState.EmptyValue -> kennelRequest.kennelAvtUri = ""
+            is KennelAvatarState.Value -> kennelRequest.kennelAvtUri =
+                ((_kennelAvatarState.value as KennelAvatarState.Value).avatarUri as KennelAvatarState.Value).avatarUri
+                    ?: ""
+            null -> kennelRequest.kennelAvtUri = ""
+        }
+        kennelRequest.kennelName = _kennelNameState.value!!.kennelName
+        kennelRequest.kennelPhoneNum = _phoneNumberState.value!!.phoneNum
+        kennelRequest.kennelEmail = _emailFieldState.value!!.email
+        kennelRequest.kennelCity = _cityFieldState.value!!.field.fullName
+        kennelRequest.kennelStreet = _streetState.value!!.streetName
+        kennelRequest.kennelHouseNum = _houseNumberState.value!!.houseNum
+        kennelRequest.kennelBuildingNum = _buildingState.value!!.building
+        kennelRequest.kennelIdentifyNum =
+            _identificationNumberState.value!!.identificationNum.toLong()
+
+        return kennelRequest
     }
 
 
