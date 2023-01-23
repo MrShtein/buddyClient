@@ -363,7 +363,8 @@ class KennelSettingsViewModel(
         kennelRequest.kennelName = _kennelNameState.value!!.kennelName
         kennelRequest.kennelPhoneNum = _phoneNumberState.value!!.phoneNum
         kennelRequest.kennelEmail = _emailFieldState.value!!.email
-        kennelRequest.kennelCity = _cityFieldState.value!!.field.fullName
+        kennelRequest.kennelCity =
+            "${_cityFieldState.value!!.field.id},${_cityFieldState.value!!.field.fullName}"
         kennelRequest.kennelStreet = _streetState.value!!.streetName
         kennelRequest.kennelHouseNum = _houseNumberState.value!!.houseNum
         kennelRequest.kennelBuildingNum = _buildingState.value!!.building

@@ -1,6 +1,7 @@
 package mr.shtein.data.di
 
 import mr.shtein.data.repository.*
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -18,7 +19,7 @@ val repositoryModule: Module = module {
     single<UserRepository> { NetworkUserRepository(get()) }
     single<DistanceCounterRepository> { NetworkDistanceCounterRepository(get()) }
 
-    single<KennelRepository> { NetworkKennelRepository(get()) }
+    single<KennelRepository> { NetworkKennelRepository(get(), androidContext()) }
     single<UserPropertiesRepository> {
         SharedUserPropertiesRepository(get(named(USER_STORE_NAME)))
     }
