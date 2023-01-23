@@ -1,14 +1,16 @@
 package mr.shtein.kennel.domain
 
+import android.content.ClipData.Item
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import mr.shtein.data.exception.EmptyFieldException
-import mr.shtein.data.exception.IllegalEmailException
-import mr.shtein.data.exception.ValidationException
+import mr.shtein.data.exception.*
+import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelPreview
+import mr.shtein.data.model.KennelRequest
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
+import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 import mr.shtein.util.validator.IdentificationNumberValidator
 import mr.shtein.util.validator.Validator
@@ -37,6 +39,10 @@ class KennelInteractorImpl(
         val kennelPreviewList: List<KennelPreview> =
             kennelMapper.transformFromDTOList(kennelResponsePreview)
         return AddKennelState.Success(kennelsList = kennelPreviewList)
+    }
+
+    override suspend fun getKennelAvatar(avatarUri: String): AvatarWrapper? {
+        return networkKennelRepository.getKennelAvatar(avatarUri = avatarUri)
     }
 
     override suspend fun validateEmail(email: String): ValidationResult =
@@ -92,7 +98,7 @@ class KennelInteractorImpl(
             }
         }
 
-    override suspend fun validateIdentificationNum(identificationNum: String): ValidationResult  =
+    override suspend fun validateIdentificationNum(identificationNum: String): ValidationResult =
         withContext(dispatcher) {
             try {
                 identificationNumberValidator.validateValue(valueForValidate = identificationNum)
@@ -101,4 +107,20 @@ class KennelInteractorImpl(
                 return@withContext ValidationResult.Failure(ex.message!!)
             }
         }
+
+    override suspend fun addNewKennel(
+        avatarWrapper: AvatarWrapper?,
+        kennelRequest: KennelRequest
+    ): NewKennelSendingState = withContext(dispatcher) {
+        try {
+            val token = userPropertiesRepository.getUserToken()
+            networkKennelRepository.addNewKennel(
+                token = token, kennelRequest = kennelRequest, avatarWrapper = avatarWrapper
+            )
+            return@withContext NewKennelSendingState.Success
+        } catch (ex: ItemAlreadyExistException) {
+            return@withContext NewKennelSendingState.Exist
+        }
+    }
+
 }

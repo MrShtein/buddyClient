@@ -45,8 +45,8 @@ buildscript {
 
         sdk_versions = [
                 compile: 31,
-                min: 24,
-                target: 31
+                min    : 24,
+                target : 31
         ]
 
         gradle_version = '7.3.1'
@@ -56,12 +56,10 @@ buildscript {
         agcp = "1.7.1.300"
     }
 
-
-
     repositories {
         google()
         mavenCentral()
-        maven {url "https://developer.huawei.com/repo/"}
+        maven { url "https://developer.huawei.com/repo/" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"

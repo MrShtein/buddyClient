@@ -1,47 +1,34 @@
 package mr.shtein.kennel.presentation
 
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import mr.shtein.data.exception.ItemAlreadyExistException
-import mr.shtein.data.exception.ServerErrorException
-import mr.shtein.data.model.AvatarWrapper
-import mr.shtein.data.model.KennelRequest
-import mr.shtein.data.repository.KennelPropertiesRepository
-import mr.shtein.data.repository.KennelRepository
-import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
-import mr.shtein.kennel.navigation.KennelNavigation
+import mr.shtein.kennel.presentation.state.kennel_confirm.KennelConfirmScreenState
+import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
+import mr.shtein.kennel.presentation.viewmodel.KennelConfirmViewModel
 import mr.shtein.ui_util.setInsetsListenerForPadding
-import org.koin.android.ext.android.inject
-import java.io.File
-import java.io.FileNotFoundException
+import mr.shtein.ui_util.setStatusBarColor
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.lang.StringBuilder
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 
 class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
     companion object {
         private const val SETTINGS_DATA_KEY = "settings_data"
-        private const val KENNEL_AVATAR_FILE_NAME = "kennel_avatar"
-        private const val ADMIN_ROLE_TXT = "ROLE_ADMIN"
     }
 
-    private lateinit var kennelRequest: KennelRequest
     private lateinit var avatarImg: ImageView
     private lateinit var name: TextView
     private lateinit var phone: TextView
@@ -51,11 +38,9 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
     private lateinit var identificationNum: TextView
     private lateinit var saveBtn: MaterialButton
     private lateinit var progressBar: ProgressBar
-    private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-    private val kennelPropertiesRepository: KennelPropertiesRepository by inject()
-    private val networkKennelRepository: KennelRepository by inject()
-    private val userPropertiesRepository: UserPropertiesRepository by inject()
-    private val navigator: KennelNavigation by inject()
+    private val kennelConfirmViewModel: KennelConfirmViewModel by viewModel {
+        parametersOf(arguments!!.getParcelable(SETTINGS_DATA_KEY))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +50,14 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bundle = arguments ?: bundleOf()
-        kennelRequest = bundle.getParcelable(SETTINGS_DATA_KEY)!!
+        setStatusBarColor(isBlack = true)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                kennelConfirmViewModel.kennelConfirmScreenState.collect { kennelConfirmScreenState ->
+                    renderState(kennelConfirmScreenState = kennelConfirmScreenState)
+                }
+            }
+        }
 
         setInsetsListenerForPadding(
             view = view,
@@ -76,8 +67,38 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
             bottom = false
         )
         initViews(view)
-        setViews()
         setListeners()
+    }
+
+    private fun renderState(kennelConfirmScreenState: KennelConfirmScreenState) {
+        when (kennelConfirmScreenState.sendingState) {
+            NewKennelSendingState.Sending -> {
+                saveBtn.isEnabled = false
+                progressBar.isVisible = true
+                setViews()
+            }
+            NewKennelSendingState.Success -> {
+                progressBar.isVisible = false
+                setViews()
+                showDialog(isKennelAlreadyExist = false)
+            }
+            NewKennelSendingState.Exist -> {
+                saveBtn.isEnabled = true
+                progressBar.isVisible = false
+                setViews()
+                showDialog(isKennelAlreadyExist = true)
+            }
+            is NewKennelSendingState.Failure -> {
+                progressBar.isVisible = false
+                saveBtn.isEnabled = true
+                setViews()
+                val textError: String = getString(kennelConfirmScreenState.sendingState.message)
+                showError(errorText = textError)
+            }
+            null -> {
+                setViews()
+            }
+        }
     }
 
     private fun initViews(view: View) {
@@ -94,122 +115,60 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
     private fun setViews() {
         setAvatar()
-        name.text = kennelRequest.kennelName
-        phone.text = kennelRequest.kennelPhoneNum
-        email.text = kennelRequest.kennelEmail
+        name.text = kennelConfirmViewModel.kennelRequest.kennelName
+        phone.text = kennelConfirmViewModel.kennelRequest.kennelPhoneNum
+        email.text = kennelConfirmViewModel.kennelRequest.kennelEmail
         cityAndRegion.text = makeAndSetCityAndRegion()
         street.text = makeAndSetStreetHouseAndBuilding()
-        identificationNum.text = kennelRequest.kennelIdentifyNum.toString()
+        identificationNum.text = kennelConfirmViewModel.kennelRequest.kennelIdentifyNum.toString()
     }
 
     private fun setAvatar() {
-        val avatarUri = kennelRequest.kennelAvtUri
+        val avatarUri = kennelConfirmViewModel.kennelRequest.kennelAvtUri
         if (avatarUri != "") {
             avatarImg.setImageURI(Uri.parse(avatarUri))
         }
     }
 
     private fun makeAndSetCityAndRegion(): String {
-        val cityAndRegion = kennelRequest.kennelCity.split(",")
+        val cityAndRegion = kennelConfirmViewModel.kennelRequest.kennelCity.split(",")
         return cityAndRegion[1]
     }
 
     private fun makeAndSetStreetHouseAndBuilding(): String {
         val strBuilder = StringBuilder()
-        strBuilder.append(kennelRequest.kennelStreet)
+        strBuilder.append(kennelConfirmViewModel.kennelRequest.kennelStreet)
             .append(" д.")
-            .append(kennelRequest.kennelHouseNum)
-        if (kennelRequest.kennelBuildingNum != "") {
-            strBuilder.append(" корп. ${kennelRequest.kennelBuildingNum}")
+            .append(kennelConfirmViewModel.kennelRequest.kennelHouseNum)
+        if (kennelConfirmViewModel.kennelRequest.kennelBuildingNum != "") {
+            strBuilder.append(" корп. ${kennelConfirmViewModel.kennelRequest.kennelBuildingNum}")
         }
         return strBuilder.toString()
     }
 
     private fun setListeners() {
         saveBtn.setOnClickListener {
-            saveBtn.isEnabled = false
-            progressBar.isVisible = true
-
-            coroutineScope.launch {
-                try {
-                    val avatarWrapper: AvatarWrapper? = getPhotoAndType()
-                    addNewKennel(avatarWrapper)
-                    avatarWrapper?.file?.delete()
-                    userPropertiesRepository.saveUserRole(ADMIN_ROLE_TXT)
-                    showDialog(true)
-
-                } catch (ex: ItemAlreadyExistException) {
-                    showDialog(false)
-                } catch (ex: FileNotFoundException) {
-                    Log.e(
-                        "error",
-                        "Не получилось найти файл"
-                    )
-                } catch (ex: SocketTimeoutException) {
-                    val exText = requireContext().getString(R.string.internet_failure_text)
-                    progressBar.isVisible = false
-                    showError(errorText = exText)
-                    navigator.backToPreviousFragment()
-                } catch (ex: ConnectException) {
-                    val exText = requireContext().getString(R.string.internet_failure_text)
-                    progressBar.isVisible = false
-                    showError(errorText = exText)
-                    navigator.backToPreviousFragment()
-                } catch (ex: ServerErrorException) {
-                    val exText = requireContext().getString(R.string.server_unavailable_msg)
-                    progressBar.isVisible = false
-                    showError(errorText = exText)
-                    navigator.backToPreviousFragment()
-                }
-
-            }
+            val avatarUri: String = kennelConfirmViewModel.kennelRequest.kennelAvtUri
+            kennelConfirmViewModel.onSaveBtnClick(avatarUri)
         }
-    }
-
-    private suspend fun addNewKennel(avatarWrapper: AvatarWrapper?) {
-        val token = userPropertiesRepository.getUserToken()
-        kennelRequest.userId = userPropertiesRepository.getUserId()
-        networkKennelRepository.addNewKennel(
-            token = token,
-            kennelRequest = kennelRequest,
-            avatarWrapper = avatarWrapper
-        )
-    }
-
-    private suspend fun getPhotoAndType(): AvatarWrapper? {
-        val avatarStr = kennelRequest.kennelAvtUri
-        return if (avatarStr != "") {
-            val avatarUri = Uri.parse(avatarStr)
-            val file = File(requireContext().filesDir, KENNEL_AVATAR_FILE_NAME)
-            val imgStream = requireContext().contentResolver.openInputStream(avatarUri)
-            val imgType = requireContext().contentResolver.getType(avatarUri)
-            if (imgStream == null || imgType == null) throw FileNotFoundException()
-            file.writeBytes(imgStream.readBytes())
-            AvatarWrapper(file, imgType)
-        } else {
-            null;
-        }
-
     }
 
     private fun showDialog(isKennelAlreadyExist: Boolean) {
 
-        if (!isKennelAlreadyExist) {
+        if (isKennelAlreadyExist) {
             val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
                 .setView(R.layout.kennel_failed_dialog)
-                //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
                 .show()
             val okBtn: Button? = dialog.findViewById(R.id.kennel_failed_ok_btn)
             okBtn?.setOnClickListener {
                 dialog.dismiss()
-                navigator.backToPreviousFragment()
+                kennelConfirmViewModel.onExistDialogBtnClick()
             }
             return
         }
 
         val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MyDialog)
             .setView(R.layout.kennel_confirm_dialog)
-            //.setBackground(ColorDrawable(requireContext().getColor(R.color.transparent)))
             .show()
 
         val okBtn: Button? = dialog.findViewById(R.id.kennel_confirm_dialog_ok_btn)
@@ -217,8 +176,7 @@ class KennelConfirmFragment : Fragment(R.layout.kennel_confirm_fragment) {
 
         okBtn?.setOnClickListener {
             dialog.dismiss()
-            kennelPropertiesRepository.saveKennelAvatarUri("")
-            navigator.moveToAddAnimalFromKennelConfirm()
+            kennelConfirmViewModel.onSuccessDialogBtnClick()
         }
     }
 

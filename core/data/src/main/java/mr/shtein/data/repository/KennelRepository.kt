@@ -19,4 +19,6 @@ interface KennelRepository {
        personId: Long
     ): List<KennelPreviewResponse>
 
+    suspend fun getKennelAvatar(avatarUri: String): AvatarWrapper?
+
 }

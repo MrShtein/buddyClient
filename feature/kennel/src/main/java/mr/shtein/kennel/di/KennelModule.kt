@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.KennelInteractorImpl
 import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
+import mr.shtein.kennel.presentation.viewmodel.KennelConfirmViewModel
 import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 import mr.shtein.util.validator.*
@@ -39,6 +40,9 @@ val kennelModule: Module = module {
 
     viewModel { AddKennelViewModel(dispatcherMain, get(), get()) }
     viewModel { KennelSettingsViewModel(get(), get()) }
+    viewModel { kennelRequest ->
+        KennelConfirmViewModel(kennelRequest = kennelRequest.get(), get(), get(), get(), get())
+    }
 }
 
 val dispatcherMain = Dispatchers.Main

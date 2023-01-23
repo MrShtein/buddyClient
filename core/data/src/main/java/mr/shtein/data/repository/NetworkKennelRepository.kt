@@ -1,5 +1,7 @@
 package mr.shtein.data.repository
 
+import android.content.Context
+import android.net.Uri
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,9 +14,12 @@ import mr.shtein.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.File
+import java.io.FileNotFoundException
 
 class NetworkKennelRepository(
-    private val networkService: NetworkService
+    private val networkService: NetworkService,
+    private val context: Context
 ) : KennelRepository {
 
     override suspend fun addNewKennel(
@@ -80,6 +85,27 @@ class NetworkKennelRepository(
             else -> throw ServerErrorException()
         }
     }
+
+    override suspend fun getKennelAvatar(avatarUriStr: String): AvatarWrapper? =
+        withContext(Dispatchers.IO) {
+            return@withContext if (avatarUriStr != "") {
+                val avatarUri = Uri.parse(avatarUriStr)
+                val file = File(context.filesDir, KENNEL_AVATAR_FILE_NAME)
+                try {
+                    val imgStream = context.contentResolver.openInputStream(avatarUri)
+                    val imgType = context.contentResolver.getType(avatarUri)
+                    file.writeBytes(imgStream!!.readBytes())
+                    imgStream.close()
+                    AvatarWrapper(file, imgType!!)
+                } catch (ex: FileNotFoundException) {
+                    return@withContext null
+                } catch (ex: NullPointerException) {
+                    return@withContext null
+                }
+            } else {
+                null;
+            }
+        }
 
     companion object {
         private const val KENNEL_AVATAR_FILE_NAME = "kennel_avatar"
