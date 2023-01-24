@@ -34,12 +34,9 @@ private const val CAT_ID = 2
 private const val RESULT_LISTENER_KEY = "result_key"
 private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
 
-
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private lateinit var kennelAvatar: ImageView
-//    private lateinit var personAvatar: ShapeableImageView
-//    private lateinit var settingsBtn: ImageButton
     private lateinit var kennelName: TextView
     private lateinit var volunteersAmount: TextView
     private lateinit var animalsAmount: TextView
@@ -88,8 +85,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
     private fun initViews(view: View) {
         kennelAvatar = view.findViewById(R.id.kennel_home_avatar)
-//        personAvatar = view.findViewById(R.id.kennel_home_person_avatar)
-//        settingsBtn = view.findViewById(R.id.kennel_home_settings_btn)
         kennelName = view.findViewById(R.id.kennel_home_name)
         volunteersAmount = view.findViewById(R.id.kennel_home_volunteers_amount)
         animalsAmount = view.findViewById(R.id.kennel_home_animals_amount)
@@ -113,14 +108,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             photoName,
             dogPlaceholder
         )
-
-        val uriForUserToken = userPropertiesRepository.getUserUri()
-//        val personAvatarPlaceholder = context?.getDrawable(R.drawable.light_person_placeholder)
-//        networkImageLoader.setPhotoToView(
-//            personAvatar,
-//            uriForUserToken,
-//            personAvatarPlaceholder!!
-//        )
 
         kennelName.text = kennelItem.name
         volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
@@ -154,7 +141,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 val dogCarouselHelper = LinearSnapHelper()
                 dogCarouselHelper.attachToRecyclerView(dogCarousel)
                 if (dogsList.isNotEmpty()) dogCarousel.visibility = View.VISIBLE
-
 
                 catCarousel.setHasFixedSize(true)
                 catAdapter = CatPhotoAdapter(
