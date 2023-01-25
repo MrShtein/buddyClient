@@ -124,5 +124,14 @@
         <item quantity="other">Найдено %d животных</item>
     </plurals>
 
+    <plurals name="volunteers_found_count">
+        <item quantity="zero">%d волонтеров</item>
+        <item quantity="one">%d волонтер</item>
+        <item quantity="two">%d волонтера</item>
+        <item quantity="few">%d волонтеров</item>
+        <item quantity="many">%d волонтеров</item>
+        <item quantity="other">%d волонтеров</item>
+    </plurals>
+
 
 </resources>
