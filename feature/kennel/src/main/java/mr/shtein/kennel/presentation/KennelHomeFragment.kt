@@ -228,11 +228,11 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
 
     private fun getAnimalCountText(amount: Int): String {
-        return resources.getQuantityString(
-            R.plurals.buddy_found_count,
-            amount,
-            amount
-        )
+        return resources.getQuantityString(R.plurals.buddy_found_count, amount, amount)
+    }
+
+    private fun makeVolunteersText(amount: Int): String {
+        return resources.getQuantityString(R.plurals.volunteers_found_count, amount, amount)
     }
 
     private fun showKennelIsNotValidDialog() {
