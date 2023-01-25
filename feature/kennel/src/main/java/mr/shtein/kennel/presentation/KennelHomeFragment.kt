@@ -5,12 +5,16 @@ import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.mapper.AnimalMapper
 import mr.shtein.data.model.Animal
@@ -21,10 +25,14 @@ import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
 import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
+import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeHeaderUiState
+import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
 import mr.shtein.model.AnimalDTO
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -57,6 +65,12 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val animalMapper: AnimalMapper by inject()
     private val navigator: KennelNavigation by inject()
+    private val kennelHomeViewModel: KennelHomeViewModel by viewModel {
+        parametersOf(
+            arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)
+        )
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +87,18 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(false)
-        val kennelItem: KennelPreview = arguments?.getParcelable(
-            KENNEL_ITEM_BUNDLE_KEY
-        )!!
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                kennelHomeViewModel.kennelHomeHeaderUiState.collect { kennelHomeHeaderUiState ->
+                    setHeaderValuesToView(kennelHomeHeaderUiState)
+                }
+            }
+        }
 
         initViews(view)
-        setValuesToViews(kennelItem)
-        setListeners(kennelItem)
+//        setValuesToViews(kennelItem)
+//        setListeners(kennelItem)
 
     }
 
@@ -97,9 +116,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
     }
 
-    private fun setValuesToViews(kennelItem: KennelPreview) {
+    private fun setHeaderValuesToView(headerUiState: KennelHomeHeaderUiState) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
-        val photoName = kennelItem.avatarUrl
+        val photoName = headerUiState.kennelAvatarUrl
         val dogPlaceholder = context?.getDrawable(R.drawable.dog_placeholder)
         token = userPropertiesRepository.getUserToken()
         networkImageLoader.setPhotoToView(
@@ -109,9 +128,12 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             dogPlaceholder
         )
 
-        kennelName.text = kennelItem.name
-        volunteersAmount.text = makeVolunteersText(kennelItem.volunteersAmount)
-        animalsAmount.text = getAnimalCountText(kennelItem.animalsAmount)
+        kennelName.text = headerUiState.kennelName
+        volunteersAmount.text = makeVolunteersText(headerUiState.volunteersAmount)
+        animalsAmount.text = getAnimalCountText(headerUiState.animalsAmount)
+    }
+
+    private fun setValuesToViews(kennelItem: KennelPreview) {
 
         coroutine.launch {
             val kennelId = kennelItem.kennelId
@@ -199,20 +221,11 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             val kennelId = kennelItem.kennelId
             if (kennelItem.isValid) {
                 navigator.moveToAddAnimalFromKennelHome(kennelId = kennelId, animalTypeId = CAT_ID)
-                } else {
+            } else {
                 showKennelIsNotValidDialog()
             }
         }
 
-    }
-
-    private fun makeVolunteersText(amount: Int): String {
-        val mainText = "волонтер"
-        return when (amount) {
-            1 -> "1 $mainText"
-            2, 3, 4 -> "$amount ${mainText}а"
-            else -> "$amount ${mainText}ов"
-        }
     }
 
     private suspend fun loadAnimals(kennelId: Int, animalType: String): MutableList<Animal> =
