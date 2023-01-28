@@ -1,23 +1,28 @@
 package mr.shtein.kennel.domain
 
-import android.content.ClipData.Item
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.*
+import mr.shtein.data.mapper.AnimalMapper
+import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.model.KennelRequest
+import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
+import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
-import mr.shtein.util.validator.IdentificationNumberValidator
 import mr.shtein.util.validator.Validator
 
 class KennelInteractorImpl(
     private val userPropertiesRepository: UserPropertiesRepository,
     private val networkKennelRepository: KennelRepository,
+    private val animalRepository: AnimalRepository,
+    private val animalMapper: AnimalMapper,
     private val kennelMapper: KennelPreviewMapper,
     private val emailValidator: Validator,
     private val emptyFieldValidator: Validator,
@@ -121,6 +126,19 @@ class KennelInteractorImpl(
         } catch (ex: ItemAlreadyExistException) {
             return@withContext NewKennelSendingState.Exist
         }
+    }
+
+    override suspend fun getAnimalByTypeIdAndKennelId(
+        animalType: String,
+        kennelId: Int
+    ): AnimalListState = withContext(dispatcher) {
+        val token = userPropertiesRepository.getUserToken()
+        val animalDTOList = animalRepository.getAnimalsByKennelIdAndAnimalType(
+            token = token, kennelId = kennelId, animalType = animalType
+        )
+        val animalList: MutableList<Animal> =
+            animalMapper.transformFromDTOList(animalDTOList = animalDTOList).toMutableList()
+        return@withContext AnimalListState.Success(animalList = animalList)
     }
 
 }

@@ -10,8 +10,7 @@ import mr.shtein.kennel.R
 import mr.shtein.network.ImageLoader
 
 class CatPhotoAdapter(
-    private val animalsList: List<Animal>,
-    val token: String,
+    private var animalsList: List<Animal>,
     private val animalTouchCallback: OnAnimalItemClickListener,
     private val networkImageLoader: ImageLoader
 ) : RecyclerView.Adapter<CatPhotoAdapter.AnimalInKennelViewHolder>() {
@@ -34,6 +33,11 @@ class CatPhotoAdapter(
     }
 
     private fun getItem(position: Int): Animal = animalsList[position]
+
+    fun setAnimalList(animalList: List<Animal>) {
+        this.animalsList = animalList
+        notifyDataSetChanged()
+    }
 
 
     inner class AnimalInKennelViewHolder(

@@ -1,9 +1,11 @@
 package mr.shtein.kennel.domain
 
+import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
+import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 
 interface KennelInteractor {
     suspend fun loadKennelsListByPersonId(): AddKennelState
@@ -15,4 +17,5 @@ interface KennelInteractor {
     suspend fun validateStreet(street: String): ValidationResult
     suspend fun validateHouseNum(houseNum: String): ValidationResult
     suspend fun validateIdentificationNum(identificationNum: String): ValidationResult
+    suspend fun getAnimalByTypeIdAndKennelId(animalType: String, kennelId: Int): AnimalListState
 }
