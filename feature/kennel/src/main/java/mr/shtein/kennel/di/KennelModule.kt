@@ -51,7 +51,7 @@ val kennelModule: Module = module {
         KennelConfirmViewModel(kennelRequest = kennelRequest.get(), get(), get(), get(), get())
     }
     viewModel {kennelPreview ->
-        KennelHomeViewModel(kennelPreview = kennelPreview.get(), get())
+        KennelHomeViewModel(kennelPreview = kennelPreview.get(), get(), get())
     }
 }
 
