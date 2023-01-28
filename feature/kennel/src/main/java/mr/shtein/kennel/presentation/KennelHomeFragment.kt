@@ -20,7 +20,7 @@ import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
 import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
-import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeHeaderUiState
+import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
 import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
@@ -29,8 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
-private const val DOG_ID = 1
-private const val CAT_ID = 2
 private const val ANIMAL_BUNDLE_KEY = "animal_bundle_key"
 private const val NEW_ANIMAL_ADDED_RESULT_KEY = "new_animal_added"
 
@@ -74,12 +72,16 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         initViews(view)
         makeDogRecyclerView()
         makeCatRecyclerView()
-       //setListeners()
+        setListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                kennelHomeViewModel.kennelHomeHeaderUiState.collect { kennelHomeHeaderUiState ->
-                    setHeaderValuesToView(kennelHomeHeaderUiState)
+                kennelHomeViewModel.kennelHomeUiState.collect { kennelHomeHeaderUiState ->
+                    if (kennelHomeHeaderUiState.isDialogVisible) {
+                        showKennelIsNotValidDialog()
+                    } else {
+                        setHeaderValuesToView(kennelHomeHeaderUiState)
+                    }
                 }
             }
         }
@@ -89,7 +91,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 kennelHomeViewModel.dogListState.collect { dogListState ->
                     when (dogListState) {
                         is AnimalListState.Success -> {
-                            dogCarousel.visibility = View.VISIBLE
+                            if (dogListState.animalList.isNotEmpty()) {
+                                dogCarousel.visibility = View.VISIBLE
+                            }
                             val dogAdapter = dogCarousel.adapter as DogPhotoAdapter
                             dogAdapter.setAnimalList(dogListState.animalList)
                             dogsAmount.text = getAnimalCountText(dogAdapter.itemCount)
@@ -111,7 +115,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                 kennelHomeViewModel.catListState.collect { catListState ->
                     when (catListState) {
                         is AnimalListState.Success -> {
-                            catCarousel.visibility = View.VISIBLE
+                            if (catListState.animalList.isNotEmpty()) {
+                                catCarousel.visibility = View.VISIBLE
+                            }
                             val catAdapter = catCarousel.adapter as CatPhotoAdapter
                             catAdapter.setAnimalList(catListState.animalList)
                             catsAmount.text = getAnimalCountText(catAdapter.itemCount)
@@ -143,7 +149,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
     }
 
-    private fun setHeaderValuesToView(headerUiState: KennelHomeHeaderUiState) {
+    private fun setHeaderValuesToView(headerUiState: KennelHomeUiState) {
         val endpoint = getString(R.string.kennel_avatar_endpoint)
         val photoName = headerUiState.kennelAvatarUrl
         val dogPlaceholder = context?.getDrawable(R.drawable.dog_placeholder)
@@ -182,7 +188,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             listOf(),
             object : DogPhotoAdapter.OnAnimalItemClickListener {
                 override fun onClick(animalItem: Animal) {
-                    navigator.moveToAnimalSettings(animal = animalItem)
+                    kennelHomeViewModel.onAnimalPhotoClick(animalItem = animalItem)
                 }
             },
             networkImageLoader
@@ -195,25 +201,15 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarouselHelper.attachToRecyclerView(dogCarousel)
     }
 
-//    private fun setListeners() {
-//        addDogsBtn.setOnClickListener {
-//            val kennelId = kennelItem.kennelId
-//            if (kennelItem.isValid) {
-//                navigator.moveToAddAnimalFromKennelHome(kennelId = 1, animalTypeId = DOG_ID)
-//            } else {
-//                showKennelIsNotValidDialog()
-//            }
-//        }
-//
-//        addCatsBtn.setOnClickListener {
-//            val kennelId = kennelItem.kennelId
-//            if (kennelItem.isValid) {
-//                navigator.moveToAddAnimalFromKennelHome(kennelId = kennelId, animalTypeId = CAT_ID)
-//            } else {
-//                showKennelIsNotValidDialog()
-//            }
-//        }
-//    }
+    private fun setListeners() {
+        addDogsBtn.setOnClickListener {
+            kennelHomeViewModel.onAddDogBtnClick()
+        }
+
+        addCatsBtn.setOnClickListener {
+            kennelHomeViewModel.onCatDogBtnClick()
+        }
+    }
 
     private fun getAnimalCountText(amount: Int): String {
         return resources.getQuantityString(R.plurals.buddy_found_count, amount, amount)
@@ -230,6 +226,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         val okBtn: Button? = dialog.findViewById(R.id.not_valid_kennel_dialog_ok_btn)
         okBtn?.setOnClickListener {
             dialog.cancel()
+            kennelHomeViewModel.onCancelDialog()
         }
     }
 

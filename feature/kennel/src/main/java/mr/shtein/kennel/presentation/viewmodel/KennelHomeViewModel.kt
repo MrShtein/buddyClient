@@ -13,13 +13,14 @@ import mr.shtein.data.model.Animal
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.kennel.domain.KennelInteractor
+import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
-import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeHeaderUiState
-import java.io.IOException
+import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
 
 class KennelHomeViewModel(
     private val kennelPreview: KennelPreview,
-    private val kennelInteractor: KennelInteractor
+    private val kennelInteractor: KennelInteractor,
+    private val navigation: KennelNavigation
 ) : ViewModel() {
 
     private var dogList: MutableList<Animal> = mutableListOf()
@@ -33,16 +34,17 @@ class KennelHomeViewModel(
         MutableStateFlow(AnimalListState.Loading)
     val catListState: StateFlow<AnimalListState> = _catListState.asStateFlow()
 
-    private val _kennelHomeHeaderState: MutableStateFlow<KennelHomeHeaderUiState> =
+    private val _kennelHomeHeaderState: MutableStateFlow<KennelHomeUiState> =
         MutableStateFlow(
-            value = KennelHomeHeaderUiState(
+            value = KennelHomeUiState(
                 kennelAvatarUrl = kennelPreview.avatarUrl,
                 volunteersAmount = kennelPreview.volunteersAmount,
                 animalsAmount = kennelPreview.animalsAmount,
-                kennelName = kennelPreview.name
+                kennelName = kennelPreview.name,
+                isDialogVisible = false
             )
         )
-    val kennelHomeHeaderUiState: StateFlow<KennelHomeHeaderUiState> =
+    val kennelHomeUiState: StateFlow<KennelHomeUiState> =
         _kennelHomeHeaderState.asStateFlow()
 
     init {
@@ -111,6 +113,40 @@ class KennelHomeViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun onAddDogBtnClick() {
+        if (kennelPreview.isValid) {
+            navigation.moveToAddAnimalFromKennelHome(
+                kennelId = kennelPreview.kennelId, animalTypeId = DOG_ID
+            )
+            return
+        }
+        _kennelHomeHeaderState.update { kennelHomeUiState ->
+            kennelHomeUiState.copy(isDialogVisible = true)
+        }
+    }
+
+    fun onCatDogBtnClick() {
+        if (kennelPreview.isValid) {
+            navigation.moveToAddAnimalFromKennelHome(
+                kennelId = kennelPreview.kennelId, animalTypeId = CAT_ID
+            )
+            return
+        }
+        _kennelHomeHeaderState.update { kennelHomeUiState ->
+            kennelHomeUiState.copy(isDialogVisible = true)
+        }
+    }
+
+    fun onAnimalPhotoClick(animalItem: Animal) {
+        navigation.moveToAnimalSettings(animal = animalItem)
+    }
+
+    fun onCancelDialog() {
+        _kennelHomeHeaderState.update { kennelHomeUiState ->
+            kennelHomeUiState.copy(isDialogVisible = false)
         }
     }
 
