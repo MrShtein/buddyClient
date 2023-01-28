@@ -130,7 +130,7 @@ class NetworkAnimalRepository(
         token: String,
         kennelId: Int,
         animalType: String
-    ): MutableList<AnimalDTO> = withContext(Dispatchers.IO) {
+    ): MutableList<AnimalDTO> {
         val result = networkService.getAnimalsByKennelIdAndAnimalType(
             token = token,
             kennelId = kennelId,
@@ -138,7 +138,7 @@ class NetworkAnimalRepository(
         )
         when (result.code()) {
             200 -> {
-                return@withContext result.body()!!
+                return result.body()!!
             }
             else -> {
                 throw ServerErrorException()

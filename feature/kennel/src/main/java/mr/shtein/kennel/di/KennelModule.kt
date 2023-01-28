@@ -1,6 +1,10 @@
 package mr.shtein.kennel.di
 
 import kotlinx.coroutines.Dispatchers
+import mr.shtein.data.mapper.AnimalMapper
+import mr.shtein.data.mapper.AnimalPhotoMapper
+import mr.shtein.data.mapper.CoordinatesMapper
+import mr.shtein.data.mapper.KennelMapper
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.KennelInteractorImpl
 import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
@@ -25,6 +29,8 @@ val kennelModule: Module = module {
         KennelInteractorImpl(
             get(),
             get(),
+            get(),
+            animalMapperBuilder(),
             kennelPreviewMapperBuilder(),
             get(qualifier = named(EMAIL_VALIDATOR_KEY)),
             get(qualifier = named(EMPTY_FIELD_VALIDATOR_KEY)),
@@ -45,7 +51,7 @@ val kennelModule: Module = module {
         KennelConfirmViewModel(kennelRequest = kennelRequest.get(), get(), get(), get(), get())
     }
     viewModel {kennelPreview ->
-        KennelHomeViewModel(kennelPreview = kennelPreview.get())
+        KennelHomeViewModel(kennelPreview = kennelPreview.get(), get())
     }
 }
 
@@ -54,4 +60,11 @@ val dispatcherIO = Dispatchers.IO
 
 fun kennelPreviewMapperBuilder(): KennelPreviewMapper {
     return KennelPreviewMapper()
+}
+
+fun animalMapperBuilder(): AnimalMapper {
+    return AnimalMapper(
+        animalPhotoMapper =  AnimalPhotoMapper(),
+        kennelMapper = KennelMapper(CoordinatesMapper())
+    )
 }
