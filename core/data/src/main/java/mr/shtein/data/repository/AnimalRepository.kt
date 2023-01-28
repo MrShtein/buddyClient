@@ -20,7 +20,7 @@ interface AnimalRepository {
     suspend fun addNewAnimal(
         token: String,
         addOrUpdateAnimalRequest: AddOrUpdateAnimal
-    ): Int
+    ): Animal
 
     suspend fun addPhotoToTmpDir(
         token: String,

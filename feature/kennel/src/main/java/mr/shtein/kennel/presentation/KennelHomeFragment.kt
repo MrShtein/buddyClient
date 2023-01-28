@@ -15,7 +15,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.data.model.Animal
-import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
@@ -32,8 +31,8 @@ import org.koin.core.parameter.parametersOf
 private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
 private const val DOG_ID = 1
 private const val CAT_ID = 2
-private const val RESULT_LISTENER_KEY = "result_key"
-private const val RESULT_LISTENER_BUNDLE_KEY = "message_from_animal_card"
+private const val ANIMAL_BUNDLE_KEY = "animal_bundle_key"
+private const val NEW_ANIMAL_ADDED_RESULT_KEY = "new_animal_added"
 
 class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
@@ -63,9 +62,9 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-        setFragmentResultListener(RESULT_LISTENER_KEY) { _, bundle ->
-            val messageAboutSomeChange = bundle.getString(RESULT_LISTENER_BUNDLE_KEY)
-            Toast.makeText(context, messageAboutSomeChange, Toast.LENGTH_LONG).show()
+        setFragmentResultListener(NEW_ANIMAL_ADDED_RESULT_KEY) { _, bundle ->
+            val animal: Animal = bundle.getParcelable(ANIMAL_BUNDLE_KEY)!!
+            kennelHomeViewModel.onNewAnimalAdded(animal = animal)
         }
     }
 
@@ -75,7 +74,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         initViews(view)
         makeDogRecyclerView()
         makeCatRecyclerView()
-//        setListeners(kennelItem)
+       //setListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -196,25 +195,25 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarouselHelper.attachToRecyclerView(dogCarousel)
     }
 
-    private fun setListeners(kennelItem: KennelPreview) {
-        addDogsBtn.setOnClickListener {
-            val kennelId = kennelItem.kennelId
-            if (kennelItem.isValid) {
-                navigator.moveToAddAnimalFromKennelHome(kennelId = kennelId, animalTypeId = DOG_ID)
-            } else {
-                showKennelIsNotValidDialog()
-            }
-        }
-
-        addCatsBtn.setOnClickListener {
-            val kennelId = kennelItem.kennelId
-            if (kennelItem.isValid) {
-                navigator.moveToAddAnimalFromKennelHome(kennelId = kennelId, animalTypeId = CAT_ID)
-            } else {
-                showKennelIsNotValidDialog()
-            }
-        }
-    }
+//    private fun setListeners() {
+//        addDogsBtn.setOnClickListener {
+//            val kennelId = kennelItem.kennelId
+//            if (kennelItem.isValid) {
+//                navigator.moveToAddAnimalFromKennelHome(kennelId = 1, animalTypeId = DOG_ID)
+//            } else {
+//                showKennelIsNotValidDialog()
+//            }
+//        }
+//
+//        addCatsBtn.setOnClickListener {
+//            val kennelId = kennelItem.kennelId
+//            if (kennelItem.isValid) {
+//                navigator.moveToAddAnimalFromKennelHome(kennelId = kennelId, animalTypeId = CAT_ID)
+//            } else {
+//                showKennelIsNotValidDialog()
+//            }
+//        }
+//    }
 
     private fun getAnimalCountText(amount: Int): String {
         return resources.getQuantityString(R.plurals.buddy_found_count, amount, amount)

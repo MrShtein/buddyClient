@@ -104,7 +104,7 @@ interface NetworkService {
     suspend fun addNewAnimal(
         @Header("Authorization") token: String,
         @Body addOrUpdateAnimalRequest: AddOrUpdateAnimal
-    ): Response<Unit>
+    ): Response<AnimalDTO>
 
     @PUT("/api/v1/animal")
     suspend fun updateAnimal(

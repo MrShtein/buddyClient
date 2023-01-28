@@ -48,7 +48,10 @@ class NetworkAnimalRepository(
         }
     }
 
-    override suspend fun addNewAnimal(token: String, addOrUpdateAnimalRequest: AddOrUpdateAnimal) =
+    override suspend fun addNewAnimal(
+        token: String,
+        addOrUpdateAnimalRequest: AddOrUpdateAnimal
+    ): Animal =
         withContext(Dispatchers.IO) {
             val result = networkService.addNewAnimal(
                 token = token,
@@ -56,7 +59,8 @@ class NetworkAnimalRepository(
             )
             when (result.code()) {
                 201 -> {
-                    return@withContext CREATED_CODE
+                    val animalDTO: AnimalDTO = result.body()!!
+                    return@withContext animalMapper.transformFromDTO(animalDTO)
                 }
                 403 -> {
                     throw BadTokenException()
