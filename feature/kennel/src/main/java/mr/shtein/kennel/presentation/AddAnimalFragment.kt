@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -59,6 +60,8 @@ private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
 private const val BUNDLE_KEY_FOR_ANIMAL_OBJECT = "animal_key"
 private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
 private const val FROM_ADD_ANIMAL_REQUEST_KEY = "from_add_animal_request_key"
+private const val NEW_ANIMAL_ADDED_RESULT_KEY = "new_animal_added"
+private const val ANIMAL_BUNDLE_KEY = "animal_bundle_key"
 
 
 class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
@@ -633,13 +636,16 @@ class AddAnimalFragment : Fragment(R.layout.add_animal_fragment) {
                         setFragmentResult(FROM_ADD_ANIMAL_REQUEST_KEY, bundle)
                         navigator.backToPreviousFragment()
                     } else {
-                        networkAnimalRepository.addNewAnimal(
+                        val animal: Animal = networkAnimalRepository.addNewAnimal(
                             token = token,
                             addOrUpdateAnimalRequest = animalDto
                         )
                         spinner?.isVisible = false
                         dialog.dismiss()
                         isInsetsWorked = false
+                        val newAnimalBundle = Bundle()
+                        newAnimalBundle.putParcelable(ANIMAL_BUNDLE_KEY, animal)
+                        setFragmentResult(NEW_ANIMAL_ADDED_RESULT_KEY, newAnimalBundle)
                         navigator.backToPreviousFragment()
                     }
 

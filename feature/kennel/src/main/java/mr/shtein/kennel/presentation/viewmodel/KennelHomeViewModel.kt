@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.model.Animal
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.kennel.domain.KennelInteractor
@@ -20,6 +21,9 @@ class KennelHomeViewModel(
     private val kennelPreview: KennelPreview,
     private val kennelInteractor: KennelInteractor
 ) : ViewModel() {
+
+    private var dogList: MutableList<Animal> = mutableListOf()
+    private var catList: MutableList<Animal> = mutableListOf()
 
     private val _dogListState: MutableStateFlow<AnimalListState> =
         MutableStateFlow(AnimalListState.Loading)
@@ -56,6 +60,8 @@ class KennelHomeViewModel(
                             kennelId = kennelPreview.kennelId
                         )
                     }
+                    dogList =
+                        (_dogListState.value as AnimalListState.Success).animalList.toMutableList()
                 } catch (ex: ServerErrorException) {
                     _dogListState.update {
                         AnimalListState.Failure(messageResId = R.string.server_error_msg)
@@ -70,6 +76,8 @@ class KennelHomeViewModel(
                             kennelId = kennelPreview.kennelId
                         )
                     }
+                    catList =
+                        (_catListState.value as AnimalListState.Success).animalList.toMutableList()
                 } catch (ex: ServerErrorException) {
                     _catListState.update {
                         AnimalListState.Failure(messageResId = R.string.server_error_msg)
@@ -79,8 +87,37 @@ class KennelHomeViewModel(
         }
     }
 
+    fun onNewAnimalAdded(animal: Animal) {
+        when (animal.typeId) {
+            DOG_ID -> {
+                dogList.add(animal)
+                _dogListState.update {
+                    AnimalListState.Success(animalList = dogList)
+                }
+                _kennelHomeHeaderState.update { kennelHomeHeaderUiState ->
+                    kennelHomeHeaderUiState.copy(
+                        animalsAmount = dogList.size + catList.size
+                    )
+                }
+            }
+            CAT_ID -> {
+                catList.add(animal)
+                _catListState.update {
+                    AnimalListState.Success(animalList = catList)
+                }
+                _kennelHomeHeaderState.update { kennelHomeHeaderUiState ->
+                    kennelHomeHeaderUiState.copy(
+                        animalsAmount = dogList.size + catList.size
+                    )
+                }
+            }
+        }
+    }
+
     companion object {
         private const val DOG_TYPE = "Собаки"
+        private const val DOG_ID = 1
         private const val CAT_TYPE = "Кошки"
+        private const val CAT_ID = 2
     }
 }
