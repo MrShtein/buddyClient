@@ -44,13 +44,13 @@ buildscript {
         agconnect_crash = "1.7.1.300"
 
         sdk_versions = [
-                compile: 31,
+                compile: 33,
                 min    : 24,
-                target : 31
+                target : 33
         ]
 
-        gradle_version = '7.3.1'
-        kotlin_gradle_plugin = "1.7.20"
+        gradle_version = '7.4.0'
+        kotlin_gradle_plugin = "1.7.21"
         firebase_crashlytics_gradle = "2.9.1"
         google_services = "4.3.13"
         agcp = "1.7.1.300"
