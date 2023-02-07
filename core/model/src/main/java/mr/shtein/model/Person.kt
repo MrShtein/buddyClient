@@ -4,5 +4,6 @@ data class Person(
     var email: String,
     var password: String,
     var name: String,
-    var cityInfo: String
+    var cityInfo: String,
+    var firebaseId: String
 )

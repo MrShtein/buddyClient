@@ -21,6 +21,7 @@ import mr.shtein.auth.R
 import mr.shtein.auth.navigation.AuthNavigation
 import mr.shtein.data.exception.IncorrectDataException
 import mr.shtein.data.exception.ServerErrorException
+import mr.shtein.data.repository.FirebaseRepository
 import mr.shtein.model.Person
 import mr.shtein.model.LoginInfo
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
@@ -46,6 +47,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val retrofitUserRepository: UserRepository by inject()
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val navigator: AuthNavigation by inject()
+    private val firebaseRepository: FirebaseRepository by inject()
 
     override fun onStart() {
         super.onStart()
@@ -102,7 +104,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val emailInput: TextInputEditText = view.findViewById(R.id.login_email_input)
         val passwordInput: TextInputEditText = view.findViewById(R.id.login_password_input)
         val button: Button = view.findViewById(R.id.login_button)
-        val user = Person("", "", "", "")
+        val user = Person("", "", "", "", "")
         val forgotPasswordBtn = view.findViewById<Button>(R.id.login_fragment_forgot_password_btn)
 
         forgotPasswordBtn.setOnClickListener {
@@ -124,6 +126,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         coroutine.launch {
             try {
+                user.firebaseId = firebaseRepository.getUserToken()
                 val loginResult = retrofitUserRepository.signIn(user)
                 val loginInfo: LoginInfo = loginResult.loginInfo
 

@@ -193,7 +193,8 @@ class UserRegistrationFragment : Fragment(R.layout.user_registration_fragment) {
                             emailInput.text.toString(),
                             passwordInput.text.toString(),
                             nameInput.text.toString(),
-                            cityInfo
+                            cityInfo,
+                            ""
                         )
                     val progressBar = view.findViewById<ProgressBar>(R.id.registration_progress)
                     progressBar.visibility = View.VISIBLE
