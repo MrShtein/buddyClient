@@ -37,7 +37,7 @@ buildscript {
         moxy = "2.2.2"
 
         play_services_location = "19.0.1"
-        firebase_bom = "30.3.2"
+        firebase_bom = "31.2.0"
 
         hms_location = "6.4.0.300"
         agconnect_core = "1.7.1.300"
