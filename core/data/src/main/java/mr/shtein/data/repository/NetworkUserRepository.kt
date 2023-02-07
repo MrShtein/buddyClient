@@ -1,7 +1,9 @@
 package mr.shtein.data.repository
 
+import android.content.res.Resources.NotFoundException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mr.shtein.data.exception.BidExistException
 import mr.shtein.data.exception.IncorrectDataException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.model.*
@@ -47,7 +49,7 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
         personRequest: PersonRequest
     ): PersonResponse = withContext(Dispatchers.IO) {
         val result = networkService.updatePersonInfo(headers = header, person = personRequest)
-        when(result.code()) {
+        when (result.code()) {
             200 -> {
                 return@withContext result.body()!!
             }
@@ -71,16 +73,37 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
     override suspend fun checkOldPassword(
         headerMap: Map<String, String>,
         passwordCheckRequest: PasswordCheckRequest
-    ): Boolean  = withContext(Dispatchers.IO){
+    ): Boolean = withContext(Dispatchers.IO) {
         val result = networkService.checkOldPassword(
             headerMap = headerMap,
             passwordCheckRequest = passwordCheckRequest
         )
-        when(result.code()) {
+        when (result.code()) {
             200 -> {
                 return@withContext result.body()!!
             }
             else -> throw ServerErrorException()
         }
     }
+
+    override suspend fun addBidToBecomeVolunteer(token: String, kennelId: Int) =
+        withContext(Dispatchers.IO) {
+            val result = networkService.addVolunteerBid(
+                token = token, kennelId = kennelId
+            )
+            when(result.code()) {
+                201 -> {
+                    return@withContext
+                }
+                404 -> {
+                    throw NotFoundException()
+                }
+                409 -> {
+                    throw BidExistException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
 }
