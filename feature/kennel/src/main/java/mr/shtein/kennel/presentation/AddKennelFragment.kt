@@ -128,7 +128,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 .alpha(1f)
                 .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
                         playAnimation()
                     }
@@ -138,7 +138,7 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 .alpha(0f)
                 .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
                         progressBar.visibility = View.GONE
                     }
