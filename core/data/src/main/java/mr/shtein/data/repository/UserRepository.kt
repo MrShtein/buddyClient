@@ -16,4 +16,5 @@ interface UserRepository {
         headerMap: Map<String, String>,
         passwordCheckRequest: PasswordCheckRequest
     ): Boolean
+    suspend fun addBidToBecomeVolunteer(token: String, kennelId: Int)
 }

@@ -113,6 +113,8 @@
     <string name="shelter">Приют</string>
     <string name="admin_email">mr.shtein61@yandex.ru</string>
     <string name="email_subject">Сброс пароля</string>
+    <string name="kennel_not_found_error">К сожалению данного приюта уже нет, обратитесь к администратору</string>
+    <string name="become_volunteer_text_btn">Стать волонтером</string>
 
 
     <plurals name="buddy_found_count">

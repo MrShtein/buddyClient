@@ -131,5 +131,11 @@ interface NetworkService {
         @Query("longitude") longitude: Double
     ): Response<HashMap<Int, Int>>
 
+    @POST("/api/v1/bid/{kennel_id}")
+    suspend fun addVolunteerBid(
+        @Header("Authorization") token: String,
+        @Path("kennel_id") kennelId: Int
+    ): Response<Void>
+
 
 }

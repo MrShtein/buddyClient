@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.*
 import android.content.pm.PackageManager
+import android.content.res.Resources.NotFoundException
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -26,17 +27,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mr.shtein.animal.R
+import mr.shtein.data.exception.BidExistException
+import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.Kennel
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.data.repository.UserRepository
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.AnimalPhotoAdapter
 import mr.shtein.ui_util.OnSnapPositionChangeListener
 import mr.shtein.ui_util.SnapOnScrollListener
 import mr.shtein.ui_util.setStatusBarColor
 import org.koin.android.ext.android.inject
+import java.io.IOException
 
 
 class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
@@ -60,8 +69,10 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
 //    private lateinit var heartBox: CheckBox
     private lateinit var writeBtn: MaterialButton
     private lateinit var callBtn: MaterialButton
+    private lateinit var becomeVolunteerBtn: MaterialButton
     private lateinit var constraintLayout: ConstraintLayout
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val userRepository: UserRepository by inject()
     private val networkImageLoader: ImageLoader by inject()
     private var animal: Animal? = null
 
@@ -161,6 +172,7 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         avatar = view.findViewById(R.id.animal_card_kennel_avatar)
         writeBtn = view.findViewById(R.id.animal_card_email_btn)
         callBtn = view.findViewById(R.id.animal_card_phone_btn)
+        becomeVolunteerBtn = view.findViewById(R.id.animal_card_add_volunteer_btn)
         constraintLayout = view.findViewById(R.id.animal_card_constraint)
     }
 
@@ -226,10 +238,40 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                 }
                 startActivity(emailIntent)
             }
+
+            becomeVolunteerBtn.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val token = userPropertiesRepository.getUserToken()
+                    try {
+                        userRepository.addBidToBecomeVolunteer(token = token, kennelId = kennel.id)
+                        requireActivity().finish()
+                    } catch (ex: NotFoundException) {
+                        val message: String = getString(R.string.kennel_not_found_error)
+                        showError(message)
+                    } catch (ex: BidExistException) {
+                        showError(ex.message!!)
+                    } catch (ex: ServerErrorException) {
+                        val message: String = getString(R.string.server_error_msg)
+                        showError(message)
+                    } catch (ex: IOException) {
+                        val message: String = getString(R.string.internet_failure_text)
+                        showError(message)
+                    }
+                }
+            }
         }
     }
 
     companion object {
         private const val ANIMAL_KEY = "animal_key"
+    }
+
+    private fun showError(message: String)  {
+        val snackBar = Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
+        snackBar.show()
+        snackBar.setAction("Ok") {
+            snackBar.dismiss()
+        }
+
     }
 }

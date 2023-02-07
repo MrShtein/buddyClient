@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:transitionGroup="true">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/animal_card_constraint"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true"
-        tools:context="mr.shtein.animal.presentation.screen.AnimalsCardFragment">
+        android:background="?attr/colorSurface"
+        android:transitionGroup="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/animal_card_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            tools:context="mr.shtein.animal.presentation.screen.AnimalsCardFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/animal_card_photo_gallery"
-            android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/animal_card_photo_gallery"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/animal_card_image_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/big_animal_photo_count_background"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="4dp"
-            android:textColor="#80FFFFFF"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@id/animal_card_photo_gallery"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="1/3" />
+                android:id="@+id/animal_card_image_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/big_animal_photo_count_background"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:textColor="#80FFFFFF"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/animal_card_photo_gallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="1/3" />
 
         <TextView
-            android:id="@+id/animal_card_animal_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_photo_gallery"
-            tools:text="Собака Клавдия" />
+                android:id="@+id/animal_card_animal_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/animal_card_photo_gallery"
+                tools:text="Собака Клавдия" />
 
         <TextView
-            android:id="@+id/animal_card_distance_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:visibility="gone"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_animal_name"
-            tools:text="550 м от Вас" />
+                android:id="@+id/animal_card_distance_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_animal_name"
+                tools:text="550 м от Вас" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/animal_card_email_btn"
-            style="@style/Buddy.Widget.MiddleButton.Outlined"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/button_for_call"
-            android:pointerIcon="context_menu"
-            android:text="@string/write"
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="@+id/animal_card_description"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_distance_text" />
+                android:id="@+id/animal_card_email_btn"
+                style="@style/Buddy.Widget.MiddleButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/button_for_call"
+                android:pointerIcon="context_menu"
+                android:text="@string/write"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="@+id/animal_card_description"
+                app:layout_constraintTop_toBottomOf="@+id/animal_card_distance_text" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/animal_card_phone_btn"
-            style="@style/Buddy.Widget.MiddleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Call"
-            android:textAllCaps="false"
-            app:icon="@drawable/phone_icon"
-            app:layout_constraintEnd_toEndOf="@+id/animal_card_description"
-            app:layout_constraintTop_toTopOf="@id/animal_card_email_btn" />
+                android:id="@+id/animal_card_phone_btn"
+                style="@style/Buddy.Widget.MiddleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Call"
+                android:textAllCaps="false"
+                app:icon="@drawable/phone_icon"
+                app:layout_constraintEnd_toEndOf="@+id/animal_card_description"
+                app:layout_constraintTop_toTopOf="@id/animal_card_email_btn" />
 
         <!--        <CheckBox-->
         <!--            android:id="@+id/animal_card_heart"-->
@@ -101,160 +101,174 @@
         <!--            app:layout_constraintTop_toTopOf="@id/animal_card_animal_name" />-->
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/animal_card_top_divider"
-            style="@style/Buddy.Widget.Divider"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_email_btn" />
+                android:id="@+id/animal_card_top_divider"
+                style="@style/Buddy.Widget.Divider"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/animal_card_email_btn" />
 
         <TextView
-            android:id="@+id/animal_card_gender_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/gender_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_kennel_top_divider" />
+                android:id="@+id/animal_card_gender_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/gender_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/animal_card_kennel_top_divider" />
 
         <TextView
-            android:id="@+id/animal_card_gender_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toEndOf="@+id/animal_card_age_label"
-            app:layout_constraintTop_toTopOf="@+id/animal_card_gender_label"
-            tools:text="М" />
+                android:id="@+id/animal_card_gender_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintStart_toEndOf="@+id/animal_card_age_label"
+                app:layout_constraintTop_toTopOf="@+id/animal_card_gender_label"
+                tools:text="М" />
 
         <TextView
-            android:id="@+id/animal_card_age_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Возраст:"
-            app:layout_constraintStart_toStartOf="@+id/animal_card_gender_label"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label" />
+                android:id="@+id/animal_card_age_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Возраст:"
+                app:layout_constraintStart_toStartOf="@+id/animal_card_gender_label"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label" />
         <!--Текст не добавить в ресурсы!-->
 
         <TextView
-            android:id="@+id/animal_card_age_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label"
-            tools:text="12 лет" />
+                android:id="@+id/animal_card_age_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_gender_label"
+                tools:text="12 лет" />
 
         <TextView
-            android:id="@+id/animal_card_breed_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Порода:"
-            app:layout_constraintStart_toStartOf="@+id/animal_card_age_label"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_age_label" />
+                android:id="@+id/animal_card_breed_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Порода:"
+                app:layout_constraintStart_toStartOf="@+id/animal_card_age_label"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_age_label" />
         <!--Текст не добавить в ресурсы!-->
 
         <TextView
-            android:id="@+id/animal_card_breed_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_age_label"
-            tools:text="Московская Сторожевая" />
+                android:id="@+id/animal_card_breed_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_age_label"
+                tools:text="Московская Сторожевая" />
 
         <TextView
-            android:id="@+id/animal_card_color_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Цвет:"
-            app:layout_constraintStart_toStartOf="@+id/animal_card_breed_label"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value" />
+                android:id="@+id/animal_card_color_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Цвет:"
+                app:layout_constraintStart_toStartOf="@+id/animal_card_breed_label"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value" />
         <!--Текст не добавить в ресурсы!-->
 
         <TextView
-            android:id="@+id/animal_card_color_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value"
-            tools:text="Серый" />
+                android:id="@+id/animal_card_color_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintStart_toStartOf="@id/animal_card_gender_value"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_breed_value"
+                tools:text="Серый" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/animal_card_bottom_divider"
-            style="@style/Buddy.Widget.Divider"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_color_label" />
+                android:id="@+id/animal_card_bottom_divider"
+                style="@style/Buddy.Widget.Divider"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_color_label" />
 
         <TextView
-            android:id="@+id/animal_card_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/animal_card_top_divider"
-            tools:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                android:id="@+id/animal_card_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/animal_card_top_divider"
+                tools:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
          Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
          Lorem ipsum Lorem ipsum " />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/animal_card_kennel_top_divider"
-            style="@style/Buddy.Widget.Divider"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/animal_card_bottom_divider"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_description" />
+                android:id="@+id/animal_card_kennel_top_divider"
+                style="@style/Buddy.Widget.Divider"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/animal_card_bottom_divider"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_description" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/animal_card_kennel_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/animal_card_kennel_name_value"
-            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_top_divider"
-            app:layout_constraintTop_toBottomOf="@+id/animal_card_bottom_divider"
-            app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
-            tools:background="@color/cian5" />
+                android:id="@+id/animal_card_kennel_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/animal_card_add_volunteer_btn"
+                app:layout_constraintEnd_toStartOf="@id/animal_card_kennel_name_value"
+                app:layout_constraintStart_toStartOf="@id/animal_card_kennel_top_divider"
+                app:layout_constraintTop_toTopOf="@+id/animal_card_kennel_name_value"
+                app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
+                tools:background="@color/cian5" />
 
         <TextView
-            android:id="@+id/animal_card_kennel_name_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:textSize="20sp"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintBottom_toTopOf="@+id/animal_card_kennel_address"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
-            app:layout_constraintTop_toTopOf="@id/animal_card_kennel_avatar"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Папа кот" />
+                android:id="@+id/animal_card_kennel_name_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="20sp"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_bottom_divider"
+                app:layout_constraintBottom_toTopOf="@+id/animal_card_kennel_address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/animal_card_kennel_avatar"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Папа кот" />
 
         <TextView
-            android:id="@+id/animal_card_kennel_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="@id/animal_card_kennel_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
-            app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="г. Москва, ул. Маросейка д. 25" />
+                android:id="@+id/animal_card_kennel_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintBottom_toBottomOf="@id/animal_card_add_volunteer_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/animal_card_kennel_name_value"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_name_value"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="г. Москва, ул. Маросейка д. 25" />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/animal_card_add_volunteer_btn"
+                style="@style/Buddy.Widget.MiddleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/become_volunteer_text_btn"
+                android:textAllCaps="false"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/animal_card_kennel_address"
+                app:layout_constraintTop_toBottomOf="@id/animal_card_kennel_address"
+                app:layout_constraintVertical_chainStyle="packed" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
