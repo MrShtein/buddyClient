@@ -1,5 +1,8 @@
 package mr.shtein.data.di
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.Dispatchers
 import mr.shtein.data.repository.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
@@ -18,6 +21,13 @@ val repositoryModule: Module = module {
     single<AnimalCharacteristicsRepository> { NetworkAnimalCharacteristicsRepository(get()) }
     single<UserRepository> { NetworkUserRepository(get()) }
     single<DistanceCounterRepository> { NetworkDistanceCounterRepository(get()) }
+    single<FirebaseRepository> {
+        FirebaseRepositoryImpl(
+            dispatcher = getDispatcherIO(),
+            firebaseMessaging = getFirebaseMessaging(),
+            firebaseCrashlytics = getFirebaseCrashlytics()
+        )
+    }
 
     single<KennelRepository> { NetworkKennelRepository(get(), androidContext()) }
     single<UserPropertiesRepository> {
@@ -33,3 +43,7 @@ val repositoryModule: Module = module {
         SharedAppPropertiesRepository(get(named(APP_STORE_NAME)))
     }
 }
+
+private fun getFirebaseMessaging() = FirebaseMessaging.getInstance()
+private fun getFirebaseCrashlytics() = FirebaseCrashlytics.getInstance()
+private fun getDispatcherIO() = Dispatchers.IO

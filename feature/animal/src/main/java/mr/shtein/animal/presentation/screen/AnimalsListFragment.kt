@@ -1,8 +1,10 @@
 package mr.shtein.animal.presentation.screen
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.util.TypedValue
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,16 +18,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import moxy.MvpAppCompatFragment
 import moxy.MvpView
 import moxy.presenter.InjectPresenter
@@ -41,7 +42,7 @@ import mr.shtein.animal.presentation.listener.OnAnimalCardClickListener
 import mr.shtein.animal.presentation.presenter.AnimalsListPresenterImpl
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AnimalFilter
-import mr.shtein.data.repository.AppPropertiesRepository
+import mr.shtein.data.repository.FirebaseRepository
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setStatusBarColor
@@ -100,6 +101,10 @@ interface AnimalListView : MvpView {
 class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     OnLocationBtnClickListener, AnimalListView {
 
+    companion object {
+        const val TAG = "AnimalsListFragment"
+    }
+
     private var _binding: AnimalsListFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: AnimalsAdapter
@@ -108,6 +113,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
     private val navigator: AnimalNavigation by inject()
     private val commonViewModel: CommonViewModel by activityViewModels()
     private var onDestinationChangedListener: NavController.OnDestinationChangedListener? = null
+    private val firebaseRepository: FirebaseRepository by inject()
 
     @InjectPresenter
     lateinit var animalListPresenter: AnimalsListPresenterImpl
@@ -119,6 +125,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkNotificationPermission()
         initLocationService()
         initPresenter()
     }
@@ -263,6 +270,22 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
 
     override fun navigateToAnimalFilter(animalFilter: AnimalFilter) {
         navigator.moveToAnimalFilterFromAnimalList(animalFilter)
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val notificationPermissionLauncher = registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) {}
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     private fun setUpView() {
