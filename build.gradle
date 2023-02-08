@@ -49,7 +49,7 @@ buildscript {
                 target : 33
         ]
 
-        gradle_version = '7.4.0'
+        gradle_version = '7.4.1'
         kotlin_gradle_plugin = "1.7.21"
         firebase_crashlytics_gradle = "2.9.1"
         google_services = "4.3.13"
