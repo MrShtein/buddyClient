@@ -12,7 +12,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
@@ -244,18 +243,19 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
                     val token = userPropertiesRepository.getUserToken()
                     try {
                         userRepository.addBidToBecomeVolunteer(token = token, kennelId = kennel.id)
-                        requireActivity().finish()
+                        val message: String = getString(R.string.become_volunteer_success_message)
+                        showMessage(message)
                     } catch (ex: NotFoundException) {
                         val message: String = getString(R.string.kennel_not_found_error)
-                        showError(message)
+                        showMessage(message)
                     } catch (ex: BidExistException) {
-                        showError(ex.message!!)
+                        showMessage(ex.message!!)
                     } catch (ex: ServerErrorException) {
                         val message: String = getString(R.string.server_error_msg)
-                        showError(message)
+                        showMessage(message)
                     } catch (ex: IOException) {
                         val message: String = getString(R.string.internet_failure_text)
-                        showError(message)
+                        showMessage(message)
                     }
                 }
             }
@@ -266,12 +266,11 @@ class AnimalsCardFragment : Fragment(), OnSnapPositionChangeListener {
         private const val ANIMAL_KEY = "animal_key"
     }
 
-    private fun showError(message: String)  {
+    private fun showMessage(message: String)  {
         val snackBar = Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
         snackBar.show()
         snackBar.setAction("Ok") {
             snackBar.dismiss()
         }
-
     }
 }
