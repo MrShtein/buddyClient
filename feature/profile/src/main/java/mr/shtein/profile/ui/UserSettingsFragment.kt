@@ -1,6 +1,5 @@
 package mr.shtein.profile.ui
 
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -8,12 +7,12 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -22,6 +21,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
@@ -30,14 +30,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.*
+import mr.shtein.data.repository.FirebaseRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.data.repository.UserRepository
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.EmailCheckRequest
 import mr.shtein.model.PersonRequest
+import mr.shtein.network.ImageLoader
+import mr.shtein.profile.ImageContainer
 import mr.shtein.profile.navigation.ProfileNavigation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.user.R
+import mr.shtein.util.ImageCompressor
 import mr.shtein.util.validator.FullEmailValidator
 import mr.shtein.util.validator.MailCallback
 import mr.shtein.util.validator.PasswordCallBack
@@ -47,8 +51,10 @@ import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import java.io.File
+import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.util.UUID
 import kotlin.properties.Delegates
 
 
@@ -63,6 +69,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         const val CITY_BUNDLE_KEY = "new_city_bundle"
         const val IS_FROM_CITY_BUNDLE_KEY = "is_from_city_bundle"
         const val PERSON_AVATAR_FILE_NAME = "person_avatar"
+        private const val IMAGE_CONTENT_TYPE = "image/webp"
     }
 
     private var personId by Delegates.notNull<Long>()
@@ -96,6 +103,9 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private val userPropertiesRepository: UserPropertiesRepository by inject()
     private val passwordValidator: PasswordValidator by inject()
     private val networkUserRepository: UserRepository by inject()
+    private val firebaseRepository: FirebaseRepository by inject()
+    private val imageLoader: ImageLoader by inject()
+    private val imageCompressor: ImageCompressor by inject()
     private val navigator: ProfileNavigation by inject()
 
     private var motionLayout: MotionLayout? = null
@@ -117,14 +127,40 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri != null) {
-                    avatarImg.setImageURI(uri)
                     coroutineScope.launch {
-                        copyFileToInternalStorage(uri)
+                        val avatarContainer: ImageContainer = makeImageContainerFromFile(uri)
+                        val userAvatarSignature = UUID.randomUUID().toString()
+                        userPropertiesRepository.saveAvatarUrl(userAvatarSignature)
+                        try {
+                            avatarImg.setImageURI(uri)
+                            val token = userPropertiesRepository.getUserToken()
+                            val compressedImage = imageCompressor.compressImage(
+                                avatarContainer.imageInBytes
+                            )
+                            val url = networkUserRepository.addUserAvatar(
+                                token = token,
+                                avatar = compressedImage,
+                                contentType = avatarContainer.contentType
+                            )
+                            userPropertiesRepository.saveAvatarUrl(url)
+                        } catch (ex: IOException) {
+                            val message: String = getString(R.string.internet_failure_text)
+                            val avatarPlaceholder = AppCompatResources.getDrawable(
+                                requireContext(),
+                                R.drawable.user_photo_placeholder_settings
+                            )
+                            showMessage(message)
+                            avatarImg.setImageDrawable(avatarPlaceholder)
+                        } catch (ex: ServerErrorException) {
+                            val message: String = getString(R.string.server_unavailable_msg)
+                            val avatarPlaceholder = AppCompatResources.getDrawable(
+                                requireContext(),
+                                R.drawable.user_photo_placeholder_settings
+                            )
+                            showMessage(message)
+                            avatarImg.setImageDrawable(avatarPlaceholder)
+                        }
                     }
-                    userPropertiesRepository
-                        .saveUserUri(
-                            "${requireContext().filesDir}/$PERSON_AVATAR_FILE_NAME"
-                        )
                 }
             }
     }
@@ -133,10 +169,17 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         super.onViewCreated(view, savedInstanceState)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = true)
         initViews(view)
-        setUserCurrentUserSettings()
         setListeners()
         initMaskForPhone(phoneNumber)
-
+        coroutineScope.launch {
+            try {
+                setUserCurrentUserSettings()
+            } catch (ex: IOException) {
+                firebaseRepository.sendErrorToCrashlytics(ex)
+            } catch (ex: ServerErrorException) {
+                firebaseRepository.sendErrorToCrashlytics(ex)
+            }
+        }
     }
 
     private fun initViews(view: View) {
@@ -203,8 +246,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         if (!isTextChange) {
             saveBtn.setBackgroundColor(requireContext().getColor(R.color.grey3))
         }
-
-        setImageToAvatar()
+        val token = userPropertiesRepository.getUserToken()
+        val avatarPlaceholder = AppCompatResources.getDrawable(
+            requireContext(), R.drawable.user_photo_placeholder_settings
+        )
+        val endPoint = getString(R.string.user_avatar_endpoint)
+        val userAvatarSignature: String = userPropertiesRepository.getAvatarUrl()
+        imageLoader.setPhotoToView(
+            imageView = avatarImg,
+            endPoint = endPoint,
+            placeholder = avatarPlaceholder,
+            token = token,
+            path = userAvatarSignature
+        )
     }
 
     private fun setGender() {
@@ -487,22 +541,19 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         }
     }
 
-    private fun setImageToAvatar() {
-        val imageUri = userPropertiesRepository.getUserUri()
-        if (imageUri !== "") {
-            avatarImg.setImageURI(Uri.parse(imageUri))
-            avatarImg.scaleType = ImageView.ScaleType.CENTER_CROP
-            avatarImg.background = null
+    private suspend fun makeImageContainerFromFile(uri: Uri): ImageContainer =
+        withContext(Dispatchers.IO) {
+            val file = File(requireContext().filesDir, PERSON_AVATAR_FILE_NAME)
+            val fileStream = requireContext().contentResolver.openInputStream(uri)
+            if (fileStream != null) {
+                file.writeBytes(fileStream.readBytes())
+            }
+            val contentType = IMAGE_CONTENT_TYPE
+            fileStream?.close()
+            return@withContext ImageContainer(
+                contentType = contentType, imageInBytes = file.readBytes()
+            )
         }
-    }
-
-    private suspend fun copyFileToInternalStorage(uri: Uri) = withContext(Dispatchers.IO) {
-        val file = File(requireContext().filesDir, PERSON_AVATAR_FILE_NAME)
-        val fileStream = requireContext().contentResolver.openInputStream(uri)
-        if (fileStream != null) {
-            file.writeBytes(fileStream.readBytes())
-        }
-    }
 
     override fun onStop() {
         super.onStop()
@@ -548,5 +599,11 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         }
     }
 
-
+    private fun showMessage(message: String) {
+        val snackBar = Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
+        snackBar.show()
+        snackBar.setAction("Ok") {
+            snackBar.dismiss()
+        }
+    }
 }

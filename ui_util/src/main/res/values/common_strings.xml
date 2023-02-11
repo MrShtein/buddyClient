@@ -8,6 +8,7 @@
 
     <string name="kennel_avatar_endpoint">/api/v1/kennel/avatar/</string>
     <string name="animal_photo_endpoint">/api/v1/animal/photo/</string>
+    <string name="user_avatar_endpoint">/api/v1/photo/person</string>
     <string name="age_text">Возраст</string>
     <string name="zero">0</string>
     <string name="nickname_text">Кличка</string>

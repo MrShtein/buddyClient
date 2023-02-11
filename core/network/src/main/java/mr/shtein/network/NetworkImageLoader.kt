@@ -1,23 +1,29 @@
 package mr.shtein.network
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.google.android.material.imageview.ShapeableImageView
 
+private const val TAG = "NetworkImageLoader"
 
 class NetworkImageLoader(
     private val host: String,
 ) : ImageLoader {
+
     override fun setPhotoToView(
         imageView: ImageView,
-        endpoint: String,
+        endPoint: String,
         path: String,
         placeHolder: Drawable?
     ) {
-        val fullUrl = "${host}${endpoint}${path}"
+        val fullUrl = "${host}${endPoint}${path}"
         val cropOptions = RequestOptions().centerCrop()
         Glide.with(imageView.context)
             .load(fullUrl)
@@ -28,12 +34,19 @@ class NetworkImageLoader(
     }
     override fun setPhotoToView(
         imageView: ShapeableImageView,
-        personAvatarUri: String,
-        placeholder: Drawable?
+        endPoint: String,
+        placeholder: Drawable?,
+        token: String,
+        path: String
     ) {
         val cropOptions = RequestOptions().centerCrop()
+        val fullUrl = "$host$endPoint/$path"
+        val headers = LazyHeaders.Builder()
+            .addHeader("Authorization", token)
+            .build()
+        val glide = GlideUrl(fullUrl, headers)
         Glide.with(imageView.context)
-            .load(personAvatarUri)
+            .load(glide)
             .apply(cropOptions)
             .placeholder(placeholder)
             .transition(DrawableTransitionOptions.withCrossFade())

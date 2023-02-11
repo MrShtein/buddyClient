@@ -8,6 +8,8 @@ import mr.shtein.data.exception.IncorrectDataException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.model.*
 import mr.shtein.network.NetworkService
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 class NetworkUserRepository(private val networkService: NetworkService) : UserRepository {
 
@@ -91,7 +93,7 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
             val result = networkService.addVolunteerBid(
                 token = token, kennelId = kennelId
             )
-            when(result.code()) {
+            when (result.code()) {
                 201 -> {
                     return@withContext
                 }
@@ -100,6 +102,26 @@ class NetworkUserRepository(private val networkService: NetworkService) : UserRe
                 }
                 409 -> {
                     throw BidExistException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
+
+    override suspend fun addUserAvatar(
+        token: String,
+        avatar: ByteArray,
+        contentType: String
+    ): String =
+        withContext(Dispatchers.IO) {
+            val requestBody = RequestBody.create(MediaType.get(contentType), avatar)
+            val result = networkService.addUserAvatar(
+                avatar = requestBody, token = token
+            )
+            when (result.code()) {
+                201 -> {
+                    return@withContext result.body()!!
                 }
                 else -> {
                     throw ServerErrorException()

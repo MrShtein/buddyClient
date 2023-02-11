@@ -44,6 +44,7 @@ dependencies {
     implementation project(path: ":ui_util")
     implementation project(path: ":core:data")
     implementation project(path: ":core:model")
+    implementation project(path: ":core:network")
     implementation project(path: ":util")
 
     
