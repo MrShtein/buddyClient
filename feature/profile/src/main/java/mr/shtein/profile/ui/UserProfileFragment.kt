@@ -1,14 +1,17 @@
 package mr.shtein.profile.ui
 
-import android.net.Uri
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
 import android.view.*
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.network.ImageLoader
 import mr.shtein.profile.navigation.ProfileNavigation
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
@@ -21,12 +24,13 @@ private const val LAST_FRAGMENT_KEY = "last_fragment"
 
 class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
 
-    private var personAvatarImg: ImageView? = null
+    private var personAvatarImg: ShapeableImageView? = null
     private var personName: TextView? = null
     private var personStatus: TextView? = null
     private var personSettingsBtn: ImageButton? = null
     private lateinit var exitBtn: MaterialButton
     private val userPropertiesRepository: UserPropertiesRepository by inject()
+    private val imageLoader: ImageLoader by inject()
     private val navigator: ProfileNavigation by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +56,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         setStatusBarColor(true)
         setInsetsListenerForPadding(view, left = false, top = true, right = false, bottom = false)
         initViews(view)
-        setImageToAvatar()
+        setImageToAvatar(personAvatarImg!!)
         setTextToViews()
         setListeners()
     }
@@ -91,13 +95,20 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
             }
     }
 
-    private fun setImageToAvatar() {
-        val imageUri = userPropertiesRepository.getUserUri()
-        if (imageUri == "") {
-            personAvatarImg?.setImageResource(R.drawable.light_person_placeholder)
-        } else {
-            personAvatarImg?.setImageURI(Uri.parse(imageUri))
-        }
+    private fun setImageToAvatar(view: ShapeableImageView) {
+        val endPoint: String = getString(R.string.user_avatar_endpoint)
+        val placeholder: Drawable? = AppCompatResources.getDrawable(
+            requireContext(), R.drawable.user_photo_placeholder
+        )
+        val token: String = userPropertiesRepository.getUserToken()
+        val url: String = userPropertiesRepository.getAvatarUrl()
+        imageLoader.setPhotoToView(
+            imageView = view,
+            endPoint = endPoint,
+            placeholder = placeholder,
+            token = token,
+            path = url
+        )
     }
 
     private fun changeAnimations(fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation) {

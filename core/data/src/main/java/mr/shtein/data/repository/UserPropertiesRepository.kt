@@ -28,8 +28,8 @@ interface UserPropertiesRepository {
     fun getUserCity(): String
     fun saveUserCity(userCity: String)
 
-    fun getUserUri(): String
-    fun saveUserUri(userUriKey: String)
+    fun getAvatarUrl(): String
+    fun saveAvatarUrl(avatarUrl: String)
 
     fun isUserLocked(): Boolean
     fun saveIsUserLocked(isUserLocked: Boolean)

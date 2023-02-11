@@ -1,12 +1,6 @@
 package mr.shtein.data.repository
 
-import android.content.Context
 import mr.shtein.data.util.SharedPreferences
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
-import kotlin.math.log
 
 const val USER_TOKEN_KEY = "token_key"
 const val USER_ID_KEY = "id"
@@ -95,12 +89,12 @@ class SharedUserPropertiesRepository(private val storage: SharedPreferences)  : 
         storage.writeString(USER_CITY_KEY, userCity)
     }
 
-    override fun getUserUri(): String {
+    override fun getAvatarUrl(): String {
         return storage.readString(USER_AVATAR_URI_KEY, "")
     }
 
-    override fun saveUserUri(userUriKey: String) {
-        storage.writeString(USER_AVATAR_URI_KEY, userUriKey)
+    override fun saveAvatarUrl(avatarUrl: String) {
+        storage.writeString(USER_AVATAR_URI_KEY, avatarUrl)
     }
 
     override fun isUserLocked(): Boolean {

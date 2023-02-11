@@ -7,13 +7,15 @@ import com.google.android.material.imageview.ShapeableImageView
 interface ImageLoader {
     fun setPhotoToView(
         imageView: ImageView,
-        endpoint: String,
+        endPoint: String,
         path: String,
         placeHolder: Drawable?
     )
     fun setPhotoToView(
         imageView: ShapeableImageView,
-        personAvatarUri: String,
-        placeholder: Drawable?
+        endPoint: String,
+        placeholder: Drawable?,
+        token: String,
+        path: String
     )
 }

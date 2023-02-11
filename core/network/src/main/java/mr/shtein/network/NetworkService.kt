@@ -137,5 +137,9 @@ interface NetworkService {
         @Path("kennel_id") kennelId: Int
     ): Response<Void>
 
-
+    @POST("/api/v1/photo/person")
+    suspend fun addUserAvatar(
+        @Header("Authorization") token: String,
+        @Body avatar: RequestBody
+    ): Response<String>
 }

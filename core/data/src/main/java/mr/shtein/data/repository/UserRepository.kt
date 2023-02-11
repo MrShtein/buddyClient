@@ -17,4 +17,5 @@ interface UserRepository {
         passwordCheckRequest: PasswordCheckRequest
     ): Boolean
     suspend fun addBidToBecomeVolunteer(token: String, kennelId: Int)
+    suspend fun addUserAvatar(token: String, avatar: ByteArray, contentType: String): String
 }
