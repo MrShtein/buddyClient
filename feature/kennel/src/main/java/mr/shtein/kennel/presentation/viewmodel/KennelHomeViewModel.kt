@@ -16,6 +16,7 @@ import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
+import mr.shtein.kennel.presentation.state.kennel_home.VolunteersBtnState
 
 class KennelHomeViewModel(
     private val kennelPreview: KennelPreview,
@@ -33,6 +34,10 @@ class KennelHomeViewModel(
     private val _catListState: MutableStateFlow<AnimalListState> =
         MutableStateFlow(AnimalListState.Loading)
     val catListState: StateFlow<AnimalListState> = _catListState.asStateFlow()
+
+    private val _volunteersBtnState: MutableStateFlow<VolunteersBtnState> =
+        MutableStateFlow(VolunteersBtnState.Loading)
+    val volunteersBtnState: StateFlow<VolunteersBtnState> = _volunteersBtnState.asStateFlow()
 
     private val _kennelHomeHeaderState: MutableStateFlow<KennelHomeUiState> =
         MutableStateFlow(
@@ -84,6 +89,11 @@ class KennelHomeViewModel(
                     _catListState.update {
                         AnimalListState.Failure(messageResId = R.string.server_error_msg)
                     }
+                }
+            }
+            launch {
+                _volunteersBtnState.update {
+                    kennelInteractor.getVolunteerBids(kennelId = kennelPreview.kennelId)
                 }
             }
         }
