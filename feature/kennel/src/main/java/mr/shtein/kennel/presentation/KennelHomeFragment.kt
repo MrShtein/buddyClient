@@ -1,6 +1,5 @@
 package mr.shtein.kennel.presentation
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -26,7 +25,7 @@ import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
 import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
-import mr.shtein.kennel.presentation.state.kennel_home.VolunteersBtnState
+import mr.shtein.util.state.VolunteerBidsState
 import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
@@ -85,19 +84,19 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                kennelHomeViewModel.volunteersBtnState.collect { volunteersBtnState ->
+                kennelHomeViewModel.volunteerBidsState.collect { volunteersBtnState ->
                     when(volunteersBtnState) {
-                        is VolunteersBtnState.Failure -> {
+                        is VolunteerBidsState.Failure -> {
                             val errorMessage: String = getString(volunteersBtnState.messageResId)
                             showMessage(message = errorMessage)
                         }
-                        is VolunteersBtnState.Success -> {
+                        is VolunteerBidsState.Success -> {
                             @ExperimentalBadgeUtils
                             if (volunteersBtnState.animalList.isNotEmpty()) {
                                 showBidBtnBadge(volunteersBtnState.animalList.size)
                             }
                         }
-                        VolunteersBtnState.Loading -> {}
+                        VolunteerBidsState.Loading -> {}
                     }
                 }
             }
