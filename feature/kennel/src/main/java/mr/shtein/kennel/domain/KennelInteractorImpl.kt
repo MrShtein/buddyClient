@@ -1,7 +1,6 @@
 package mr.shtein.kennel.domain
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.*
 import mr.shtein.data.mapper.AnimalMapper
@@ -16,7 +15,7 @@ import mr.shtein.kennel.R
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
-import mr.shtein.kennel.presentation.state.kennel_home.VolunteersBtnState
+import mr.shtein.util.state.VolunteerBidsState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 import mr.shtein.util.validator.Validator
 
@@ -143,17 +142,17 @@ class KennelInteractorImpl(
         return@withContext AnimalListState.Success(animalList = animalList)
     }
 
-    override suspend fun getVolunteerBids(kennelId: Int): VolunteersBtnState =
+    override suspend fun getVolunteerBids(kennelId: Int): VolunteerBidsState =
         withContext(dispatcher) {
             try {
                 val token = userPropertiesRepository.getUserToken()
-                return@withContext VolunteersBtnState.Success(
+                return@withContext VolunteerBidsState.Success(
                     networkKennelRepository.getVolunteerBids(token = token, kennelId = kennelId)
                 )
             } catch (ex: NoAuthorizationException) {
-                return@withContext VolunteersBtnState.Failure(R.string.no_permission_exception_text)
+                return@withContext VolunteerBidsState.Failure(R.string.no_permission_exception_text)
             } catch (ex: ServerErrorException) {
-                return@withContext VolunteersBtnState.Failure(R.string.server_error_msg)
+                return@withContext VolunteerBidsState.Failure(R.string.server_error_msg)
             }
         }
 }
