@@ -6,10 +6,12 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.ItemAlreadyExistException
+import mr.shtein.data.exception.NoAuthorizationException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.model.KennelPreviewResponse
+import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -104,6 +106,22 @@ class NetworkKennelRepository(
                 }
             } else {
                 null;
+            }
+        }
+
+    override suspend fun getVolunteerBids(token: String, kennelId: Int): List<VolunteersBid> =
+        withContext(Dispatchers.IO) {
+            val result = networkService.getVolunteerBid(token = token, kennelId = kennelId)
+            when (result.code()) {
+                200 -> {
+                    return@withContext result.body()!!
+                }
+                403 -> {
+                    throw NoAuthorizationException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
             }
         }
 

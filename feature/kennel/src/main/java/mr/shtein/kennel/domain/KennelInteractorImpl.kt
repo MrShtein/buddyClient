@@ -12,9 +12,11 @@ import mr.shtein.data.model.KennelRequest
 import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.kennel.R
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
+import mr.shtein.kennel.presentation.state.kennel_home.VolunteersBtnState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 import mr.shtein.util.validator.Validator
 
@@ -141,4 +143,17 @@ class KennelInteractorImpl(
         return@withContext AnimalListState.Success(animalList = animalList)
     }
 
+    override suspend fun getVolunteerBids(kennelId: Int): VolunteersBtnState =
+        withContext(dispatcher) {
+            try {
+                val token = userPropertiesRepository.getUserToken()
+                return@withContext VolunteersBtnState.Success(
+                    networkKennelRepository.getVolunteerBids(token = token, kennelId = kennelId)
+                )
+            } catch (ex: NoAuthorizationException) {
+                return@withContext VolunteersBtnState.Failure(R.string.no_permission_exception_text)
+            } catch (ex: ServerErrorException) {
+                return@withContext VolunteersBtnState.Failure(R.string.server_error_msg)
+            }
+        }
 }

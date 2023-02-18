@@ -117,6 +117,7 @@
     <string name="kennel_not_found_error">К сожалению данного приюта уже нет, обратитесь к администратору</string>
     <string name="become_volunteer_text_btn">Стать волонтером</string>
     <string name="become_volunteer_success_message">Заявка принята, в ближайшее администратор приюта свяжется с вами</string>
+    <string name="no_permission_exception_text">У вас недостаточно прав, для совершения данного действия свяжитесь с администратором</string>
 
 
     <plurals name="buddy_found_count">

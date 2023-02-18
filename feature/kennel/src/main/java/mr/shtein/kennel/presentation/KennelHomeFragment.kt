@@ -1,5 +1,6 @@
 package mr.shtein.kennel.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -11,6 +12,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
@@ -21,9 +26,11 @@ import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
 import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
+import mr.shtein.kennel.presentation.state.kennel_home.VolunteersBtnState
 import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.showMessage
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -43,9 +50,11 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var dogCarousel: RecyclerView
     private lateinit var catsAmount: TextView
     private lateinit var addCatsBtn: ImageButton
+    private lateinit var volunteersBtn: MaterialButton
     private lateinit var catCarousel: RecyclerView
     private lateinit var dogAdapter: DogPhotoAdapter
     private lateinit var catAdapter: CatPhotoAdapter
+    private lateinit var badge: BadgeDrawable
     private val networkImageLoader: ImageLoader by inject()
     private val navigator: KennelNavigation by inject()
     private val kennelHomeViewModel: KennelHomeViewModel by viewModel {
@@ -73,6 +82,26 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         makeDogRecyclerView()
         makeCatRecyclerView()
         setListeners()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                kennelHomeViewModel.volunteersBtnState.collect { volunteersBtnState ->
+                    when(volunteersBtnState) {
+                        is VolunteersBtnState.Failure -> {
+                            val errorMessage: String = getString(volunteersBtnState.messageResId)
+                            showMessage(message = errorMessage)
+                        }
+                        is VolunteersBtnState.Success -> {
+                            @ExperimentalBadgeUtils
+                            if (volunteersBtnState.animalList.isNotEmpty()) {
+                                showBidBtnBadge(volunteersBtnState.animalList.size)
+                            }
+                        }
+                        VolunteersBtnState.Loading -> {}
+                    }
+                }
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -135,6 +164,12 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
     }
 
+    @ExperimentalBadgeUtils
+    private fun showBidBtnBadge(size: Int) {
+        badge.number = size
+        BadgeUtils.attachBadgeDrawable(badge, volunteersBtn)
+    }
+
     private fun initViews(view: View) {
         kennelAvatar = view.findViewById(R.id.kennel_home_avatar)
         kennelName = view.findViewById(R.id.kennel_home_name)
@@ -145,8 +180,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
         catsAmount = view.findViewById(R.id.kennel_home_cats_amount)
         addCatsBtn = view.findViewById(R.id.kennel_home_add_cats_btn)
+        volunteersBtn = view.findViewById(R.id.kennel_home_volunteers_btn)
         catCarousel = view.findViewById(R.id.kennel_home_cat_carousel)
         dogCarousel = view.findViewById(R.id.kennel_home_dog_carousel)
+        badge = BadgeDrawable.createFromResource(requireContext(), R.xml.badge_item)
     }
 
     private fun setHeaderValuesToView(headerUiState: KennelHomeUiState) {
@@ -208,6 +245,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
 
         addCatsBtn.setOnClickListener {
             kennelHomeViewModel.onCatDogBtnClick()
+        }
+
+        volunteersBtn.setOnClickListener {
+          //  kennelHomeViewModel.onVolunteersBtnClick()
         }
     }
 
