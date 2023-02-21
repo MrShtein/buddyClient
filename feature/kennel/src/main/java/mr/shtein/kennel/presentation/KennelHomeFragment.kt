@@ -92,8 +92,8 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                         }
                         is VolunteerBidsState.Success -> {
                             @ExperimentalBadgeUtils
-                            if (volunteersBtnState.animalList.isNotEmpty()) {
-                                showBidBtnBadge(volunteersBtnState.animalList.size)
+                            if (volunteersBtnState.bids.isNotEmpty()) {
+                                showBidBtnBadge(volunteersBtnState.bids.size)
                             }
                         }
                         VolunteerBidsState.Loading -> {}

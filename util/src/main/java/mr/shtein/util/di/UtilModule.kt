@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 val validatorModule: Module = module {
     factory { PasswordValidator(get(), provideCoroutineScope()) }
-    viewModel { CommonViewModel() }
+    viewModel { CommonViewModel(get(), get(), get()) }
     single<ImageCompressor> { ImageCompressorImpl() }
 }
 

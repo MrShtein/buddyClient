@@ -28,6 +28,12 @@ val repositoryModule: Module = module {
             firebaseCrashlytics = getFirebaseCrashlytics()
         )
     }
+    single<KennelAdministratorRepository> {
+        NetworkKennelAdministratorRepository(
+            get(),
+            getDispatcherIO()
+        )
+    }
 
     single<KennelRepository> { NetworkKennelRepository(get(), androidContext()) }
     single<UserPropertiesRepository> {
