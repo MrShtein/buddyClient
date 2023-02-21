@@ -1,17 +1,22 @@
 package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnLayoutChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.launch
 import mr.shtein.buddyandroidclient.navigation.Navigator
 import mr.shtein.auth.presentation.BottomSheetDialogShower
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
@@ -24,6 +29,7 @@ import org.koin.core.parameter.parametersOf
 private const val USER_PROFILE_LABEL = "UserProfileFragment"
 private const val ANIMAL_LIST_LABEL = "animals_list_fragment"
 private const val ADD_KENNEL_LABEL = "AddKennelFragment"
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +52,17 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         bottomNav = findViewById(R.id.bottom_nav_view)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                commonViewModel.bottomNavState.collect { bottomNavState ->
+                    if (bottomNavState.isKennelBadgeVisible) {
+                        val badge = bottomNav.getOrCreateBadge(R.id.kennel_graph)
+                        badge.isVisible = true
+                    }
+                }
+            }
+        }
 
         val onLayoutChangeListener: OnLayoutChangeListener = object : OnLayoutChangeListener {
             override fun onLayoutChange(

@@ -139,9 +139,14 @@ interface NetworkService {
     ): Response<Void>
 
     @GET("/api/v1/bid/{kennel_id}")
-    suspend fun getVolunteerBid(
+    suspend fun getVolunteerBidByKennel(
         @Header("Authorization") token: String,
         @Path("kennel_id") kennelId: Int
+    ): Response<List<VolunteersBid>>
+
+    @GET("/api/v1/bid")
+    suspend fun getAllKennelsVolunteerBids(
+        @Header("Authorization") token: String,
     ): Response<List<VolunteersBid>>
 
     @POST("/api/v1/photo/person")
