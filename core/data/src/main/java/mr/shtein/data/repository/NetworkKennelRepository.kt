@@ -111,7 +111,7 @@ class NetworkKennelRepository(
 
     override suspend fun getVolunteerBids(token: String, kennelId: Int): List<VolunteersBid> =
         withContext(Dispatchers.IO) {
-            val result = networkService.getVolunteerBid(token = token, kennelId = kennelId)
+            val result = networkService.getVolunteerBidByKennel(token = token, kennelId = kennelId)
             when (result.code()) {
                 200 -> {
                     return@withContext result.body()!!

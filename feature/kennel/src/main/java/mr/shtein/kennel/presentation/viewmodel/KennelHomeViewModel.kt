@@ -16,6 +16,7 @@ import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.kennel.presentation.state.kennel_home.KennelHomeUiState
+import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.util.state.VolunteerBidsState
 
 class KennelHomeViewModel(
@@ -35,9 +36,9 @@ class KennelHomeViewModel(
         MutableStateFlow(AnimalListState.Loading)
     val catListState: StateFlow<AnimalListState> = _catListState.asStateFlow()
 
-    private val _volunteerBidsState: MutableStateFlow<VolunteerBidsState> =
+    private val _volunteerBidsState: MutableStateFlow<VolunteerBidsState<List<VolunteersBid>>> =
         MutableStateFlow(VolunteerBidsState.Loading)
-    val volunteerBidsState: StateFlow<VolunteerBidsState> = _volunteerBidsState.asStateFlow()
+    val volunteerBidsState: StateFlow<VolunteerBidsState<List<VolunteersBid>>> = _volunteerBidsState.asStateFlow()
 
     private val _kennelHomeHeaderState: MutableStateFlow<KennelHomeUiState> =
         MutableStateFlow(

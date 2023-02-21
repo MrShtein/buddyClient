@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +23,6 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialSharedAxis
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import moxy.MvpAppCompatFragment
 import moxy.MvpView
 import moxy.presenter.InjectPresenter
@@ -304,7 +300,7 @@ class AnimalsListFragment : MvpAppCompatFragment(), OnAnimalCardClickListener,
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        val badge = BadgeDrawable.createFromResource(requireContext(), R.xml.filter_badge_item)
+        val badge = BadgeDrawable.createFromResource(requireContext(), R.xml.badge_item)
         val animalFilter =
             arguments?.getParcelable(ANIMAL_FILTER_KEY) ?: AnimalFilter()
         animalListPresenter.onInit(

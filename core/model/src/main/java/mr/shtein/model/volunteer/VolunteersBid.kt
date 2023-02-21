@@ -5,5 +5,6 @@ data class VolunteersBid (
     val name: String,
     val surname: String,
     val personId: Long,
-    val bidId: Long
+    val bidId: Long,
+    val kennelId: Int
 ) : Sharelable
