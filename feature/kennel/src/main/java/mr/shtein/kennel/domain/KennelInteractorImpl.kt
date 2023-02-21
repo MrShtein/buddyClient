@@ -17,6 +17,7 @@ import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
 import mr.shtein.util.state.VolunteerBidsState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
+import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.util.validator.Validator
 
 class KennelInteractorImpl(
@@ -142,7 +143,7 @@ class KennelInteractorImpl(
         return@withContext AnimalListState.Success(animalList = animalList)
     }
 
-    override suspend fun getVolunteerBids(kennelId: Int): VolunteerBidsState =
+    override suspend fun getVolunteerBids(kennelId: Int): VolunteerBidsState<List<VolunteersBid>> =
         withContext(dispatcher) {
             try {
                 val token = userPropertiesRepository.getUserToken()
