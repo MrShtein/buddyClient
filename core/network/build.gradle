@@ -13,6 +13,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        buildConfigField "long", "NETWORK_TIMEOUT", "15000"
     }
 
     buildTypes {
@@ -22,7 +23,7 @@ android {
             buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
         }
         debug {
-            buildConfigField "String", "HOST", "\"http://10.0.2.2:8881\""
+            buildConfigField "String", "HOST", "\"http://217.28.223.120:8882\""
         }
     }
     compileOptions {
