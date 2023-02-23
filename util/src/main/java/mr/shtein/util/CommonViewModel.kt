@@ -17,6 +17,7 @@ import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.util.di.KennelAdministratorInteractor
 import mr.shtein.util.state.BottomNavState
 import mr.shtein.util.state.VolunteerBidsState
+import java.io.IOException
 
 class CommonViewModel(
     private val userPropertiesRepository: UserPropertiesRepository,
@@ -59,6 +60,8 @@ class CommonViewModel(
                 } catch (ex: NotFoundException) {
                     firebaseRepository.sendErrorToCrashlytics(ex)
                 } catch (ex: ServerErrorException) {
+                    firebaseRepository.sendErrorToCrashlytics(ex)
+                } catch (ex: IOException) {
                     firebaseRepository.sendErrorToCrashlytics(ex)
                 }
             }
