@@ -38,6 +38,18 @@
             app:layout_constraintTop_toBottomOf="@id/user_settings_label"
             />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/user_settings_avatar_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:indicatorColor="?attr/colorPrimary"
+                app:layout_constraintStart_toStartOf="@id/user_settings_avatar_button"
+                app:layout_constraintEnd_toEndOf="@id/user_settings_avatar_button"
+                app:layout_constraintTop_toTopOf="@id/user_settings_avatar_button"
+                app:layout_constraintBottom_toBottomOf="@id/user_settings_avatar_button"/>
+
         <TextView
             android:id="@+id/user_settings_name_label"
             android:layout_width="wrap_content"

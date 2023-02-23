@@ -21,14 +21,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import mr.shtein.data.exception.*
 import mr.shtein.data.repository.FirebaseRepository
 import mr.shtein.data.repository.UserPropertiesRepository
@@ -54,7 +52,6 @@ import java.io.File
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import java.util.UUID
 import kotlin.properties.Delegates
 
 
@@ -97,6 +94,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
     private lateinit var emailCallBack: MailCallback
     private lateinit var dialog: AlertDialog
     private lateinit var avatarImg: ShapeableImageView
+    private lateinit var avatarProgressBar: CircularProgressIndicator
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isTextChange = false
@@ -129,10 +127,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                 if (uri != null) {
                     coroutineScope.launch {
                         val avatarContainer: ImageContainer = makeImageContainerFromFile(uri)
-                        val userAvatarSignature = UUID.randomUUID().toString()
-                        userPropertiesRepository.saveAvatarUrl(userAvatarSignature)
                         try {
-                            avatarImg.setImageURI(uri)
+                            avatarProgressBar.visibility = View.VISIBLE
                             val token = userPropertiesRepository.getUserToken()
                             val compressedImage = imageCompressor.compressImage(
                                 avatarContainer.imageInBytes
@@ -143,6 +139,8 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
                                 contentType = avatarContainer.contentType
                             )
                             userPropertiesRepository.saveAvatarUrl(url)
+                            avatarImg.setImageURI(uri)
+                            avatarProgressBar.visibility = View.INVISIBLE
                         } catch (ex: IOException) {
                             val message: String = getString(R.string.internet_failure_text)
                             val avatarPlaceholder = AppCompatResources.getDrawable(
@@ -182,6 +180,11 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
+    }
+
     private fun initViews(view: View) {
         userName = view.findViewById(R.id.user_settings_name_input)
         userSurname = view.findViewById(R.id.user_settings_surname_input)
@@ -201,6 +204,7 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             view.findViewById(R.id.user_settings_repeat_new_pwd_input_container)
         saveBtn = view.findViewById(R.id.user_settings_save_btn)
         avatarImg = view.findViewById(R.id.user_settings_avatar_button)
+        avatarProgressBar = view.findViewById(R.id.user_settings_avatar_progress_bar)
         nestedScroll = view.findViewById(R.id.user_settings_scroll_view)
 
         personId = userPropertiesRepository.getUserId()
@@ -251,14 +255,16 @@ class UserSettingsFragment : Fragment(R.layout.user_settings_fragment) {
             requireContext(), R.drawable.user_photo_placeholder_settings
         )
         val endPoint = getString(R.string.user_avatar_endpoint)
-        val userAvatarSignature: String = userPropertiesRepository.getAvatarUrl()
-        imageLoader.setPhotoToView(
-            imageView = avatarImg,
-            endPoint = endPoint,
-            placeholder = avatarPlaceholder,
-            token = token,
-            path = userAvatarSignature
-        )
+        val userAvatarUrl: String = userPropertiesRepository.getAvatarUrl()
+        if (userAvatarUrl.isNotEmpty()) {
+            imageLoader.setPhotoToView(
+                imageView = avatarImg,
+                endPoint = endPoint,
+                placeholder = avatarPlaceholder,
+                token = token,
+                path = userAvatarUrl
+            )
+        }
     }
 
     private fun setGender() {
