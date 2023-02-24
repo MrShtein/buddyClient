@@ -11,24 +11,30 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import mr.shtein.data.model.KennelPreview
-import mr.shtein.data.repository.AppPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.KennelsAdapter
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
+import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.FragmentsListForAssigningAnimation
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
 import mr.shtein.util.CommonViewModel
+import mr.shtein.util.state.VolunteerBidsState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -94,7 +100,19 @@ class AddKennelFragment : Fragment(R.layout.add_kennel_fragment) {
                 is AddKennelState.Success -> {
                     progressBar.visibility = View.INVISIBLE
                     val adapter = kennelRecycler.adapter as KennelsAdapter
-                    adapter.setNewData(state.kennelsList)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        commonViewModel.bidBadgesVisibilityState.collect {
+                            if (it.isKennelBadgeVisible &&
+                                it.volunteerBidsState is VolunteerBidsState.Success
+                            ) {
+                                val bidMap: Map<Int, List<VolunteersBid>> =
+                                    (it.volunteerBidsState as VolunteerBidsState.Success).bids
+                                adapter.setNewData(state.kennelsList, bidMap)
+                            } else {
+                                adapter.setNewData(state.kennelsList)
+                            }
+                        }
+                    }
                 }
                 is AddKennelState.NoItem -> {
                     animateEmptyKennelsListAnimationAppearance()
