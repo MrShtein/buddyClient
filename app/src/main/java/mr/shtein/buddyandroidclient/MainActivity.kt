@@ -1,7 +1,6 @@
 package mr.shtein.buddyandroidclient
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.OnLayoutChangeListener
 import androidx.appcompat.app.AppCompatActivity
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                commonViewModel.bottomNavState.collect { bottomNavState ->
+                commonViewModel.bidBadgesVisibilityState.collect { bottomNavState ->
                     if (bottomNavState.isKennelBadgeVisible) {
                         val badge = bottomNav.getOrCreateBadge(R.id.kennel_graph)
                         badge.isVisible = true
