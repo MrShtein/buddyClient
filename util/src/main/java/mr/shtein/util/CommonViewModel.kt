@@ -13,7 +13,7 @@ import mr.shtein.data.repository.FirebaseRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.util.di.KennelAdministratorInteractor
-import mr.shtein.util.state.BottomNavState
+import mr.shtein.util.state.BidsState
 import mr.shtein.util.state.VolunteerBidsState
 import java.io.IOException
 
@@ -29,40 +29,61 @@ class CommonViewModel(
 
     var bottomNavHeight: Int = 0
 
-    private val _bidBadgesVisibilityState: MutableStateFlow<BottomNavState> = MutableStateFlow(
-        BottomNavState(
+    private val _bidBadgesVisibilityState: MutableStateFlow<BidsState> = MutableStateFlow(
+        BidsState(
             isKennelBadgeVisible = false,
             volunteerBidsState = VolunteerBidsState.Loading
         )
     )
 
-    val bidBadgesVisibilityState: StateFlow<BottomNavState> = _bidBadgesVisibilityState.asStateFlow()
+    val bidBadgesVisibilityState: StateFlow<BidsState> = _bidBadgesVisibilityState.asStateFlow()
 
     init {
         val token = userPropertiesRepository.getUserToken()
         if (token.isNotEmpty()) {
-            viewModelScope.launch {
-                try {
-                    val volunteerBidsState: VolunteerBidsState<Map<Int, List<VolunteersBid>>> =
-                        kennelAdministratorInteractor.getAllKennelsVolunteerBids()
-                    if (volunteerBidsState is VolunteerBidsState.Success
-                        && volunteerBidsState.bids.isNotEmpty()
-                    ) {
-                        _bidBadgesVisibilityState.update {
-                            it.copy(
-                                isKennelBadgeVisible = true,
-                                volunteerBidsState = volunteerBidsState
-                            )
-                        }
+            getVolunteerBids()
+        }
+    }
+
+    private fun getVolunteerBids() {
+        viewModelScope.launch {
+            try {
+                val volunteerBidsState: VolunteerBidsState<Map<Int, List<VolunteersBid>>> =
+                    kennelAdministratorInteractor.getAllKennelsVolunteerBids()
+                if (volunteerBidsState is VolunteerBidsState.Success
+                    && volunteerBidsState.bids.isNotEmpty()
+                ) {
+                    _bidBadgesVisibilityState.update {
+                        it.copy(
+                            isKennelBadgeVisible = true,
+                            volunteerBidsState = volunteerBidsState
+                        )
                     }
-                } catch (ex: NotFoundException) {
-                    firebaseRepository.sendErrorToCrashlytics(ex)
-                } catch (ex: ServerErrorException) {
-                    firebaseRepository.sendErrorToCrashlytics(ex)
-                } catch (ex: IOException) {
-                    firebaseRepository.sendErrorToCrashlytics(ex)
                 }
+            } catch (ex: NotFoundException) {
+                firebaseRepository.sendErrorToCrashlytics(ex)
+            } catch (ex: ServerErrorException) {
+                firebaseRepository.sendErrorToCrashlytics(ex)
+            } catch (ex: IOException) {
+                firebaseRepository.sendErrorToCrashlytics(ex)
             }
+        }
+    }
+
+    public fun updateBidsByKennel(kennelId: Int, volunteerBidsList: List<VolunteersBid>) {
+        val volunteerBidsState: VolunteerBidsState<Map<Int, List<VolunteersBid>>> =
+            _bidBadgesVisibilityState.value.volunteerBidsState
+        if (volunteerBidsState is VolunteerBidsState.Success) {
+            val volunteerBidsMap: MutableMap<Int, List<VolunteersBid>> =
+                volunteerBidsState.bids.toMutableMap()
+            volunteerBidsMap[kennelId] = volunteerBidsList
+            _bidBadgesVisibilityState.update {
+                it.copy(
+                    volunteerBidsState = VolunteerBidsState.Success(volunteerBidsMap.toMap())
+                )
+            }
+        } else {
+            getVolunteerBids()
         }
     }
 }

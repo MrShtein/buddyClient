@@ -29,6 +29,7 @@ import mr.shtein.util.state.VolunteerBidsState
 import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.CommonViewModel
 import mr.shtein.util.showMessage
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,6 +62,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)
         )
     }
+    private val commonViewModel: CommonViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +87,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 kennelHomeViewModel.volunteerBidsState.collect { volunteersBtnState ->
-                    when(volunteersBtnState) {
+                    when (volunteersBtnState) {
                         is VolunteerBidsState.Failure -> {
                             val errorMessage: String = getString(volunteersBtnState.messageResId)
                             showMessage(message = errorMessage)
@@ -94,6 +96,10 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
                             @ExperimentalBadgeUtils
                             if (volunteersBtnState.bids.isNotEmpty()) {
                                 showBidBtnBadge(volunteersBtnState.bids.size)
+                                commonViewModel.updateBidsByKennel(
+                                    kennelId = volunteersBtnState.bids[0].kennelId,
+                                    volunteerBidsList = volunteersBtnState.bids
+                                )
                             }
                         }
                         VolunteerBidsState.Loading -> {}
@@ -247,7 +253,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
 
         volunteersBtn.setOnClickListener {
-          //  kennelHomeViewModel.onVolunteersBtnClick()
+            //  kennelHomeViewModel.onVolunteersBtnClick()
         }
     }
 
