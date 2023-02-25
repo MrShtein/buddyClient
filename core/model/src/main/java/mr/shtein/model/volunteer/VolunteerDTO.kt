@@ -1,10 +1,11 @@
 package mr.shtein.model.volunteer
 
-data class VolunteersBid (
+data class VolunteerDTO  (
     val avatarUrl: String,
     val name: String,
     val surname: String,
     val personId: Long,
-    val bidId: Long,
-    val kennelId: Int
+    val volunteerId: Long,
+    val phoneNumber: String,
+    val volunteerPermissions: List<VolunteerPermission>
 ) : VolunteerBids

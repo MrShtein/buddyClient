@@ -38,7 +38,8 @@ class KennelHomeViewModel(
 
     private val _volunteerBidsState: MutableStateFlow<VolunteerBidsState<List<VolunteersBid>>> =
         MutableStateFlow(VolunteerBidsState.Loading)
-    val volunteerBidsState: StateFlow<VolunteerBidsState<List<VolunteersBid>>> = _volunteerBidsState.asStateFlow()
+    val volunteerBidsState: StateFlow<VolunteerBidsState<List<VolunteersBid>>> =
+        _volunteerBidsState.asStateFlow()
 
     private val _kennelHomeHeaderState: MutableStateFlow<KennelHomeUiState> =
         MutableStateFlow(
@@ -149,6 +150,10 @@ class KennelHomeViewModel(
         _kennelHomeHeaderState.update { kennelHomeUiState ->
             kennelHomeUiState.copy(isDialogVisible = true)
         }
+    }
+
+    fun onVolunteersBtnClick() {
+        navigation.moveToVolunteerListFromKennelHome()
     }
 
     fun onAnimalPhotoClick(animalItem: Animal) {

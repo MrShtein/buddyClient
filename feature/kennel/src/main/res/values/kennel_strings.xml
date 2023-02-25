@@ -37,6 +37,8 @@
     <string name="kennel_settings_building_hint">Корп.</string>
     <string name="kennel_settings_identification_number_label">ИНН</string>
     <string name="kennel_settings_identification_number_hint">0123456789</string>
+    <string name="volunteers_list_header_text">Волонтеры приюта \n %1$s</string>
+
 
 
 

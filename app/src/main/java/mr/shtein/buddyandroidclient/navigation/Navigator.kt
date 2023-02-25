@@ -209,6 +209,10 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         )
     }
 
+    override fun moveToVolunteerListFromKennelHome() {
+        navController?.navigate(R.id.action_kennelHomeFragment_to_volunteersListFragment)
+    }
+
     override fun moveFromUserProfileToAnimalList(fromFragment: FragmentsListForAssigningAnimation) {
         val lastFragmentBundle = bundleOf()
         lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, fromFragment)

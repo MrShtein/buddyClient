@@ -7,16 +7,12 @@ import mr.shtein.data.mapper.CoordinatesMapper
 import mr.shtein.data.mapper.KennelMapper
 import mr.shtein.kennel.domain.KennelInteractor
 import mr.shtein.kennel.domain.KennelInteractorImpl
-import mr.shtein.kennel.presentation.viewmodel.AddKennelViewModel
-import mr.shtein.kennel.presentation.viewmodel.KennelConfirmViewModel
-import mr.shtein.kennel.presentation.viewmodel.KennelHomeViewModel
-import mr.shtein.kennel.presentation.viewmodel.KennelSettingsViewModel
+import mr.shtein.kennel.presentation.viewmodel.*
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
 import mr.shtein.util.validator.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
-import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
 private const val EMAIL_VALIDATOR_KEY = "email_key"
@@ -52,6 +48,9 @@ val kennelModule: Module = module {
     }
     viewModel {kennelPreview ->
         KennelHomeViewModel(kennelPreview = kennelPreview.get(), get(), get())
+    }
+    viewModel {
+        VolunteerListViewModel(get())
     }
 }
 
