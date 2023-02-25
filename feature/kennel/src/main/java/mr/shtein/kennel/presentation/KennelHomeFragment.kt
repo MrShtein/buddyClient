@@ -21,7 +21,6 @@ import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.*
 import mr.shtein.data.model.Animal
 import mr.shtein.kennel.R
-import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.adapter.CatPhotoAdapter
 import mr.shtein.kennel.presentation.adapter.DogPhotoAdapter
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
@@ -57,7 +56,6 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     private lateinit var catAdapter: CatPhotoAdapter
     private lateinit var badge: BadgeDrawable
     private val networkImageLoader: ImageLoader by inject()
-    private val navigator: KennelNavigation by inject()
     private val kennelHomeViewModel: KennelHomeViewModel by viewModel {
         parametersOf(
             arguments?.getParcelable(KENNEL_ITEM_BUNDLE_KEY)
@@ -219,7 +217,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
             listOf(),
             object : CatPhotoAdapter.OnAnimalItemClickListener {
                 override fun onClick(animalItem: Animal) {
-                    navigator.moveToAnimalSettings(animal = animalItem)
+                    kennelHomeViewModel.onAnimalPhotoClick(animalItem = animalItem)
                 }
             },
             networkImageLoader
@@ -260,7 +258,7 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
         }
 
         volunteersBtn.setOnClickListener {
-            //  kennelHomeViewModel.onVolunteersBtnClick()
+            kennelHomeViewModel.onVolunteersBtnClick()
         }
     }
 
