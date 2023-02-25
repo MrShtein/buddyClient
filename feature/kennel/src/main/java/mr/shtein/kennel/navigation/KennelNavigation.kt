@@ -16,6 +16,7 @@ interface KennelNavigation {
     fun moveToAnimalSettings(animal: Animal)
     fun moveToCityChoiceFromKennelSettings()
     fun moveToKennelConfirmFragment(kennelRequest: KennelRequest)
+    fun moveToVolunteerListFromKennelHome()
     fun backToPreviousFragment()
 
 }

@@ -191,6 +191,9 @@
         <action
             android:id="@+id/action_kennelHomeFragment_to_animalSettingsFragment"
             app:destination="@id/animalSettingsFragment" />
+        <action
+                android:id="@+id/action_kennelHomeFragment_to_volunteersListFragment"
+                app:destination="@id/volunteersListFragment" />
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
@@ -208,4 +211,9 @@
             app:popUpToInclusive="true"
             app:destination="@id/animalsListFragment" />
     </fragment>
+    <fragment
+            android:id="@+id/volunteersListFragment"
+            android:name="mr.shtein.kennel.presentation.VolunteersListFragment"
+            android:label="VolunteersListFragment"
+            tools:layout="@layout/volunteers_list_fragment"/>
 </navigation>
