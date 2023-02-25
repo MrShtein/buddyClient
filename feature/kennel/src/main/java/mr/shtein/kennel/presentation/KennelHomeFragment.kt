@@ -2,6 +2,7 @@ package mr.shtein.kennel.presentation
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -172,7 +173,13 @@ class KennelHomeFragment : Fragment(R.layout.kennel_home_fragment) {
     @ExperimentalBadgeUtils
     private fun showBidBtnBadge(size: Int) {
         badge.number = size
-        BadgeUtils.attachBadgeDrawable(badge, volunteersBtn)
+        volunteersBtn.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                BadgeUtils.attachBadgeDrawable(badge, volunteersBtn)
+                volunteersBtn.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
     }
 
     private fun initViews(view: View) {
