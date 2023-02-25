@@ -153,7 +153,7 @@ class KennelHomeViewModel(
     }
 
     fun onVolunteersBtnClick() {
-        navigation.moveToVolunteerListFromKennelHome()
+        navigation.moveToVolunteerListFromKennelHome(kennelPreview = kennelPreview)
     }
 
     fun onAnimalPhotoClick(animalItem: Animal) {

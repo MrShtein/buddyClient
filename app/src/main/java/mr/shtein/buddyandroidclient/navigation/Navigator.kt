@@ -15,6 +15,7 @@ import mr.shtein.splash.navigation.StartNavigation
 import mr.shtein.city.navigation.CityNavigation
 import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AnimalFilter
+import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.profile.navigation.ProfileNavigation
@@ -209,8 +210,10 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         )
     }
 
-    override fun moveToVolunteerListFromKennelHome() {
-        navController?.navigate(R.id.action_kennelHomeFragment_to_volunteersListFragment)
+    override fun moveToVolunteerListFromKennelHome(kennelPreview: KennelPreview) {
+        val bundle = bundleOf()
+        bundle.putParcelable(KENNEL_ITEM_BUNDLE_KEY, kennelPreview)
+        navController?.navigate(R.id.action_kennelHomeFragment_to_volunteersListFragment, bundle)
     }
 
     override fun moveFromUserProfileToAnimalList(fromFragment: FragmentsListForAssigningAnimation) {
@@ -266,6 +269,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
         private const val ANIMAL_FILTER_KEY = "animal_filter"
+        private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
 
     }
 }
