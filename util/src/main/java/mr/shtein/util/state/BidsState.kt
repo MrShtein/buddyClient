@@ -2,7 +2,7 @@ package mr.shtein.util.state
 
 import mr.shtein.model.volunteer.VolunteersBid
 
-data class BottomNavState(
+data class BidsState(
     val isKennelBadgeVisible: Boolean,
     var volunteerBidsState: VolunteerBidsState<Map<Int, List<VolunteersBid>>>
 )
