@@ -10,5 +10,6 @@ data class LoginInfo(
   val role: String,
   val gender: String,
   val cityInfo: String,
-  val isLocked: Boolean
+  val isLocked: Boolean,
+  val avatarUrl: String
 )

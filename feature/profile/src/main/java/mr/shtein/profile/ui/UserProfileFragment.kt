@@ -102,7 +102,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         )
         val token: String = userPropertiesRepository.getUserToken()
         val url: String = userPropertiesRepository.getAvatarUrl()
-        if (url.isEmpty()) {
+          if (url.isEmpty()) {
             view.setImageDrawable(placeholder)
         } else {
             imageLoader.setPhotoToView(

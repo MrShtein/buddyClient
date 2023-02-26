@@ -32,6 +32,7 @@ import org.koin.android.ext.android.inject
 import java.lang.NullPointerException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import kotlin.math.log
 
 
 private const val LAST_FRAGMENT_KEY = "last_fragment"
@@ -140,6 +141,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 userPropertiesRepository.saveUserSurname(loginInfo.surname)
                 userPropertiesRepository.saveUserPhoneNumber(loginInfo.phone)
                 userPropertiesRepository.saveUserGender(loginInfo.gender)
+                userPropertiesRepository.saveAvatarUrl(loginInfo.avatarUrl)
 
                 navigator.moveToAnimalListFragment(FragmentsListForAssigningAnimation.LOGIN)
             } catch (ex: IncorrectDataException) {
