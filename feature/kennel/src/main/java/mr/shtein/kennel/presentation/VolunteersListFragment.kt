@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,9 +16,11 @@ import kotlinx.coroutines.launch
 import mr.shtein.data.model.KennelPreview
 import mr.shtein.kennel.R
 import mr.shtein.kennel.databinding.VolunteersListFragmentBinding
+import mr.shtein.kennel.presentation.state.volunteers_list.VolunteersListBodyState
 import mr.shtein.kennel.presentation.viewmodel.VolunteerListViewModel
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.showMessage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -53,6 +57,7 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(true)
+
         setInsetsListenerForPadding(
             binding.volunteersListHeader,
             left = false,
@@ -62,8 +67,24 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
         )
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                volunteerViewModel.volunteerListState.collect {
-                    showKennelName(it.kennelName)
+                volunteerViewModel.volunteerListState.collect { volunteersListState ->
+                    showKennelName(volunteersListState.kennelName)
+                    val volunteersListBodyState: VolunteersListBodyState =
+                        volunteersListState.volunteersListBodyState
+                    when(volunteersListBodyState) {
+                        VolunteersListBodyState.Loading -> {
+                            binding.volunteersListProgressBar.isVisible = true
+                        }
+                        is VolunteersListBodyState.Failure -> {
+                            val errorMessage: String = getString(volunteersListBodyState.message)
+                            showMessage(errorMessage)
+                            binding.volunteersListProgressBar.isGone = true
+                        }
+                        VolunteersListBodyState.NoItem -> {}
+                        is VolunteersListBodyState.Success -> {
+                            binding.volunteersListProgressBar.isGone = true
+                        }
+                    }
                 }
             }
         }

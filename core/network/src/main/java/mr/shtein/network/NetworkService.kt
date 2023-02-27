@@ -7,6 +7,7 @@ import mr.shtein.model.AddOrUpdateAnimal
 import mr.shtein.model.CitiesResponse
 import mr.shtein.model.KennelPreviewResponse
 import mr.shtein.model.*
+import mr.shtein.model.volunteer.VolunteerDTO
 import mr.shtein.model.volunteer.VolunteersBid
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -148,6 +149,12 @@ interface NetworkService {
     suspend fun getAllKennelsVolunteerBids(
         @Header("Authorization") token: String,
     ): Response<List<VolunteersBid>>
+
+    @GET("/api/v1/volunteer/{kennel_id}")
+    suspend fun getVolunteersByKennelId(
+        @Header("Authorization") token: String,
+        @Path("kennel_id") kennelId: Int
+    ): Response<List<VolunteerDTO>>
 
     @POST("/api/v1/photo/person")
     suspend fun addUserAvatar(

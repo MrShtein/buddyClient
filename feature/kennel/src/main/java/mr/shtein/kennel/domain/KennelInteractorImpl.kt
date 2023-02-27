@@ -15,9 +15,10 @@ import mr.shtein.kennel.R
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
+import mr.shtein.kennel.presentation.state.volunteers_list.VolunteersListBodyState
 import mr.shtein.util.state.VolunteerBidsState
 import mr.shtein.kennel.util.mapper.KennelPreviewMapper
-import mr.shtein.model.volunteer.VolunteersBid
+import mr.shtein.model.volunteer.*
 import mr.shtein.util.validator.Validator
 
 class KennelInteractorImpl(
@@ -156,4 +157,40 @@ class KennelInteractorImpl(
                 return@withContext VolunteerBidsState.Failure(R.string.server_error_msg)
             }
         }
+
+    override suspend fun getVolunteersAndBids(
+        kennelId: Int,
+    ): VolunteersListBodyState = withContext(dispatcher) {
+        try {
+            val token = userPropertiesRepository.getUserToken()
+            val volunteersList: List<VolunteerDTO> =
+                networkKennelRepository.getVolunteersByKennelId(
+                    token = token, kennelId = kennelId
+                )
+            val bidsList: List<VolunteersBid> = networkKennelRepository.getVolunteerBids(
+                token = token, kennelId = kennelId
+            )
+            val bidHeaderItem: BidHeaderItem = BidHeaderItem(itemsCount = bidsList.size)
+            val volunteerHeaderItem: VolunteerHeaderItem = VolunteerHeaderItem(
+                itemsCount = volunteersList.size
+            )
+            val volunteersListBody: MutableList<RecyclerViewCommonItem> = mutableListOf(
+                bidHeaderItem
+            )
+            volunteersListBody.addAll(bidsList)
+            volunteersListBody.add(volunteerHeaderItem)
+            volunteersListBody.addAll(volunteersList)
+            return@withContext VolunteersListBodyState
+                .Success(volunteersList = volunteersListBody)
+        } catch (ex: BadCredentialsException) {
+            return@withContext VolunteersListBodyState
+                .Failure(R.string.no_permission_exception_text)
+        } catch (ex: NoAuthorizationException) {
+            return@withContext VolunteersListBodyState
+                .Failure(R.string.no_authorization_exception_text)
+        } catch (ex: ServerErrorException) {
+            return@withContext VolunteersListBodyState
+                .Failure(R.string.server_error_msg)
+        }
+    }
 }

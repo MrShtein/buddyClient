@@ -50,7 +50,7 @@ val kennelModule: Module = module {
         KennelHomeViewModel(kennelPreview = kennelPreview.get(), get(), get())
     }
     viewModel {kennelPreview ->
-        VolunteerListViewModel(get(), kennelPreview = kennelPreview.get())
+        VolunteerListViewModel(get(), kennelPreview = kennelPreview.get(), get())
     }
 }
 
