@@ -7,4 +7,4 @@ data class VolunteersBid (
     val personId: Long,
     val bidId: Long,
     val kennelId: Int
-) : VolunteerBids
+) : RecyclerViewCommonItem
