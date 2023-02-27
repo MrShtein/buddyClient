@@ -43,7 +43,8 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? = arguments?.getParcelable(LAST_FRAGMENT_KEY)
+        val fragmentsListForAssigningAnimation: FragmentsListForAssigningAnimation? =
+            arguments?.getParcelable(LAST_FRAGMENT_KEY)
         fragmentsListForAssigningAnimation?.let {
             changeAnimations(it)
         }
@@ -102,7 +103,7 @@ class UserProfileFragment : Fragment(R.layout.user_profile_fragment) {
         )
         val token: String = userPropertiesRepository.getUserToken()
         val url: String = userPropertiesRepository.getAvatarUrl()
-          if (url.isEmpty()) {
+        if (url.isEmpty()) {
             view.setImageDrawable(placeholder)
         } else {
             imageLoader.setPhotoToView(
