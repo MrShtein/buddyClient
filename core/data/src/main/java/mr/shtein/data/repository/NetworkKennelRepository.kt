@@ -5,12 +5,15 @@ import android.net.Uri
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mr.shtein.data.exception.BadCredentialsException
 import mr.shtein.data.exception.ItemAlreadyExistException
 import mr.shtein.data.exception.NoAuthorizationException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.model.KennelPreviewResponse
+import mr.shtein.model.volunteer.RecyclerViewCommonItem
+import mr.shtein.model.volunteer.VolunteerDTO
 import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.network.NetworkService
 import okhttp3.MediaType
@@ -124,6 +127,24 @@ class NetworkKennelRepository(
                 }
             }
         }
+
+    override suspend fun getVolunteersByKennelId(token: String, kennelId: Int): List<VolunteerDTO> {
+        val result = networkService.getVolunteersByKennelId(token = token, kennelId = kennelId)
+        when (result.code()) {
+            200 -> {
+                return result.body()!!
+            }
+            406 -> {
+                throw BadCredentialsException()
+            }
+            403 -> {
+                throw NoAuthorizationException()
+            }
+            else -> {
+                throw ServerErrorException()
+            }
+        }
+    }
 
     companion object {
         private const val KENNEL_AVATAR_FILE_NAME = "kennel_avatar"

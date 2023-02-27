@@ -5,6 +5,7 @@ import mr.shtein.data.model.KennelRequest
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
+import mr.shtein.kennel.presentation.state.volunteers_list.VolunteersListBodyState
 import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.util.state.VolunteerBidsState
 
@@ -20,4 +21,5 @@ interface KennelInteractor {
     suspend fun validateIdentificationNum(identificationNum: String): ValidationResult
     suspend fun getAnimalByTypeIdAndKennelId(animalType: String, kennelId: Int): AnimalListState
     suspend fun getVolunteerBids(kennelId: Int): VolunteerBidsState<List<VolunteersBid>>
+    suspend fun getVolunteersAndBids(kennelId: Int) : VolunteersListBodyState
 }
