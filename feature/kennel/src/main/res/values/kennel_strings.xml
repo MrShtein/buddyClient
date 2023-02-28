@@ -40,6 +40,7 @@
     <string name="kennel_settings_identification_number_hint">0123456789</string>
     <string name="volunteers_list_header_text">Волонтеры приюта \n %1$s</string>
     <string name="Заявки">Заявки</string>
+    <string name="volunteer_header_item_label">Волонтеры приюта</string>
 
 
     <plurals name="buddy_found_count_without_word_find">
@@ -68,4 +69,5 @@
         <item quantity="many">%d заявок</item>
         <item quantity="other">%d заявки</item>
     </plurals>
+
 </resources>
