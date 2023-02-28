@@ -38,8 +38,7 @@
     <string name="kennel_settings_identification_number_label">ИНН</string>
     <string name="kennel_settings_identification_number_hint">0123456789</string>
     <string name="volunteers_list_header_text">Волонтеры приюта \n %1$s</string>
-
-
+    <string name="Заявки">Заявки</string>
 
 
     <plurals name="buddy_found_count_without_word_find">
@@ -58,5 +57,14 @@
         <item quantity="few">%d животных</item>
         <item quantity="many">%d животных</item>
         <item quantity="other">%d животных</item>
+    </plurals>
+
+    <plurals name="bid_found_count">
+        <item quantity="zero">%d заявок</item>
+        <item quantity="one">%d заявка</item>
+        <item quantity="two">%d заявки</item>
+        <item quantity="few">%d заявок</item>
+        <item quantity="many">%d заявок</item>
+        <item quantity="other">%d заявки</item>
     </plurals>
 </resources>
