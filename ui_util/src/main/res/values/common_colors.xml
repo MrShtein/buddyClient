@@ -54,6 +54,7 @@
     <color name="tertiary90">#D9E2FF</color>
     <color name="tertiary10">#0E1B37</color>
     <color name="error40">#BA1A1A</color>
+    <color name="error50">#DE3730</color>
     <color name="error100">#FFFFFF</color>
     <color name="error90">#FFDAD6</color>
     <color name="error10">#410002</color>

@@ -7,6 +7,7 @@
     <string name="year">Год</string>
     <string name="add_animal_dialog_clarification_text">%1$s питомца</string>
     <string name="add">Добавить</string>
+    <string name="reject">Отклонить</string>
     <string name="add_animal_label_text">Добавление животного</string>
     <string name="add_animal_first_img_description">Первая картинка с животным</string>
     <string name="add_animal_add_btn_description">Кнопка для добавления новой фотографии</string>
