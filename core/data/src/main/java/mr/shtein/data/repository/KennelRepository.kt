@@ -3,7 +3,6 @@ package mr.shtein.data.repository
 import mr.shtein.data.model.AvatarWrapper
 import mr.shtein.data.model.KennelRequest
 import mr.shtein.model.KennelPreviewResponse
-import mr.shtein.model.volunteer.RecyclerViewCommonItem
 import mr.shtein.model.volunteer.VolunteerDTO
 import mr.shtein.model.volunteer.VolunteersBid
 

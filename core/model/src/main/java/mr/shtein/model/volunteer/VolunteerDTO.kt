@@ -8,4 +8,4 @@ data class VolunteerDTO  (
     val volunteerId: Long,
     val phoneNumber: String,
     val volunteerPermissions: List<VolunteerPermission>
-) : RecyclerViewCommonItem
+)
