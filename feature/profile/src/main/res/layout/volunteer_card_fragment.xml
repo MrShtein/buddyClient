@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorSurface"
+    android:transitionGroup="true">
+
+    <ImageButton
+        android:id="@+id/profile_settings_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/settings_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/settings_btn_description"
+        android:backgroundTint="@color/transparent"
+        />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_avatar_img"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
+        tools:src="@drawable/user_photo_placeholder"/>
+
+       <TextView
+        android:id="@+id/profile_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/profile_name_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_avatar_img" />
+
+
+    <TextView
+        android:id="@+id/profile_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        tools:text="Александр Никитович"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name_title"
+        android:layout_marginTop="15dp"
+        android:textColor="?attr/colorOnSurface"
+        />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerNameStatusText"
+        style="@style/Buddy.Widget.Divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@id/profile_name_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="20dp"/>
+
+    <TextView
+        android:id="@+id/profile_status_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_status_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividerNameStatusText"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/profile_status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_status_title"
+        tools:text="Пользователь" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerAfterStatus"
+        android:layout_width="match_parent"
+        style="@style/Buddy.Widget.Divider"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@id/profile_status_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="20dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/user_profile_exit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Buddy.Widget.MiddleButton.Outlined"
+        android:textAllCaps="false"
+        android:text="@string/exit_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividerAfterStatus"
+        android:layout_marginTop="15dp"/>
+
+    <!--    <Button-->
+    <!--        android:id="@+id/profile_volonteer_btn"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="@string/profile_volonteer_btn_text"-->
+    <!--        android:textSize="14sp"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        android:backgroundTint="@color/cian5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/profile_status_text"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        />-->
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
