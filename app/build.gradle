@@ -27,10 +27,13 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("C:/Users/donsi/AndroidStudioProjects/buddyClient_1/keystore.config.txt")
-            storePassword "your_keystore_password"
-            keyAlias "your_key_alias"
-            keyPassword "your_key_password"
+            Properties keystoreConfig = new Properties()
+            keystoreConfig.load(new FileInputStream(file("C:/Users/donsi/AndroidStudioProjects/buddyClient_1/app/keystore.config.txt")))
+
+            storeFile file(keystoreConfig["storeFile"])
+            storePassword keystoreConfig["storePassword"]
+            keyPassword keystoreConfig["keyPassword"]
+            keyAlias keystoreConfig["keyAlias"]
         }
     }
     compileSdk sdk_versions.compile
