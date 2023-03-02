@@ -16,8 +16,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/animal_card_photo_gallery"
-            android:layout_width="371dp"
-            android:layout_height="172dp"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
