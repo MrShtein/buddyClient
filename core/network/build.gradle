@@ -13,17 +13,19 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        buildConfigField "long", "NETWORK_TIMEOUT", "15000"
     }
 
     buildTypes {
+        Properties networkConfig = new Properties()
+        networkConfig.load(new FileInputStream(file("network.config")))
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            buildConfigField "String", "HOST", "\"http://217.28.223.120:8881\""
+            buildConfigField "String", "HOST", networkConfig["productionHost"]
         }
         debug {
-            buildConfigField "String", "HOST", "\"http://217.28.223.120:8882\""
+            buildConfigField "String", "HOST", networkConfig["devRemoteHost"]
         }
     }
     compileOptions {
