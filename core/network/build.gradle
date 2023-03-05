@@ -11,6 +11,10 @@ android {
         minSdk sdk_versions.min
         targetSdk sdk_versions.target
 
+        Properties networkConfig = new Properties()
+        networkConfig.load(new FileInputStream(file("network.config")))
+        buildConfigField "long", "NETWORK_TIMEOUT", networkConfig["networkTimeout"]
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
