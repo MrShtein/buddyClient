@@ -2,17 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bit_item_avatar"
+            android:id="@+id/bid_item_avatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"
+            app:shapeAppearance="@style/ShapeAppearance.Buddy.CircleImageView"
             android:src="@drawable/user_photo_placeholder"
             />
 
@@ -20,21 +23,21 @@
             android:id="@+id/bid_item_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/bit_item_avatar"
+            app:layout_constraintStart_toEndOf="@id/bid_item_avatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/bit_item_avatar"
+            app:layout_constraintTop_toTopOf="@id/bid_item_avatar"
             android:textSize="16sp"
             android:textColor="?attr/colorOnSurface"
             tools:text="Волонтерка Мария"/>
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/bid_item_add_btn"
+            android:id="@+id/bid_item_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Buddy.Widget.SmallButton.Filled.Tonal"
             android:text="@string/add"
             android:textColor="?attr/colorPrimary"
-            app:layout_constraintStart_toEndOf="@id/bit_item_avatar"
+            app:layout_constraintStart_toEndOf="@id/bid_item_avatar"
             app:layout_constraintTop_toBottomOf="@id/bid_item_user_name"
             app:layout_constraintEnd_toStartOf="@id/bid_item_reject_btn"
             android:layout_marginTop="8dp"
@@ -47,8 +50,8 @@
             style="@style/Buddy.Widget.SmallButton.Filled.Tonal"
             android:text="@string/reject"
             android:textColor="@color/error50"
-            app:layout_constraintStart_toEndOf="@id/bid_item_add_btn"
-            app:layout_constraintTop_toTopOf="@id/bid_item_add_btn"
+            app:layout_constraintStart_toEndOf="@id/bid_item_confirm_btn"
+            app:layout_constraintTop_toTopOf="@id/bid_item_confirm_btn"
             app:layout_constraintEnd_toEndOf="parent"
             />
 

@@ -62,12 +62,12 @@
     </plurals>
 
     <plurals name="bid_found_count">
-        <item quantity="zero">%d заявок</item>
-        <item quantity="one">%d заявка</item>
-        <item quantity="two">%d заявки</item>
-        <item quantity="few">%d заявок</item>
-        <item quantity="many">%d заявок</item>
-        <item quantity="other">%d заявки</item>
+        <item quantity="zero">+%d заявок</item>
+        <item quantity="one">+%d заявка</item>
+        <item quantity="two">+%d заявки</item>
+        <item quantity="few">+%d заявки</item>
+        <item quantity="many">+%d заявок</item>
+        <item quantity="other">+%d заявки</item>
     </plurals>
 
 </resources>
