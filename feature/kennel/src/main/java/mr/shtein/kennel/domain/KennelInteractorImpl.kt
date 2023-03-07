@@ -12,6 +12,7 @@ import mr.shtein.data.repository.AnimalRepository
 import mr.shtein.data.repository.KennelRepository
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
+import mr.shtein.kennel.presentation.adapter.VolunteerAndBidItems
 import mr.shtein.kennel.presentation.state.add_kennel.AddKennelState
 import mr.shtein.kennel.presentation.state.kennel_confirm.NewKennelSendingState
 import mr.shtein.kennel.presentation.state.kennel_home.AnimalListState
@@ -163,18 +164,24 @@ class KennelInteractorImpl(
     ): VolunteersListBodyState = withContext(dispatcher) {
         try {
             val token = userPropertiesRepository.getUserToken()
-            val volunteersList: List<VolunteerDTO> =
+            val volunteersList: List<VolunteerAndBidItems> =
                 networkKennelRepository.getVolunteersByKennelId(
                     token = token, kennelId = kennelId
-                )
-            val bidsList: List<VolunteersBid> = networkKennelRepository.getVolunteerBids(
+                ).let {
+                    mapVolunteerDTOListToVolunteerAndBidItemsList(it)
+                }
+            val bidsList: List<VolunteerAndBidItems> = networkKennelRepository.getVolunteerBids(
                 token = token, kennelId = kennelId
+            ).let {
+                mapVolunteersBidListToVolunteerAndBidItemsList(it)
+            }
+            val bidHeaderItem: VolunteerAndBidItems = VolunteerAndBidItems.BidHeader(
+                bidsCount = bidsList.size
             )
-            val bidHeaderItem: BidHeaderItem = BidHeaderItem(itemsCount = bidsList.size)
-            val volunteerHeaderItem: VolunteerHeaderItem = VolunteerHeaderItem(
-                itemsCount = volunteersList.size
+            val volunteerHeaderItem: VolunteerAndBidItems = VolunteerAndBidItems.VolunteerHeader(
+                volunteersCount = volunteersList.size
             )
-            val volunteersListBody: MutableList<RecyclerViewCommonItem> = mutableListOf(
+            val volunteersListBody: MutableList<VolunteerAndBidItems> = mutableListOf(
                 bidHeaderItem
             )
             volunteersListBody.addAll(bidsList)
@@ -191,6 +198,22 @@ class KennelInteractorImpl(
         } catch (ex: ServerErrorException) {
             return@withContext VolunteersListBodyState
                 .Failure(R.string.server_error_msg)
+        }
+    }
+
+    private fun mapVolunteersBidListToVolunteerAndBidItemsList(
+        volunteerBids: List<VolunteersBid>
+    ): List<VolunteerAndBidItems> {
+        return volunteerBids.map { volunteersBid ->
+            VolunteerAndBidItems.BidBody(volunteersBid)
+        }
+    }
+
+    private fun mapVolunteerDTOListToVolunteerAndBidItemsList(
+        volunteerList: List<VolunteerDTO>
+    ): List<VolunteerAndBidItems> {
+        return volunteerList.map { volunteer ->
+            VolunteerAndBidItems.VolunteerBody(volunteer)
         }
     }
 }
