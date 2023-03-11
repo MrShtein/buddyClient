@@ -28,7 +28,7 @@ android {
     signingConfigs {
         release {
             Properties keystoreConfig = new Properties()
-            keystoreConfig.load(new FileInputStream(file("C:/Users/donsi/AndroidStudioProjects/buddyClient_1/app/keystore.config.txt")))
+            keystoreConfig.load(new FileInputStream(file("keystore.config")))
 
             storeFile file(keystoreConfig["storeFile"])
             storePassword keystoreConfig["storePassword"]
