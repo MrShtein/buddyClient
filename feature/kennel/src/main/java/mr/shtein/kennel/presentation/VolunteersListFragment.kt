@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,6 +31,7 @@ import mr.shtein.model.volunteer.VolunteersBid
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.setInsetsListenerForPadding
 import mr.shtein.ui_util.setStatusBarColor
+import mr.shtein.util.changePadding
 import mr.shtein.util.showMessage
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -109,33 +112,42 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
     }
 
     private fun initRecyclerView() {
-        binding.volunteersListBody.setHasFixedSize(true)
-        val volunteerAndBidAdapter = VolunteerAndBidAdapter(
-            onVolunteerItemClick = object : VolunteerAndBidAdapter.OnVolunteerItemClickListener {
-                override fun onVolunteerCardClick(volunteer: VolunteerDTO) {}
-            },
-            onBidBtnClick = object : VolunteerAndBidAdapter.OnBidBtnClickListener {
-                override fun onConfirmClick(bidItem: VolunteersBid) {
-                }
+        with(binding.volunteersListBody) {
+            ViewCompat.setOnApplyWindowInsetsListener(this) { _, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                changePadding(bottom = insets.bottom)
+                WindowInsetsCompat.CONSUMED
+            }
+            setHasFixedSize(true)
+            val volunteerAndBidAdapter = VolunteerAndBidAdapter(
+                onVolunteerItemClick = object :
+                    VolunteerAndBidAdapter.OnVolunteerItemClickListener {
+                    override fun onVolunteerCardClick(volunteer: VolunteerDTO) {}
+                },
+                onBidBtnClick = object : VolunteerAndBidAdapter.OnBidBtnClickListener {
+                    override fun onConfirmClick(bidItem: VolunteersBid) {
+                    }
 
-                override fun onRejectClick(bidItem: VolunteersBid) {
-                }
-            },
-            imageLoader = imageLoader,
-            userPropertiesRepository = userPropertiesRepository
-        )
-        binding.volunteersListBody.adapter = volunteerAndBidAdapter
-        binding.volunteersListBody.layoutManager = LinearLayoutManager(
-            context, LinearLayoutManager.VERTICAL, false
-        )
-        val divider = DividerItemDecoration(
-            requireContext(), LinearLayoutManager.VERTICAL
-        )
-        val drawable = AppCompatResources.getDrawable(
-            requireContext(), R.drawable.volunteer_and_bid_divider
-        )
-        divider.setDrawable(drawable!!)
-        binding.volunteersListBody.addItemDecoration(divider)
+                    override fun onRejectClick(bidItem: VolunteersBid) {
+                    }
+                },
+                imageLoader = imageLoader,
+                userPropertiesRepository = userPropertiesRepository
+            )
+            adapter = volunteerAndBidAdapter
+            layoutManager = LinearLayoutManager(
+                context, LinearLayoutManager.VERTICAL, false
+            )
+            val divider = DividerItemDecoration(
+                requireContext(), LinearLayoutManager.VERTICAL
+            )
+            val drawable = AppCompatResources.getDrawable(
+                requireContext(), R.drawable.volunteer_and_bid_divider
+            )
+            divider.setDrawable(drawable!!)
+            addItemDecoration(divider)
+        }
+
     }
 
     private fun showKennelName(kennelName: String) {
