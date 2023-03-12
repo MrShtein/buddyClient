@@ -156,13 +156,15 @@ class VolunteerAndBidAdapter(
                 val avatarUrl = volunteerItemContainer.volunteerBody.avatarUrl
                 val token = userPropertiesRepository.getUserToken()
                 val endpoint = itemView.resources.getString(R.string.user_avatar_endpoint)
-                imageLoader.setPhotoToView(
-                    imageView = this,
-                    endPoint = endpoint,
-                    placeholder = getPersonPlaceholder(itemView = itemView),
-                    token = token,
-                    path = avatarUrl
-                )
+                avatarUrl?.let {
+                    imageLoader.setPhotoToView(
+                        imageView = this,
+                        endPoint = endpoint,
+                        placeholder = getPersonPlaceholder(itemView = itemView),
+                        token = token,
+                        path = it
+                    )
+                }
             }
             with(itemView.findViewById<TextView>(R.id.volunteer_item_user_name)) {
                 this.text = volunteerItemContainer.volunteerBody.name
