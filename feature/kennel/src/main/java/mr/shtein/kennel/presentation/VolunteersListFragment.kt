@@ -23,6 +23,7 @@ import mr.shtein.data.model.KennelPreview
 import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.databinding.VolunteersListFragmentBinding
+import mr.shtein.kennel.presentation.adapter.HeaderItemDecoration
 import mr.shtein.kennel.presentation.adapter.VolunteerAndBidAdapter
 import mr.shtein.kennel.presentation.state.volunteers_list.VolunteersListBodyState
 import mr.shtein.kennel.presentation.viewmodel.VolunteerListViewModel
@@ -122,7 +123,9 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
             val volunteerAndBidAdapter = VolunteerAndBidAdapter(
                 onVolunteerItemClick = object :
                     VolunteerAndBidAdapter.OnVolunteerItemClickListener {
-                    override fun onVolunteerCardClick(volunteer: VolunteerDTO) {}
+                    override fun onVolunteerCardClick(volunteer: VolunteerDTO) {
+                        
+                    }
                 },
                 onBidBtnClick = object : VolunteerAndBidAdapter.OnBidBtnClickListener {
                     override fun onConfirmClick(bidItem: VolunteersBid) {
@@ -146,6 +149,12 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
             )
             divider.setDrawable(drawable!!)
             addItemDecoration(divider)
+            addItemDecoration(HeaderItemDecoration(this, true) { itemPosition ->
+                val currentAdapter = adapter as VolunteerAndBidAdapter
+                (currentAdapter.getItemViewType(itemPosition) == R.layout.bid_header_item) ||
+                        (currentAdapter.getItemViewType(itemPosition) == R.layout.volunteer_header_item)
+            })
+
         }
 
     }
