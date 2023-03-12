@@ -215,5 +215,14 @@
             android:id="@+id/volunteersListFragment"
             android:name="mr.shtein.kennel.presentation.VolunteersListFragment"
             android:label="VolunteersListFragment"
-            tools:layout="@layout/volunteers_list_fragment"/>
+            tools:layout="@layout/volunteers_list_fragment">
+        <action
+                android:id="@+id/action_volunteersListFragment_to_volunteerCardFragment"
+                app:destination="@id/volunteerCardFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/volunteerCardFragment"
+            android:name="mr.shtein.kennel.presentation.VolunteerCardFragment"
+            android:label="VolunteerCardFragment"
+            tools:layout="@layout/volunteer_card_fragment"/>
 </navigation>

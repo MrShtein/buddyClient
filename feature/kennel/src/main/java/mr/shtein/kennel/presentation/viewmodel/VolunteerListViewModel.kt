@@ -50,5 +50,9 @@ class VolunteerListViewModel(
         }
     }
 
+    fun onVolunteerCardClick(volunteerId: Long) {
+        navigator.moveToVolunteerCard(volunteerId = volunteerId)
+    }
+
 
 }

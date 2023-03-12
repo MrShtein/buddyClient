@@ -216,6 +216,13 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         navController?.navigate(R.id.action_kennelHomeFragment_to_volunteersListFragment, bundle)
     }
 
+    override fun moveToVolunteerCard(volunteerId: Long) {
+        val bundle = bundleOf().also {
+            it.putLong(VOLUNTEER_ID_KEY, volunteerId)
+        }
+        navController?.navigate(R.id.action_volunteersListFragment_to_volunteerCardFragment, bundle)
+    }
+
     override fun moveFromUserProfileToAnimalList(fromFragment: FragmentsListForAssigningAnimation) {
         val lastFragmentBundle = bundleOf()
         lastFragmentBundle.putParcelable(LAST_FRAGMENT_KEY, fromFragment)
@@ -265,6 +272,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         private const val ANIMAL_KEY = "animal_key"
         private const val FROM_SETTINGS_FRAGMENT_KEY = "I'm from settings"
         private const val KENNEL_ID_KEY = "kennel_id"
+        private const val VOLUNTEER_ID_KEY = "volunteer_id"
         private const val ANIMAL_TYPE_ID_KEY = "animal_type_id"
         private const val SETTINGS_DATA_KEY = "settings_data"
         private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"

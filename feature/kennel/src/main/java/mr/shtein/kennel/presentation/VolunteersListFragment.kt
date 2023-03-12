@@ -124,7 +124,7 @@ class VolunteersListFragment : Fragment(R.layout.volunteers_list_fragment) {
                 onVolunteerItemClick = object :
                     VolunteerAndBidAdapter.OnVolunteerItemClickListener {
                     override fun onVolunteerCardClick(volunteer: VolunteerDTO) {
-                        
+                        volunteerViewModel.onVolunteerCardClick(volunteerId = volunteer.volunteerId)
                     }
                 },
                 onBidBtnClick = object : VolunteerAndBidAdapter.OnBidBtnClickListener {
