@@ -8,5 +8,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-app/keystore.config.txt
-/google-services.json
+
