@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:transitionGroup="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:transitionGroup="true">
 
@@ -20,17 +26,16 @@
 
     <TextView
         android:id="@+id/volunteer_name"
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        tools:text="Волонтерка Света"
-        android:textColor="?attr/colorOnSurface"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_imageview"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:text="Волонтерка Света" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/volunteer_delete2"
@@ -40,12 +45,9 @@
         tools:text="Удалить"
         android:textColor="#FF0000"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        android:layout_marginLeft="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/volunteer_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_name" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/volunteer_card_phone_btn"
@@ -53,114 +55,106 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        tools:text="Позвонить"
+        android:layout_marginEnd="36dp"
         app:icon="@drawable/phone_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/volunteer_name"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:text="Позвонить" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/volunteer_card_bottom_divider"
         style="@style/Buddy.Widget.Divider"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/volunteer_card_phone_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_phone_btn"/>
 
     <TextView
         android:id="@+id/add_animals_1"
-        android:layout_width="146dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="Добавлять животных"
+        android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.154"
+        android:layout_marginTop="76dp"
+        android:layout_marginLeft="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_animals_2"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <TextView
         android:id="@+id/add_animals_2"
-        android:layout_width="146dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="Добавлять животных"
+        android:textSize="14sp"
         android:textColor="?attr/colorOnSurface"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.154"
+        android:layout_marginTop="76dp"
+        android:layout_marginLeft="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_animals_3"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <TextView
         android:id="@+id/add_animals_3"
-        android:layout_width="146dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="54dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:gravity="center"
-        tools:text="Добавлять животных"
         android:textColor="?attr/colorOnSurface"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.154"
+        android:layout_marginTop="54dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="182dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:text="Добавлять животных" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/volunteer_save"
         style="@style/Buddy.Widget.MiddleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
-        tools:text="Сохранить"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
+        android:layout_marginTop="54dp"
+        android:layout_marginRight="117.5dp"
+        android:layout_marginLeft="117.5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider"
-        app:layout_constraintVertical_bias="0.839" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_animals_1"
+        tools:text="Сохранить" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch2"
+        style="@style/Buddy.Widget.Switch"
         android:layout_width="52dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="26dp"
-        app:layout_constraintBottom_toBottomOf="@+id/volunteer_card_bottom_divider"
+        android:layout_marginTop="48dp"
+        android:layout_marginRight="26dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.843"
-        app:layout_constraintStart_toEndOf="@+id/add_animals_3"
-        app:layout_constraintTop_toTopOf="@+id/volunteer_save"
-        app:layout_constraintVertical_bias="0.776" />
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch3"
         android:layout_width="52dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/volunteer_save"
+        android:layout_marginTop="68dp"
+        android:layout_marginRight="26dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.833"
-        app:layout_constraintStart_toEndOf="@+id/add_animals_2"
-        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider"
-        app:layout_constraintVertical_bias="0.479" />
+        app:layout_constraintTop_toBottomOf="@+id/switch2"
+       />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch1"
         android:layout_width="52dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/volunteer_save"
+        android:layout_marginTop="68dp"
+        android:layout_marginRight="26dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.84"
-        app:layout_constraintStart_toEndOf="@+id/add_animals_1"
-        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider"
-        app:layout_constraintVertical_bias="0.789" />
+        app:layout_constraintTop_toBottomOf="@+id/switch3"         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
