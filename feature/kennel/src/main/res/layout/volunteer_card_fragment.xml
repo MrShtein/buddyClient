@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:transitionGroup="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:transitionGroup="true">
+
+
+    <ImageView
+        android:id="@+id/my_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintHeight_percent="0.33"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
+         />
+
+    <TextView
+        android:id="@+id/volunteer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_imageview"
+        tools:text="Волонтерка Света" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/volunteer_delete2"
+        style="@style/Buddy.Widget.MiddleButton.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Удалить"
+        android:textColor="#FF0000"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_name" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/volunteer_card_phone_btn"
+        style="@style/Buddy.Widget.MiddleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
+        app:icon="@drawable/phone_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_name"
+        tools:text="Позвонить" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/volunteer_card_bottom_divider"
+        style="@style/Buddy.Widget.Divider"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_phone_btn"/>
+
+    <TextView
+        android:id="@+id/add_animals_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Добавлять животных"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="76dp"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_animals_2"
+        />
+
+    <TextView
+        android:id="@+id/add_animals_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Добавлять животных"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="76dp"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_animals_3"
+        />
+
+    <TextView
+        android:id="@+id/add_animals_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="54dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="182dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider"
+        tools:text="Добавлять животных" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/volunteer_save"
+        style="@style/Buddy.Widget.MiddleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="54dp"
+        android:layout_marginRight="117.5dp"
+        android:layout_marginLeft="117.5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_animals_1"
+        tools:text="Сохранить" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch2"
+        style="@style/Buddy.Widget.Switch"
+        android:layout_width="52dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginRight="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volunteer_card_bottom_divider" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch3"
+        android:layout_width="52dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginRight="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch2"
+       />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch1"
+        android:layout_width="52dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginRight="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch3"         />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
