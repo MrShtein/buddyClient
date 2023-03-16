@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.ServerErrorException
@@ -16,7 +17,8 @@ import mr.shtein.kennel.presentation.state.delete_animal.DeleteAnimalState
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class AnimalSettingsViewModel (
+class AnimalSettingsViewModel(
+    private val deletedAnimal: Animal,
     private val networkAnimalRepository: AnimalRepository,
     private val userPropertiesRepository: UserPropertiesRepository
 ) : ViewModel() {
@@ -26,12 +28,24 @@ class AnimalSettingsViewModel (
     val deleteState: LiveData<DeleteAnimalState>
         get() = _deleteState
 
-    fun deleteAnimal(animal: Animal?, context: Context) {
+    private val _dialogState = MutableLiveData<Boolean>(false)
+    val dialogState: LiveData<Boolean>
+        get() = _dialogState
+
+    private val _deleteAnimal = MutableLiveData(deletedAnimal)
+    val deleteAnimal:LiveData<Animal>
+    get() = _deleteAnimal
+
+    fun onDeleteDialogShowBtnClick() {
+        _dialogState.value = true
+    }
+
+    fun deleteAnimal(context: Context) {
         viewModelScope.launch {
             _deleteState.value = DeleteAnimalState.Loading
             try {
 
-                animal?.let { animal ->
+                deletedAnimal.let { animal ->
                     networkAnimalRepository.deleteAnimal(
                         userPropertiesRepository.getUserToken(), animal.id
                     )

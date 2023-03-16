@@ -52,7 +52,8 @@ val kennelModule: Module = module {
     viewModel {kennelPreview ->
         VolunteerListViewModel(get(), kennelPreview = kennelPreview.get(), get())
     }
-    viewModel { AnimalSettingsViewModel(get(),get()) }
+    viewModel { animal->
+        AnimalSettingsViewModel(deletedAnimal = animal.get(),get(),get()) }
 }
 
 val dispatcherMain = Dispatchers.Main
