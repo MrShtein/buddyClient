@@ -1,5 +1,6 @@
 package mr.shtein.kennel.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,10 +17,10 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import mr.shtein.data.model.Animal
-import mr.shtein.data.repository.UserPropertiesRepository
 import mr.shtein.kennel.R
 import mr.shtein.kennel.databinding.AnimalSettingsFragmentBinding
 import mr.shtein.kennel.navigation.KennelNavigation
@@ -43,11 +44,13 @@ class AnimalSettingsFragment : Fragment(),
     OnSnapPositionChangeListener {
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: AnimalPhotoAdapter
-    private var animal: Animal? = null
+    private lateinit var photoRecyclerView:RecyclerView
+
+     //private var animal: Animal? = null
     private val networkImageLoader: ImageLoader by inject()
-    private val navigator: KennelNavigation by inject()
-    private val viewModel:AnimalSettingsViewModel by viewModel{
-       parametersOf( requireArguments().getParcelable(ANIMAL_KEY))
+    //private val navigator: KennelNavigation by inject()
+    private val animalSettingsViewModel: AnimalSettingsViewModel by viewModel {
+        parametersOf(requireArguments().getParcelable(ANIMAL_KEY))
     }
 
     private var _binding: AnimalSettingsFragmentBinding? = null
@@ -58,7 +61,15 @@ class AnimalSettingsFragment : Fragment(),
         super.onCreate(savedInstanceState)
 
         setFragmentResultListener(FROM_ADD_ANIMAL_REQUEST_KEY) { _, bundle ->
-            animal = bundle.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT)
+            val updatedAnimal = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT, Animal::class.java) as Animal
+            } else {
+                @Suppress("deprecation")
+                bundle.getParcelable(BUNDLE_KEY_FOR_ANIMAL_OBJECT) ?: animalSettingsViewModel.selectedAnimal.value
+            }
+            if (updatedAnimal != null) {
+                animalSettingsViewModel.onAnimalUpdated(updatedAnimal = updatedAnimal)
+            }
         }
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
@@ -80,13 +91,37 @@ class AnimalSettingsFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.deleteAnimal.observe(viewLifecycleOwner){
-            animal=it
-            Log.d("test", "Animal   ${it.imgUrl.size}")
+        animalSettingsViewModel.selectedAnimal.observe(viewLifecycleOwner) { animal ->
+            with(binding) {
+
+                val animalPhotoInString = animal?.imgUrl?.map {
+                    it.url
+                }
+                adapter = AnimalPhotoAdapter(animalPhotoInString ?: listOf(), networkImageLoader)
+                photoRecyclerView.adapter = adapter
+
+                animalSettingsName.text = animal.name
+                animalSettingsBreed.text = animal.breed
+                animalSettingsAge.text = animal.getAge()
+                animalSettingsColor.text = animal.characteristics["color"]
+                animalSettingsGender.text = animal.gender
+                animalSettingsDescription.text = animal.description
+                adapter.animalPhotos = animal.getImgUrls()
+                adapter.notifyDataSetChanged()
+                binding.animalSettingsPhotoCounter.text =
+                    getString(
+                        R.string.big_card_animal_photo_counter,
+                        1,
+                        animal?.imgUrl?.size ?: 1
+                    )
+
+
+            }
+            Log.d("test", "Animal   ${animal.imgUrl.size}")
         }
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        viewModel.dialogState.observe(viewLifecycleOwner) { isDialogVisible ->
+        animalSettingsViewModel.dialogState.observe(viewLifecycleOwner) { isDialogVisible ->
             if (isDialogVisible) buildAndShowDeleteAnimalDialog()
         }
 
@@ -108,7 +143,7 @@ class AnimalSettingsFragment : Fragment(),
     }
 
     private fun setDataToViews() {
-        val photoRecyclerView = binding.animalSettingsPhotoContainer
+        photoRecyclerView = binding.animalSettingsPhotoContainer
         photoRecyclerView.setHasFixedSize(true)
         photoRecyclerView.layoutManager = layoutManager
         val snapHelper = PagerSnapHelper()
@@ -116,43 +151,25 @@ class AnimalSettingsFragment : Fragment(),
             SnapOnScrollListener(snapHelper, this@AnimalSettingsFragment)
         photoRecyclerView.addOnScrollListener(snapOnScrollListener)
         snapHelper.attachToRecyclerView(photoRecyclerView)
-        val animalPhotoInString = animal?.imgUrl?.map {
-            it.url
-        }
-        adapter = AnimalPhotoAdapter(animalPhotoInString ?: listOf(), networkImageLoader)
-        photoRecyclerView.adapter = adapter
+//        val animalPhotoInString = animal?.imgUrl?.map {
+//            it.url
+//        }
+//        adapter = AnimalPhotoAdapter(animalPhotoInString ?: listOf(), networkImageLoader)
+//        photoRecyclerView.adapter = adapter
 
-        binding.animalSettingsPhotoCounter.text =
-            getString(
-                R.string.big_card_animal_photo_counter,
-                1,
-                animal?.imgUrl?.size ?: 1
-            )
-        viewModel.deleteAnimal.observe(viewLifecycleOwner){animals->
-            with(binding) {
-
-                animalSettingsName.text = animals.name
-                animalSettingsBreed.text = animals.breed
-                animalSettingsAge.text = animals.getAge()
-                animalSettingsColor.text = animals.characteristics["color"]
-                animalSettingsGender.text = animals.gender
-                animalSettingsDescription.text = animals.description
-                adapter.animalPhotos = animals.getImgUrls()
-                adapter.notifyDataSetChanged()
-            }
-        }
     }
 
     private fun setListeners() {
         binding.animalSettingsDeleteBtn.setOnClickListener {
-            viewModel.onDeleteDialogShowBtnClick()
+            animalSettingsViewModel.onDeleteDialogShowBtnClick()
             Log.d("dialog", "Dialog was build")
         }
 
         binding.animalSettingsChangeBtn.setOnClickListener {
-            animal?.let {
-                navigator.moveToAddAnimal(animal = it, isFromSettings = true)
-            }
+            animalSettingsViewModel.changeAnimalInfo()
+//            animal?.let {
+//                navigator.moveToAddAnimal(animal = it, isFromSettings = true)
+//            }
         }
     }
 
@@ -173,18 +190,18 @@ class AnimalSettingsFragment : Fragment(),
 
         positiveBtn?.setOnClickListener {
 
-            viewModel.deleteAnimal(requireContext())
+            animalSettingsViewModel.deleteAnimal(requireContext(),this@AnimalSettingsFragment)
 
-            val bundle = bundleOf(
-                RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
-                ANIMAL_KEY to animal!!.id
-            )
+//            val bundle = bundleOf(
+//                RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
+//                ANIMAL_KEY to animal!!.id
+//            )
 
-            setFragmentResult(RESULT_LISTENER_KEY, bundle)
+           // setFragmentResult(RESULT_LISTENER_KEY, bundle)
             dialog.dismiss()
-            navigator.backToPreviousFragment()
+            //navigator.backToPreviousFragment()
 
-            viewModel.deleteState.observe(viewLifecycleOwner) {
+            animalSettingsViewModel.deleteState.observe(viewLifecycleOwner) {
                 spinner?.isVisible = false
                 when (it) {
                     is DeleteAnimalState.Loading -> spinner?.isVisible = true
@@ -199,20 +216,23 @@ class AnimalSettingsFragment : Fragment(),
         negativeBtn?.setOnClickListener {
             dialog.cancel()
         }
-        okBtn?.setOnClickListener {
+        okBtn?.setOnClickListener {//  Зачем эта кнопка ???
             dialog.cancel()
         }
     }
+
     private fun showError(errorText: String) {
         Toast.makeText(requireContext(), errorText, Toast.LENGTH_LONG).show()
     }
+
     override fun onSnapPositionChange(position: Int) {
-        val elementsCount = animal?.imgUrl?.size
+        val elementsCount = adapter.animalPhotos.size  //animal?.imgUrl?.size
         binding.animalSettingsPhotoCounter.text =
             getString(
                 R.string.big_card_animal_photo_counter,
                 position + 1,
                 elementsCount
             )
+
     }
 }
