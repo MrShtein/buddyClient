@@ -19,7 +19,7 @@ interface KennelInteractor {
     suspend fun validateStreet(street: String): ValidationResult
     suspend fun validateHouseNum(houseNum: String): ValidationResult
     suspend fun validateIdentificationNum(identificationNum: String): ValidationResult
-    suspend fun getAnimalByTypeIdAndKennelId(animalType: String, kennelId: Int): AnimalListState
+    suspend fun getAnimalByTypeIdAndKennelId(animalType: String, kennelId: Int, refresh: Boolean): AnimalListState
     suspend fun getVolunteerBids(kennelId: Int): VolunteerBidsState<List<VolunteersBid>>
     suspend fun getVolunteersAndBids(kennelId: Int) : VolunteersListBodyState
 }

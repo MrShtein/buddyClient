@@ -6,13 +6,13 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.animal.R
 import mr.shtein.domain.interactor.AnimalFilterInteractor
-import mr.shtein.animal.domain.AnimalInteractor
 import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.ServerErrorException
 import mr.shtein.animal.presentation.screen.AnimalFilterView
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.repository.CityRepository
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.domain.interactor.AnimalInteractor
 import mr.shtein.model.CityChoiceItem
 import mr.shtein.model.FilterAutocompleteItem
 import java.net.ConnectException

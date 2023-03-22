@@ -2,6 +2,7 @@ package mr.shtein.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mr.shtein.data.exception.BadCredentialsException
 import mr.shtein.data.exception.BadTokenException
 import mr.shtein.data.exception.EmptyBodyException
 import mr.shtein.data.exception.ServerErrorException
@@ -20,6 +21,8 @@ class NetworkAnimalRepository(
     private val networkService: NetworkService,
     private val animalMapper: AnimalMapper
 ) : AnimalRepository {
+
+    private var cashForAnimalById: MutableMap<Long, AnimalDTO> = mutableMapOf()
 
     override suspend fun getAnimals(filter: AnimalFilter): List<Animal> {
         val minAge = getMinAge(filter.minAge)
@@ -133,21 +136,34 @@ class NetworkAnimalRepository(
     override suspend fun getAnimalsByKennelIdAndAnimalType(
         token: String,
         kennelId: Int,
-        animalType: String
+        animalType: String,
+        refresh: Boolean
     ): MutableList<AnimalDTO> {
-        val result = networkService.getAnimalsByKennelIdAndAnimalType(
-            token = token,
-            kennelId = kennelId,
-            animalType = animalType
-        )
-        when (result.code()) {
-            200 -> {
-                return result.body()!!
+        if (refresh) {
+            val result = networkService.getAnimalsByKennelIdAndAnimalType(
+                token = token,
+                kennelId = kennelId,
+                animalType = animalType
+            )
+            when (result.code()) {
+                200 -> {
+                    val animalDTOList = result.body() ?: listOf()
+                    animalDTOList.forEach { animal ->
+                        cashForAnimalById[animal.id] = animal
+                    }
+                    return result.body()!!
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
             }
-            else -> {
-                throw ServerErrorException()
-            }
+        } else {
+            return cashForAnimalById.map {
+                it.value
+            }.toMutableList()
         }
+
+
     }
 
     override suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int {
@@ -176,6 +192,27 @@ class NetworkAnimalRepository(
         }
     }
 
+    override suspend fun getAnimalById(animalId: Long): Animal {
+        return if (!cashForAnimalById.isNullOrEmpty()) {
+
+            animalMapper.transformFromDTO(cashForAnimalById[animalId]!!)
+        } else {
+            val result = networkService.getAnimalById(animalId)
+            when (result.code()) {
+                200 -> {
+                    animalMapper.transformFromDTO(result.body()!!)
+                }
+                403 -> {
+                    throw BadCredentialsException()
+                }
+                else -> {
+                    throw ServerErrorException()
+                }
+            }
+        }
+
+    }
+
     private fun getMinAge(minAge: Int): Int? {
         return if (minAge == -1) {
             null
@@ -202,5 +239,6 @@ class NetworkAnimalRepository(
 
     companion object {
         private const val IMAGE_CONTENT_TYPE = "image/webp"
+        private const val TAG = "NetworkAnimalRepository"
     }
 }

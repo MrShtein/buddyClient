@@ -8,25 +8,13 @@ import mr.shtein.data.model.Animal
 import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.model.Coordinates
 import mr.shtein.data.repository.*
-import mr.shtein.model.AnimalCharacteristic
-import mr.shtein.model.AnimalType
-import mr.shtein.model.Breed
-import mr.shtein.model.FilterAutocompleteItem
+import mr.shtein.domain.interactor.AnimalInteractor
+import mr.shtein.model.*
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.jvm.Throws
 
 private const val COLOR_ID = 1
-
-interface AnimalInteractor {
-    @Throws(ConnectException::class, SocketTimeoutException::class, ServerErrorException::class)
-    suspend fun getAnimalsByFilter(animalFilter: AnimalFilter): List<Animal>
-    suspend fun getDistancesFromUser(token: String, coordinates: Coordinates): HashMap<Int, Int>
-    suspend fun getAnimalTypes(): List<FilterAutocompleteItem>
-    suspend fun getAnimalBreeds(animalTypeList: Set<Int>): List<FilterAutocompleteItem>
-    suspend fun getAnimalCharacteristics(characteristicId: Int): List<FilterAutocompleteItem>
-    suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int
-}
 
 class AnimalInteractorImpl(
     private val animalRepository: AnimalRepository,
@@ -84,6 +72,10 @@ class AnimalInteractorImpl(
         withContext(Dispatchers.IO) {
             return@withContext animalRepository.getAnimalsCountByFilter(animalFilter)
         }
+
+    override suspend fun getAnimalById(animalId: Long): Animal {
+        return animalRepository.getAnimalById(animalId)
+    }
 
     private fun mapAnimalTypeToFilterItem(
         animalType: List<AnimalType>

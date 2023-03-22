@@ -7,6 +7,8 @@ import mr.shtein.model.AnimalDTO
 import okhttp3.RequestBody
 
 interface AnimalRepository {
+
+    suspend fun getAnimalById(animalId: Long) : Animal
     suspend fun getAnimals(filter: AnimalFilter): List<Animal>
 
     suspend fun getAnimalsCountByFilter(animalFilter: AnimalFilter): Int
@@ -14,7 +16,8 @@ interface AnimalRepository {
     suspend fun getAnimalsByKennelIdAndAnimalType(
         token: String,
         kennelId: Int,
-        animalType: String
+        animalType: String,
+        refresh: Boolean
     ): MutableList<AnimalDTO>
 
     suspend fun addNewAnimal(

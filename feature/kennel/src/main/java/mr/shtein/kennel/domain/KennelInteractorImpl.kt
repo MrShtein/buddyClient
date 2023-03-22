@@ -134,11 +134,12 @@ class KennelInteractorImpl(
 
     override suspend fun getAnimalByTypeIdAndKennelId(
         animalType: String,
-        kennelId: Int
+        kennelId: Int,
+        refresh: Boolean
     ): AnimalListState = withContext(dispatcher) {
         val token = userPropertiesRepository.getUserToken()
         val animalDTOList = animalRepository.getAnimalsByKennelIdAndAnimalType(
-            token = token, kennelId = kennelId, animalType = animalType
+            token = token, kennelId = kennelId, animalType = animalType, refresh = refresh
         )
         val animalList: MutableList<Animal> =
             animalMapper.transformFromDTOList(animalDTOList = animalDTOList).toMutableList()
