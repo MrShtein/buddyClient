@@ -53,7 +53,7 @@ val kennelModule: Module = module {
         VolunteerListViewModel(get(), kennelPreview = kennelPreview.get(), get())
     }
     viewModel { animal->
-        AnimalSettingsViewModel(animalId = animal.get(),get(),get(), get(), get())
+        AnimalSettingsViewModel(animalId = animal.get(),get(),get(), get(), get(),get())
     }
 }
 

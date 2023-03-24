@@ -26,6 +26,9 @@ import mr.shtein.kennel.R
 import mr.shtein.kennel.databinding.AnimalSettingsFragmentBinding
 import mr.shtein.kennel.navigation.KennelNavigation
 import mr.shtein.kennel.presentation.state.delete_animal.DeleteAnimalState
+import mr.shtein.kennel.presentation.state.delete_animal.Deleted
+import mr.shtein.kennel.presentation.state.delete_animal.ErrorInfo
+import mr.shtein.kennel.presentation.state.delete_animal.Loading
 import mr.shtein.kennel.presentation.viewmodel.AnimalSettingsViewModel
 import mr.shtein.network.ImageLoader
 import mr.shtein.ui_util.*
@@ -48,9 +51,7 @@ class AnimalSettingsFragment : Fragment(),
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: AnimalPhotoAdapter
     private lateinit var photoRecyclerView: RecyclerView
-    private lateinit var anima: Animal
 
-    //private var animal: Animal? = null
     private val networkImageLoader: ImageLoader by inject()
 
     //private val navigator: KennelNavigation by inject()
@@ -188,17 +189,17 @@ class AnimalSettingsFragment : Fragment(),
 
         positiveBtn?.setOnClickListener {
 
-            animalSettingsViewModel.deleteAnimal(requireContext(), this@AnimalSettingsFragment)
+            animalSettingsViewModel.deleteAnimal()
 
             animalSettingsViewModel.deleteState.observe(viewLifecycleOwner) {
                 spinner?.isVisible = false
                 when (it) {
-                    is DeleteAnimalState.Loading -> spinner?.isVisible = true
-                    is DeleteAnimalState.ErrorInfo -> {
+                    is Loading -> spinner?.isVisible = true
+                    is ErrorInfo -> {
                         showError(it.error)
                         if (motionLayout is MotionLayout) motionLayout.transitionToEnd()
                     }
-                    is DeleteAnimalState.Deleted -> {
+                    is Deleted -> {
                         val bundle = bundleOf(
                             RESULT_LISTENER_BUNDLE_KEY to DELETE_ANIMAL_MSG,
                             ANIMAL_KEY to it.animalId

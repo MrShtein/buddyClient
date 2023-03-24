@@ -1,5 +1,6 @@
 package mr.shtein.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mr.shtein.data.exception.BadCredentialsException
@@ -63,6 +64,7 @@ class NetworkAnimalRepository(
             when (result.code()) {
                 201 -> {
                     val animalDTO: AnimalDTO = result.body()!!
+                    cashForAnimalById[animalDTO.id] = animalDTO
                     return@withContext animalMapper.transformFromDTO(animalDTO)
                 }
                 403 -> {
@@ -194,7 +196,6 @@ class NetworkAnimalRepository(
 
     override suspend fun getAnimalById(animalId: Long): Animal {
         return if (!cashForAnimalById.isNullOrEmpty()) {
-
             animalMapper.transformFromDTO(cashForAnimalById[animalId]!!)
         } else {
             val result = networkService.getAnimalById(animalId)
