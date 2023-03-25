@@ -39,7 +39,7 @@ interface NetworkService {
     ): Response<Int>
 
     @GET("api/v1/animal/{id}")
-    fun getAnimalById(@Path("id") id: Long): Call<AnimalDTO>
+    suspend fun getAnimalById(@Path("id") id: Long): Response<AnimalDTO>
 
     @POST("/api/v1/email/exists")
     suspend fun isEmailExists(@Body emailCheckRequest: EmailCheckRequest): Response<Boolean>

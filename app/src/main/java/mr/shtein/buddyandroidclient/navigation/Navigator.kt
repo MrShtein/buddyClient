@@ -110,7 +110,8 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
 
     override fun moveToAnimalSettings(animal: Animal) {
         val bundle = Bundle()
-        bundle.putParcelable(ANIMAL_KEY, animal)
+        bundle.putLong(ANIMAL_ID_KEY, animal.id)
+        bundle.putInt(ANIMAL_TYPE_ID_KEY, animal.typeId)
         navController?.navigate(
             R.id.action_kennelHomeFragment_to_animalSettingsFragment,
             bundle
@@ -278,6 +279,7 @@ class Navigator() : BaseNavigator(), StartNavigation, CityNavigation, KennelNavi
         private const val IS_FROM_REGISTRATION_KEY = "is_from_registration"
         private const val ANIMAL_FILTER_KEY = "animal_filter"
         private const val KENNEL_ITEM_BUNDLE_KEY = "kennel_item_key"
+        private const val ANIMAL_ID_KEY = "animal_id"
 
     }
 }

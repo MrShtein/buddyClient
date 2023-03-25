@@ -7,7 +7,6 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import mr.shtein.animal.R
 import mr.shtein.domain.interactor.AnimalFilterInteractor
-import mr.shtein.animal.domain.AnimalInteractor
 import mr.shtein.animal.domain.LocationInteractor
 import mr.shtein.animal.presentation.screen.AnimalListView
 import mr.shtein.data.exception.LocationServiceException
@@ -18,6 +17,7 @@ import mr.shtein.data.model.AnimalFilter
 import mr.shtein.data.model.Coordinates
 import mr.shtein.data.model.LocationState
 import mr.shtein.data.repository.UserPropertiesRepository
+import mr.shtein.domain.interactor.AnimalInteractor
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import kotlin.math.floor

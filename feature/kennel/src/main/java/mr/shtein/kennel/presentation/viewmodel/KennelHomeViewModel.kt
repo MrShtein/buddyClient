@@ -66,7 +66,8 @@ class KennelHomeViewModel(
                     _dogListState.update {
                         kennelInteractor.getAnimalByTypeIdAndKennelId(
                             animalType = DOG_TYPE,
-                            kennelId = kennelPreview.kennelId
+                            kennelId = kennelPreview.kennelId,
+                            refresh = true
                         )
                     }
                     dogList =
@@ -82,7 +83,8 @@ class KennelHomeViewModel(
                     _catListState.update {
                         kennelInteractor.getAnimalByTypeIdAndKennelId(
                             animalType = CAT_TYPE,
-                            kennelId = kennelPreview.kennelId
+                            kennelId = kennelPreview.kennelId,
+                            refresh = true
                         )
                     }
                     catList =
